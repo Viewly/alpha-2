@@ -5,12 +5,6 @@ from flask_security import (
 
 from . import db
 
-
-def generate_uid():
-    import uuid
-    return str(uuid.uuid4()).replace('-', '')[::2]
-
-
 roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
@@ -44,4 +38,3 @@ class User(db.Model, UserMixin):
 
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
-

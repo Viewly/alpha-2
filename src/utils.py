@@ -1,5 +1,17 @@
 from toolz import keyfilter
 
+CHARSET = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+
+
+def gen_uid():
+    import uuid
+    return str(uuid.uuid4()).replace('-', '')[::2]
+
+
+def gen_video_id(length=12):
+    from random import sample
+    return ''.join(sample(CHARSET, length))
+
 
 # toolz
 # -----
