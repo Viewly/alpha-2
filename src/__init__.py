@@ -12,10 +12,12 @@ from flask_security import (
 )
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__, template_folder='templates', static_folder='static')
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'not_a_secret')
 app.config['VIRTUAL_HOST'] = os.getenv('VIRTUAL_HOST', 'localhost:5000')
-app.config['ipfs.gateway'] = os.getenv('IPFS_URL', 'https://ipfs.view.ly')
+app.config['IPFS_GATEWAY'] = os.getenv('IPFS_GATEWAY', 'http://localhost:8080')
+
 
 app.config['MONGO_HOST'] = os.getenv('MONGO_HOST', 'localhost')
 app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME', 'SteemQ')
@@ -38,7 +40,7 @@ mail = Mail(app)
 # Flask-Security
 app.config['SECURITY_PASSWORD_SALT'] = ""
 
-app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_CONFIRMABLE'] = bool(os.getenv('PRODUCTION'))
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_TRACKABLE'] = True
