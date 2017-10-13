@@ -1,0 +1,10 @@
+gunicorn
+flask
+Flask-Security
+Flask-MongoEngine
+Flask-PyMongo
+Flask-Misaka
+bcrypt
+funcy
+toolz
+python-slugify

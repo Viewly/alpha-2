@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Results for ...{% endblock %}
+
+{% block content %}
+    <p></p>
+    <h3>Search Results</h3>
+    <div class="ui relaxed items">
+
+        {% for video in results %}
+            <div class="item">
+                <div class="ui small image">
+
+                    <a href="{{ url_for('view', author=video.author, permlink=video.permlink) }}">
+                        <img src="{{ ipfs_location(video.json_metadata.video.root, "thumbnail_masked.png") }}">
+                    </a>
+                </div>
+                <div class="content">
+                    <a class="header" href="{{ url_for('view', author=video.author, permlink=video.permlink) }}">{{ video.title }}</a>
+                    <div class="meta">
+                        <a>{{ video.created | humanDate }} by <b>@{{ video.author }}</b></a>
+                    </div>
+
+                    <div class="extra">
+                        {% for tag in video.tags | uniqueTags %}
+                            <div class="ui label">{{ tag }}</div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <p>Showing top {{ results|length }} results from past 90 days.</p>
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}

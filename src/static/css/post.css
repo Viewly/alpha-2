@@ -1,0 +1,103 @@
+.Post {
+  font-size: 120%;
+  line-height: 150%;
+}
+
+.Post {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+.Post img {
+  max-width: 350px;
+}
+.Post h1, .Post h2, .Post h3, .Post h4, .Post h5, .Post h6 {
+  font-weight: 600;
+}
+.Post h1 {
+  margin: 2rem 0 1rem 0;
+  font-size: 160%;
+}
+.Post h2 {
+  margin: 2rem 0 1rem 0;
+  font-size: 140%;
+}
+.Post h3 {
+  margin: 1.72rem 0 0.87rem 0;
+  font-size: 120%;
+}
+.Post h4 {
+  margin: 1rem 0 0.5rem 0;
+  font-size: 100%;
+}
+.Post h6 {
+  margin: 1rem 0 0.5rem 0;
+  font-size: 90%;
+}
+.Post code {
+  padding: 0.2rem;
+  font-size: 85%;
+  border-radius: 3px;
+  border: none;
+  background-color: #F4F4F4;
+  font-weight: inherit;
+}
+.Post pre > code {
+  display: block;
+}
+.Post p {
+  margin: 0.5rem 0 1rem 0;
+}
+.Post strong {
+  font-weight: 600;
+}
+.Post ol, .Post ul {
+  margin-left: 2rem;
+}
+.Post table td {
+  word-break: normal;
+}
+.Post p {
+  font-size: 100%;
+  line-height: 150%;
+}
+.Post iframe {
+  max-width: 100%;
+  max-height: 75vw;
+}
+.Post div.pull-right {
+  float: right;
+  padding-left: 1rem;
+  max-width: 50%;
+}
+.Post div.pull-left {
+  float: left;
+  padding-right: 1rem;
+  max-width: 50%;
+}
+.Post div.text-justify {
+  text-align: justify;
+}
+.Post div.text-right {
+  text-align: right;
+}
+.Post div.text-center {
+  text-align: center;
+}
+.Post div.text-rtl {
+  direction: rtl;
+}
+.Post div.videoWrapper {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.2%;
+  position: relative;
+}
+.Post div.videoWrapper iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}

@@ -1,0 +1,54 @@
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Viewly Auth{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/semantic.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="ui container">
+    <br>
+    <br>
+    <br>
+    <div class="ui text container text-center">
+        <a href="/">
+            <img src="{{ url_for('static', filename='img/logo-lg2.png') }}" class="logo" alt="">
+        </a>
+        <br>
+{#        [<a href="/">Homepage</a>]#}
+    </div>
+    <br>
+    <br>
+
+    <div class="ui raised very padded text container segment">
+        {% include "partials/_messages.html" %}
+
+        {% block content %}
+        {% endblock %}
+        <br>
+
+        <div class="ui horizontal divider">
+            Looking for something else?
+        </div>
+        {% include "security/_menu.html" %}
+
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/semantic.js') }}"></script>
+
+</body>
+</html>

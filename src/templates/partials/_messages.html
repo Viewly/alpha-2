@@ -1,0 +1,25 @@
+{%- with messages = get_flashed_messages(with_categories=true) -%}
+    {% if messages %}
+
+        {% for category, message in messages %}
+            {% if category == 'error' %}
+                <div class="ui negative message">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        {{ category|title }}
+                    </div>
+                    <p>{{ message }}
+                    </p></div>
+            {% else %}
+                <div class="ui info message">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        {{ category|title }}
+                    </div>
+                    <p>{{ message }}
+                    </p></div>
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
+{%- endwith %}

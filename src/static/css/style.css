@@ -1,0 +1,21 @@
+.text-center {
+  text-align: center;
+}
+.ui.horizontal.divider {
+  margin: 50px 0 25px;
+}
+#player {
+  margin-bottom: 25px;
+}
+
+.ui.cards>.card>.content>.header:not(.ui) {
+  font-size: 1.1em;
+}
+.ui.card>.content, 
+.ui.cards>.card>.content {
+  padding-left: 0;
+  padding-right: 0;
+}
+.ui.card, .ui.cards>.card {
+  box-shadow: none;
+}

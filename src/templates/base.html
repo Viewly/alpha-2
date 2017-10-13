@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Viewly{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/semantic.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <meta property="og:title" content="Viewly–A decentralized video platform">
+    <meta property="og:description" content="Viewly is a decentralized YouTube, powered by smart contracts and IPFS.">
+    <meta property="og:image" content="https://view.ly/img/logo-viewly-square.png">
+</head>
+<body>
+
+{% block menu %}
+    <div class="ui menu">
+        <div class="header item">
+            <img class="logo" src="{{ url_for('static', filename='img/favicon.ico') }}" style="width: 20px;">
+            &nbsp;&nbsp;Viewly &alpha;
+        </div>
+        <a class="item" href="/new">New</a>
+        <a class="item" href="/trending">Trending</a>
+        <div class="item">
+            <div id="search-box" class="ui action left icon input">
+                <i class="search icon"></i>
+                <input placeholder="Search" value="{{ query }}">
+                <button class="ui button">Submit</button>
+            </div>
+        </div>
+        <div class="right menu">
+            {#            <div class="item">#}
+            {#                <a href="https://t.me/viewly" class="ui primary basic button">Join us on Telegram</a>#}
+            {#            </div>#}
+
+
+            <a class="item" href="https://upload.view.ly"><i class="cloud upload icon"></i> Upload</a>
+            {% if current_user.is_active %}
+                <div class="ui dropdown item">
+                    <i class="user icon"></i> Me
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a class="item"><i class="edit icon"></i> Edit Profile</a>
+                        <a class="item" href="{{ url_for('security.logout') }}"><i class="settings icon"></i> Log Out</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="item">
+                    <a href="{{ url_for('security.register') }}" class="ui primary basic button">Sign Up</a>
+                </div>
+            {% endif %}
+            <div class="item">Block #{{ block_num() }}</div>
+        </div>
+    </div>
+{% endblock %}
+
+<div class="ui container">
+    {% include "partials/_messages.html" %}
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% block footer %}
+    <br>
+    <br>
+    <br>
+{% endblock %}
+
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lodash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/semantic.js') }}"></script>
+
+<script type="application/javascript">
+    $(function () {
+        var performSearch = function () {
+            var query = $("#search-box input").val();
+            if (query.length > 0) {
+                $("#search-box").addClass('disabled');
+                window.location = "/search?q=" + query;
+            }
+        };
+        $("#search-box .button").click(function () {
+            performSearch()
+        });
+        $("#search-box input").keypress(function (e) {
+            if (e.which == 13) {
+                performSearch();
+                return false;
+            }
+        });
+        // Enable dropdown
+        $('.ui.dropdown').dropdown();
+        // Enable close button on messages
+        $('.message .close').on('click', function() {
+            $(this).closest('.message').transition('fade');
+        });
+    });
+</script>
+
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

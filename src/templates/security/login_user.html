@@ -1,0 +1,16 @@
+{% extends 'base_auth.html' %}
+{% block title %}Viewly Login{% endblock %}
+
+{% block content %}
+    <h2 class="ui header">{{ _('Login') }}</h2>
+
+    <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form" class="ui form">
+        {{ login_user_form.hidden_tag() }}
+        {{ render_field_with_errors(login_user_form.email) }}
+        {{ render_field_with_errors(login_user_form.password) }}
+        {{ render_field_with_errors(login_user_form.remember) }}
+        {#        {{ render_field(login_user_form.next) }}#}
+        {#        {{ render_field(login_user_form.submit) }}#}
+        <button class="ui blue button">Log In</button>
+    </form>
+{% endblock %}
