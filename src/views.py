@@ -155,13 +155,11 @@ def utility_processor():
     def block_num():
         return mongo.db['settings'].find_one().get('last_block', 0)
 
-    def virtual_host():
-        return app.config['VIRTUAL_HOST']
-
     return dict(
         ipfs_location=ipfs_location,
         block_num=block_num,
-        virtual_host=virtual_host,
+        virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
+        uploader_uri=lambda: app.config['UPLOADER_URI'].rstrip('/'),
     )
 
 

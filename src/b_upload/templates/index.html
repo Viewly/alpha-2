@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% set active_menu = "upload" %}
+{% block title %}Viewly &bull; Upload{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dropzone.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="ui text container text-center">
+
+        <div id="processing" class="ui positive message" style="display: none;">
+            <div class="ui horizontal divider">Uploading...</div>
+        </div>
+
+        <div class="upload-area">
+            <div class="ui horizontal divider">Upload from file</div>
+            <div id="dropzone">
+                <form action="{{ uploader_uri() }}/upload" class="dropzone" id="dropzonevideo">
+                    <input type="hidden" name="is_dropzone" value="true"/>
+                </form>
+            </div>
+            <div class="ui horizontal divider">Pull from YouTube</div>
+            <form method="post" action="{{ uploader_uri() }}/from_youtube" name="youtube-upload">
+                <div class="ui fluid left icon action input">
+                    <i class="youtube icon"></i>
+                    <input type="text" name="youtube_url" placeholder="https://youtube.com/watch?v=">
+                    <button class="ui blue submit button">Pull and upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='node_modules/dropzone/dist/min/dropzone.min.js') }}"></script>
+    <script type="text/javascript">
+        Dropzone.autoDiscover = false;
+        $(function () {
+            Dropzone.options.dropzonevideo = {
+{#                renameFilename: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 11),#}
+                dictDefaultMessage: "Drop files here to upload or select from your computer.",
+                maxFilesize: 100, // MB
+                uploadMultiple: false,
+                maxFiles: 1,
+                acceptedFiles: '.mp4,.mkv,.webm,.mov'
+
+            };
+
+            // Now that the DOM is fully loaded, create the dropzone, and setup the
+            // event listeners
+            var myDropzone = new Dropzone("#dropzonevideo");
+            var statusBar = $('#processing');
+            var hidden = false;
+
+            myDropzone.on("uploadprogress", function (e, progress) {
+                if (hidden === false) {
+                    $('.upload-area').hide();
+                    $('.header-area').hide();
+                    statusBar.show();
+                    hidden = true;
+                }
+
+                if (progress < 100) {
+                    statusBar.text('Uploading...' + Math.round(progress) + '%');
+                }
+                if (progress === 100) {
+                    statusBar.text('Uploading...Done. Generating thumbnails...');
+                }
+            });
+            myDropzone.on("success", function (status, resp) {
+                console.log(status);
+                console.log(resp);
+                statusBar.text('Uploading...Done. Generating thumbnails...Done. Syncing...');
+                setTimeout(function () {
+                    window.location = "/publish/" + resp['ipfs_root'] + "?video_file=" + resp['video_file'];
+                }, 5 * 1000);
+            });
+             myDropzone.on("error", function (status, resp) {
+                console.log(status);
+                console.log(resp);
+                statusBar.text('Uploading...Done. Generating thumbnails...Done. Syncing...FAILED.');
+            });
+
+
+            // YouTube Form
+            $('form[name=youtube-upload]').submit(function () {
+                $('.upload-area').hide();
+                $('.header-area').hide();
+                statusBar.show().text('Processing...');
+                $.post($(this).attr('action'), $(this).serialize(), function (resp) {
+                    statusBar.text('Processing...Done. Syncing...');
+                    setTimeout(function () {
+                        window.location = "/publish/" + resp['ipfs_root'] + "?video_file=" + resp['video_file'];
+                    }, 5 * 1000);
+                }, 'json').fail(function(){
+                    statusBar.text('Processing...FAILED');
+                });
+
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

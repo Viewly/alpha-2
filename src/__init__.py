@@ -14,9 +14,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'not_a_secret')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'not_a_good_secret')
 app.config['VIRTUAL_HOST'] = os.getenv('VIRTUAL_HOST', 'localhost:5000')
 app.config['IPFS_GATEWAY'] = os.getenv('IPFS_GATEWAY', 'http://localhost:8080')
+app.config['UPLOADER_URI'] = os.getenv('UPLOADER_URI', 'http://localhost:5005')
 
 
 app.config['MONGO_HOST'] = os.getenv('MONGO_HOST', 'localhost')
@@ -67,6 +68,10 @@ from . import models
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
 security = Security(app, user_datastore)
+
+# Register Blueprints
+from .b_upload import upload as upload_blueprint
+app.register_blueprint(upload_blueprint, url_prefix='/upload/')
 
 
 @app.before_first_request

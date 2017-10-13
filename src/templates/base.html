@@ -34,7 +34,8 @@
         <div class="right menu">
 
             {% if current_user.is_active %}
-                <a class="item" href="https://upload.view.ly"><i class="cloud upload icon"></i> Upload</a>
+                <a class="item {%if active_menu == 'upload'%}active{%endif%}" href="{{ url_for('upload.index') }}">
+                    <i class="cloud upload icon"></i> Upload</a>
                 <div class="ui dropdown item">
                     <i class="user icon"></i> Me
                     <i class="dropdown icon"></i>
