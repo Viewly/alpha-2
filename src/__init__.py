@@ -20,10 +20,10 @@ app.config['IPFS_GATEWAY'] = os.getenv('IPFS_GATEWAY', 'http://localhost:8080')
 
 
 app.config['MONGO_HOST'] = os.getenv('MONGO_HOST', 'localhost')
-app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME', 'SteemQ')
+app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME', 'ViewlyBeta')
 mongo = PyMongo(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('POSTGRES_URI', 'postgres://localhost/viewly')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('POSTGRES_URI', 'postgres://localhost/viewly_beta')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SQLALCHEMY_POOL_SIZE'] = 50
