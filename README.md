@@ -1,19 +1,29 @@
 # Requirements
 This guide assumes MacOS with HomeBrew.
 
-## Python
+## Dependencies
+Install JS dependencies:
+```
+npm install -g browserify
+
+cd public
+npm i
+
+browserify -r eosio > bundle.js
+```
+
+
 Install Python 3.6. 
 ```
 brew install python3
 ```
 
-Install Project dependencies:
+
+Install Python dependencies:
 ```
-cd alpha.viewl.ly
 pip install -r requirements.txt
 ```
 
-## MongoDB
 
 Install MongoDB.
 ```
@@ -25,15 +35,30 @@ Start MongoDB:
 brew services run mongodb
 ```
 
-Pre-Populate the database with data:
-- Get the [latest snapshot](https://s3-us-west-2.amazonaws.com/viewly-dev-resource/dump.zip)
-- Unzip it.
-- run `mongorestore` command
-
+Install PostgreSQL and add a database.
+```
+CREATE DATABASE testnetone;
+```
 
 ## Run Locally
-Run the flask server:
+Run the Flask server:
 ```
 export FLASK_APP=src/views.py
 flask run --reload --debugger
 ```
+
+
+## Environment Variables
+
+| Variable      | Default                          |
+| ------------- | -------------------------------- |
+| PRODUCTION    | False                            |
+| SECRET_KEY    | not_a_secret                     |
+| POSTGRES_URI  | postgres://localhost/viewly_beta |
+| MONGO_HOST    | localhost                        |
+| MONGO_DBNAME  | ViewlyBeta                       |
+| IPFS_API_HOST | localhost                        |
+| IPFS_GATEWAY  | http://localhost:8080            |
+| UPLOADER_URI  | http://localhost:5005            |
+| MAIL_username | postmaster@mg.view.ly            |
+| MAIL_PASSWORD | ''                               |
