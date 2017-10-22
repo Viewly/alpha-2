@@ -3,7 +3,70 @@
 {% block title %}Viewly &bull; Upload{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dropzone.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/fine-uploader-new.css') }}">
+    <script src="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/s3.fine-uploader.min.js') }}"></script>
+    <script type="text/template" id="qq-template">
+        <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
+            <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                     class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+            </div>
+            <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+                <span class="qq-upload-drop-area-text-selector"></span>
+            </div>
+            <div class="qq-upload-button-selector qq-upload-button">
+                <div>Upload a file</div>
+            </div>
+            <span class="qq-drop-processing-selector qq-drop-processing">
+                <span>Processing dropped files...</span>
+                <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+            </span>
+            <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals">
+                <li>
+                    <div class="qq-progress-bar-container-selector">
+                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             class="qq-progress-bar-selector qq-progress-bar"></div>
+                    </div>
+                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                    <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+                    <span class="qq-upload-file-selector qq-upload-file"></span>
+                    <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"
+                          aria-label="Edit filename"></span>
+                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                    <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
+                    <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
+                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                    <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                </li>
+            </ul>
+
+            <dialog class="qq-alert-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Close</button>
+                </div>
+            </dialog>
+
+            <dialog class="qq-confirm-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">No</button>
+                    <button type="button" class="qq-ok-button-selector">Yes</button>
+                </div>
+            </dialog>
+
+            <dialog class="qq-prompt-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <input type="text">
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                    <button type="button" class="qq-ok-button-selector">Ok</button>
+                </div>
+            </dialog>
+        </div>
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -15,89 +78,48 @@
 
         <div class="upload-area">
             <div class="ui horizontal divider">Upload from file</div>
-            <div id="dropzone">
-                <form action="{{ uploader_uri() }}/upload" class="dropzone" id="dropzonevideo">
-                    <input type="hidden" name="is_dropzone" value="true"/>
-                </form>
-            </div>
-            <div class="ui horizontal divider">Pull from YouTube</div>
-            <form method="post" action="{{ uploader_uri() }}/from_youtube" name="youtube-upload">
-                <div class="ui fluid left icon action input">
-                    <i class="youtube icon"></i>
-                    <input type="text" name="youtube_url" placeholder="https://youtube.com/watch?v=">
-                    <button class="ui blue submit button">Pull and upload</button>
-                </div>
-            </form>
+            <div id="fine-uploader"></div>
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='node_modules/dropzone/dist/min/dropzone.min.js') }}"></script>
     <script type="text/javascript">
-        Dropzone.autoDiscover = false;
         $(function () {
-            Dropzone.options.dropzonevideo = {
-{#                renameFilename: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 11),#}
-                dictDefaultMessage: "Drop files here to upload or select from your computer.",
-                maxFilesize: 100, // MB
-                uploadMultiple: false,
-                maxFiles: 1,
-                acceptedFiles: '.mp4,.mkv,.webm,.mov'
-
-            };
-
-            // Now that the DOM is fully loaded, create the dropzone, and setup the
-            // event listeners
-            var myDropzone = new Dropzone("#dropzonevideo");
-            var statusBar = $('#processing');
-            var hidden = false;
-
-            myDropzone.on("uploadprogress", function (e, progress) {
-                if (hidden === false) {
-                    $('.upload-area').hide();
-                    $('.header-area').hide();
-                    statusBar.show();
-                    hidden = true;
+            var uploader = new qq.s3.FineUploader({
+                debug: true,
+                element: document.getElementById('fine-uploader'),
+                request: {
+                    endpoint: '{{ s3_bucket_name }}.s3-{{ s3_bucket_region }}.amazonaws.com',
+                    accessKey: '{{ s3_user_access_key }}'
+                },
+                objectProperties: {
+                    region: '{{ s3_bucket_region }}'
+                },
+                signature: {
+                    version: 4,
+                    endpoint: '{{ url_for('upload.s3_signature') }}'
+                },
+                uploadSuccess: {
+                    endpoint: '{{ url_for('upload.s3_success') }}'
+                },
+                chunking: {
+                    enabled: true,
+                    concurrent: {
+                        enabled: true
+                    }
+                },
+                resume: {
+                    enabled: true
+                },
+                retry: {
+                    enableAuto: true,
+                    showButton: true
+                },
+                deleteFile: {
+                    enabled: true,
+                    endpoint: '{{ url_for('upload.s3_delete', key='s3-bucket-key?') }}'
                 }
-
-                if (progress < 100) {
-                    statusBar.text('Uploading...' + Math.round(progress) + '%');
-                }
-                if (progress === 100) {
-                    statusBar.text('Uploading...Done. Generating thumbnails...');
-                }
-            });
-            myDropzone.on("success", function (status, resp) {
-                console.log(status);
-                console.log(resp);
-                statusBar.text('Uploading...Done. Generating thumbnails...Done. Syncing...');
-                setTimeout(function () {
-                    window.location = "/publish/" + resp['ipfs_root'] + "?video_file=" + resp['video_file'];
-                }, 5 * 1000);
-            });
-             myDropzone.on("error", function (status, resp) {
-                console.log(status);
-                console.log(resp);
-                statusBar.text('Uploading...Done. Generating thumbnails...Done. Syncing...FAILED.');
-            });
-
-
-            // YouTube Form
-            $('form[name=youtube-upload]').submit(function () {
-                $('.upload-area').hide();
-                $('.header-area').hide();
-                statusBar.show().text('Processing...');
-                $.post($(this).attr('action'), $(this).serialize(), function (resp) {
-                    statusBar.text('Processing...Done. Syncing...');
-                    setTimeout(function () {
-                        window.location = "/publish/" + resp['ipfs_root'] + "?video_file=" + resp['video_file'];
-                    }, 5 * 1000);
-                }, 'json').fail(function(){
-                    statusBar.text('Processing...FAILED');
-                });
-
-                return false;
             });
         });
     </script>

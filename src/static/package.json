@@ -2,7 +2,7 @@
   "name": "static",
   "version": "1.0.0",
   "dependencies": {
-    "dropzone": "^5.2.0",
+    "fine-uploader": "^5.15.0",
     "jquery": "^2.2.0",
     "lodash": "^4.17.4",
     "semantic-ui-css": "^2.2.12"
