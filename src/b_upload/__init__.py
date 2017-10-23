@@ -12,6 +12,7 @@ from flask import (
     jsonify,
 )
 from flask_security import login_required
+from funcy import none
 from toolz import thread_first
 
 upload = Blueprint(
@@ -35,15 +36,15 @@ S3_REGION = os.getenv('S3_REGION', 'eu-central-1')
 @login_required
 def s3_signature():
     policy = base64.b64encode(request.data)
-    conditions = request.get_json()['conditions']
+    conditions = request.get_json().get('conditions')
+    headers = request.get_json().get('headers')
 
-    def find(key):
+    if none([headers, conditions]):
+        return jsonify(invalid=True), 500
+
+    def find_condition(key):
         from funcy import first
         return first(x[key] for x in conditions if key in x)
-
-    amz_credential = find('x-amz-credential')
-    if not amz_credential:
-        return jsonify(invalid=True), 500
 
     # Key derivation functions. See:
     # http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-python
@@ -61,17 +62,29 @@ def s3_signature():
         )
 
     try:
+        if conditions:
+            amz_credential = find_condition('x-amz-credential')
+        else:
+            amz_credential = "no_client_id/"+headers.split('\n')[2]
+            policy_data, policy_data_hash = headers.split('/s3/aws4_request\n')
+            policy_data_hash = hashlib.sha256(policy_data_hash.encode()).hexdigest()
+            policy = f'{policy_data}/s3/aws4_request\n{policy_data_hash}'.encode()
+
+        if not amz_credential:
+            return jsonify(invalid=True), 500
+
         signing_key = calc_signature(
             S3_UPLOADER_SECRET_KEY,
             *amz_credential.split('/')
         )
+
         signature = hmac.new(signing_key, policy, hashlib.sha256)
     except:
         return jsonify(
             error="There was an error generating the AWS signature"), 500
 
     return jsonify(
-        policy=policy.decode(),
+        policy=(policy.decode() if conditions else ''),
         signature=signature.hexdigest(),
     )
 
@@ -87,6 +100,7 @@ def s3_delete(key=None):
 
     # TODO: check if this user is the owner of the file,
     # and thus allowed to delete it
+    # bonus points for using ACL decorator
 
     s3 = S3Connection(
         S3_MANAGER_PUBLIC_KEY,
