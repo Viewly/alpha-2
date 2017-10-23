@@ -88,6 +88,7 @@
         $(function () {
             var uploader = new qq.s3.FineUploader({
                 debug: true,
+                multiple: false,
                 element: document.getElementById('fine-uploader'),
                 request: {
                     endpoint: '{{ s3_bucket_name }}.s3-{{ s3_bucket_region }}.amazonaws.com',
@@ -105,9 +106,16 @@
                 },
                 chunking: {
                     enabled: true,
+                    partSize: 5242880 * 3, // 15 MB
                     concurrent: {
                         enabled: true
                     }
+                },
+                validation: {
+                    allowedExtensions: ["mov", "mp4", "mkv", "webm"],
+{#                    acceptFiles: "video/*",#}
+                    sizeLimit: 1000 * 1000 * 1000, // 1 GB
+                    itemLimit: 1
                 },
                 resume: {
                     enabled: true
@@ -118,7 +126,7 @@
                 },
                 deleteFile: {
                     enabled: true,
-                    endpoint: '{{ url_for('upload.s3_delete', key='s3-bucket-key?') }}'
+                    endpoint: 's3/delete' // don't use url_for here
                 }
             });
         });

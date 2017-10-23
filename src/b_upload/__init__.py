@@ -80,18 +80,19 @@ def s3_signature():
 
         signature = hmac.new(signing_key, policy, hashlib.sha256)
     except:
-        return jsonify(
+        resp = jsonify(
             error="There was an error generating the AWS signature"), 500
+    else:
+        resp = jsonify(
+            policy=(policy.decode() if conditions else ''),
+            signature=signature.hexdigest(),
+        )
+    return resp
 
-    return jsonify(
-        policy=(policy.decode() if conditions else ''),
-        signature=signature.hexdigest(),
-    )
 
-
-@upload.route("s3/delete/<key>", methods=['POST', 'DELETE'])
+@upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
 @login_required
-def s3_delete(key=None):
+def s3_delete(key):
     """ Route for deleting files off S3. Uses the SDK. """
     request_payload = request.values
     key_name = request_payload.get('key')
@@ -115,6 +116,10 @@ def s3_delete(key=None):
 @upload.route("s3/success", methods=['GET', 'POST'])
 def s3_success():
     # TODO: do something...
+    print(request.form.get('key'))
+    print(request.form.get('uuid'))
+    print(request.form.get('name'))
+    print(request.form.get('bucket'))
     return make_response()
 
 
