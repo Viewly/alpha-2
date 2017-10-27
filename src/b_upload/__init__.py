@@ -3,7 +3,8 @@ import hashlib
 import hmac
 import os
 
-from boto.s3.connection import Key, S3Connection
+import boto3
+from botocore.exceptions import ClientError
 from flask import (
     Blueprint,
     render_template,
@@ -65,7 +66,7 @@ def s3_signature():
         if conditions:
             amz_credential = find_condition('x-amz-credential')
         else:
-            amz_credential = "no_client_id/"+headers.split('\n')[2]
+            amz_credential = "no_client_id/" + headers.split('\n')[2]
             policy_data, policy_data_hash = headers.split('/s3/aws4_request\n')
             policy_data_hash = hashlib.sha256(policy_data_hash.encode()).hexdigest()
             policy = f'{policy_data}/s3/aws4_request\n{policy_data_hash}'.encode()
@@ -103,13 +104,18 @@ def s3_delete(key):
     # and thus allowed to delete it
     # bonus points for using ACL decorator
 
-    s3 = S3Connection(
-        S3_MANAGER_PUBLIC_KEY,
-        S3_MANAGER_SECRET_KEY
+    s3 = boto3.resource(
+        's3',
+        region_name=S3_REGION,
+        aws_access_key_id=S3_MANAGER_PUBLIC_KEY,
+        aws_secret_access_key=S3_MANAGER_SECRET_KEY,
     )
-    aws_bucket = s3.get_bucket(bucket_name, validate=False)
-    aws_key = Key(aws_bucket, key_name)
-    aws_key.delete()
+    try:
+        obj = s3.Object(S3_BUCKET, key_name)
+        obj.load()
+        obj.delete()
+    except ClientError:
+        pass
     return make_response('', 200)
 
 

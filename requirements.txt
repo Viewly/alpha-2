@@ -8,3 +8,4 @@ bcrypt
 funcy
 toolz
 python-slugify
+boto3
