@@ -35,6 +35,9 @@ class User(db.Model, UserMixin):
     current_login_ip = db.Column(db.String(100))
     login_count = db.Column(db.Integer)
 
+    # temporary fields
+    can_upload = db.Column(db.Boolean, default=True)
+
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
     channels = db.relationship('Channel', back_populates='user')
@@ -60,7 +63,7 @@ class Channel(db.Model):
 class Video(db.Model):
     id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id())
 
-    # todo: add searchable index
+    # todo: add searchable indexes
     title = db.Column(db.String(255))
     description = db.Column(db.String(1000))
     tags = db.Column(ARRAY(db.String, as_tuple=True, dimensions=1))

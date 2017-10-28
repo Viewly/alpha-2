@@ -34,8 +34,11 @@
         <div class="right menu">
 
             {% if current_user.is_active %}
-                <a class="item {%if active_menu == 'upload'%}active{%endif%}" href="{{ url_for('upload.index') }}">
-                    <i class="cloud upload icon"></i> Upload</a>
+                {% if current_user.can_upload %}
+                    <a class="item {% if active_menu == 'upload' %}active{% endif %}"
+                       href="{{ url_for('upload.index') }}">
+                        <i class="cloud upload icon"></i> Upload</a>
+                {% endif %}
                 <div class="ui dropdown item">
                     <i class="user icon"></i> Me
                     <i class="dropdown icon"></i>
@@ -100,7 +103,7 @@
         // Enable dropdown
         $('.ui.dropdown').dropdown();
         // Enable close button on messages
-        $('.message .close').on('click', function() {
+        $('.message .close').on('click', function () {
             $(this).closest('.message').transition('fade');
         });
     });

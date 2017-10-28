@@ -12,8 +12,8 @@ from flask import (
     make_response,
     jsonify,
 )
-from flask_security import login_required
-from funcy import none
+from flask_security import login_required, current_user
+from funcy import none, decorator
 from toolz import thread_first
 
 upload = Blueprint(
@@ -33,8 +33,24 @@ S3_BUCKET = os.getenv('S3_BUCKET', 'flask-uploader-test')
 S3_REGION = os.getenv('S3_REGION', 'eu-central-1')
 
 
+@decorator
+def can_upload(fn):
+    if not current_user.can_upload:
+        return make_response('Not Allowed', 405)
+    return fn()
+
+
+@decorator
+def can_delete(fn):
+    print(request.values.get('key'))
+    # check if current_user owns the key in Uploads,
+    # and if so; he is allowed to delete it
+    return fn(key=fn.key)
+
+
 @upload.route('s3/sign', methods=['POST'])
 @login_required
+@can_upload
 def s3_signature():
     policy = base64.b64encode(request.data)
     conditions = request.get_json().get('conditions')
@@ -93,16 +109,13 @@ def s3_signature():
 
 @upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
 @login_required
+@can_delete
 def s3_delete(key):
     """ Route for deleting files off S3. Uses the SDK. """
     request_payload = request.values
     key_name = request_payload.get('key')
     bucket_name = request_payload.get('bucket')
-    assert bucket_name == S3_BUCKET
-
-    # TODO: check if this user is the owner of the file,
-    # and thus allowed to delete it
-    # bonus points for using ACL decorator
+    assert bucket_name == S3_BUCKET, "Invalid Bucket"
 
     s3 = boto3.resource(
         's3',
