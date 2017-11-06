@@ -5,7 +5,6 @@ from flask import (
 )
 from flask_mail import Mail
 from flask_misaka import Misaka
-from flask_pymongo import PyMongo
 from flask_security import (
     Security,
     SQLAlchemyUserDatastore,
@@ -18,11 +17,6 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'not_a_good_secret')
 app.config['VIRTUAL_HOST'] = os.getenv('VIRTUAL_HOST', 'localhost:5000')
 app.config['IPFS_GATEWAY'] = os.getenv('IPFS_GATEWAY', 'http://localhost:8080')
 app.config['UPLOADER_URI'] = os.getenv('UPLOADER_URI', 'http://localhost:5005')
-
-
-app.config['MONGO_HOST'] = os.getenv('MONGO_HOST', 'localhost')
-app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME', 'ViewlyBeta')
-mongo = PyMongo(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('POSTGRES_URI', 'postgres://localhost/viewly_beta')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -40,14 +34,12 @@ mail = Mail(app)
 
 # Flask-Security
 app.config['SECURITY_PASSWORD_SALT'] = ""
-
 app.config['SECURITY_CONFIRMABLE'] = bool(os.getenv('PRODUCTION'))
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_TRACKABLE'] = True
 app.config['SECURITY_PASSWORDLESS'] = False
 app.config['SECURITY_CHANGEABLE'] = True
-
 app.config['SECURITY_EMAIL_SUBJECT_REGISTER'] = "Welcome to Viewly. Please confirm your email."
 
 # Markdown Support
