@@ -2,18 +2,14 @@
 This guide assumes MacOS with HomeBrew.
 
 ## Dependencies
-Install JS dependencies:
+Install JS dependencies
 ```
-npm install -g browserify
-
-cd public
+cd src/public
 npm i
-
-browserify -r eosio > bundle.js
 ```
 
 
-Install Python 3.6. 
+Install Python 3.6
 ```
 brew install python3
 ```
@@ -25,19 +21,19 @@ pip install -r requirements.txt
 ```
 
 
-Install MongoDB.
+Install PostgreSQL
 ```
-brew install mongodb
-```
-
-Start MongoDB:
-```
-brew services run mongodb
+brew install postgresql
 ```
 
-Install PostgreSQL and add a database.
+Start PostgreSQL
 ```
-CREATE DATABASE testnetone;
+brew services run postgresql
+```
+
+Add Viewly Database
+```
+CREATE DATABASE viewly_beta;
 ```
 
 ## Run Locally
@@ -55,12 +51,7 @@ flask run --reload --debugger
 | PRODUCTION    | False                            |
 | SECRET_KEY    | not_a_secret                     |
 | POSTGRES_URI  | postgres://localhost/viewly_beta |
-| MONGO_HOST    | localhost                        |
-| MONGO_DBNAME  | ViewlyBeta                       |
-| IPFS_API_HOST | localhost                        |
-| IPFS_GATEWAY  | http://localhost:8080            |
-| UPLOADER_URI  | http://localhost:5005            |
-| MAIL_username | postmaster@mg.view.ly            |
+| MAIL_USERNAME | postmaster@mg.view.ly            |
 | MAIL_PASSWORD | ''                               |
 
 
@@ -72,12 +63,12 @@ This guide uses bucket `flask-uploader-test` in `eu-eastern-1` region as example
 
 **Environment Variables**
 
-| Variable               | Default                   |
-| ---------------------- | ------------------------- |
-| S3_BUCKET              | flask-uploader-test       |
-| S3_REGION              | eu-central-1 eu-central-1 |
-| S3_UPLOADER_PUBLIC_KEY |                           |
-| S3_UPLOADER_SECRET_KEY |                           |
+| Variable               | Default                |
+| ---------------------- | ---------------------- |
+| S3_BUCKET              | flask-uploader-test    |
+| S3_REGION              | eu-central-1           |
+| S3_UPLOADER_PUBLIC_KEY |                        |
+| S3_UPLOADER_SECRET_KEY |                        |
 
 **IAM Policy**
 Create a `s3-fine-uploader` group with the following restricted S3 Policy:
