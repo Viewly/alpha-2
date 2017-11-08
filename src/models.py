@@ -41,7 +41,6 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
     channels = db.relationship('Channel', back_populates='user')
-    uploads = db.relationship('Upload', back_populates='user')
 
 
 class Channel(db.Model):
