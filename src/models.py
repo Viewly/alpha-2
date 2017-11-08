@@ -63,15 +63,31 @@ class Channel(db.Model):
 class Video(db.Model):
     id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id())
 
-    # todo: add searchable indexes
+    # uploader
+    # --------
+    s3_bucket_name = db.Column(db.String(50))
+    s3_input_key = db.Column(db.String(50))
+    uploaded_at = db.Column(db.DateTime)
+    # upload_status = enum('in_progress', failed', 'succeeded')
+
+    # transcoder
+    # --------
+    # transcoder_status =  enum(pending, in_progress, failed, succeeded)
+    # transcoder_pipeline = 'v1'
+    # transcoder_s3_path = "bucket_name:/v1/user_id/channel_id/video_id"
+
+    # publish
+    # -------
+    # todo: these fields should be searchable (indexed)
     title = db.Column(db.String(255))
     description = db.Column(db.String(1000))
     tags = db.Column(ARRAY(db.String, as_tuple=True, dimensions=1))
+    publish_at = db.Column(db.DateTime) # add timezone info
 
     # inferred properties
     # -------------------
     language = db.Column(db.String(2))
-    is_nsfw = db.Column(db.Boolean)
+    is_nsfw = db.Column(db.Boolean)  # or integer for confidence
 
     # dynamic properties
     # ------------------
@@ -82,11 +98,3 @@ class Video(db.Model):
     # -------------
     channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'))
 
-
-class Upload(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-
-    # relationships
-    # -------------
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', back_populates='uploads')
