@@ -1,4 +1,5 @@
 import base64
+import datetime as dt
 import hashlib
 import hmac
 import os
@@ -15,6 +16,10 @@ from flask import (
 from flask_security import login_required, current_user
 from funcy import none, decorator
 from toolz import thread_first
+
+from .. import db
+from ..models import Video
+from ..utils import keep
 
 upload = Blueprint(
     'upload',
@@ -38,14 +43,6 @@ def can_upload(fn):
     if not current_user.can_upload:
         return make_response('Not Allowed', 405)
     return fn()
-
-
-@decorator
-def can_delete(fn):
-    print(request.values.get('key'))
-    # check if current_user owns the key in Uploads,
-    # and if so; he is allowed to delete it
-    return fn(key=fn.key)
 
 
 @upload.route('s3/sign', methods=['POST'])
@@ -109,13 +106,18 @@ def s3_signature():
 
 @upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
 @login_required
-@can_delete
 def s3_delete(key):
     """ Route for deleting files off S3. Uses the SDK. """
     request_payload = request.values
-    key_name = request_payload.get('key')
+    s3_key = request_payload.get('key')
     bucket_name = request_payload.get('bucket')
     assert bucket_name == S3_BUCKET, "Invalid Bucket"
+
+    # check if current_user owns the key in Uploads,
+    # and if so; he is allowed to delete it
+    video = current_user.videos.filter_by(s3_input_key=s3_key).first()
+    if not video:
+        return make_response('Not Allowed', 405)
 
     s3 = boto3.resource(
         's3',
@@ -124,22 +126,33 @@ def s3_delete(key):
         aws_secret_access_key=S3_MANAGER_SECRET_KEY,
     )
     try:
-        obj = s3.Object(S3_BUCKET, key_name)
+        obj = s3.Object(S3_BUCKET, s3_key)
         obj.load()
         obj.delete()
     except ClientError:
         pass
+    else:
+        db.session.delete(video)
+        db.session.commit()
     return make_response('', 200)
 
 
 @upload.route("s3/success", methods=['GET', 'POST'])
 def s3_success():
-    # TODO: do something...
-    print(request.form.get('key'))
-    print(request.form.get('uuid'))
-    print(request.form.get('name'))
-    print(request.form.get('bucket'))
-    return make_response()
+    video = Video(
+        user_id=current_user.id,
+        s3_bucket_name=request.form.get('bucket'),
+        s3_input_key=request.form.get('key'),
+        title=request.form.get('name').split('.')[0],
+        uploaded_at=dt.datetime.utcnow(),
+    )
+    db.session.add(video)
+    db.session.commit()
+
+    return jsonify(keep(
+        video.__dict__,
+        ['id', 's3_bucket_name', 's3_input_key']
+    ))
 
 
 @upload.route('/')

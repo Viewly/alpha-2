@@ -41,6 +41,7 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
     channels = db.relationship('Channel', back_populates='user')
+    videos = db.relationship('Video', back_populates='user', lazy='dynamic')
 
 
 class Channel(db.Model):
@@ -81,7 +82,8 @@ class Video(db.Model):
     title = db.Column(db.String(255))
     description = db.Column(db.String(1000))
     tags = db.Column(ARRAY(db.String, as_tuple=True, dimensions=1))
-    publish_at = db.Column(db.DateTime) # add timezone info
+    license = db.Column(db.String(10))
+    published_at = db.Column(db.DateTime)  # add timezone info
 
     # inferred properties
     # -------------------
@@ -95,5 +97,8 @@ class Video(db.Model):
 
     # relationships
     # -------------
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', back_populates='videos')
+
     channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'))
 
