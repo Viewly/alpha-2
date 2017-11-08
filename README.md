@@ -31,9 +31,14 @@ Start PostgreSQL
 brew services run postgresql
 ```
 
-Add Viewly Database
+Create Viewly Database
 ```
 CREATE DATABASE viewly_beta;
+```
+
+*You can also make the database with flask cli:*
+```
+flask db-reset
 ```
 
 ## Run Locally

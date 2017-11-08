@@ -1,5 +1,6 @@
 import os
 
+import delegator
 from flask import (
     Flask,
 )
@@ -50,7 +51,7 @@ md_features = {x: True for x in md_features}
 Misaka(app, **md_features)
 
 # workaround flask issue #1907
-if not os.getenv('PRODUCTION', False):
+if not os.getenv('PRODUCTION'):
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.jinja_env.auto_reload = True
     app.jinja_env.cache = {}
@@ -63,9 +64,27 @@ security = Security(app, user_datastore)
 
 # Register Blueprints
 from .b_upload import upload as upload_blueprint
+
 app.register_blueprint(upload_blueprint, url_prefix='/upload/')
 
 
 @app.before_first_request
 def initialize_db():
     db.create_all()
+
+
+@app.cli.command('db-reset')
+def reset_db():
+    """Re-initialize the database.
+
+    This will only work if no active connections are open (ie. Flask Server).
+    """
+    db_name = app.config['SQLALCHEMY_DATABASE_URI'].split('/')[-1]
+    delegator.run(f'dropdb --if-exists {db_name}')
+    delegator.run(f'createdb {db_name}')
+    db.create_all()
+
+
+@app.cli.command('db-migrate')
+def migrate_db():
+    pass

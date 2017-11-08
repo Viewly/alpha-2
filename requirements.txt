@@ -10,3 +10,4 @@ toolz
 python-slugify
 boto3
 maya
+delegator.py
