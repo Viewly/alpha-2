@@ -2,14 +2,19 @@ from flask_security import (
     UserMixin,
     RoleMixin,
 )
-from sqlalchemy.dialects.postgresql import JSONB, ARRAY
+from sqlalchemy.dialects.postgresql import (
+    JSONB,
+    ARRAY,
+)
 
 from . import db
 from .utils import gen_uid, gen_video_id
 
-roles_users = db.Table('roles_users',
-                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-                       db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+roles_users = db.Table(
+    'roles_users',
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('role.id')),
+)
 
 
 class Role(db.Model, RoleMixin):
@@ -38,8 +43,11 @@ class User(db.Model, UserMixin):
     # temporary fields
     can_upload = db.Column(db.Boolean, default=True)
 
-    roles = db.relationship('Role', secondary=roles_users,
-                            backref=db.backref('users', lazy='dynamic'))
+    roles = db.relationship(
+        'Role',
+        secondary=roles_users,
+        backref=db.backref('users', lazy='dynamic'),
+    )
     channels = db.relationship('Channel', back_populates='user')
     videos = db.relationship('Video', back_populates='user', lazy='dynamic')
 
@@ -65,10 +73,9 @@ class Video(db.Model):
 
     # uploader
     # --------
-    s3_bucket_name = db.Column(db.String(50))
-    s3_input_key = db.Column(db.String(50))
-    uploaded_at = db.Column(db.DateTime)
-    # upload_status = enum('in_progress', failed', 'succeeded')
+    s3_bucket_name = db.Column(db.String(50), nullable=False)
+    s3_input_key = db.Column(db.String(50), nullable=False)
+    uploaded_at = db.Column(db.DateTime(timezone=True), nullable=False)
 
     # transcoder
     # --------
@@ -84,7 +91,7 @@ class Video(db.Model):
     description = db.Column(db.String(1000))
     tags = db.Column(ARRAY(db.String, as_tuple=True, dimensions=1))
     license = db.Column(db.String(10))
-    published_at = db.Column(db.DateTime)  # add timezone info
+    published_at = db.Column(db.DateTime(timezone=True))
 
     # inferred properties
     # -------------------
@@ -98,8 +105,7 @@ class Video(db.Model):
 
     # relationships
     # -------------
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='videos')
 
     channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'))
-
