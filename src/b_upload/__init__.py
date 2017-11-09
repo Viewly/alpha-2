@@ -35,8 +35,8 @@ def can_upload(fn):
 
 
 @upload.route('s3/sign', methods=['POST'])
-@login_required
 @can_upload
+@login_required
 def s3_signature():
     policy = base64.b64encode(request.data)
     conditions = request.get_json().get('conditions')
@@ -127,8 +127,8 @@ def s3_delete(key):
 
 
 @upload.route("s3/success", methods=['GET', 'POST'])
-@login_required
 @can_upload
+@login_required
 def s3_success():
     video = Video(
         user_id=current_user.id,
