@@ -31,11 +31,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
-    confirmed_at = db.Column(db.DateTime())
+    confirmed_at = db.Column(db.DateTime)
 
     # traceable
-    last_login_at = db.Column(db.DateTime())
-    current_login_at = db.Column(db.DateTime())
+    last_login_at = db.Column(db.DateTime)
+    current_login_at = db.Column(db.DateTime)
     last_login_ip = db.Column(db.String(100))
     current_login_ip = db.Column(db.String(100))
     login_count = db.Column(db.Integer)
@@ -53,7 +53,7 @@ class User(db.Model, UserMixin):
 
 
 class Channel(db.Model):
-    id = db.Column(db.String(16), unique=True, primary_key=True, default=gen_uid())
+    id = db.Column(db.String(16), unique=True, primary_key=True, default=gen_uid)
 
     # todo: add expression based index (lowercase, stripped, unique)
     slug = db.Column(db.String(32), unique=True)
@@ -63,13 +63,13 @@ class Channel(db.Model):
 
     # relationships
     # -------------
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='channels')
     videos = db.relationship('Video', backref='channel')
 
 
 class Video(db.Model):
-    id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id())
+    id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id)
 
     # uploader
     # --------
