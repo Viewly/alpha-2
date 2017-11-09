@@ -33,6 +33,11 @@ def search():
     )
 
 
+@app.errorhandler(404)
+def page_not_found(_):
+    return render_template('404.html'), 404
+
+
 # template helpers
 # ----------------
 @app.context_processor
@@ -46,13 +51,6 @@ def utility_processor():
     )
 
 
-@app.errorhandler(404)
-def page_not_found(_):
-    return render_template('404.html'), 404
-
-
-# template helpers
-# ----------------
 @app.template_filter('humanDate')
 def human_date(dto: dt.datetime):
     if not dto:
