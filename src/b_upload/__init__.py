@@ -2,7 +2,6 @@ import base64
 import datetime as dt
 import hashlib
 import hmac
-import os
 
 import boto3
 from botocore.exceptions import ClientError
@@ -17,7 +16,7 @@ from flask_security import login_required, current_user
 from funcy import none, decorator
 from toolz import thread_first
 
-from .. import db
+from .. import app, db
 from ..models import Video
 from ..utils import keep
 
@@ -26,16 +25,6 @@ upload = Blueprint(
     __name__,
     template_folder='templates'
 )
-
-# for s3 delete endpoint
-S3_MANAGER_PUBLIC_KEY = os.getenv('S3_MANAGER_PUBLIC_KEY')
-S3_MANAGER_SECRET_KEY = os.getenv('S3_MANAGER_SECRET_KEY')
-
-# for s3 upload signatures
-S3_UPLOADER_PUBLIC_KEY = os.getenv('S3_UPLOADER_PUBLIC_KEY')
-S3_UPLOADER_SECRET_KEY = os.getenv('S3_UPLOADER_SECRET_KEY')
-S3_BUCKET = os.getenv('S3_BUCKET', 'flask-uploader-test')
-S3_REGION = os.getenv('S3_REGION', 'eu-central-1')
 
 
 @decorator
@@ -88,7 +77,7 @@ def s3_signature():
             return jsonify(invalid=True), 500
 
         signing_key = calc_signature(
-            S3_UPLOADER_SECRET_KEY,
+            app.config['S3_UPLOADER_PRIVATE_KEY'],
             *amz_credential.split('/')
         )
 
@@ -111,7 +100,7 @@ def s3_delete(key):
     request_payload = request.values
     s3_key = request_payload.get('key')
     bucket_name = request_payload.get('bucket')
-    assert bucket_name == S3_BUCKET, "Invalid Bucket"
+    assert bucket_name == app.config['S3_UPLOADER_BUCKET'], "Invalid Bucket"
 
     # check if current_user owns the key in Uploads,
     # and if so; he is allowed to delete it
@@ -121,12 +110,12 @@ def s3_delete(key):
 
     s3 = boto3.resource(
         's3',
-        region_name=S3_REGION,
-        aws_access_key_id=S3_MANAGER_PUBLIC_KEY,
-        aws_secret_access_key=S3_MANAGER_SECRET_KEY,
+        region_name=app.config['S3_UPLOADER_REGION'],
+        aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
+        aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
     )
     try:
-        obj = s3.Object(S3_BUCKET, s3_key)
+        obj = s3.Object(app.config['S3_UPLOADER_BUCKET'], s3_key)
         obj.load()
         obj.delete()
     except ClientError:
@@ -162,7 +151,7 @@ def s3_success():
 def index():
     return render_template(
         'index.html',
-        s3_bucket_name=S3_BUCKET,
-        s3_bucket_region=S3_REGION,
-        s3_user_access_key=S3_UPLOADER_PUBLIC_KEY,
+        s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
+        s3_bucket_region=app.config['S3_UPLOADER_REGION'],
+        s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
     )
