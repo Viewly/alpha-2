@@ -1,13 +1,10 @@
 import datetime as dt
-import maya
 
+import maya
 from flask import (
     render_template,
     request,
     make_response,
-)
-from flask_security import (
-    login_required,
 )
 
 from . import app
@@ -40,23 +37,18 @@ def search():
 # ----------------
 @app.context_processor
 def utility_processor():
-    def ipfs_location(root_hash, filename):
-        return "%s/ipfs/%s/%s" % (app.config['ipfs.gateway'], root_hash, filename)
-
     def block_num():
         return 0
 
     return dict(
-        ipfs_location=ipfs_location,
         block_num=block_num,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
-        uploader_uri=lambda: app.config['UPLOADER_URI'].rstrip('/'),
     )
 
 
 @app.errorhandler(404)
-def page_not_found(e):
-    return render_template('errors/404.html'), 404
+def page_not_found(_):
+    return render_template('404.html'), 404
 
 
 # template helpers
@@ -65,7 +57,6 @@ def page_not_found(e):
 def human_date(dto: dt.datetime):
     if not dto:
         return ''
-
     if type(dto) == str:
         dto = maya.parse(dto).datetime()
     return dto.strftime('%b %d, %Y')

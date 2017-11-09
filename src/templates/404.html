@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}404 - Not Found{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
+</head>
+<body>
+
+<center>
+    <br>
+    <br>
+    <img src="{{ url_for('static', filename='img/404.png') }}" alt="">
+    <br>
+    <br>
+    <a href="/" class="ui button blue">Go Home</a>
+</center>
+
+<script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
+</body>
+</html>
