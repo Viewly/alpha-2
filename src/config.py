@@ -38,6 +38,9 @@ SECURITY_PASSWORDLESS = False
 SECURITY_CHANGEABLE = True
 SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly. Please confirm your email."
 
+# Celery
+CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0'),
+CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0'),
 
 # potentially separate into classes
 # then load with app.config.from_obj('config.Development')

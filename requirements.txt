@@ -11,3 +11,4 @@ python-slugify
 boto3
 maya
 delegator.py
+celery[redis,auth]

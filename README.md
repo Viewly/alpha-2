@@ -20,18 +20,18 @@ Install Python dependencies:
 pip install -r requirements.txt
 ```
 
+Install and Start Redis:
+```
+brew install redis
+brew services start redis
+```
 
-Install PostgreSQL
+Install and start PostgreSQL
 ```
 brew install postgresql
-```
-
-Start PostgreSQL
-```
 brew services start postgresql
 ```
-
-*Now you can initialize your database (see Database Management).*
+*Now you can initialize your SQL database (see Database Management).*
 
 ## Environment Variables
 To run flask commands, you need `FLASK_APP` environment variable set.
