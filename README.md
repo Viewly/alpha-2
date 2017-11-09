@@ -40,6 +40,22 @@ CREATE DATABASE viewly_beta;
 ```
 flask db-reset
 ```
+WARN: Do NOT run `db-reset` in **production**! It deletes everything!
+
+## Database Migrations (optional)
+To avoid having to delete and re-create the database in development, we can use migrations.
+
+First, change the schema in `models.py`. 
+Then, create a migrations file.
+```
+flask db migrate -m "example migration message"
+```
+
+Lastly, apply the migration:
+```
+flask db upgrade
+```
+
 
 ## Run Locally
 Run the Flask server:

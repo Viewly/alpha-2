@@ -72,8 +72,9 @@ class Video(db.Model):
 
     # transcoder
     # --------
+    transcoder_pipeline = db.Column(db.String(30))
+    transcoder_job_id = db.Column(db.String(30))
     # transcoder_status =  enum(pending, in_progress, failed, succeeded)
-    # transcoder_pipeline = 'v1'
     # transcoder_s3_path = "bucket_name:/v1/user_id/channel_id/video_id"
 
     # publish

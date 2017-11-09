@@ -5,6 +5,7 @@ from flask import (
     Flask,
 )
 from flask_mail import Mail
+from flask_migrate import Migrate
 from flask_misaka import Misaka
 from flask_security import (
     Security,
@@ -25,6 +26,7 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['SQLALCHEMY_POOL_SIZE'] = 50
 app.config['SQLALCHEMY_MAX_OVERFLOW'] = 200
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'postmaster@mg.view.ly')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', '18e7f9181eeb08de7de059ae659e07c0')
@@ -68,9 +70,9 @@ from .b_upload import upload as upload_blueprint
 app.register_blueprint(upload_blueprint, url_prefix='/upload/')
 
 
-@app.before_first_request
-def initialize_db():
-    db.create_all()
+# @app.before_first_request
+# def initialize_db():
+#     db.create_all()
 
 
 @app.cli.command('db-reset')
