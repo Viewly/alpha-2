@@ -138,6 +138,8 @@ def s3_delete(key):
 
 
 @upload.route("s3/success", methods=['GET', 'POST'])
+@login_required
+@can_upload
 def s3_success():
     video = Video(
         user_id=current_user.id,
