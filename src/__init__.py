@@ -70,14 +70,25 @@ from .b_upload import upload as upload_blueprint
 app.register_blueprint(upload_blueprint, url_prefix='/upload/')
 
 
-# @app.before_first_request
-# def initialize_db():
-#     db.create_all()
+# Developer Helper Commands
+# -------------------------
+@app.cli.command('db-init')
+def init_db():
+    """ Initialize the database """
+    db_name = app.config['SQLALCHEMY_DATABASE_URI'].split('/')[-1]
+    db_exists = delegator.run(f'psql -lqt | cut -d \| -f 1 | grep -qw {db_name}').out
+    if db_exists:
+        print(f'Database {db_name} already exists. '
+              f'Perhaps you may want to run `db-reset` instead.')
+    else:
+        delegator.run(f'createdb {db_name}')
+        db.create_all()
+        print(f'Database {db_name} Initialized.')
 
 
 @app.cli.command('db-reset')
 def reset_db():
-    """Re-initialize the database.
+    """ Re-initialize the database.
 
     This will only work if no active connections are open (ie. Flask Server).
     """
@@ -85,8 +96,4 @@ def reset_db():
     delegator.run(f'dropdb --if-exists {db_name}')
     delegator.run(f'createdb {db_name}')
     db.create_all()
-
-
-@app.cli.command('db-migrate')
-def migrate_db():
-    pass
+    print(f'Database {db_name} has been reset.')

@@ -28,19 +28,50 @@ brew install postgresql
 
 Start PostgreSQL
 ```
-brew services run postgresql
+brew services start postgresql
 ```
 
-Create Viewly Database
+*Now you can initialize your database (see Database Management).*
+
+## Environment Variables
+To run flask commands, you need `FLASK_APP` environment variable set.
 ```
-CREATE DATABASE viewly_beta;
+export FLASK_APP=src/views.py
 ```
 
-*You can also make the database with flask cli:*
+Here is the default environment (you may want to set these yourself):
+
+
+| Variable               | Default                          |
+| ---------------------- | -------------------------------- |
+| PRODUCTION             | False                            |
+| SECRET_KEY             | not_a_secret                     |
+| POSTGRES_URI           | postgres://localhost/viewly_beta |
+| MAIL_USERNAME          | postmaster@mg.view.ly            |
+| MAIL_PASSWORD          | ''                               |
+| S3_BUCKET              | flask-uploader-test              |
+| S3_REGION              | eu-central-1                     |
+| S3_UPLOADER_PUBLIC_KEY |                                  |
+| S3_UPLOADER_SECRET_KEY |                                  |
+| S3_MANAGER_PUBLIC_KEY  |                                  |
+| S3_MANAGER_SECRET_KEY  |                                  |
+
+## Run Locally
+Run the Flask server:
+```
+flask run --reload --debugger --port 5000
+```
+
+## Database Management
+In development, you can initialize your PostgreSQL database with:
+```
+flask db-init
+```
+
+If you've messed up, you can nuke the database, and re-create the schemas with:
 ```
 flask db-reset
 ```
-WARN: Do NOT run `db-reset` in **production**! It deletes everything!
 
 ## Database Migrations (optional)
 To avoid having to delete and re-create the database in development, we can use migrations.
@@ -56,27 +87,7 @@ Lastly, apply the migration:
 flask db upgrade
 ```
 
-
-## Run Locally
-Run the Flask server:
-```
-export FLASK_APP=src/views.py
-flask run --reload --debugger
-```
-
-
-## Environment Variables
-
-| Variable      | Default                          |
-| ------------- | -------------------------------- |
-| PRODUCTION    | False                            |
-| SECRET_KEY    | not_a_secret                     |
-| POSTGRES_URI  | postgres://localhost/viewly_beta |
-| MAIL_USERNAME | postmaster@mg.view.ly            |
-| MAIL_PASSWORD | ''                               |
-
-
-# Production
+# Amazon Services
 
 ## S3 Uploader Role
 This guide assumes the bucket has been created with proper IAM permissions.
