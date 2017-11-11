@@ -1,6 +1,7 @@
 import pathlib
 import tempfile
-from typing import List
+from typing import List, Dict
+from funcy import lmap, lfilter
 
 from PIL import Image
 
@@ -23,11 +24,13 @@ def img_resize_multi_s3(key: str, output_key_prefix: str):
 def img_resize_multi(
         tmp_dir: pathlib.Path,
         img: Image,
-        sizes: List[dict] = None,
-        ext: str = 'png'):
+        sizes: List[Dict] = None,
+        ext: str = 'png') -> list:
     """
     Resize an original image into multiple sizes.
     Write the outputted files into a temporary directory.
+
+    Returns a list of available resolutions.
     """
     sizes = sizes or [
         {'name': 'large', 'size': (1280, 720)},
@@ -35,14 +38,13 @@ def img_resize_multi(
         {'name': 'tiny', 'size': (320, 180)},
         {'name': 'nano', 'size': (160, 90)},
     ]
+    sizes = lmap(lambda x: f'{x["name"]}.{ext}', sizes)
 
-    # todo: ShrinkToFit original into 16:9 ratio
+    # todo: ShrinkToFit original img into 16:9 ratio
 
-    def resize(img, size, name):
+    available_sizes = lfilter(lambda x: img.size >= x['size'], sizes)
+    for size in available_sizes:
         tmp_ = img.resize(size, Image.LANCZOS)
-        tmp_.save(tmp_dir / f'{name}.{ext}')
+        tmp_.save(tmp_dir / size["name"])
 
-    for size in sizes:
-        if size['size'] > img.size:
-            continue
-        resize(img, size['size'], size['name'])
+    return available_sizes
