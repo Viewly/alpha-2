@@ -4,11 +4,11 @@ from typing import List
 
 from PIL import Image
 
-from .s3 import get_image, write_image
+from .s3 import S3Transfer
 
 
 def img_from_s3(key: str):
-    return Image.open(get_image(key))
+    return Image.open(S3Transfer().download_bytes(key))
 
 
 def img_resize_multi_s3(key: str, output_key_prefix: str):
@@ -17,7 +17,7 @@ def img_resize_multi_s3(key: str, output_key_prefix: str):
         img_resize_multi(tmp_dir, img_from_s3(key))
         for file in tmp_dir.glob('*'):
             output_key = f'{output_key_prefix}/{file.name}'
-            write_image(str(file), output_key)
+            S3Transfer().upload_file(str(file), output_key)
 
 
 def img_resize_multi(

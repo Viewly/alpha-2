@@ -8,42 +8,41 @@ config = dict(
 )
 
 
-def get_image(key: str) -> io.BytesIO:
-    s3 = boto3.client(
-        's3',
-        region_name=config['region_name']
-    )
-    response = s3.get_object(
-        Bucket=config['bucket_name'],
-        Key=key
-    )
-    return io.BytesIO(response['Body'].read())
+class S3Transfer:
+    def __init__(self, region_name=None, bucket_name=None):
+        self._region_name = region_name or config['region_name']
+        self._bucket_name = bucket_name or config['bucket_name']
 
+        self.s3 = boto3.client(
+            's3',
+            region_name=config['region_name']
+        )
 
-def write_image(file_path: str, key: str, overwrite=True):
-    s3 = boto3.client(
-        's3',
-        region_name=config['region_name']
-    )
-
-    # don't overwrite unless allowed
-    if key_exists(s3, key) and not overwrite:
-        return
-
-    return s3.upload_file(
-        file_path,
-        config['bucket_name'],
-        key,
-    )
-
-
-def key_exists(s3, key):
-    try:
-        s3.get_object_acl(
+    def download_bytes(self, key: str) -> io.BytesIO:
+        response = self.s3.get_object(
             Bucket=config['bucket_name'],
             Key=key
         )
-    except s3.exceptions.NoSuchKey:
-        return False
+        return io.BytesIO(response['Body'].read())
 
-    return True
+    def upload_file(self, file_path: str, key: str, overwrite=True):
+        # don't overwrite unless allowed
+        if self.key_exists(key) and not overwrite:
+            return
+
+        return self.s3.upload_file(
+            file_path,
+            config['bucket_name'],
+            key,
+        )
+
+    def key_exists(self, key):
+        try:
+            self.s3.get_object_acl(
+                Bucket=config['bucket_name'],
+                Key=key
+            )
+        except self.s3.exceptions.NoSuchKey:
+            return False
+
+        return True
