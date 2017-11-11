@@ -77,8 +77,17 @@
         </div>
 
         <div class="upload-area">
-            <div class="ui horizontal divider">Upload from file</div>
+            <div class="ui horizontal divider">Upload your video files</div>
             <div id="fine-uploader"></div>
+
+            <div id="next_steps" class="text-center" style="display: none;">
+                <br>
+                    <p>If you're done uploading your files, you can proceed:</p>
+                    <a href="#" class="ui button huge blue">Publish your video(s)</a>
+                <br>
+
+            </div>
+
         </div>
     </div>
 {% endblock %}
@@ -88,7 +97,7 @@
         $(function () {
             var uploader = new qq.s3.FineUploader({
                 debug: true,
-                multiple: false,
+                multiple: true,
                 element: document.getElementById('fine-uploader'),
                 request: {
                     endpoint: '{{ s3_bucket_name }}.s3-{{ s3_bucket_region }}.amazonaws.com',
@@ -113,9 +122,9 @@
                 },
                 validation: {
                     allowedExtensions: ["mov", "mp4", "mkv", "webm"],
-{#                    acceptFiles: "video/*",#}
-                    sizeLimit: 1000 * 1000 * 1000, // 1 GB
-                    itemLimit: 1
+                    //acceptFiles: "video/*",
+                    sizeLimit: 1000 * 1000 * 1000 // 1 GB
+                    //itemLimit: 1
                 },
                 resume: {
                     enabled: true
@@ -127,6 +136,14 @@
                 deleteFile: {
                     enabled: true,
                     endpoint: 's3/delete' // don't use url_for here
+                },
+                callbacks: {
+                    onComplete: function (id, name, responseJSON, xhr) {
+                        if (responseJSON.success) {
+                            // go to publishing flow
+                            $('#next_steps').show();
+                        }
+                    }
                 }
             });
         });

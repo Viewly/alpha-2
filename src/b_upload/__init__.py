@@ -104,7 +104,8 @@ def s3_delete(key):
 
     # check if current_user owns the key in Uploads,
     # and if so; he is allowed to delete it
-    sub_query = db.session.query(FileMapper.video_id).filter_by(s3_upload_video_key=s3_key).subquery()
+    sub_query = db.session.query(
+        FileMapper.video_id).filter_by(s3_upload_video_key=s3_key).subquery()
     video = current_user.videos.filter_by(id=sub_query).first()
     if not video:
         return make_response('Not Allowed', 405)
