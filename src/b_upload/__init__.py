@@ -18,7 +18,6 @@ from toolz import thread_first
 
 from .. import app, db
 from ..models import Video, FileMapper
-from ..utils import keep
 
 upload = Blueprint(
     'upload',
@@ -144,10 +143,12 @@ def s3_success():
     db.session.add(video)
     db.session.commit()
 
-    return jsonify(keep(
-        video.__dict__,
-        ['id', 's3_bucket_name', 's3_input_key']
-    ))
+    return jsonify(
+        video_id=video.id,
+        uploaded_at=video.uploaded_at,
+        s3_upload_bucket=video.file_mapper.s3_upload_bucket,
+        s3_upload_video_key=video.file_mapper.s3_upload_video_key,
+    )
 
 
 @upload.route('/')
