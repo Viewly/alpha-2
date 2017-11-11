@@ -49,12 +49,12 @@ def init_db():
     db_name = app.config['SQLALCHEMY_DATABASE_URI'].split('/')[-1]
     db_exists = delegator.run(f'psql -lqt | cut -d \| -f 1 | grep -qw {db_name}').out
     if db_exists:
-        print(f'Database {db_name} already exists. '
+        print(f'Database "{db_name}" already exists. '
               f'Perhaps you may want to run `db-reset` instead.')
     else:
         delegator.run(f'createdb {db_name}')
         db.create_all()
-        print(f'Database {db_name} Initialized.')
+        print(f'Database "{db_name}" Initialized.')
 
 
 @app.cli.command('db-reset')
@@ -67,7 +67,7 @@ def reset_db():
     delegator.run(f'dropdb --if-exists {db_name}')
     delegator.run(f'createdb {db_name}')
     db.create_all()
-    print(f'Database {db_name} has been reset.')
+    print(f'Database "{db_name}" has been reset.')
 
 
 # workaround flask issue #1907

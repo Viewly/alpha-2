@@ -8,6 +8,8 @@ from sqlalchemy.dialects.postgresql import (
     JSONB,
     ARRAY,
 )
+from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.sql import func
 
 from . import db
 from .utils import gen_uid, gen_video_id
@@ -90,7 +92,7 @@ class Video(db.Model):
     # -------
     # todo: these fields should be searchable (indexed)
     title = db.Column(db.String(255))
-    description = db.Column(db.String(1000))
+    description = db.Column(db.UnicodeText)
     tags = db.Column(ARRAY(db.String, as_tuple=True, dimensions=1))
     license = db.Column(db.String(10))
     uploaded_at = db.Column(db.DateTime(timezone=True), nullable=False)
@@ -119,6 +121,12 @@ class Video(db.Model):
     )
 
     channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'))
+
+    @declared_attr
+    def __table_args__(self):
+        return (db.Index('idx_content',
+                         func.to_tsvector("english", self.description),
+                         postgresql_using="gin"),)
 
 
 class FileMapper(db.Model):
