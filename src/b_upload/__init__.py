@@ -11,10 +11,17 @@ from flask import (
     request,
     make_response,
     jsonify,
+    redirect,
 )
 from flask_security import login_required, current_user
+from flask_wtf import FlaskForm
 from funcy import none, decorator
 from toolz import thread_first
+from wtforms import (
+    StringField,
+    validators,
+    TextAreaField,
+)
 
 from .. import app, db
 from ..models import Video, FileMapper
@@ -31,6 +38,19 @@ def can_upload(fn):
     if not current_user.can_upload:
         return make_response('Not Allowed', 405)
     return fn()
+
+
+# Upload
+# ------
+@upload.route('/')
+@login_required
+def index():
+    return render_template(
+        'index.html',
+        s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
+        s3_bucket_region=app.config['S3_UPLOADER_REGION'],
+        s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
+    )
 
 
 @upload.route('s3/sign', methods=['POST'])
@@ -92,41 +112,6 @@ def s3_signature():
     return resp
 
 
-@upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
-@login_required
-def s3_delete(key):
-    """ Route for deleting files off S3. Uses the SDK. """
-    request_payload = request.values
-    s3_key = request_payload.get('key')
-    bucket_name = request_payload.get('bucket')
-    assert bucket_name == app.config['S3_UPLOADER_BUCKET'], "Invalid Bucket"
-
-    # check if current_user owns the key in Uploads,
-    # and if so; he is allowed to delete it
-    sub_query = db.session.query(
-        FileMapper.video_id).filter_by(s3_upload_video_key=s3_key).subquery()
-    video = current_user.videos.filter_by(id=sub_query).first()
-    if not video:
-        return make_response('Not Allowed', 405)
-
-    s3 = boto3.resource(
-        's3',
-        region_name=app.config['S3_UPLOADER_REGION'],
-        aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
-        aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
-    )
-    try:
-        obj = s3.Object(app.config['S3_UPLOADER_BUCKET'], s3_key)
-        obj.load()
-        obj.delete()
-    except ClientError:
-        return make_response('S3 Error', 500)
-    else:
-        db.session.delete(video)
-        db.session.commit()
-    return make_response('', 200)
-
-
 @upload.route("s3/success", methods=['GET', 'POST'])
 @can_upload
 @login_required
@@ -151,12 +136,88 @@ def s3_success():
     )
 
 
-@upload.route('/')
+@upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
 @login_required
-def index():
+def s3_delete(key):
+    """ Route for deleting files off S3. Uses the SDK. """
+    request_payload = request.values
+    s3_key = request_payload.get('key')
+    s3_bucket = request_payload.get('bucket')
+
+    # check if current_user owns the key in Uploads,
+    # and if so; he is allowed to delete it
+    sub_query = db.session.query(FileMapper.video_id) \
+        .filter_by(s3_upload_bucket=s3_bucket, s3_upload_video_key=s3_key) \
+        .subquery()
+    video = current_user.videos.filter_by(id=sub_query).first()
+    if not video:
+        return make_response('Not Allowed', 405)
+
+    return delete_unpublished_video(video)
+
+
+# Publish
+# -------
+class PublishForm(FlaskForm):
+    title = StringField('Title of your Video', validators=[validators.DataRequired()])
+    description = TextAreaField('Short Description (optional)')
+
+
+@upload.route("publish/<string:video_id>", methods=['GET', 'POST'])
+@login_required
+def publish(video_id):
+    """ Publish the last uploaded video """
+    error = None
+    form = PublishForm()
+
+    # check if video is valid
+    # and if user can publish it
+    video = db.session.query(Video).filter_by(
+        id=video_id,
+        user_id=current_user.id,
+    ).first()
+    if video and not video.published_at:
+        # set the upload file as title
+        if not form.title.data:
+            form.title.data = video.title
+
+        # do some publishing here
+        # redirect to video page
+        if form.validate_on_submit():
+            video.title = form.title.data
+            video.description = form.description.data
+
+            db.session.add(video)
+            db.session.commit()
+
+            return redirect(f'/v/{video.id}')
+
     return render_template(
-        'index.html',
-        s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
-        s3_bucket_region=app.config['S3_UPLOADER_REGION'],
-        s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
+        'publish.html',
+        form=form,
+        error=error,
     )
+
+
+# Helpers
+# -------
+def delete_unpublished_video(video: Video):
+    s3 = boto3.resource(
+        's3',
+        region_name=app.config['S3_UPLOADER_REGION'],
+        aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
+        aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
+    )
+    try:
+        obj = s3.Object(
+            video.file_mapper.s3_upload_bucket,
+            video.file_mapper.s3_upload_video_key,
+        )
+        obj.load()
+        obj.delete()
+    except ClientError:
+        return make_response('S3 Error', 500)
+    else:
+        db.session.delete(video)
+        db.session.commit()
+    return make_response('', 200)

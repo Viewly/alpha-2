@@ -6,6 +6,7 @@ Flask-Security
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Misaka
+Flask-WTF
 bcrypt
 python-slugify
 boto3

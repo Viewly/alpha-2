@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-{% set active_menu = "upload" %}
+{% set active_menu = "publish" %}
 {% from "_formhelpers.html" import render_field %}
 {% block title %}Viewly &bull; Publish{% endblock %}
 
 {% block content %}
+    <br>
     <div class="ui text container text-center">
-        <a href="/"><img src="{{ url_for('static', filename='img/logo-sm.png') }}" class="logo" alt=""></a>
-
         {% if error %}
             <p class="ui red message close">{{ error }}</p>
             <br>
@@ -14,20 +13,14 @@
     </div>
     <div class="ui two column grid container">
         <div class="six wide column">
-            <h3 class="ui dividing header">Publish to the blockchain</h3>
+            <h3 class="ui dividing header">Publish the Video</h3>
             <form method="post" class="ui form">
                 {{ form.csrf_token }}
                 {{ render_field(form.title) }}
-                {{ render_field(form.body) }}
-                {{ render_field(form.tags) }}
-
-                <h3>Authentication (optional)</h3>
-                {{ render_field(form.username) }}
-                {{ render_field(form.posting_key) }}
+                {{ render_field(form.description) }}
 
                 <button class="ui blue button">Publish</button>
                 <br>
-
             </form>
         </div>
         <div class="ten wide column">
@@ -40,15 +33,9 @@
 {% block scripts %}
     <script>
         var loadPlayer = function () {
-
-            var linkBuilder = function (filename) {
-                return "{{ ipfs_url }}/ipfs/{{ hash_dir }}/" + filename;
-            };
-
-            var searchParams = new URLSearchParams(window.location.search);
             var player = new Clappr.Player({
-                source: linkBuilder(searchParams.get('video_file')),
-                poster: linkBuilder("thumbnail_1.png"),
+                source: '',
+                poster: '',
                 mute: false,
                 height: 360,
                 width: '100%'
