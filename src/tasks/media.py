@@ -36,7 +36,13 @@ def img_resize_multi(
         {'name': 'nano', 'size': (160, 90)},
     ]
 
+    # todo: ShrinkToFit original into 16:9 ratio
+
+    def resize(img, size, name):
+        tmp_ = img.resize(size, Image.LANCZOS)
+        tmp_.save(tmp_dir / f'{name}.{ext}')
+
     for size in sizes:
-        tmp_ = img.resize(size['size'], Image.LANCZOS)
-        filename = f'{size["name"]}.{ext}'
-        tmp_.save(tmp_dir / filename)
+        if size['size'] > img.size:
+            continue
+        resize(img, size['size'], size['name'])

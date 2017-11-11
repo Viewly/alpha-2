@@ -11,7 +11,17 @@ transcoder.conf.update(
 
 
 @transcoder.task(ignore_result=True)
-def begin_transcoding(video_id: str):
+def analyze_video(video_id: str):
+    pass
+
+
+@transcoder.task(ignore_result=True)
+def generate_snapshots(video_id: str):
+    pass
+
+
+@transcoder.task(ignore_result=True)
+def generate_timeline(video_id: str):
     pass
 
 # VIDEO PIPELINE
@@ -24,8 +34,3 @@ def begin_transcoding(video_id: str):
 # generate the snapshots for ML analysis
 # generate the transcriptions (for ml, subtitles, seo)
 # generate the metadata file for embedded player
-
-# THUMBNAIL PIPELINE
-# download the original
-# resize into multiple sizes, compress
-# publish to the CDN
