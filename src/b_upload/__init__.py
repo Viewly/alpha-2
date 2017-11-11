@@ -17,7 +17,7 @@ from funcy import none, decorator
 from toolz import thread_first
 
 from .. import app, db
-from ..models import Video
+from ..models import Video, FileMapper
 from ..utils import keep
 
 upload = Blueprint(
@@ -104,7 +104,8 @@ def s3_delete(key):
 
     # check if current_user owns the key in Uploads,
     # and if so; he is allowed to delete it
-    video = current_user.videos.filter_by(s3_input_key=s3_key).first()
+    sub_query = db.session.query(FileMapper.video_id).filter_by(s3_upload_video_key=s3_key).subquery()
+    video = current_user.videos.filter_by(id=sub_query).first()
     if not video:
         return make_response('Not Allowed', 405)
 
@@ -119,7 +120,7 @@ def s3_delete(key):
         obj.load()
         obj.delete()
     except ClientError:
-        pass
+        return make_response('S3 Error', 500)
     else:
         db.session.delete(video)
         db.session.commit()
@@ -132,10 +133,12 @@ def s3_delete(key):
 def s3_success():
     video = Video(
         user_id=current_user.id,
-        s3_bucket_name=request.form.get('bucket'),
-        s3_input_key=request.form.get('key'),
         title=request.form.get('name').split('.')[0],
         uploaded_at=dt.datetime.utcnow(),
+    )
+    video.file_mapper = FileMapper(
+        s3_upload_bucket=request.form.get('bucket'),
+        s3_upload_video_key=request.form.get('key'),
     )
     db.session.add(video)
     db.session.commit()

@@ -1,3 +1,5 @@
+import enum
+
 from flask_security import (
     UserMixin,
     RoleMixin,
@@ -68,21 +70,21 @@ class Channel(db.Model):
     videos = db.relationship('Video', backref='channel')
 
 
+class TranscoderStatus(enum.Enum):
+    pending = 0
+    processing = 1
+    success = 2
+    failed = 3
+
+
 class Video(db.Model):
     id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id)
 
-    # uploader
-    # --------
-    s3_bucket_name = db.Column(db.String(50), nullable=False)
-    s3_input_key = db.Column(db.String(50), nullable=False)
-    uploaded_at = db.Column(db.DateTime(timezone=True), nullable=False)
-
     # transcoder
-    # --------
+    # ----------
     transcoder_pipeline = db.Column(db.String(30))
     transcoder_job_id = db.Column(db.String(30))
-    # transcoder_status =  enum(pending, in_progress, failed, succeeded)
-    # transcoder_s3_path = "bucket_name:/v1/user_id/channel_id/video_id"
+    transcoder_status = db.Column(db.Enum(TranscoderStatus))
 
     # publish
     # -------
@@ -91,6 +93,7 @@ class Video(db.Model):
     description = db.Column(db.String(1000))
     tags = db.Column(ARRAY(db.String, as_tuple=True, dimensions=1))
     license = db.Column(db.String(10))
+    uploaded_at = db.Column(db.DateTime(timezone=True), nullable=False)
     published_at = db.Column(db.DateTime(timezone=True))
 
     # inferred properties
@@ -108,4 +111,33 @@ class Video(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='videos')
 
+    file_mapper = db.relationship(
+        "FileMapper",
+        uselist=False,
+        cascade="all, delete-orphan",
+        backref="video",
+    )
+
     channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'))
+
+
+class FileMapper(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    # where was video/thumbnail uploaded to
+    s3_upload_bucket = db.Column(db.String(50))
+    s3_upload_video_key = db.Column(db.String(50))
+    s3_upload_thumbnail_key = db.Column(db.String(50))
+
+    # where are the processed videos/thumbnails now
+    s3_output_bucket = db.Column(db.String(50))
+    s3_output_path = db.Column(db.String(255))
+
+    # what are the resized thumbnail files
+    video_files = db.Column(JSONB)
+    video_manifest_key = db.Column(db.String(30))
+
+    # what are the transcoded video files
+    thumbnail_files = db.Column(JSONB)
+
+    video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
