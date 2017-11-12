@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% set active_menu = "publish" %}
 {% from "_formhelpers.html" import render_field %}
-{% block title %}Viewly &bull; Publish{% endblock %}
+{% block title %}Viewly &bull; Publish a Video{% endblock %}
 
 {% block content %}
     <br>
@@ -19,7 +19,8 @@
                 {{ render_field(form.title) }}
                 {{ render_field(form.description) }}
 
-                <button class="ui blue button">Publish</button>
+                <button class="ui button blue">Publish</button>
+                <button class="ui button red">Delete</button>
                 <br>
             </form>
         </div>
@@ -35,7 +36,7 @@
         var loadPlayer = function () {
             var player = new Clappr.Player({
                 source: '',
-                poster: '',
+                //poster: '',
                 mute: false,
                 height: 360,
                 width: '100%'

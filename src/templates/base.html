@@ -22,6 +22,7 @@
             <img class="logo" src="{{ url_for('static', filename='img/favicon.ico') }}" style="width: 20px;">
             &nbsp;&nbsp;Viewly &alpha;
         </div>
+        <a class="item" href="/">Home</a>
         <div class="item">
             <div id="search-box" class="ui action left icon input">
                 <i class="search icon"></i>
@@ -30,13 +31,26 @@
             </div>
         </div>
         <div class="right menu">
-
             {% if current_user.is_active %}
                 {% if current_user.can_upload %}
                     <a class="item {% if active_menu == 'upload' %}active{% endif %}"
                        href="{{ url_for('upload.index') }}">
                         <i class="cloud upload icon"></i> Upload</a>
                 {% endif %}
+                <div class="ui dropdown item">
+                    <i class="play icon"></i> Playlists
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a class="item">No Playlists Yet</a>
+                    </div>
+                </div>
+                <div class="ui dropdown item">
+                    <i class="list icon"></i> Channels
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a class="item"><i class="plus icon"></i> Create a Channel</a>
+                    </div>
+                </div>
                 <div class="ui dropdown item">
                     <i class="user icon"></i> Me
                     <i class="dropdown icon"></i>
@@ -50,7 +64,6 @@
                     <a href="{{ url_for('security.register') }}" class="ui primary basic button">Sign Up</a>
                 </div>
             {% endif %}
-            <div class="item">Block</div>
         </div>
     </div>
 {% endblock %}

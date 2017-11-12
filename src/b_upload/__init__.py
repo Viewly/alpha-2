@@ -12,10 +12,12 @@ from flask import (
     make_response,
     jsonify,
     redirect,
+    url_for,
 )
 from flask_security import login_required, current_user
 from flask_wtf import FlaskForm
-from funcy import none, decorator
+from funcy import none, decorator, first
+from sqlalchemy import desc
 from toolz import thread_first
 from wtforms import (
     StringField,
@@ -156,6 +158,22 @@ def s3_delete(key):
     return delete_unpublished_video(video)
 
 
+# Delete
+# ------
+@upload.route("delete/<string:video_id>", methods=['POST', 'DELETE'])
+@login_required
+def delete_video(video_id):
+    """ Delete unpublished video from S3 and database. """
+    video = current_user.videos.filter_by(
+        id=video_id,
+        user_id=current_user.id,
+        published_at=None).first()
+    if not video:
+        return make_response('Not Allowed', 405)
+
+    return delete_unpublished_video(video)
+
+
 # Publish
 # -------
 class PublishForm(FlaskForm):
@@ -186,6 +204,7 @@ def publish(video_id):
         if form.validate_on_submit():
             video.title = form.title.data
             video.description = form.description.data
+            video.published_at = dt.datetime.utcnow()
 
             db.session.add(video)
             db.session.commit()
@@ -193,9 +212,29 @@ def publish(video_id):
             return redirect(f'/v/{video.id}')
 
     return render_template(
-        'publish.html',
+        'publish-single.html',
         form=form,
         error=error,
+    )
+
+
+@upload.route("publish")
+@login_required
+def publish_list():
+    to_publish = db.session.query(Video).filter_by(
+        user_id=current_user.id,
+        published_at=None,
+    ).order_by(desc(Video.uploaded_at)).all()
+
+    if len(to_publish) == 0:
+        return redirect(url_for('.index'))
+    elif len(to_publish) == 1:
+        video = first(to_publish)
+        return redirect(url_for(".publish", video_id=video.id))
+
+    return render_template(
+        'publish-list.html',
+        videos=to_publish,
     )
 
 

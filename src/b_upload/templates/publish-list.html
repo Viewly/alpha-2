@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% set active_menu = "publish" %}
+{% from "_formhelpers.html" import render_field %}
+{% block title %}Viewly &bull; Publish videos{% endblock %}
+
+{% block content %}
+    <div class="ui text container text-center">
+
+        <div class="ui horizontal divider">Your videos are ready to be published</div>
+        <table class="ui single line celled table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Uploaded On</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for video in videos %}
+                <tr>
+                    <td>{{ video.title }}</td>
+                    <td>{{ video.uploaded_at | humanDate }}</td>
+                    <td><a href="{{ url_for('.publish', video_id=video.id) }}" class="ui button blue">Publish</a>
+                        <a href="" class="ui button red"><i class="trash icon"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
