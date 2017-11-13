@@ -84,7 +84,6 @@ class Video(db.Model):
 
     # transcoder
     # ----------
-    transcoder_pipeline = db.Column(db.String(30))
     transcoder_job_id = db.Column(db.String(30))
     transcoder_status = db.Column(db.Enum(TranscoderStatus))
 

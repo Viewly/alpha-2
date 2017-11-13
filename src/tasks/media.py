@@ -43,9 +43,9 @@ def img_resize_multi(
 
     # ShrinkToFit original img into 16:9 ratio
     if Fraction(*img.size) != Fraction(16, 9):
-        resizer = lambda size: img.resize(size, Image.LANCZOS)
-    else:
         resizer = lambda size: ImageOps.fit(img, size=size, method=Image.LANCZOS)
+    else:
+        resizer = lambda size: img.resize(size, Image.LANCZOS)
 
     available_sizes = lfilter(lambda x: img.size >= x['size'], sizes)
     for size in available_sizes:
