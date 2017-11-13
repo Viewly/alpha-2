@@ -32,7 +32,9 @@ def refresh_transcoder_jobs():
     unfinished_jobs = \
         session.query(Video).filter(
             Video.transcoder_job_id is not None,
-            Video.transcoder_status != TranscoderStatus.complete)
+            Video.transcoder_status != TranscoderStatus.complete,
+            Video.transcoder_status != TranscoderStatus.failed,
+        )
 
     status_map = {
         "Complete": TranscoderStatus.complete,
