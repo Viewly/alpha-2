@@ -26,7 +26,11 @@ from wtforms import (
 )
 
 from .. import app, db
-from ..models import Video, FileMapper
+from ..models import (
+    Video,
+    FileMapper,
+    TranscoderStatus,
+)
 
 upload = Blueprint(
     'upload',
@@ -130,11 +134,14 @@ def s3_success():
     db.session.add(video)
     db.session.commit()
 
+    # if the bucket policy is public, we don't need this
+    # s3_make_public(
+    #     video.file_mapper.s3_upload_bucket,
+    #     video.file_mapper.s3_upload_video_key
+    # )
+
     return jsonify(
         video_id=video.id,
-        uploaded_at=video.uploaded_at,
-        s3_upload_bucket=video.file_mapper.s3_upload_bucket,
-        s3_upload_video_key=video.file_mapper.s3_upload_video_key,
     )
 
 
@@ -194,6 +201,8 @@ def publish(video_id):
         id=video_id,
         user_id=current_user.id,
     ).first()
+    if not video:
+        return redirect(url_for('.publish_list'))
     if video and not video.published_at:
         # set the upload file as title
         if not form.title.data:
@@ -215,6 +224,7 @@ def publish(video_id):
         'publish-single.html',
         form=form,
         error=error,
+        source=get_video_playback_url(video),
     )
 
 
@@ -260,3 +270,48 @@ def delete_unpublished_video(video: Video):
         db.session.delete(video)
         db.session.commit()
     return make_response('', 200)
+
+
+def s3_make_public(bucket_name: str, key: str):
+    s3 = boto3.client(
+        's3',
+        region_name=app.config['S3_UPLOADER_REGION'],
+        aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
+        aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
+    )
+    return s3.put_object_acl(
+        ACL='public-read',
+        Bucket=bucket_name,
+        Key=key
+    )
+
+
+def get_video_playback_url(video: Video):
+    """ Get a video playback, regardless of transcoding status
+    or the thumbnail availability.
+
+    To be used with publishing preview player.
+    """
+    result = {
+        'video': '',
+        'poster': '',
+    }
+    s3_url_template = "https://s3.{region}.amazonaws.com/{bucket}/{key}"
+
+    if video.transcoder_status == TranscoderStatus.success:
+        pass
+    else:
+        result['video'] = s3_url_template.format(
+            region=app.config['S3_UPLOADER_REGION'],
+            bucket=video.file_mapper.s3_upload_bucket,
+            key=video.file_mapper.s3_upload_video_key,
+        )
+
+    if video.file_mapper.s3_upload_thumbnail_key:
+        result['poster'] = s3_url_template.format(
+            region=app.config['S3_UPLOADER_REGION'],
+            bucket=video.file_mapper.s3_upload_bucket,
+            key=video.file_mapper.s3_upload_thumbnail_key,
+        )
+
+    return result

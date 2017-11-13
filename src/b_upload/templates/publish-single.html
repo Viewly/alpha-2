@@ -32,11 +32,12 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
     <script>
         var loadPlayer = function () {
             var player = new Clappr.Player({
-                source: '',
-                //poster: '',
+                source: '{{ source.video }}',
+                poster: '{{ source.poster }}',
                 mute: false,
                 height: 360,
                 width: '100%'

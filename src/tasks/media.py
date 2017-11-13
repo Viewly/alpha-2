@@ -2,6 +2,7 @@ import pathlib
 import tempfile
 from typing import List, Dict
 from funcy import lmap, lfilter
+from fractions import Fraction
 
 from PIL import Image
 
@@ -40,7 +41,9 @@ def img_resize_multi(
     ]
     sizes = lmap(lambda x: f'{x["name"]}.{ext}', sizes)
 
-    # todo: ShrinkToFit original img into 16:9 ratio
+    # todo: ShrinkToFill original img into 16:9 ratio
+    if Fraction(*img.size) != Fraction(16, 9):
+        pass
 
     available_sizes = lfilter(lambda x: img.size >= x['size'], sizes)
     for size in available_sizes:
