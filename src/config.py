@@ -11,8 +11,8 @@ S3_MANAGER_PRIVATE_KEY = getenv('S3_MANAGER_PRIVATE_KEY')
 # amazon s3 upload signatures
 S3_UPLOADER_PUBLIC_KEY = getenv('S3_UPLOADER_PUBLIC_KEY')
 S3_UPLOADER_PRIVATE_KEY = getenv('S3_UPLOADER_PRIVATE_KEY')
-S3_UPLOADER_BUCKET = getenv('S3_UPLOADER_BUCKET', 'flask-uploader-test')
-S3_UPLOADER_REGION = getenv('S3_UPLOADER_REGION', 'eu-central-1')
+S3_UPLOADER_BUCKET = getenv('S3_UPLOADER_BUCKET', 'viewly-uploads-test')
+S3_UPLOADER_REGION = getenv('S3_UPLOADER_REGION', 'us-west-2')
 
 # PostgreSQL
 SQLALCHEMY_DATABASE_URI = getenv('POSTGRES_URI', 'postgres://localhost/viewly_beta')
@@ -39,8 +39,8 @@ SECURITY_CHANGEABLE = True
 SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly. Please confirm your email."
 
 # Celery
-CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0'),
-CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0'),
+CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 
 # potentially separate into classes
 # then load with app.config.from_obj('config.Development')

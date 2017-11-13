@@ -16,7 +16,7 @@ from flask import (
 )
 from flask_security import login_required, current_user
 from flask_wtf import FlaskForm
-from funcy import none, decorator, first
+from funcy import none, decorator, first, suppress
 from sqlalchemy import desc
 from toolz import thread_first
 from wtforms import (
@@ -31,6 +31,7 @@ from ..models import (
     FileMapper,
     TranscoderStatus,
 )
+from ..tasks.transcoder import start_transcoder_job
 
 upload = Blueprint(
     'upload',
@@ -134,11 +135,15 @@ def s3_success():
     db.session.add(video)
     db.session.commit()
 
-    # if the bucket policy is public, we don't need this
-    # s3_make_public(
-    #     video.file_mapper.s3_upload_bucket,
-    #     video.file_mapper.s3_upload_video_key
-    # )
+    # start the transcoding job
+    start_transcoder_job.delay(video.id)
+
+    # if the bucket policy were public, we wouldn't need this
+    with suppress(Exception):
+        s3_make_public(
+            video.file_mapper.s3_upload_bucket,
+            video.file_mapper.s3_upload_video_key
+        )
 
     return jsonify(
         video_id=video.id,
@@ -297,21 +302,20 @@ def get_video_playback_url(video: Video):
         'poster': '',
     }
     s3_url_template = "https://s3.{region}.amazonaws.com/{bucket}/{key}"
+    s3_upload_bucket_url = s3_url_template.format(
+        region=app.config['S3_UPLOADER_REGION'],
+        bucket=video.file_mapper.s3_upload_bucket,
+        key='',
+    )
 
     if video.transcoder_status == TranscoderStatus.success:
         pass
     else:
-        result['video'] = s3_url_template.format(
-            region=app.config['S3_UPLOADER_REGION'],
-            bucket=video.file_mapper.s3_upload_bucket,
-            key=video.file_mapper.s3_upload_video_key,
-        )
+        result['video'] = s3_upload_bucket_url + \
+                          video.file_mapper.s3_upload_video_key
 
     if video.file_mapper.s3_upload_thumbnail_key:
-        result['poster'] = s3_url_template.format(
-            region=app.config['S3_UPLOADER_REGION'],
-            bucket=video.file_mapper.s3_upload_bucket,
-            key=video.file_mapper.s3_upload_thumbnail_key,
-        )
+        result['poster'] = s3_upload_bucket_url + \
+                           video.file_mapper.s3_upload_thumbnail_key
 
     return result

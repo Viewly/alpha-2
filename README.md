@@ -87,6 +87,12 @@ Lastly, apply the migration:
 flask db upgrade
 ```
 
+## Celery Workers
+Transcoding workers:
+```
+celery worker -A src.tasks.transcoder -l info -c 1 -P solo
+```
+
 # Amazon Services
 
 ## S3 Uploader Role
