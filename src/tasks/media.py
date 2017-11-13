@@ -4,7 +4,7 @@ from typing import List, Dict
 from funcy import lmap, lfilter
 from fractions import Fraction
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 from .s3 import S3Transfer
 
@@ -41,13 +41,15 @@ def img_resize_multi(
     ]
     sizes = lmap(lambda x: f'{x["name"]}.{ext}', sizes)
 
-    # todo: ShrinkToFill original img into 16:9 ratio
+    # ShrinkToFit original img into 16:9 ratio
     if Fraction(*img.size) != Fraction(16, 9):
-        pass
+        resizer = lambda size: img.resize(size, Image.LANCZOS)
+    else:
+        resizer = lambda size: ImageOps.fit(img, size=size, method=Image.LANCZOS)
 
     available_sizes = lfilter(lambda x: img.size >= x['size'], sizes)
     for size in available_sizes:
-        tmp_ = img.resize(size, Image.LANCZOS)
+        tmp_ = resizer(size)
         tmp_.save(tmp_dir / size["name"])
 
     return available_sizes
