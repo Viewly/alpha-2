@@ -11,6 +11,7 @@ transcoder = new_celery(
     include=['src.tasks.transcoder'],
 )
 transcoder.conf.update(
+    timezone='UTC',
     enable_utc=True,
     result_expires=3600,
 )

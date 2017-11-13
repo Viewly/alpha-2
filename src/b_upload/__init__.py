@@ -308,7 +308,7 @@ def get_video_playback_url(video: Video):
         key='',
     )
 
-    if video.transcoder_status == TranscoderStatus.success:
+    if video.transcoder_status == TranscoderStatus.complete:
         pass
     else:
         result['video'] = s3_upload_bucket_url + \

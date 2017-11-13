@@ -75,7 +75,7 @@ class Channel(db.Model):
 class TranscoderStatus(enum.Enum):
     pending = 0
     processing = 1
-    success = 2
+    complete = 2
     failed = 3
 
 

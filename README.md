@@ -93,6 +93,17 @@ Transcoding workers:
 celery worker -A src.tasks.transcoder -l info -c 1 -P solo
 ```
 
+## Celery Cron Jobs
+Enable the beat service:
+```
+celery -A src.tasks.cron beat
+```
+
+Run the cron worker:
+```
+celery worker -A src.tasks.cron -l info -c 1 -P solo
+```
+
 # Amazon Services
 
 ## S3 Uploader Role

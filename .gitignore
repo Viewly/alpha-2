@@ -1,6 +1,7 @@
 .idea/
 node_modules
 .env
+celerybeat*
 
 # Created by .ignore support plugin (hsz.mobi)
 __pycache__/
