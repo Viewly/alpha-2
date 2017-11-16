@@ -52,11 +52,16 @@ def can_upload(fn):
 @upload.route('/')
 @login_required
 def index():
+    pending_count = db.session.query(Video).filter_by(
+        user_id=current_user.id,
+        published_at=None,
+    ).count()
     return render_template(
         'index.html',
         s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADER_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
+        pending_count=pending_count,
     )
 
 

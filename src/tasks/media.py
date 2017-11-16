@@ -9,11 +9,20 @@ from PIL import Image, ImageOps
 from .s3 import S3Transfer
 
 
-def img_from_s3(key: str):
+def img_from_s3(key: str) -> Image:
     return Image.open(S3Transfer().download_bytes(key))
 
 
 def img_resize_multi_s3(key: str, output_key_prefix: str):
+    """ Takes an input image from `key` and stores resized
+    images in `output_key_prefix`.
+
+    Args:
+        key: S3 key identifier
+        output_key_prefix: can be something like "v1/{video_id}/thumbnails"
+
+    """
+    # todo: implement diff input and output buckets
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_dir = pathlib.Path(tmpdir)
         img_resize_multi(tmp_dir, img_from_s3(key))

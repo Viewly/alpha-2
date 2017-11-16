@@ -4,7 +4,7 @@ import boto3
 
 config = dict(
     region_name='us-west-2',
-    bucket_name='steem-hackaton-input'
+    bucket_name='viewly-uploads-test'
 )
 
 

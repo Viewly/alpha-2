@@ -4,7 +4,7 @@ from os import getenv
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
 VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'localhost:5000')
 
-# amazon s3 delete endpoint
+# amazon s3 manager credentials
 S3_MANAGER_PUBLIC_KEY = getenv('S3_MANAGER_PUBLIC_KEY')
 S3_MANAGER_PRIVATE_KEY = getenv('S3_MANAGER_PRIVATE_KEY')
 
@@ -13,6 +13,10 @@ S3_UPLOADER_PUBLIC_KEY = getenv('S3_UPLOADER_PUBLIC_KEY')
 S3_UPLOADER_PRIVATE_KEY = getenv('S3_UPLOADER_PRIVATE_KEY')
 S3_UPLOADER_BUCKET = getenv('S3_UPLOADER_BUCKET', 'viewly-uploads-test')
 S3_UPLOADER_REGION = getenv('S3_UPLOADER_REGION', 'us-west-2')
+
+# amazon s3 processed assets (videos, thumbnails, etc.) location
+S3_VIDEOS_BUCKET = getenv('S3_ASSETS_BUCKET', 'viewly-videos-test')
+S3_VIDEOS_REGION = getenv('S3_VIDEOS_REGION', 'us-west-2')
 
 # PostgreSQL
 SQLALCHEMY_DATABASE_URI = getenv('POSTGRES_URI', 'postgres://localhost/viewly_beta')

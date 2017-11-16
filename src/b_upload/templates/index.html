@@ -80,9 +80,9 @@
             <div class="ui horizontal divider">Upload your video files</div>
             <div id="fine-uploader"></div>
 
-            <div id="next_steps" class="text-center" style="display: none;">
+            <div id="next_steps" class="text-center" style="{% if not pending_count %} }display: none;{% endif %}">
                 <br>
-                    <p>If you're done uploading your files, you can proceed:</p>
+                    <p>When you're done uploading, you can proceed to</p>
                     <a href="{{ url_for('.publish_list') }}" class="ui button huge blue">Publish your video(s)</a>
                 <br>
 
