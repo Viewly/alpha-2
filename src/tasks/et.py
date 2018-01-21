@@ -1,6 +1,7 @@
 import boto3
 
 # output from deployment script, hard-coded for now
+# TODO, load this dynamically from config file
 config = {
     "pipeline_id": "1510584356879-m06i3i",
     "pipeline_name": "test-pipeline-3",
