@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% set active_menu = "publish" %}
+{% from "_formhelpers.html" import render_field %}
+{% block title %}Add thumbnails{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="ui text container text-center">
+        {% if error %}
+            <p class="ui red message close">{{ error }}</p>
+            <br>
+        {% endif %}
+    </div>
+    <div class="ui text container">
+        <h3 class="ui dividing header">Upload a thumbnail</h3>
+        TODO
+    </div>
+
+    <br><br>
+    <div class="ui text container text-center">
+        {# show this only if thumbnail is published #}
+        <a href="{{ url_for('.publish_to_channel', video_id=video_id) }}"
+                class="ui button blue huge">Next: Publish</a>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

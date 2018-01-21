@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% set active_menu = "publish" %}
 {% from "_formhelpers.html" import render_field %}
-{% block title %}Viewly &bull; Publish videos{% endblock %}
+{% block title %}Publish videos{% endblock %}
 
 {% block content %}
     <div class="ui text container text-center">
@@ -20,7 +20,8 @@
                 <tr>
                     <td>{{ video.title }}</td>
                     <td>{{ video.uploaded_at | humanDate }}</td>
-                    <td><a href="{{ url_for('.publish', video_id=video.id) }}" class="ui button blue">Publish</a>
+                    <td><a href="{{ url_for('.publish_add_details', video_id=video.id) }}"
+                           class="ui button blue">Publish</a>
                         <a href="" class="ui button red"><i class="trash icon"></i></a>
                     </td>
                 </tr>
