@@ -12,6 +12,7 @@
             <tr>
                 <th>Title</th>
                 <th>Uploaded On</th>
+                <th>Transcoding</th>
                 <th></th>
             </tr>
             </thead>
@@ -20,6 +21,9 @@
                 <tr>
                     <td>{{ video.title }}</td>
                     <td>{{ video.uploaded_at | humanDate }}</td>
+                    <td>{% if video.transcoder_status %}
+                        {{ video.transcoder_status._name_.upper() }}
+                        {% else %}PENDING{% endif %}</td>
                     <td><a href="{{ url_for('.publish_add_details', video_id=video.id) }}"
                            class="ui button blue">Publish</a>
                         <a href="" class="ui button red"><i class="trash icon"></i></a>
