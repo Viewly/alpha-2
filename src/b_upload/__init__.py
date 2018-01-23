@@ -155,6 +155,33 @@ def s3_success():
     )
 
 
+@upload.route("s3/thumb_success", methods=['GET', 'POST'])
+@can_upload
+@login_required
+def s3_thumb_success():
+    video = Video.query.filter_by(
+        user_id=current_user.id,
+        id=request.form.get('video_id'),
+    ).first_or_404()
+    video.file_mapper.s3_upload_thumbnail_key = request.form.get('key')
+    db.session.add(video)
+    db.session.commit()
+
+    # start the thumbnail resizing
+    # start_transcoder_job.delay(video.id)
+
+    # if the bucket policy were public, we wouldn't need this
+    # with suppress(Exception):
+    #     s3_make_public(
+    #         video.file_mapper.s3_upload_bucket,
+    #         video.file_mapper.s3_upload_video_key
+    #     )
+
+    return jsonify(
+        video_id=video.id,
+    )
+
+
 @upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
 @login_required
 def s3_delete(key):
@@ -260,6 +287,9 @@ def publish_add_thumbnails(video_id):
         'publish-add-thumbnails.html',
         error=error,
         video_id=video.id,
+        s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
+        s3_bucket_region=app.config['S3_UPLOADER_REGION'],
+        s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
     )
 
 
