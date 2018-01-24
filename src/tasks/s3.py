@@ -15,12 +15,12 @@ class S3Transfer:
 
         self.s3 = boto3.client(
             's3',
-            region_name=config['region_name']
+            region_name=self._region_name
         )
 
     def download_bytes(self, key: str) -> io.BytesIO:
         response = self.s3.get_object(
-            Bucket=config['bucket_name'],
+            Bucket=self._bucket_name,
             Key=key
         )
         return io.BytesIO(response['Body'].read())
@@ -32,14 +32,14 @@ class S3Transfer:
 
         return self.s3.upload_file(
             file_path,
-            config['bucket_name'],
+            self._bucket_name,
             key,
         )
 
     def key_exists(self, key):
         try:
             self.s3.get_object_acl(
-                Bucket=config['bucket_name'],
+                Bucket=self._bucket_name,
                 Key=key
             )
         except self.s3.exceptions.NoSuchKey:
