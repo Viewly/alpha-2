@@ -140,11 +140,11 @@ class FileMapper(db.Model):
     s3_output_bucket = db.Column(db.String(50))
     s3_output_path = db.Column(db.String(255))
 
-    # what are the resized thumbnail files
+    # what are the transcoded video files
     video_files = db.Column(JSONB)
     video_manifest_key = db.Column(db.String(30))
 
-    # what are the transcoded video files
+    # what are the resized thumbnail files
     thumbnail_files = db.Column(JSONB)
 
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)

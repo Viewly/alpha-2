@@ -31,6 +31,7 @@ from ..models import (
     FileMapper,
     TranscoderStatus,
 )
+from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
 
 upload = Blueprint(
@@ -168,14 +169,14 @@ def s3_thumb_success():
     db.session.commit()
 
     # start the thumbnail resizing
-    # start_transcoder_job.delay(video.id)
+    process_thumbnails.delay(video.id)
 
     # if the bucket policy were public, we wouldn't need this
-    # with suppress(Exception):
-    #     s3_make_public(
-    #         video.file_mapper.s3_upload_bucket,
-    #         video.file_mapper.s3_upload_video_key
-    #     )
+    with suppress(Exception):
+        s3_make_public(
+            video.file_mapper.s3_upload_bucket,
+            video.file_mapper.s3_upload_thumbnail_key
+        )
 
     return jsonify(
         video_id=video.id,
