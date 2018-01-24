@@ -31,6 +31,7 @@ from ..models import (
     FileMapper,
     TranscoderStatus,
 )
+from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
 
 upload = Blueprint(
@@ -155,6 +156,33 @@ def s3_success():
     )
 
 
+@upload.route("s3/thumb_success", methods=['GET', 'POST'])
+@can_upload
+@login_required
+def s3_thumb_success():
+    video = Video.query.filter_by(
+        user_id=current_user.id,
+        id=request.form.get('video_id'),
+    ).first_or_404()
+    video.file_mapper.s3_upload_thumbnail_key = request.form.get('key')
+    db.session.add(video)
+    db.session.commit()
+
+    # start the thumbnail resizing
+    process_thumbnails.delay(video.id)
+
+    # if the bucket policy were public, we wouldn't need this
+    with suppress(Exception):
+        s3_make_public(
+            video.file_mapper.s3_upload_bucket,
+            video.file_mapper.s3_upload_thumbnail_key
+        )
+
+    return jsonify(
+        video_id=video.id,
+    )
+
+
 @upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
 @login_required
 def s3_delete(key):
@@ -193,14 +221,88 @@ def delete_video(video_id):
 
 # Publish
 # -------
-class PublishForm(FlaskForm):
-    title = StringField('Title of your Video', validators=[validators.DataRequired()])
-    description = TextAreaField('Short Description (optional)')
+class AddDetailsForm(FlaskForm):
+    title = StringField('Pick a title for your video',
+                        validators=[validators.DataRequired()])
+    description = TextAreaField('Short description')
 
 
-@upload.route("publish/<string:video_id>", methods=['GET', 'POST'])
+@upload.route("publish/add_details/<string:video_id>", methods=['GET', 'POST'])
 @login_required
-def publish(video_id):
+def publish_add_details(video_id):
+    """ Publish the last uploaded video """
+    error = None
+    form = AddDetailsForm()
+
+    # check if video is valid
+    # and if user can publish it
+    video = db.session.query(Video).filter_by(
+        id=video_id,
+        user_id=current_user.id,
+    ).first()
+    if video:
+        if not form.title.data:
+            form.title.data = video.title
+        if not form.description.data:
+            form.description.data = video.description
+
+        # do some publishing here
+        # redirect to video page
+        if form.validate_on_submit():
+            video.title = form.title.data
+            video.description = form.description.data
+            # video.published_at = dt.datetime.utcnow()
+            db.session.add(video)
+            db.session.commit()
+
+            # return redirect(f'/v/{video.id}')
+    else:
+        return redirect(url_for('.publish_list_uploads'))
+
+    return render_template(
+        'publish-add-details.html',
+        form=form,
+        error=error,
+        video_id=video.id,
+    )
+
+
+@upload.route("publish/add_thumbnails/<string:video_id>", methods=['GET', 'POST'])
+@login_required
+def publish_add_thumbnails(video_id):
+    """ Handle Thumbnail Uploads """
+    error = None
+
+    # check if video is valid
+    # and if user can publish it
+    video = db.session.query(Video).filter_by(
+        id=video_id,
+        user_id=current_user.id,
+    ).first()
+    if video:
+        print('todo')
+    else:
+        return redirect(url_for('.publish_list_uploads'))
+
+    return render_template(
+        'publish-add-thumbnails.html',
+        error=error,
+        video_id=video.id,
+        s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
+        s3_bucket_region=app.config['S3_UPLOADER_REGION'],
+        s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
+    )
+
+
+class PublishForm(FlaskForm):
+    title = StringField('Pick a title for your video',
+                        validators=[validators.DataRequired()])
+    description = TextAreaField('Short description')
+
+
+@upload.route("publish/to_channel/<string:video_id>", methods=['GET', 'POST'])
+@login_required
+def publish_to_channel(video_id):
     """ Publish the last uploaded video """
     error = None
     form = PublishForm()
@@ -211,36 +313,37 @@ def publish(video_id):
         id=video_id,
         user_id=current_user.id,
     ).first()
-    if not video:
-        return redirect(url_for('.publish_list'))
-    if video and not video.published_at:
-        # set the upload file as title
+    if video:
         if not form.title.data:
             form.title.data = video.title
+        if not form.description.data:
+            form.description.data = video.description
 
         # do some publishing here
         # redirect to video page
         if form.validate_on_submit():
             video.title = form.title.data
             video.description = form.description.data
-            video.published_at = dt.datetime.utcnow()
-
+            # video.published_at = dt.datetime.utcnow()
             db.session.add(video)
             db.session.commit()
 
-            return redirect(f'/v/{video.id}')
+            # return redirect(f'/v/{video.id}')
+    else:
+        return redirect(url_for('.publish_list_uploads'))
 
     return render_template(
-        'publish-single.html',
+        'publish-to-channel.html',
         form=form,
         error=error,
+        video=video,
         source=get_video_playback_url(video),
     )
 
 
 @upload.route("publish")
 @login_required
-def publish_list():
+def publish_list_uploads():
     to_publish = db.session.query(Video).filter_by(
         user_id=current_user.id,
         published_at=None,
@@ -250,10 +353,10 @@ def publish_list():
         return redirect(url_for('.index'))
     elif len(to_publish) == 1:
         video = first(to_publish)
-        return redirect(url_for(".publish", video_id=video.id))
+        return redirect(url_for(".publish_add_details", video_id=video.id))
 
     return render_template(
-        'publish-list.html',
+        'publish-list-uploads.html',
         videos=to_publish,
     )
 
@@ -283,6 +386,10 @@ def delete_unpublished_video(video: Video):
 
 
 def s3_make_public(bucket_name: str, key: str):
+    """
+    Make an S3 file publicly visible (although unlisted).
+    This is not necessary if all files are publicly readable by default bucket policy.
+    """
     s3 = boto3.client(
         's3',
         region_name=app.config['S3_UPLOADER_REGION'],
@@ -315,6 +422,7 @@ def get_video_playback_url(video: Video):
 
     if video.transcoder_status == TranscoderStatus.complete:
         pass
+        # TODO: set this up
     else:
         result['video'] = s3_upload_bucket_url + \
                           video.file_mapper.s3_upload_video_key

@@ -1,5 +1,3 @@
-import boto3
-
 from . import (
     db_session,
     new_celery,
@@ -16,6 +14,7 @@ transcoder.conf.update(
     enable_utc=True,
     result_expires=3600,
 )
+
 
 @transcoder.task(ignore_result=True)
 def analyze_video(video_id: str):
@@ -36,11 +35,12 @@ def generate_timeline(video_id: str):
 def start_transcoder_job(video_id: str):
     session = db_session()
     video = session.query(Video).filter_by(id=video_id).one()
-    is_pending = not video.transcoder_status or video.transcoder_status == TranscoderStatus.pending
+    is_pending = not video.transcoder_status \
+                 or video.transcoder_status == TranscoderStatus.pending
     if video and is_pending:
         try:
             input_key = video.file_mapper.s3_upload_video_key
-            output_path = f"v1/{video.id}"
+            output_path = f"v1/{video.id}/"
             response = create_job(input_key, output_path)
         except Exception as e:
             # todo: log the exception
@@ -52,7 +52,6 @@ def start_transcoder_job(video_id: str):
 
         session.add(video)
         session.commit()
-
 
 # VIDEO PIPELINE
 # download the video

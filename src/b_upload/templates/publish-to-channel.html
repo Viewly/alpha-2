@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% set active_menu = "publish" %}
+{% from "_formhelpers.html" import render_field %}
+{% block title %}Publish to Channel{% endblock %}
+
+{% block content %}
+    <div class="ui text container text-center">
+        <div class="ui horizontal divider">Preview</div>
+        <div id="player"></div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
+    <script>
+        var loadPlayer = function () {
+            var player = new Clappr.Player({
+                source: '{{ source.video }}',
+                poster: '{{ source.poster }}',
+                mute: false,
+                height: 360,
+                width: '100%'
+            });
+
+            var playerElement = document.getElementById("player");
+            player.attachTo(playerElement);
+        };
+
+        // start here
+        $(function () {
+            loadPlayer();
+        });
+    </script>
+{% endblock %}
