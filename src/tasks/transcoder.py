@@ -40,7 +40,7 @@ def start_transcoder_job(video_id: str):
     if video and is_pending:
         try:
             input_key = video.file_mapper.s3_upload_video_key
-            output_path = f"v1/{video.id}"
+            output_path = f"v1/{video.id}/"
             response = create_job(input_key, output_path)
         except Exception as e:
             # todo: log the exception
