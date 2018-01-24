@@ -8,7 +8,8 @@
           href="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/fine-uploader-new.css') }}">
     <script src="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/s3.fine-uploader.min.js') }}"></script>
     <script type="text/template" id="qq-template">
-        <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
+        <div class="qq-uploader-selector qq-uploader"
+             qq-drop-area-text="Drop an image here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
                 <div role="progressbar" aria-valuenow="0" aria-valuemin="0"
                      aria-valuemax="100"
@@ -94,12 +95,18 @@
         {% endif %}
     </div>
     <div class="ui text container">
-        <h3 class="ui dividing header">Upload a thumbnail</h3>
+        <h3 class="ui dividing header">Upload a cover image</h3>
         <div class="upload-area">
             <div id="fine-uploader"></div>
 
+            {% if current_thumbnail %}
+                <br>
+                <h3 class="ui dividing header">Preview</h3>
+                <img src="{{ current_thumbnail }}" alt="">
+            {% endif %}
             <br><br>
-            <div id="next_steps" class="text-center" style="display: none;">
+            <div id="next_steps" class="text-center"
+                 style="{% if not current_thumbnail %}display: none;{% endif %}">
                 <a href="{{ url_for('.publish_to_channel', video_id=video_id) }}"
                    class="ui button blue huge">Next: Publish</a>
                 <br>

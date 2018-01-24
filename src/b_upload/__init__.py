@@ -288,6 +288,7 @@ def publish_add_thumbnails(video_id):
     return render_template(
         'publish-add-thumbnails.html',
         error=error,
+        current_thumbnail=get_thumbnail_cdn_url(video, 'tiny'),
         video_id=video.id,
         s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADER_REGION'],
@@ -338,7 +339,7 @@ def publish_to_channel(video_id):
         form=form,
         error=error,
         video=video,
-        source=get_video_playback_url(video),
+        source=get_video_cdn_assets(video),
     )
 
 
@@ -404,8 +405,8 @@ def s3_make_public(bucket_name: str, key: str):
     )
 
 
-def get_video_playback_url(video: Video):
-    """ Get a video playback, regardless of transcoding status
+def get_video_s3_assets(video: Video):
+    """ Get a raw video playback, regardless of transcoding status
     or the thumbnail availability.
 
     To be used with publishing preview player.
@@ -421,17 +422,34 @@ def get_video_playback_url(video: Video):
         key='',
     )
 
-    if video.transcoder_status == TranscoderStatus.complete:
-        # TODO: dynamic distribution ID
-        result['video'] = \
-            f"http://d27z8otvfx49ba.cloudfront.net" \
-            f"/{video.file_mapper.video_manifest_version}/{video.id}/dash-main.mpd"
-    else:
-        result['video'] = s3_upload_bucket_url + \
-                          video.file_mapper.s3_upload_video_key
+    result['video'] = s3_upload_bucket_url + video.file_mapper.s3_upload_video_key
 
     if video.file_mapper.s3_upload_thumbnail_key:
         result['poster'] = s3_upload_bucket_url + \
                            video.file_mapper.s3_upload_thumbnail_key
 
     return result
+
+
+def get_manifest_cdn_url(video: Video):
+    if video.transcoder_status == TranscoderStatus.complete:
+        # TODO: dynamic distribution ID
+        return \
+            f"http://d27z8otvfx49ba.cloudfront.net" \
+            f"/{video.file_mapper.video_manifest_version}/{video.id}/dash-main.mpd"
+
+
+def get_thumbnail_cdn_url(video: Video, size_name='small'):
+    thumbnail_files = video.file_mapper.thumbnail_files
+    if thumbnail_files and size_name in thumbnail_files:
+        key = thumbnail_files.get(size_name).split(':')[-1]
+        # TODO: dynamic distribution ID
+        return f"http://d27z8otvfx49ba.cloudfront.net/{key.lstrip('/')}"
+
+
+def get_video_cdn_assets(video: Video):
+    # TODO: degrade gracefully if large thumbnail size not available
+    return {
+        'video': get_manifest_cdn_url(video),
+        'poster': get_thumbnail_cdn_url(video, 'small'),
+    }

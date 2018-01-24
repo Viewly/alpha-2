@@ -28,7 +28,7 @@ def img_resize_multi_to_s3(image: Image, output_key_prefix: str, **kwargs):
 
         s3_transfer = S3Transfer(**kwargs)
         for file in tmp_dir.glob('*'):
-            output_key = f'{output_key_prefix}/{file.name}'
+            output_key = f'{output_key_prefix.rstrip("/")}/{file.name}'
             s3_transfer.upload_file(str(file), output_key)
 
     return available_sizes
