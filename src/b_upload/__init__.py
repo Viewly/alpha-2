@@ -421,8 +421,9 @@ def get_video_playback_url(video: Video):
     )
 
     if video.transcoder_status == TranscoderStatus.complete:
-        pass
-        # TODO: set this up
+        # TODO: dynamic distribution ID
+        result['video'] =\
+            f"http://d27z8otvfx49ba.cloudfront.net/v1/{video.id}/dash-main.mpd"
     else:
         result['video'] = s3_upload_bucket_url + \
                           video.file_mapper.s3_upload_video_key

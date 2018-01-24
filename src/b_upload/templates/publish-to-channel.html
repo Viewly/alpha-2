@@ -12,6 +12,7 @@
 
 {% block scripts %}
     <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
     <script>
         var loadPlayer = function () {
             var player = new Clappr.Player({
@@ -19,9 +20,12 @@
                 poster: '{{ source.poster }}',
                 mute: false,
                 height: 360,
-                width: '100%'
+                width: '100%',
+                autoPlay: false,
+                plugins: [
+                    DashShakaPlayback
+                ]
             });
-
             var playerElement = document.getElementById("player");
             player.attachTo(playerElement);
         };
