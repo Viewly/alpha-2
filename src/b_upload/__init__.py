@@ -137,6 +137,7 @@ def s3_success():
     video.file_mapper = FileMapper(
         s3_upload_bucket=request.form.get('bucket'),
         s3_upload_video_key=request.form.get('key'),
+        video_manifest_version='v1',
     )
     db.session.add(video)
     db.session.commit()
@@ -422,8 +423,9 @@ def get_video_playback_url(video: Video):
 
     if video.transcoder_status == TranscoderStatus.complete:
         # TODO: dynamic distribution ID
-        result['video'] =\
-            f"http://d27z8otvfx49ba.cloudfront.net/v1/{video.id}/dash-main.mpd"
+        result['video'] = \
+            f"http://d27z8otvfx49ba.cloudfront.net" \
+            f"/{video.file_mapper.video_manifest_version}/{video.id}/dash-main.mpd"
     else:
         result['video'] = s3_upload_bucket_url + \
                           video.file_mapper.s3_upload_video_key
