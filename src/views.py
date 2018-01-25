@@ -8,6 +8,7 @@ from flask import (
 )
 
 from . import app
+from .models import Video
 
 
 # router
@@ -19,7 +20,20 @@ def index():
 
 @app.route('/v/<string:video_id>', methods=['GET'])
 def view_video(video_id):
-    return make_response('')
+    video = Video.query.filter_by(id=video_id).first_or_404()
+    return render_template('view.html', video=video)
+
+
+@app.route('/embed/<string:video_id>', methods=['GET'])
+def embed(video_id):
+    from .videourl import get_video_cdn_assets
+
+    video = Video.query.filter_by(id=video_id).first_or_404()
+    return render_template(
+        'embed.html',
+        source=get_video_cdn_assets(video),
+        autoPlay=request.args.get('autoPlay', True),
+    )
 
 
 @app.route('/search', methods=['GET'])

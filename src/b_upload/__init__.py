@@ -25,11 +25,14 @@ from wtforms import (
     TextAreaField,
 )
 
+from ..videourl import (
+    get_thumbnail_cdn_url,
+    get_video_cdn_assets,
+)
 from .. import app, db
 from ..models import (
     Video,
     FileMapper,
-    TranscoderStatus,
 )
 from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
@@ -403,53 +406,3 @@ def s3_make_public(bucket_name: str, key: str):
         Bucket=bucket_name,
         Key=key
     )
-
-
-def get_video_s3_assets(video: Video):
-    """ Get a raw video playback, regardless of transcoding status
-    or the thumbnail availability.
-
-    To be used with publishing preview player.
-    """
-    result = {
-        'video': '',
-        'poster': '',
-    }
-    s3_url_template = "https://s3.{region}.amazonaws.com/{bucket}/{key}"
-    s3_upload_bucket_url = s3_url_template.format(
-        region=app.config['S3_UPLOADER_REGION'],
-        bucket=video.file_mapper.s3_upload_bucket,
-        key='',
-    )
-
-    result['video'] = s3_upload_bucket_url + video.file_mapper.s3_upload_video_key
-
-    if video.file_mapper.s3_upload_thumbnail_key:
-        result['poster'] = s3_upload_bucket_url + \
-                           video.file_mapper.s3_upload_thumbnail_key
-
-    return result
-
-
-def get_manifest_cdn_url(video: Video):
-    if video.transcoder_status == TranscoderStatus.complete:
-        # TODO: dynamic distribution ID
-        return \
-            f"http://d27z8otvfx49ba.cloudfront.net" \
-            f"/{video.file_mapper.video_manifest_version}/{video.id}/dash-main.mpd"
-
-
-def get_thumbnail_cdn_url(video: Video, size_name='small'):
-    thumbnail_files = video.file_mapper.thumbnail_files
-    if thumbnail_files and size_name in thumbnail_files:
-        key = thumbnail_files.get(size_name).split(':')[-1]
-        # TODO: dynamic distribution ID
-        return f"http://d27z8otvfx49ba.cloudfront.net/{key.lstrip('/')}"
-
-
-def get_video_cdn_assets(video: Video):
-    # TODO: degrade gracefully if large thumbnail size not available
-    return {
-        'video': get_manifest_cdn_url(video),
-        'poster': get_thumbnail_cdn_url(video, 'small'),
-    }
