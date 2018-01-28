@@ -25,10 +25,6 @@ from wtforms import (
     TextAreaField,
 )
 
-from ..videourl import (
-    get_thumbnail_cdn_url,
-    get_video_cdn_assets,
-)
 from .. import app, db
 from ..models import (
     Video,
@@ -36,6 +32,10 @@ from ..models import (
 )
 from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
+from ..videourl import (
+    get_thumbnail_cdn_url,
+    get_video_cdn_assets,
+)
 
 upload = Blueprint(
     'upload',
@@ -299,48 +299,30 @@ def publish_add_thumbnails(video_id):
     )
 
 
-class PublishForm(FlaskForm):
-    title = StringField('Pick a title for your video',
-                        validators=[validators.DataRequired()])
-    description = TextAreaField('Short description')
-
-
 @upload.route("publish/to_channel/<string:video_id>", methods=['GET', 'POST'])
 @login_required
 def publish_to_channel(video_id):
     """ Publish the last uploaded video """
-    error = None
-    form = PublishForm()
-
-    # check if video is valid
     # and if user can publish it
     video = db.session.query(Video).filter_by(
         id=video_id,
         user_id=current_user.id,
     ).first()
-    if video:
-        if not form.title.data:
-            form.title.data = video.title
-        if not form.description.data:
-            form.description.data = video.description
-
-        # do some publishing here
-        # redirect to video page
-        if form.validate_on_submit():
-            video.title = form.title.data
-            video.description = form.description.data
-            # video.published_at = dt.datetime.utcnow()
-            db.session.add(video)
-            db.session.commit()
-
-            # return redirect(f'/v/{video.id}')
-    else:
+    if not video:
         return redirect(url_for('.publish_list_uploads'))
+    if video.published_at:
+        return redirect(f'/v/{video.id}')
+
+    if request.method == 'POST':
+        # do some publishing here
+        # video.channel_id = request.form['channel_id']
+        video.published_at = dt.datetime.utcnow()
+        db.session.add(video)
+        db.session.commit()
+        return jsonify(video_id=video.id)
 
     return render_template(
         'publish-to-channel.html',
-        form=form,
-        error=error,
         video=video,
         source=get_video_cdn_assets(video),
     )

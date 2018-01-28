@@ -5,12 +5,51 @@
 
 {% block content %}
     <div class="ui text container text-center">
-        <div class="ui horizontal divider">Preview</div>
-        <div id="player"></div>
+        {% if not video.file_mapper.thumbnail_files
+          or video.transcoder_status._name_ != 'complete' %}
+            <div class="ui horizontal divider">Pending</div>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Transcoding</th>
+                    <th>Cover Image</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ video.transcoder_status._name_.upper() }}</td>
+                    <td>
+                        {% if video.file_mapper.thumbnail_files %}
+                            <i class="checkmark icon green"></i>
+                        {% else %}
+                            <i class="remove icon red"></i>
+                            <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}">Set
+                                Cover Image</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p><i>You will be able to publish the video after transcoding completes.</i>
+            </p>
+        {% else %}
+            <div class="ui horizontal divider">Preview</div>
+            <div id="player"></div>
+            <a href="javascript:"
+               id="publish-video"
+               class="ui button blue huge">Publish</a>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block scripts %}
+    {% if video.transcoder_status._name_ == 'processing' %}
+        <script>
+            setTimeout(function () {
+                window.location.reload();
+            }, 60 * 1000);
+        </script>
+    {% endif %}
     <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
     <script>
@@ -30,9 +69,29 @@
             player.attachTo(playerElement);
         };
 
+        var publishForm = function () {
+            $('#publish-video').click(function () {
+                $.post(
+                    window.location.href,
+                    {channel_id: ''},
+                    function () {
+                    }, 'json')
+                    .done(function (data) {
+                        window.location.replace(
+                            "{{ url_for('view_video', video_id=video.id) }}")
+                    })
+                    .fail(function () {
+                            window.alert('Error')
+                        }
+                    );
+            })
+        };
+
+
         // start here
         $(function () {
             loadPlayer();
+            publishForm();
         });
     </script>
 {% endblock %}
