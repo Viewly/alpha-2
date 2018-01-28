@@ -12,21 +12,51 @@
         {% endif %}
     </div>
     <div class="ui text container">
-        <h3 class="ui dividing header">About</h3>
-        <form method="post" class="ui form">
-            {{ form.csrf_token }}
-            {{ render_field(form.title) }}
-            {{ render_field(form.description) }}
+    <h3 class="ui dividing header">About</h3>
+    <form method="post" class="ui form">
+        {{ form.csrf_token }}
+        {{ render_field(form.title) }}
+        {{ render_field(form.description) }}
 
-            <button class="ui button blue">Save</button>
-            <br>
-        </form>
-    </div>
+        <button class="ui button blue">Save</button>
+        <br>
+    </form>
+
+{#    {% if form.description.data %}#}
+        <h3 class="ui dividing header">Preview</h3>
+{#        <h2 class="ui left floated header">{{ form.title.data }}</h2>#}
+{#        <br><br>#}
+{#        <div class="Post">#}
+{#            {{ form.description.data | markdown }}#}
+{#        </div>#}
+{#    {% endif %}#}
+
+    {% if form.description.data %}
+        <div class="ui segment">
+            <h2 class="ui left floated header">{{ form.title.data }}</h2>
+            <div class="ui relaxed divided items">
+
+                <div class="item">
+                    <div class="content">
+                        <div class="description">
+                            <div class="Post">
+                                {% if form.description.data %}
+                                    {{ form.description.data | markdown }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     <br><br>
     <div class="ui text container text-center">
         <a href="{{ url_for('.publish_add_thumbnails', video_id=video_id) }}"
-                class="ui button blue huge">Next: Add Cover Image</a>
+           class="ui button blue huge">Next: Add Cover Image</a>
     </div>
 
 {% endblock %}
