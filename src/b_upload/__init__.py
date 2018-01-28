@@ -55,13 +55,13 @@ def can_upload(fn):
 # ------
 @upload.route('/')
 @login_required
-def index():
+def upload_videos():
     pending_count = db.session.query(Video).filter_by(
         user_id=current_user.id,
         published_at=None,
     ).count()
     return render_template(
-        'index.html',
+        'upload-videos.html',
         s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADER_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
@@ -337,7 +337,7 @@ def publish_list_uploads():
     ).order_by(desc(Video.uploaded_at)).all()
 
     if len(to_publish) == 0:
-        return redirect(url_for('.index'))
+        return redirect(url_for('.upload_videos'))
     elif len(to_publish) == 1:
         video = first(to_publish)
         return redirect(url_for(".publish_add_details", video_id=video.id))

@@ -34,7 +34,7 @@
             {% if current_user.is_active %}
                 {% if current_user.can_upload %}
                     <a class="item {% if active_menu == 'upload' %}active{% endif %}"
-                       href="{{ url_for('upload.index') }}">
+                       href="{{ url_for('upload.upload_videos') }}">
                         <i class="cloud upload icon"></i> Upload</a>
                 {% endif %}
                 <div class="ui dropdown item">
