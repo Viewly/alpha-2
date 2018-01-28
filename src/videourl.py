@@ -26,3 +26,10 @@ def get_video_cdn_assets(video: Video):
         'video': get_manifest_cdn_url(video),
         'poster': get_thumbnail_cdn_url(video, 'small'),
     }
+
+
+def guess_thumbnail_cdn_url(video_id: str, size_name='small'):
+    # TODO: dynamic distribution ID
+    # TODO: rather than guessing, this should be cached
+    return f"http://d27z8otvfx49ba.cloudfront.net" \
+           f"/thumbnails/{video_id}/{size_name}.png"

@@ -10,6 +10,7 @@ from sqlalchemy.dialects.postgresql import (
 )
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.sql import func
+from sqlalchemy.sql.functions import coalesce
 
 from . import db
 from .utils import gen_uid, gen_video_id
@@ -89,7 +90,6 @@ class Video(db.Model):
 
     # publish
     # -------
-    # todo: these fields should be searchable (indexed)
     title = db.Column(db.String(255))
     description = db.Column(db.UnicodeText)
     tags = db.Column(ARRAY(db.String, as_tuple=True, dimensions=1))
@@ -123,9 +123,16 @@ class Video(db.Model):
 
     @declared_attr
     def __table_args__(self):
-        return (db.Index('idx_content',
-                         func.to_tsvector("english", self.description),
-                         postgresql_using="gin"),)
+        return (
+            db.Index('idx_tsv_title',
+                     func.to_tsvector("english", self.title),
+                     postgresql_using="gin"),
+            db.Index('idx_tsv_title_description',
+                     func.to_tsvector(
+                         "english",
+                         self.title + ' ' + coalesce(self.description, '')),
+                     postgresql_using="gin"),
+        )
 
 
 class FileMapper(db.Model):

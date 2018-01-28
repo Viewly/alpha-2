@@ -4,11 +4,11 @@ import maya
 from flask import (
     render_template,
     request,
-    make_response,
 )
 
-from . import app
+from . import app, db
 from .models import Video
+from .videourl import guess_thumbnail_cdn_url
 
 
 # router
@@ -38,12 +38,21 @@ def embed(video_id):
 
 @app.route('/search', methods=['GET'])
 def search():
-    query = request.args.get('q')
-    results = []
+    search_query = request.args.get('q')
+    q = """
+    SELECT id, title
+    FROM video
+    WHERE to_tsvector(title || ' ' || description) @@ to_tsquery(:search)
+    ORDER BY published_at DESC
+    LIMIT 10;
+    """
+    rs = db.session.execute(q, {"search": search_query})
+    results = [{k: v for k, v in zip(rs.keys(), item)} for item in rs.fetchall()]
+
     return render_template(
         'search.html',
         results=results,
-        query=query,
+        query=search_query,
     )
 
 
@@ -61,6 +70,7 @@ def utility_processor():
 
     return dict(
         block_num=block_num,
+        guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
     )
 

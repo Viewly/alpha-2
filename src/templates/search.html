@@ -10,30 +10,24 @@
         {% for video in results %}
             <div class="item">
                 <div class="ui small image">
-
-                    <a href="{{ url_for('view', author=video.author, permlink=video.permlink) }}">
-                        <img src="{{ ipfs_location(video.json_metadata.video.root, "thumbnail_masked.png") }}">
+                    <a href="{{ url_for('view_video', video_id=video.id) }}">
+                        <img src="{{ guess_thumbnail_cdn_url(video.id) }}">
                     </a>
                 </div>
                 <div class="content">
-                    <a class="header" href="{{ url_for('view', author=video.author, permlink=video.permlink) }}">{{ video.title }}</a>
+                    <a class="header"
+                       href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
                     <div class="meta">
-                        <a>{{ video.created | humanDate }} by <b>@{{ video.author }}</b></a>
+                        <a>{{ video.published_at | humanDate }} by
+                            <b>@{{ video.author }}</b></a>
                     </div>
-
-                    <div class="extra">
-                        {% for tag in video.tags | uniqueTags %}
-                            <div class="ui label">{{ tag }}</div>
-                        {% endfor %}
-                    </div>
-
                 </div>
             </div>
         {% endfor %}
 
     </div>
 
-    <p>Showing top {{ results|length }} results from past 90 days.</p>
+    <p>Showing top {{ results | length }} results.</p>
 {% endblock %}
 
 
