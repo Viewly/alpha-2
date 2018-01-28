@@ -38,13 +38,6 @@
                         <i class="cloud upload icon"></i> Upload</a>
                 {% endif %}
                 <div class="ui dropdown item">
-                    <i class="play icon"></i> Playlists
-                    <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a class="item">No Playlists Yet</a>
-                    </div>
-                </div>
-                <div class="ui dropdown item">
                     <i class="list icon"></i> Channels
                     <i class="dropdown icon"></i>
                     <div class="menu">
@@ -55,7 +48,7 @@
                     <i class="user icon"></i> Me
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <a class="item"><i class="edit icon"></i> Edit Profile</a>
+                        <a class="item" href="{{ url_for('edit_profile') }}"><i class="edit icon"></i> Edit Profile</a>
                         <a class="item" href="{{ url_for('security.logout') }}"><i class="settings icon"></i> Log Out</a>
                     </div>
                 </div>

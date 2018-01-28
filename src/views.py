@@ -5,9 +5,13 @@ from flask import (
     render_template,
     request,
 )
+from flask_security import (
+    current_user,
+    login_required,
+)
 
 from . import app, db
-from .models import Video
+from .models import Video, Channel
 from .videourl import guess_thumbnail_cdn_url
 
 
@@ -53,6 +57,15 @@ def search():
         'search.html',
         results=results,
         query=search_query,
+    )
+
+
+@app.route('/profile/edit', methods=['GET'])
+@login_required
+def edit_profile():
+    return render_template(
+        'edit_profile.html',
+        channels=Channel.query.filter_by(user_id=current_user.id),
     )
 
 

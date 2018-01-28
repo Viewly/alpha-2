@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% set active_page = "profile" %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+    <br>
+    <div class="ui centered divided grid">
+        <div class="row">
+
+            <div class="ten wide column">
+                <h2>Channels</h2>
+                {% for channel in channels %}
+                    <h4>@{{ account.name }}</h4>
+                    <table class="ui single line compact celled table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><b>Account</b></td>
+                            <td>{{ channel.display_name }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                {% else %}
+                    You don't have any channels yet.
+                {% endfor %}
+            </div>
+
+
+            <div class="four wide column">
+                <h2>Settings</h2>
+                <a href="{{ url_for('security.change_password') }}">Change Password</a>
+                <br>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+{% endblock %}
