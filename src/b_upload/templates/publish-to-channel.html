@@ -22,9 +22,13 @@
                         {% if video.file_mapper.thumbnail_files %}
                             <i class="checkmark icon green"></i>
                         {% else %}
-                            <i class="remove icon red"></i>
-                            <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}">Set
-                                Cover Image</a>
+                            {% if video.file_mapper.s3_upload_thumbnail_key %}
+                                PROCESSING
+                            {% else %}
+                                <i class="remove icon red"></i>
+                                <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}">Set
+                                    Cover Image</a>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
@@ -33,7 +37,7 @@
             <p><i>You will be able to publish the video after transcoding completes.</i>
             </p>
         {% else %}
-            <div class="ui horizontal divider">Preview</div>
+            <div class="ui horizontal divider">Video Preview</div>
             <div id="player"></div>
             <a href="javascript:"
                id="publish-video"
@@ -50,6 +54,7 @@
             }, 60 * 1000);
         </script>
     {% endif %}
+
     <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
     <script>
@@ -86,7 +91,6 @@
                     );
             })
         };
-
 
         // start here
         $(function () {
