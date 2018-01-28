@@ -20,7 +20,7 @@ cron.conf.update(
 cron.conf.beat_schedule = {
     'refresh-transcoder-jobs': {
         'task': 'src.tasks.cron.refresh_transcoder_jobs',
-        'schedule': crontab(minute='*/2'),
+        'schedule': crontab(minute='*/1'),
         'args': ()
     },
 }
