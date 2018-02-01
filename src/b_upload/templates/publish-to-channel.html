@@ -39,9 +39,35 @@
         {% else %}
             <div class="ui horizontal divider">Video Preview</div>
             <div id="player"></div>
-            <a href="javascript:"
-               id="publish-video"
-               class="ui button blue huge">Publish</a>
+
+            {% if channels %}
+                <div class="ui form text text-left">
+                    <div class="field">
+                        <div class="ui selection dropdown">
+                            <input type="hidden" name="gender">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Channel</div>
+                            <div class="menu">
+                                {% for channel in channels %}
+                                    <div class="item"
+                                         data-value="{{ channel.id }}">{{ channel.display_name }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <br>
+                            <a href="javascript:"
+                               id="publish-video"
+                               class="ui button blue huge">Publish</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>You don't have any channels yet.
+                    <a href="{{ url_for('channel.create') }}">Create one</a> first.</p>
+            {% endif %}
+
         {% endif %}
     </div>
 {% endblock %}
@@ -76,9 +102,11 @@
 
         var publishForm = function () {
             $('#publish-video').click(function () {
+                var channel_id = $(".dropdown").dropdown('get value')[4];
+                if (!channel_id) { window.alert("Please select a channel"); return; }
                 $.post(
                     window.location.href,
-                    {channel_id: ''},
+                    {channel_id: channel_id},
                     function () {
                     }, 'json')
                     .done(function (data) {
@@ -86,7 +114,7 @@
                             "{{ url_for('view_video', video_id=video.id) }}")
                     })
                     .fail(function () {
-                            window.alert('Error')
+                            window.alert('Error occurred while publishing')
                         }
                     );
             })

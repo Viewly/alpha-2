@@ -29,6 +29,7 @@ from .. import app, db
 from ..models import (
     Video,
     FileMapper,
+    Channel,
 )
 from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
@@ -283,9 +284,7 @@ def publish_add_thumbnails(video_id):
         id=video_id,
         user_id=current_user.id,
     ).first()
-    if video:
-        print('todo')
-    else:
+    if not video:
         return redirect(url_for('.publish_list_uploads'))
 
     return render_template(
@@ -315,16 +314,25 @@ def publish_to_channel(video_id):
 
     if request.method == 'POST':
         # do some publishing here
-        # video.channel_id = request.form['channel_id']
+        video.channel_id = request.form['channel_id']
+        assert db.session.query(Channel).filter_by(
+            id=video.channel_id,
+            user_id=current_user.id,
+        ).first()
         video.published_at = dt.datetime.utcnow()
         db.session.add(video)
         db.session.commit()
         return jsonify(video_id=video.id)
 
+    channels = db.session.query(Channel).filter_by(
+        user_id=current_user.id,
+    )
+
     return render_template(
         'publish-to-channel.html',
         video=video,
         source=get_video_cdn_assets(video),
+        channels=channels,
     )
 
 
