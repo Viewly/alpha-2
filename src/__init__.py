@@ -40,6 +40,10 @@ from .b_upload import upload as upload_blueprint
 
 app.register_blueprint(upload_blueprint, url_prefix='/upload/')
 
+from .b_channel import channel as channel_blueprint
+app.register_blueprint(channel_blueprint, url_prefix='/channel')
+
+
 
 # Developer Helper Commands
 # -------------------------
