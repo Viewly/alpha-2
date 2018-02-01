@@ -65,6 +65,7 @@ class Channel(db.Model):
     display_name = db.Column(db.String(32))
 
     profile = db.Column(JSONB)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
 
     # relationships
     # -------------

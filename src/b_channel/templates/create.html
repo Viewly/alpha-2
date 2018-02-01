@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 {% set active_menu = "upload" %}
+{% from "_formhelpers.html" import render_field %}
 {% block title %}Viewly &bull; Create Channel{% endblock %}
 
 {% block content %}
+    <br>
     <div class="ui text container text-center">
-
+        {% if error %}
+            <p class="ui red message close">{{ error }}</p>
+            <br>
+        {% endif %}
     </div>
-{% endblock %}
-
-{% block scripts %}
-
+    <div class="ui text container">
+        <h3 class="ui dividing header">New Channel</h3>
+        <form method="post" class="ui form">
+            {{ form.csrf_token }}
+            {{ render_field(form.name) }}
+            <button class="ui button blue">Create a channel</button>
+            <br>
+        </form>
+    </div>
 {% endblock %}

@@ -1,10 +1,20 @@
+import datetime as dt
+
 from flask import (
     Blueprint,
     render_template,
+    redirect,
 )
 from flask_security import (
     login_required,
+    current_user,
 )
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from wtforms.validators import DataRequired
+
+from .. import db
+from ..models import Channel
 
 channel = Blueprint(
     'channel',
@@ -13,18 +23,38 @@ channel = Blueprint(
 )
 
 
-@channel.route('/create')
+class CreateChannelForm(FlaskForm):
+    name = StringField('Display Name for your channel', validators=[DataRequired()])
+
+
+@channel.route('/create', methods=['GET', 'POST'])
 @login_required
-def channel_create():
+def create():
+    error = None
+    form = CreateChannelForm()
+
+    channel_count = db.session.query(Channel).filter_by(
+        user_id=current_user.id,
+    ).count()
+
+    if channel_count >= 10:
+        error = 'You already have 10 channels. Cannot create another one at this time.'
+    else:
+        if form.validate_on_submit():
+            chan = Channel(
+                user_id=current_user.id,
+                display_name=form.name.data,
+                created_at=dt.datetime.utcnow()
+            )
+            db.session.add(chan)
+            db.session.commit()
+            return redirect(f'/c/{chan.id}')
+
     return render_template(
         'create.html',
+        form=form,
+        error=error,
     )
-
-
-@channel.route('/create', methods=['POST'])
-@login_required
-def channel_create_api():
-    pass
 
 
 # SHOW A CHANNEL

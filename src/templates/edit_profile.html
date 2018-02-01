@@ -11,19 +11,19 @@
             <div class="ten wide column">
                 <h2>Channels</h2>
                 {% for channel in channels %}
-                    <h4>@{{ account.name }}</h4>
                     <table class="ui single line compact celled table">
                         <thead>
                         <tr>
-                            <th></th>
-                            <th>Value</th>
+                            <th>Name</th>
+                            <th>Created At</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td><b>Account</b></td>
-                            <td>{{ channel.display_name }}</td>
+                            <td><b>{{ channel.display_name }}</b></td>
+                            <td>{{ channel.created_at | humanDate }}</td>
                         </tr>
+
                         </tbody>
                     </table>
                     <br>
