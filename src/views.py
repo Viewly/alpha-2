@@ -44,8 +44,9 @@ def embed(video_id):
 def search():
     search_query = request.args.get('q')
     q = """
-    SELECT id, title
-    FROM video
+    SELECT v.id, v.title, c.display_name
+    FROM video v LEFT JOIN channel c
+    ON c.id = v.channel_id
     WHERE to_tsvector(title || ' ' || description) @@ to_tsquery(:search)
     ORDER BY published_at DESC
     LIMIT 10;

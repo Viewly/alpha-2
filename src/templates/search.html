@@ -19,7 +19,7 @@
                        href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
                     <div class="meta">
                         <a>{{ video.published_at | humanDate }} by
-                            <b>@{{ video.author }}</b></a>
+                            <b>{{ video.display_name }}</b></a>
                     </div>
                 </div>
             </div>
