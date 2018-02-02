@@ -30,6 +30,7 @@ from ..models import (
     Video,
     FileMapper,
     Channel,
+    TranscoderStatus,
 )
 from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
@@ -136,6 +137,7 @@ def s3_success():
     video = Video(
         user_id=current_user.id,
         title=request.form.get('name').split('.')[0],
+        transcoder_status=TranscoderStatus.pending,
         uploaded_at=dt.datetime.utcnow(),
     )
     video.file_mapper = FileMapper(
