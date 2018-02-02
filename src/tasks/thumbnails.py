@@ -24,7 +24,11 @@ thumbnails.conf.update(
 )
 
 
-@thumbnails.task(ignore_result=True)
+@thumbnails.task(
+    ignore_result=True,
+    autoretry_for=(Exception,),
+    retry_kwargs={'max_retries': 3},
+)
 def process_thumbnails(video_id: str):
     session = db_session()
     video = session.query(Video).filter_by(id=video_id).first()

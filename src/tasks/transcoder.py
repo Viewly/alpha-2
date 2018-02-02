@@ -31,7 +31,11 @@ def generate_timeline(video_id: str):
     pass
 
 
-@transcoder.task(ignore_result=True)
+@transcoder.task(
+    ignore_result=True,
+    autoretry_for=(Exception,),
+    retry_kwargs={'max_retries': 3},
+)
 def start_transcoder_job(video_id: str):
     session = db_session()
     video = session.query(Video).filter_by(id=video_id).one()
