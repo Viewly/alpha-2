@@ -1,0 +1,9 @@
+FROM python:3.6.4
+MAINTAINER furion <_@furion.me>
+
+# add our code
+COPY . /project_root
+WORKDIR /project_root
+RUN pip install -r requirements.txt
+
+ENV PRODUCTION yes

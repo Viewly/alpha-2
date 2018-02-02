@@ -18,6 +18,8 @@ S3_MANAGER_PRIVATE_KEY = getenv('S3_MANAGER_PRIVATE_KEY')
 # amazon s3 upload signatures
 S3_UPLOADER_PUBLIC_KEY = getenv('S3_UPLOADER_PUBLIC_KEY')
 S3_UPLOADER_PRIVATE_KEY = getenv('S3_UPLOADER_PRIVATE_KEY')
+
+# amazon s3 upload bucket
 S3_UPLOADER_BUCKET = getenv('S3_UPLOADER_BUCKET', 'viewly-uploads-test')
 S3_UPLOADER_REGION = getenv('S3_UPLOADER_REGION', 'us-west-2')
 
