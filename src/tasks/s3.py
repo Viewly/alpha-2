@@ -2,16 +2,16 @@ import io
 
 import boto3
 
-config = dict(
-    region_name='us-west-2',
-    bucket_name='viewly-uploads-test'
+from ..config import (
+    S3_UPLOADER_BUCKET,
+    S3_UPLOADER_REGION,
 )
 
 
 class S3Transfer:
     def __init__(self, region_name=None, bucket_name=None):
-        self._region_name = region_name or config['region_name']
-        self._bucket_name = bucket_name or config['bucket_name']
+        self._region_name = region_name or S3_UPLOADER_REGION
+        self._bucket_name = bucket_name or S3_UPLOADER_BUCKET
 
         self.s3 = boto3.client(
             's3',

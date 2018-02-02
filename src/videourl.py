@@ -2,22 +2,21 @@ from .models import (
     Video,
     TranscoderStatus,
 )
+from .config import CDN_URL
 
 
 def get_manifest_cdn_url(video: Video):
     if video.transcoder_status == TranscoderStatus.complete:
-        # TODO: dynamic distribution ID
         return \
-            f"http://d27z8otvfx49ba.cloudfront.net" \
-            f"/{video.file_mapper.video_manifest_version}/{video.id}/dash-main.mpd"
+            f"{CDN_URL}/{video.file_mapper.video_manifest_version}" \
+            f"/{video.id}/dash-main.mpd"
 
 
 def get_thumbnail_cdn_url(video: Video, size_name='small'):
     thumbnail_files = video.file_mapper.thumbnail_files
     if thumbnail_files and size_name in thumbnail_files:
         key = thumbnail_files.get(size_name).split(':')[-1]
-        # TODO: dynamic distribution ID
-        return f"http://d27z8otvfx49ba.cloudfront.net/{key.lstrip('/')}"
+        return f"{CDN_URL}/{key.lstrip('/')}"
 
 
 def get_video_cdn_assets(video: Video):
@@ -29,7 +28,5 @@ def get_video_cdn_assets(video: Video):
 
 
 def guess_thumbnail_cdn_url(video_id: str, size_name='small'):
-    # TODO: dynamic distribution ID
     # TODO: rather than guessing, this should be cached
-    return f"http://d27z8otvfx49ba.cloudfront.net" \
-           f"/thumbnails/{video_id}/{size_name}.png"
+    return f"{CDN_URL}/thumbnails/{video_id}/{size_name}.png"

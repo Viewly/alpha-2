@@ -1,33 +1,6 @@
 import boto3
 
-# output from deployment script, hard-coded for now
-# TODO, load this dynamically from config file
-config = {
-    "pipeline_id": "1510584356879-m06i3i",
-    "pipeline_name": "test-pipeline-3",
-    "presets": {
-        "high": {
-            "1080p": "1510584361870-if0nc5",
-            "480p": "1510584361409-1dcqrs",
-            "720p": "1510584361639-3b0rh6",
-            "audio": "1510584360931-igwhnz"
-        },
-        "main": {
-            "480p": "1510584359774-j6gnfd",
-            "720p": "1510584360503-la02m0",
-            "audio": "1510584360931-igwhnz"
-        }
-    },
-    "region_name": "us-west-2",
-    "s3_input_bucket": "viewly-uploads-test",
-    "s3_output_bucket": "viewly-videos-test",
-    "sns": {
-        "completed": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-completed",
-        "error": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-error",
-        "processing": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-processing",
-        "warning": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-warning"
-    }
-}
+from ..config import elastic_transcoder as config
 
 
 def get_job(transcoder_job_id: str):

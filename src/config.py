@@ -1,5 +1,12 @@
 from os import getenv
 
+
+def load_json_config(name):
+    import json
+    env = 'prod' if getenv('PRODUCTION') else 'dev'
+    return json.loads(open(f'src/conf/{name}.{env}.json', 'r').read())
+
+
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
 VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'localhost:5000')
@@ -17,6 +24,9 @@ S3_UPLOADER_REGION = getenv('S3_UPLOADER_REGION', 'us-west-2')
 # amazon s3 processed assets (videos, thumbnails, etc.) location
 S3_VIDEOS_BUCKET = getenv('S3_ASSETS_BUCKET', 'viewly-videos-test')
 S3_VIDEOS_REGION = getenv('S3_VIDEOS_REGION', 'us-west-2')
+
+# videos and thumbnails CDN
+CDN_URL = getenv('CDN_URL', 'http://cdn.view.ly')
 
 # PostgreSQL
 SQLALCHEMY_DATABASE_URI = getenv('POSTGRES_URI', 'postgres://localhost/viewly_beta')
@@ -45,6 +55,9 @@ SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly. Please confirm your email.
 # Celery
 CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0')
 CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+
+# Elastic Transcoder
+elastic_transcoder = load_json_config('elastic_transcoder')
 
 # potentially separate into classes
 # then load with app.config.from_obj('config.Development')
