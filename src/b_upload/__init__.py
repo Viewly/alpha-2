@@ -328,7 +328,7 @@ def publish_to_channel(video_id):
 
     channels = db.session.query(Channel).filter_by(
         user_id=current_user.id,
-    )
+    ).all()
 
     return render_template(
         'publish-to-channel.html',
