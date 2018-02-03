@@ -9,7 +9,6 @@ def load_json_config(name):
 
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
-VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'localhost:5000')
 
 # amazon s3 manager credentials
 S3_MANAGER_PUBLIC_KEY = getenv('S3_MANAGER_PUBLIC_KEY')
@@ -52,7 +51,7 @@ SECURITY_RECOVERABLE = True
 SECURITY_TRACKABLE = True
 SECURITY_PASSWORDLESS = False
 SECURITY_CHANGEABLE = True
-SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly. Please confirm your email."
+SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly Alpha 2. Please confirm your email."
 
 # Celery
 CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0')

@@ -13,3 +13,5 @@ boto3
 maya
 delegator.py
 celery[redis,auth]
+Pillow
+psycopg2
