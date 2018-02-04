@@ -10,6 +10,9 @@ def load_json_config(name):
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
 
+# needed for Disqus plugin
+VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'http://localhost:5000')
+
 # amazon s3 manager credentials
 S3_MANAGER_PUBLIC_KEY = getenv('S3_MANAGER_PUBLIC_KEY')
 S3_MANAGER_PRIVATE_KEY = getenv('S3_MANAGER_PRIVATE_KEY')
