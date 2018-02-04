@@ -18,8 +18,9 @@
                     <a class="header"
                        href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
                     <div class="meta">
-                        <a>{{ video.published_at | humanDate }} by
-                            <b>{{ video.display_name }}</b></a>
+                        {{ video.published_at | humanDate }} by
+                            <b><a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
+                                {{ video.channel_name }}</a></b>
                     </div>
                 </div>
             </div>

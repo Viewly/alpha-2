@@ -40,20 +40,27 @@ def embed(video_id):
     )
 
 
+@app.route('/c/<string:channel_id>', methods=['GET'])
+def view_channel(channel_id):
+    channel = Channel.query.filter_by(id=channel_id).first_or_404()
+    return render_template('channel.html', channel=channel)
+
+
 @app.route('/search', methods=['GET'])
 def search():
     search_query = request.args.get('q')
     q = """
-    SELECT v.id, v.title, c.display_name
+    SELECT v.id, v.title, 
+           c.display_name AS channel_name, c.id AS channel_id
     FROM video v LEFT JOIN channel c
-    ON c.id = v.channel_id
-    WHERE to_tsvector(title || ' ' || description) @@ to_tsquery(:search)
-     AND published_at IS NOT NULL
-    ORDER BY published_at DESC
+    ON v.channel_id = c.id
+    WHERE to_tsvector(v.title || ' ' || v.description) @@ to_tsquery(:search)
+     AND v.published_at IS NOT NULL
+    ORDER BY v.published_at DESC
     LIMIT 10;
     """
     rs = db.session.execute(q, {"search": search_query})
-    results = [{k: v for k, v in zip(rs.keys(), item)} for item in rs.fetchall()]
+    results = [dict(zip(rs.keys(), item)) for item in rs.fetchall()]
 
     return render_template(
         'search.html',
