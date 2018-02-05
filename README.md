@@ -49,12 +49,9 @@ Here is the default environment (you may want to set these yourself):
 | POSTGRES_URI           | postgres://localhost/viewly_beta |
 | MAIL_USERNAME          | postmaster@mg.view.ly            |
 | MAIL_PASSWORD          | ''                               |
-| S3_BUCKET              | flask-uploader-test              |
-| S3_REGION              | eu-central-1                     |
-| S3_UPLOADER_PUBLIC_KEY |                                  |
-| S3_UPLOADER_SECRET_KEY |                                  |
-| S3_MANAGER_PUBLIC_KEY  |                                  |
-| S3_MANAGER_SECRET_KEY  |                                  |
+
+_Note: This list does not include AWS related variables. Look for those in AWS section
+of the readme_.
 
 ## Run Locally
 Run the Flask server:
@@ -106,21 +103,26 @@ celery worker -A src.tasks.cron -l info -c 1 -P solo
 
 # Amazon Services
 
-## S3 Uploader Role
-This guide assumes the bucket has been created with proper IAM permissions.
-This guide uses bucket `flask-uploader-test` in `eu-eastern-1` region as example.
+## S3 Setup
+Create S3 Upload and Video storage buckets trough `ElasticTranscoder.ipynb`.
 
-**Environment Variables**
+Example config:
+```
+config = {
+    'region_name': 'eu-central-1',
+    'pipeline_name': 'viewly-pipeline-v1',
+    's3_input_bucket': 'viewly-uploads-eu1',
+    's3_output_bucket': 'viewly-videos-eu1',
+}
+```
 
-| Variable               | Default                |
-| ---------------------- | ---------------------- |
-| S3_BUCKET              | flask-uploader-test    |
-| S3_REGION              | eu-central-1           |
-| S3_UPLOADER_PUBLIC_KEY |                        |
-| S3_UPLOADER_SECRET_KEY |                        |
+ACL and CORS will be applied automatically, however we need to perform some manual tasks
+on fresh deployment.
+
+## Uploader Bucket Configuration
 
 **IAM Policy**
-Create a `s3-fine-uploader` group with the following restricted S3 Policy:
+Create a `s3-viewly-uploader` API user with the following S3 policy:
 ```json
 {
     "Version": "2012-10-17",
@@ -128,16 +130,25 @@ Create a `s3-fine-uploader` group with the following restricted S3 Policy:
         {
             "Effect": "Allow",
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::flask-uploader-test/*"
+            "Resource": "arn:aws:s3:::viewly-uploads-test/*"
         }
     ]
 }
 ```
-Assign a new user `s3-viewly-uploader` to it. 
-Use this users credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECRET_KEY`.
+_Replace `viewly-uploads-test` with upload bucket name._
+Use this users API credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECRET_KEY`.
+
+**Environment Variables**
+
+| Variable               | Default                |
+| ---------------------- | ---------------------- |
+| S3_BUCKET              | s3-viewly-uploader     |
+| S3_REGION              | eu-central-1           |
+| S3_UPLOADER_PUBLIC_KEY |                        |
+| S3_UPLOADER_SECRET_KEY |                        |
 
 
-**Bucket CORS Policy**
+**Upload Bucket CORS Policy**
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
@@ -158,8 +169,16 @@ Use this users credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECRET_K
 </CORSRule>
 </CORSConfiguration>
 ```
-*TODO: Make `AllowedOrigin` more restrictive.*
 
+**Additional Setup**
+
+Use Amazon S3 Console to:
+ - Enable _Transfer Acceleration_ on the Upload bucket
+ - Add a lifecycle rule to _Clean up incomplete multipart uploads_
+ 
+ 
+## Videos Bucket Configuration
+No additional configuration required at this time.
 
 ## S3 Manager Role
 The S3 Manager is responsible for:
@@ -168,6 +187,9 @@ The S3 Manager is responsible for:
  - deleting uploads
  - generating metadata files
 
+**IAM Policy**
+Create an `s3-viewly-manager` API user with full S3 privileges
+on our uploads and videos buckets.
 
 **Environment Variables**
 
@@ -177,5 +199,17 @@ The S3 Manager is responsible for:
 | S3_MANAGER_SECRET_KEY |                          |
 
 
-**IAM Policy**
-The Manager should have full S3 privileges on our `upload` and `transcoder-output` buckets.
+## Elastic Transcoder
+Use `ElasticTranscoder.ipynb`. 
+Output configuration saved [here](src/conf/elastic_transcoder.prod.json).
+
+## CloudFront
+Create a Cloudfront Distribution manually.
+Use the `viewly-videos-*` bucket, and set the default TTL to 1 day or more.
+Create a CNAME (cdn.view.ly), and issue custom certificate trough ACM.
+
+**Environment Variables**
+
+| Variable | Default             |
+| -------- | ------------------- |
+| CDN_URL  | https://cdn.view.ly |
