@@ -3,15 +3,15 @@ import io
 import boto3
 
 from ..config import (
-    S3_UPLOADER_BUCKET,
-    S3_UPLOADER_REGION,
+    S3_UPLOADS_BUCKET,
+    S3_UPLOADS_REGION,
 )
 
 
 class S3Transfer:
     def __init__(self, region_name=None, bucket_name=None):
-        self._region_name = region_name or S3_UPLOADER_REGION
-        self._bucket_name = bucket_name or S3_UPLOADER_BUCKET
+        self._region_name = region_name or S3_UPLOADS_REGION
+        self._bucket_name = bucket_name or S3_UPLOADS_BUCKET
 
         self.s3 = boto3.client(
             's3',

@@ -10,7 +10,7 @@ def load_json_config(name):
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
 
-# needed for Disqus plugin
+# needed for Disqus plugin, shared /w nginx reverse proxy
 VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'http://localhost:5000')
 
 # amazon s3 manager credentials
@@ -22,15 +22,15 @@ S3_UPLOADER_PUBLIC_KEY = getenv('S3_UPLOADER_PUBLIC_KEY')
 S3_UPLOADER_PRIVATE_KEY = getenv('S3_UPLOADER_PRIVATE_KEY')
 
 # amazon s3 upload bucket
-S3_UPLOADER_BUCKET = getenv('S3_UPLOADER_BUCKET', 'viewly-uploads-test')
-S3_UPLOADER_REGION = getenv('S3_UPLOADER_REGION', 'us-west-2')
+S3_UPLOADS_BUCKET = getenv('S3_UPLOADS_BUCKET', 'viewly-uploads-test')
+S3_UPLOADS_REGION = getenv('S3_UPLOADS_REGION', 'us-west-2')
 
 # amazon s3 processed assets (videos, thumbnails, etc.) location
-S3_VIDEOS_BUCKET = getenv('S3_ASSETS_BUCKET', 'viewly-videos-test')
+S3_VIDEOS_BUCKET = getenv('S3_VIDEOS_BUCKET', 'viewly-videos-test')
 S3_VIDEOS_REGION = getenv('S3_VIDEOS_REGION', 'us-west-2')
 
 # videos and thumbnails CDN
-CDN_URL = getenv('CDN_URL', 'http://cdn.view.ly')
+CDN_URL = getenv('CDN_URL', 'https://cdn.view.ly')
 
 # PostgreSQL
 SQLALCHEMY_DATABASE_URI = getenv('POSTGRES_URL', 'postgres://localhost/viewly_beta')

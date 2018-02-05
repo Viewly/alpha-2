@@ -64,8 +64,8 @@ def upload_videos():
     ).count()
     return render_template(
         'upload-videos.html',
-        s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
-        s3_bucket_region=app.config['S3_UPLOADER_REGION'],
+        s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
+        s3_bucket_region=app.config['S3_UPLOADS_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
         pending_count=pending_count,
     )
@@ -294,8 +294,8 @@ def publish_add_thumbnails(video_id):
         error=error,
         current_thumbnail=get_thumbnail_cdn_url(video, 'tiny'),
         video_id=video.id,
-        s3_bucket_name=app.config['S3_UPLOADER_BUCKET'],
-        s3_bucket_region=app.config['S3_UPLOADER_REGION'],
+        s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
+        s3_bucket_region=app.config['S3_UPLOADS_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
     )
 
@@ -363,7 +363,7 @@ def publish_list_uploads():
 def delete_unpublished_video(video: Video):
     s3 = boto3.resource(
         's3',
-        region_name=app.config['S3_UPLOADER_REGION'],
+        region_name=app.config['S3_UPLOADS_REGION'],
         aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
         aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
     )
@@ -389,7 +389,7 @@ def s3_make_public(bucket_name: str, key: str):
     """
     s3 = boto3.client(
         's3',
-        region_name=app.config['S3_UPLOADER_REGION'],
+        region_name=app.config['S3_UPLOADS_REGION'],
         aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
         aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
     )

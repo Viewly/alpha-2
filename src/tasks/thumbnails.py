@@ -7,8 +7,8 @@ from .media import (
     img_from_s3,
 )
 from ..config import (
-    S3_UPLOADER_BUCKET,
-    S3_UPLOADER_REGION,
+    S3_UPLOADS_BUCKET,
+    S3_UPLOADS_REGION,
     S3_VIDEOS_BUCKET,
     S3_VIDEOS_REGION,
 )
@@ -35,8 +35,8 @@ def process_thumbnails(video_id: str):
     # download the original
     img = img_from_s3(
         video.file_mapper.s3_upload_thumbnail_key,
-        region_name=S3_UPLOADER_REGION,
-        bucket_name=S3_UPLOADER_BUCKET,
+        region_name=S3_UPLOADS_REGION,
+        bucket_name=S3_UPLOADS_BUCKET,
     )
 
     # resize into multiple sizes, compress
