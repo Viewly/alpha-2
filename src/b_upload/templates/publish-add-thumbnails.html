@@ -127,7 +127,7 @@
                 multiple: false,
                 element: document.getElementById('fine-uploader'),
                 request: {
-                    endpoint: '{{ s3_bucket_name }}.s3-{{ s3_bucket_region }}.amazonaws.com',
+                    endpoint: 'https://{{ s3_bucket_name }}.s3-accelerate.amazonaws.com',
                     accessKey: '{{ s3_user_access_key }}'
                 },
                 objectProperties: {
