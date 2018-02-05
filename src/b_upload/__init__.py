@@ -364,8 +364,8 @@ def delete_unpublished_video(video: Video):
     s3 = boto3.resource(
         's3',
         region_name=app.config['S3_UPLOADS_REGION'],
-        aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
-        aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
+        aws_access_key_id=app.config['AWS_MANAGER_PUBLIC_KEY'],
+        aws_secret_access_key=app.config['AWS_MANAGER_PRIVATE_KEY'],
     )
     try:
         obj = s3.Object(
@@ -390,8 +390,8 @@ def s3_make_public(bucket_name: str, key: str):
     s3 = boto3.client(
         's3',
         region_name=app.config['S3_UPLOADS_REGION'],
-        aws_access_key_id=app.config['S3_MANAGER_PUBLIC_KEY'],
-        aws_secret_access_key=app.config['S3_MANAGER_PRIVATE_KEY'],
+        aws_access_key_id=app.config['AWS_MANAGER_PUBLIC_KEY'],
+        aws_secret_access_key=app.config['AWS_MANAGER_PRIVATE_KEY'],
     )
     return s3.put_object_acl(
         ACL='public-read',

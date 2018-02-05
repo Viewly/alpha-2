@@ -1,12 +1,18 @@
 import boto3
 
+from ..config import (
+    AWS_MANAGER_PUBLIC_KEY,
+    AWS_MANAGER_PRIVATE_KEY,
+)
 from ..config import elastic_transcoder as config
 
 
 def get_job(transcoder_job_id: str):
     et = boto3.client(
         'elastictranscoder',
-        region_name=config['region_name']
+        region_name=config['region_name'],
+        aws_access_key_id=AWS_MANAGER_PUBLIC_KEY,
+        aws_secret_access_key=AWS_MANAGER_PRIVATE_KEY,
     )
     return et.read_job(Id=transcoder_job_id)
 
@@ -27,7 +33,9 @@ def create_job(input_key, output_path, segment_duration=6):
 
     et = boto3.client(
         'elastictranscoder',
-        region_name=config['region_name']
+        region_name=config['region_name'],
+        aws_access_key_id=AWS_MANAGER_PUBLIC_KEY,
+        aws_secret_access_key=AWS_MANAGER_PRIVATE_KEY,
     )
     response = et.create_job(
         PipelineId=config['pipeline_id'],

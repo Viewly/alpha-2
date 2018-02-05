@@ -120,34 +120,6 @@ ACL and CORS will be applied automatically, however we need to perform some manu
 on fresh deployment.
 
 ## Uploader Bucket Configuration
-
-**IAM Policy**
-Create a `s3-viewly-uploader` API user with the following S3 policy:
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::viewly-uploads-test/*"
-        }
-    ]
-}
-```
-_Replace `viewly-uploads-test` with upload bucket name._
-Use this users API credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECRET_KEY`.
-
-**Environment Variables**
-
-| Variable               | Default                |
-| ---------------------- | ---------------------- |
-| S3_BUCKET              | s3-viewly-uploader     |
-| S3_REGION              | eu-central-1           |
-| S3_UPLOADER_PUBLIC_KEY |                        |
-| S3_UPLOADER_SECRET_KEY |                        |
-
-
 **Upload Bucket CORS Policy**
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -170,37 +142,84 @@ Use this users API credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECR
 </CORSConfiguration>
 ```
 
-**Additional Setup**
+**Manual Setup**
 
 Use Amazon S3 Console to:
  - Enable _Transfer Acceleration_ on the Upload bucket
  - Add a lifecycle rule to _Clean up incomplete multipart uploads_
  
  
-## Videos Bucket Configuration
-No additional configuration required at this time.
-
-## S3 Manager Role
-The S3 Manager is responsible for:
-
- - pulling raw video files for evaluation
- - deleting uploads
- - generating metadata files
-
-**IAM Policy**
-Create an `s3-viewly-manager` API user with full S3 privileges
-on our uploads and videos buckets.
+**IAM Policy**  
+Create a `s3-viewly-uploader` API user with the following S3 policy:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::viewly-uploads-us1/*"
+        }
+    ]
+}
+```
+_Replace `viewly-uploads-us1` with upload bucket name._
+Use this users API credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECRET_KEY`.
 
 **Environment Variables**
 
-| Variable              | Default                  |
-| --------------------- | ------------------------ |
-| S3_MANAGER_PUBLIC_KEY |                          |
-| S3_MANAGER_SECRET_KEY |                          |
+| Variable               | Default             |
+| ---------------------- | ------------------- |
+| S3_UPLOADS_BUCKET      | viewly-uploads-test |
+| S3_UPLOADS_REGION      | us-west-2           |
+| S3_UPLOADER_PUBLIC_KEY |                     |
+| S3_UPLOADER_SECRET_KEY |                     |
+
+ 
+## Videos Bucket Configuration
+To be able to stream files from this bucket via CloudFormation, the following 
+bucket policy needs to be applied:
+```json
+{
+    "Id": "Policy1517839392609",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1517839387764",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::viewly-videos-us1/*",
+            "Principal": "*"
+        }
+    ]
+}
+```
+
+We also need the following CORS config:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <MaxAgeSeconds>3000</MaxAgeSeconds>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+```
+
+**Environment Variables**
+
+| Variable         | Default            |
+| ---------------- | ------------------ |
+| S3_VIDEOS_BUCKET | viewly-videos-test |
+| S3_VIDEOS_REGION | us-west-2          |
 
 
 ## Elastic Transcoder
-Use `ElasticTranscoder.ipynb`. 
+Use `ElasticTranscoder.ipynb` to create and configure the ET pipeline. 
 Output configuration saved [here](src/conf/elastic_transcoder.prod.json).
 
 ## CloudFront
@@ -213,3 +232,74 @@ Create a CNAME (cdn.view.ly), and issue custom certificate trough ACM.
 | Variable | Default             |
 | -------- | ------------------- |
 | CDN_URL  | https://cdn.view.ly |
+
+
+## IAM Manager Account
+The manager account has just the privileges necessary to:
+ - Read, Write, Delete files in the uploads and videos buckets
+ - Create, Cancel and Read ElasticTranscoder Jobs
+ - Invalidate CloudFormation Caches (ie. on thumbnail change)
+ 
+**Manager Policy**
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObjectAcl",
+                "s3:GetObject",
+                "s3:ListBucketMultipartUploads",
+                "s3:GetObjectTagging",
+                "s3:ListBucket",
+                "s3:PutObjectTagging",
+                "s3:DeleteObject",
+                "s3:GetBucketAcl",
+                "s3:GetBucketLocation",
+                "s3:PutObjectAcl",
+                "s3:GetObjectVersion"
+            ],
+            "Resource": [
+                "arn:aws:s3:::viewly-uploads-us1",
+                "arn:aws:s3:::viewly-videos-us1",
+                "arn:aws:s3:::viewly-uploads-us1/*",
+                "arn:aws:s3:::viewly-videos-us1/*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "elastictranscoder:ListJobsByPipeline",
+                "cloudfront:GetInvalidation",
+                "elastictranscoder:ReadPreset",
+                "elastictranscoder:ListPipelines",
+                "elastictranscoder:ReadJob",
+                "cloudfront:CreateInvalidation",
+                "elastictranscoder:ListJobsByStatus",
+                "s3:ListObjects",
+                "elastictranscoder:ReadPipeline",
+                "cloudfront:ListInvalidations",
+                "elastictranscoder:CancelJob",
+                "elastictranscoder:CreateJob",
+                "s3:HeadBucket",
+                "elastictranscoder:ListPresets"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+**Manager Account**  
+Create `viewly-alpha-manager` API account with the above policy. 
+
+**Environment Variables**
+
+| Variable                | Default |
+| ----------------------- | ------- |
+| AWS_MANAGER_PUBLIC_KEY  |         |
+| AWS_MANAGER_PRIVATE_KEY |         |

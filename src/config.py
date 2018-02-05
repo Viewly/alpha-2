@@ -13,9 +13,9 @@ SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
 # needed for Disqus plugin, shared /w nginx reverse proxy
 VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'http://localhost:5000')
 
-# amazon s3 manager credentials
-S3_MANAGER_PUBLIC_KEY = getenv('S3_MANAGER_PUBLIC_KEY')
-S3_MANAGER_PRIVATE_KEY = getenv('S3_MANAGER_PRIVATE_KEY')
+# amazon manager credentials
+AWS_MANAGER_PUBLIC_KEY = getenv('AWS_MANAGER_PUBLIC_KEY')
+AWS_MANAGER_PRIVATE_KEY = getenv('AWS_MANAGER_PRIVATE_KEY')
 
 # amazon s3 upload signatures
 S3_UPLOADER_PUBLIC_KEY = getenv('S3_UPLOADER_PUBLIC_KEY')

@@ -5,6 +5,8 @@ import boto3
 from ..config import (
     S3_UPLOADS_BUCKET,
     S3_UPLOADS_REGION,
+    AWS_MANAGER_PUBLIC_KEY,
+    AWS_MANAGER_PRIVATE_KEY,
 )
 
 
@@ -15,7 +17,9 @@ class S3Transfer:
 
         self.s3 = boto3.client(
             's3',
-            region_name=self._region_name
+            region_name=self._region_name,
+            aws_access_key_id=AWS_MANAGER_PUBLIC_KEY,
+            aws_secret_access_key=AWS_MANAGER_PRIVATE_KEY,
         )
 
     def download_bytes(self, key: str) -> io.BytesIO:
