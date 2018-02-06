@@ -2,7 +2,29 @@
 {% block title %}{{ channel.display_name }}{% endblock %}
 
 {% block content %}
-    {{ channel.display_name }} channel
+    <p></p>
+    <h3>{{ channel.display_name }}</h3>
+    <div class="ui relaxed items">
+
+        {% for video in videos %}
+            <div class="item">
+                <div class="ui small image">
+                    <a href="{{ url_for('view_video', video_id=video.id) }}">
+                        <img src="{{ guess_thumbnail_cdn_url(video.id) }}">
+                    </a>
+                </div>
+                <div class="content">
+                    <a class="header"
+                       href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
+                    <div class="meta">
+                        Published on {{ video.published_at | humanDate }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <p>Showing latest {{ videos | count }} videos.</p>
+
+    </div>
 {% endblock %}
 
 {% block scripts %}

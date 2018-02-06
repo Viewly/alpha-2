@@ -9,6 +9,7 @@ from flask_security import (
     current_user,
     login_required,
 )
+from sqlalchemy import desc
 
 from . import app, db
 from .models import Video, Channel
@@ -43,7 +44,10 @@ def embed(video_id):
 @app.route('/c/<string:channel_id>', methods=['GET'])
 def view_channel(channel_id):
     channel = Channel.query.filter_by(id=channel_id).first_or_404()
-    return render_template('channel.html', channel=channel)
+    videos = (Video.query.filter_by(channel_id=channel_id)
+              .order_by(desc(Video.published_at))
+              .limit(10).all())
+    return render_template('channel.html', channel=channel, videos=videos)
 
 
 @app.route('/search', methods=['GET'])

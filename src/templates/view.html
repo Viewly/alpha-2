@@ -15,9 +15,10 @@
 
             <div class="item">
                 <div class="content">
-                    <img src="https://s1.postimg.org/s5o843sfz/Capture.jpg"
+                    <img src="https://i.imgur.com/32AwiVw.jpg"
                          class="ui circular avatar image">
-                    <b><a href="">{{ video.channel.display_name }}</a></b>
+                    <b><a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
+                        {{ video.channel.display_name }}</a></b>
                     published on {{ video.published_at | humanDate }}
                     <br>
                     <br>
