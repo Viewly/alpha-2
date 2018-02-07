@@ -33,7 +33,7 @@ S3_VIDEOS_REGION = getenv('S3_VIDEOS_REGION', 'us-west-2')
 CDN_URL = getenv('CDN_URL', 'https://cdn.view.ly')
 
 # PostgreSQL
-SQLALCHEMY_DATABASE_URI = getenv('POSTGRES_URL', 'postgres://localhost/viewly_beta')
+SQLALCHEMY_DATABASE_URI = getenv('POSTGRES_URL', 'postgres://localhost/alpha')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = False
 SQLALCHEMY_POOL_SIZE = 50
