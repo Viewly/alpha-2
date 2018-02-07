@@ -21,7 +21,9 @@
                         <tbody>
                         {% for channel in channels %}
                             <tr>
-                                <td><b>{{ channel.display_name }}</b></td>
+                                <td><b>
+                                    <a href="{{ url_for('view_channel', channel_id=channel.id) }}">
+                                        {{ channel.display_name }}</a></b></td>
                                 <td>{{ channel.created_at | humanDate }}</td>
                             </tr>
                         {% endfor %}
@@ -31,6 +33,14 @@
                 {% else %}
                     You don't have any channels yet.
                 {% endif %}
+
+                <div class="ui text container">
+                    <a href="{{ url_for('channel.create') }}"
+                       class="ui labeled icon button blue">
+                        New Channel
+                        <i class="add icon"></i>
+                    </a>
+                </div>
             </div>
 
 

@@ -3,9 +3,10 @@
 
 {% block content %}
     <p></p>
-    <h3>{{ channel.display_name }}</h3>
-    <div class="ui relaxed items">
+    <h2><img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
+        {{ channel.display_name }}</h2>
 
+    <div class="ui relaxed items">
         {% for video in videos %}
             <div class="item">
                 <div class="ui small image">
@@ -16,14 +17,30 @@
                 <div class="content">
                     <a class="header"
                        href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
+
                     <div class="meta">
                         Published on {{ video.published_at | humanDate }}
                     </div>
+
+                    {% if current_user.id == channel.user_id %}
+                        <div class="extra">
+                            <div class="ui compact simple selection dropdown">
+                                <i class="dropdown icon"></i>
+                                <div class="text">Edit</div>
+                                <div class="menu">
+                                    <a href="{{ url_for('upload.publish_add_details', video_id=video.id) }}"
+                                       class="item">Info</a>
+                                    <a href="{{ url_for('upload.publish_add_thumbnails', video_id=video.id) }}"
+                                       class="item">Cover</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
         {% endfor %}
         <p>Showing latest {{ videos | count }} videos.</p>
-
     </div>
 {% endblock %}
 
