@@ -29,6 +29,9 @@ S3_UPLOADS_REGION = getenv('S3_UPLOADS_REGION')
 S3_VIDEOS_BUCKET = getenv('S3_VIDEOS_BUCKET')
 S3_VIDEOS_REGION = getenv('S3_VIDEOS_REGION')
 
+# amazon Cloud Formation distribution ID
+CDN_DISTRIBUTION_ID = getenv('CDN_DISTRIBUTION_ID')
+
 # videos and thumbnails CDN
 CDN_URL = getenv('CDN_URL', 'https://cdn.view.ly')
 

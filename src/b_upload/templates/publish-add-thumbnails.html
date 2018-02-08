@@ -102,9 +102,11 @@
                 <i>Upload a 1280x720 or higher resolution image for optimal look</i>
             </div>
             {% if current_thumbnail %}
-                <br>
-                <h3 class="ui dividing header">Preview</h3>
-                <img src="{{ current_thumbnail }}" alt="">
+                <div id="preview">
+                    <br>
+                    <h3 class="ui dividing header">Preview</h3>
+                    <img src="{{ current_thumbnail }}" alt="">
+                </div>
             {% endif %}
             <br><br>
             <div id="next_steps" class="text-center"
@@ -163,6 +165,10 @@
                     showButton: true
                 },
                 callbacks: {
+                    onSubmitted: function () {
+                        // hide out of date image
+                        $('#preview').hide();
+                    },
                     onComplete: function (id, name, responseJSON, xhr) {
                         if (responseJSON.success) {
                             // go to publishing flow
