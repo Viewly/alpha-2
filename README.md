@@ -42,13 +42,13 @@ export FLASK_APP=src/views.py
 Here is the default environment (you may want to set these yourself):
 
 
-| Variable               | Default                          |
-| ---------------------- | -------------------------------- |
-| PRODUCTION             | False                            |
-| SECRET_KEY             | not_a_secret                     |
-| POSTGRES_URI           | postgres://localhost/viewly_beta |
-| MAIL_USERNAME          | postmaster@mg.view.ly            |
-| MAIL_PASSWORD          | ''                               |
+| Variable      | Default                    |
+| ------------- | -------------------------- |
+| PRODUCTION    | False                      |
+| SECRET_KEY    | not_a_secret               |
+| POSTGRES_URI  | postgres://localhost/alpha |
+| MAIL_USERNAME | postmaster@mg.view.ly      |
+| MAIL_PASSWORD | ''                         |
 
 _Note: This list does not include AWS related variables. Look for those in AWS section
 of the readme_.
@@ -168,12 +168,12 @@ Use this users API credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECR
 
 **Environment Variables**
 
-| Variable               | Default             |
-| ---------------------- | ------------------- |
-| S3_UPLOADS_BUCKET      | viewly-uploads-test |
-| S3_UPLOADS_REGION      | us-west-2           |
-| S3_UPLOADER_PUBLIC_KEY |                     |
-| S3_UPLOADER_SECRET_KEY |                     |
+| Variable               | Default |
+| ---------------------- | ------- |
+| S3_UPLOADS_BUCKET      |         |
+| S3_UPLOADS_REGION      |         |
+| S3_UPLOADER_PUBLIC_KEY |         |
+| S3_UPLOADER_SECRET_KEY |         |
 
  
 ## Videos Bucket Configuration
@@ -212,10 +212,10 @@ We also need the following CORS config:
 
 **Environment Variables**
 
-| Variable         | Default            |
-| ---------------- | ------------------ |
-| S3_VIDEOS_BUCKET | viewly-videos-test |
-| S3_VIDEOS_REGION | us-west-2          |
+| Variable         | Default |
+| ---------------- | ------- |
+| S3_VIDEOS_BUCKET |         |
+| S3_VIDEOS_REGION |         |
 
 
 ## Elastic Transcoder
