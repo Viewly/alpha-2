@@ -14,4 +14,4 @@ maya
 delegator.py
 celery[redis,auth]
 Pillow
-psycopg2
+psycopg2-binary
