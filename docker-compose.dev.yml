@@ -1,0 +1,77 @@
+version: '3'
+services:
+  celery-beat-tasks-cron:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    image: alpha:worker
+    command: celery -A src.tasks.cron beat
+    env_file:
+      - docker.dev.env
+    links:
+      - redis
+      - postgres
+    restart: always
+  celery-worker-tasks-cron:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    image: alpha:worker
+    command: celery worker -A src.tasks.cron -l info -c 1 -P solo
+    env_file:
+      - docker.dev.env
+    links:
+      - redis
+      - postgres
+    restart: always
+    depends_on:
+      - website
+    stop_grace_period: 3m30s
+  website:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: alpha:web
+    container_name: alpha-web
+    command: 'flask run --reload --debugger --host 0.0.0.0 --port 5000'
+    environment:
+      - VIRTUAL_HOST=localhost
+      - VIRTUAL_PORT=5000
+    env_file:
+      - docker.dev.env
+    ports:
+      - '50001:5000'
+    links:
+      - redis
+      - postgres
+    depends_on:
+      - migrations
+    restart: always
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile.migrations
+    image: alpha:migrations
+    command: bash -c 'sleep 10 && ./wait-for-it/wait-for-it.sh -t 0 postgres:5432 -- sh run-migrations.sh'
+    container_name: alpha-migrations
+    env_file:
+      - docker.dev.env
+    links:
+      - postgres
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '63791:6379'
+    restart: always
+    env_file:
+      - docker.dev.env
+    tty: true
+  postgres:
+    image: 'postgres:latest'
+    ports:
+      - '54321:5432'
+    restart: always
+    env_file:
+      - docker.dev.env
+    volumes:
+      - './postgres_data:/var/lib/postgresql/data'

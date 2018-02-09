@@ -1,7 +1,8 @@
 .idea/
 node_modules
-.env
+*.env
 celerybeat*
+postgres_data
 
 # Created by .ignore support plugin (hsz.mobi)
 __pycache__/
