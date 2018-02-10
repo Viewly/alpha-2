@@ -47,6 +47,8 @@ services:
     depends_on:
       - migrations
     restart: always
+    volumes:
+      - .:/project_root:ro
   migrations:
     build:
       context: .
