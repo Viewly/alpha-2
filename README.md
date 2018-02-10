@@ -1,7 +1,17 @@
+![](https://i.imgur.com/ekvJd60.png)
+# Viewly Alpha
+This is the second iteration of the Viewly Alpha (https://alpha.view.ly).
+
 # Running in Docker
 To run in Docker, make sure you have latest `docker` and `docker-compose` installed.
 You will also need a `docker.dev.env` file, which is not part of this repo, because
-it contains API keys to AWS and other resources. You can find it [here](gdrive-link-here).
+it contains API keys to AWS and other resources.
+
+## Clone the repo
+```
+git clone git@github.com:Viewly/alpha-2.git --recursive
+```
+Then, add the `docker.dev.env` file into project root.
 
 ## Bring up the Docker stack
 ```
@@ -18,8 +28,15 @@ _Note: To persist the data, PostgreSQL container will mount its data volume into
 `postgres_data` locally. Remove this folder if you wish to start from scratch._
 
 ## Re-building the stack from scratch
+If you've added extra dependencies or applied changes that require
+containers be rebuilt, you can use this command:
 ```
 docker-compose -f docker-compose.dev.yml build --no-cache
+```
+
+Alternatively you can just delete images when bringing _down_ the stack.
+```
+docker-compose -f docker-compose.dev.yml down --rmi all
 ```
 
 # Running Locally
