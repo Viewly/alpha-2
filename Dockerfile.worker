@@ -5,5 +5,3 @@ MAINTAINER furion <_@furion.me>
 COPY . /project_root
 WORKDIR /project_root
 RUN pip install -r requirements.txt
-
-ENV PRODUCTION yes

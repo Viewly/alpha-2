@@ -1,26 +1,26 @@
 {
-  "pipeline_id": "1510584356879-m06i3i",
-  "pipeline_name": "test-pipeline-3",
+  "pipeline_id": "1518282630704-in61et",
+  "pipeline_name": "viewly-pipeline-v1-dev",
   "presets": {
     "high": {
-      "1080p": "1510584361870-if0nc5",
-      "480p": "1510584361409-1dcqrs",
-      "720p": "1510584361639-3b0rh6",
-      "audio": "1510584360931-igwhnz"
+      "1080p": "1517801471827-x8797z",
+      "480p": "1517801470445-qna8ss",
+      "720p": "1517801471115-7750ah",
+      "audio": "1517801468666-j3xvum"
     },
     "main": {
-      "480p": "1510584359774-j6gnfd",
-      "720p": "1510584360503-la02m0",
-      "audio": "1510584360931-igwhnz"
+      "480p": "1517801467992-dxf0u1",
+      "720p": "1517801468255-qcvmqu",
+      "audio": "1517801468666-j3xvum"
     }
   },
   "region_name": "us-west-2",
-  "s3_input_bucket": "viewly-uploads-test",
-  "s3_output_bucket": "viewly-videos-test",
+  "s3_input_bucket": "viewly-uploads-us1-dev",
+  "s3_output_bucket": "viewly-videos-us1-dev",
   "sns": {
-    "completed": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-completed",
-    "error": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-error",
-    "processing": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-processing",
-    "warning": "arn:aws:sns:us-west-2:643658388652:viewly-transcoder-warning"
+    "completed": "arn:aws:sns:us-west-2:655439697043:viewly-transcoder-dev-completed",
+    "error": "arn:aws:sns:us-west-2:655439697043:viewly-transcoder-dev-error",
+    "processing": "arn:aws:sns:us-west-2:655439697043:viewly-transcoder-dev-processing",
+    "warning": "arn:aws:sns:us-west-2:655439697043:viewly-transcoder-dev-warning"
   }
 }

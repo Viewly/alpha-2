@@ -1,37 +1,47 @@
-# Requirements
-This guide assumes MacOS with HomeBrew.
+# Running in Docker
+To run in Docker, make sure you have latest `docker` and `docker-compose` installed.
+You will also need a `docker.dev.env` file, which is not part of this repo, because
+it contains API keys to AWS and other resources. You can find it [here](gdrive-link-here).
+
+## Bring up the Docker stack
+```
+docker-compose -f docker-compose.dev.yml up
+```
+If there are no errors, you should be able to open Alpha Web app at http://localhost:50001
+
+_Note: To avoid conflicts with locally installed Postgres/Redis/Flask, the
+the Dockerized version of the app binds to ports that have `1` added at the end.
+For example, the PostgreSQL port binds to host on `54321` rather than `5432`. The latter 
+is available within the container only._
+
+_Note: To persist the data, PostgreSQL container will mount its data volume into
+`postgres_data` locally. Remove this folder if you wish to start from scratch._
+
+## Re-building the stack from scratch
+```
+docker-compose -f docker-compose.dev.yml build --no-cache
+```
+
+# Running Locally
+Follow this guide if you wish to run the app bare-metal.
 
 ## Dependencies
-Install JS dependencies
+Package Dependencies:
+ - Python 3.6 or higher
+ - PostgreSQL 9.6 or 10.x
+ - Redis
+ - npm
+ 
+Install JS dependencies:
 ```
 cd src/public
 npm i
 ```
 
-
-Install Python 3.6
-```
-brew install python3
-```
-
-
 Install Python dependencies:
 ```
 pip install -r requirements.txt
 ```
-
-Install and Start Redis:
-```
-brew install redis
-brew services start redis
-```
-
-Install and start PostgreSQL
-```
-brew install postgresql
-brew services start postgresql
-```
-*Now you can initialize your SQL database (see Database Management).*
 
 ## Environment Variables
 To run flask commands, you need `FLASK_APP` environment variable set.
@@ -53,7 +63,7 @@ Here is the default environment (you may want to set these yourself):
 _Note: This list does not include AWS related variables. Look for those in AWS section
 of the readme_.
 
-## Run Locally
+## Web App
 Run the Flask server:
 ```
 flask run --reload --debugger --port 5000
