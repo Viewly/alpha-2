@@ -1,11 +1,6 @@
 from os import getenv
 
-
-def load_json_config(name):
-    import json
-    env = 'prod' if getenv('PRODUCTION') else 'dev'
-    return json.loads(open(f'src/conf/{name}.{env}.json', 'r').read())
-
+IS_PRODUCTION = bool(getenv('PRODUCTION', False))
 
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
@@ -51,7 +46,7 @@ MAIL_DEFAULT_SENDER = ('Viewly Alpha', 'alpha@view.ly')
 
 # Flask-Security
 SECURITY_PASSWORD_SALT = ""
-SECURITY_CONFIRMABLE = bool(getenv('PRODUCTION'))
+SECURITY_CONFIRMABLE = IS_PRODUCTION
 SECURITY_REGISTERABLE = True
 SECURITY_RECOVERABLE = True
 SECURITY_TRACKABLE = True
@@ -62,6 +57,13 @@ SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly Alpha 2. Please confirm you
 # Celery
 CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0')
 CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+
+
+def load_json_config(name):
+    import json
+    env = 'prod' if IS_PRODUCTION else 'dev'
+    return json.loads(open(f'src/conf/{name}.{env}.json', 'r').read())
+
 
 # Elastic Transcoder
 elastic_transcoder = load_json_config('elastic_transcoder')

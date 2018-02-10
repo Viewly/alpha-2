@@ -1,5 +1,3 @@
-import os
-
 import delegator
 from flask import (
     Flask,
@@ -14,6 +12,8 @@ from flask_security import (
 from flask_sqlalchemy import SQLAlchemy
 
 # Initialize Flask
+from .config import IS_PRODUCTION
+
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config.from_pyfile('config.py')
 
@@ -41,8 +41,8 @@ from .b_upload import upload as upload_blueprint
 app.register_blueprint(upload_blueprint, url_prefix='/upload/')
 
 from .b_channel import channel as channel_blueprint
-app.register_blueprint(channel_blueprint, url_prefix='/channel')
 
+app.register_blueprint(channel_blueprint, url_prefix='/channel')
 
 
 # Developer Helper Commands
@@ -75,7 +75,7 @@ def reset_db():
 
 
 # workaround flask issue #1907
-if not os.getenv('PRODUCTION'):
+if not IS_PRODUCTION:
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.jinja_env.auto_reload = True
     app.jinja_env.cache = {}
