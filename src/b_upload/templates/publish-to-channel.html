@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% set active_menu = "publish" %}
 {% from "_formhelpers.html" import render_field %}
-{% block title %}Publish to Channel{% endblock %}
+{% block title %}Add to Channel{% endblock %}
 
 {% block content %}
     <div class="ui text container text-center">
@@ -39,7 +39,7 @@
         {% else %}
             <div class="ui horizontal divider">Video Preview</div>
             <div id="player"></div>
-
+            <div class="ui horizontal divider">Choose a channel</div>
             {% if channels %}
                 <div class="ui form text text-left">
                     <div class="field">
@@ -111,7 +111,7 @@
                     }, 'json')
                     .done(function (data) {
                         window.location.replace(
-                            "{{ url_for('view_video', video_id=video.id) }}")
+                            "{{ url_for('.publish_to_ethereum', video_id=video.id) }}")
                     })
                     .fail(function () {
                             window.alert('Error occurred while publishing')

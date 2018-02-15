@@ -311,17 +311,18 @@ def publish_to_channel(video_id):
     ).first()
     if not video:
         return redirect(url_for('.publish_list_uploads'))
+    if video.channel_id:
+        return redirect(url_for('.publish_to_ethereum', video_id=video.id))
     if video.published_at:
         return redirect(f'/v/{video.id}')
 
     if request.method == 'POST':
-        # do some publishing here
         video.channel_id = request.form['channel_id']
         assert db.session.query(Channel).filter_by(
             id=video.channel_id,
             user_id=current_user.id,
         ).first()
-        video.published_at = dt.datetime.utcnow()
+        # video.published_at = dt.datetime.utcnow()
         db.session.add(video)
         db.session.commit()
         return jsonify(video_id=video.id)
@@ -335,6 +336,25 @@ def publish_to_channel(video_id):
         video=video,
         source=get_video_cdn_assets(video),
         channels=channels,
+    )
+
+
+@upload.route("publish/to_ethereum/<string:video_id>", methods=['GET'])
+@login_required
+def publish_to_ethereum(video_id):
+    """ Publish the last uploaded video """
+    video = db.session.query(Video).filter_by(
+        id=video_id,
+        user_id=current_user.id,
+    ).first()
+    if not video:
+        return redirect(url_for('.publish_list_uploads'))
+    if video.published_at:
+        return redirect(f'/v/{video.id}')
+
+    return render_template(
+        'publish-to-ethereum.html',
+        video=video,
     )
 
 

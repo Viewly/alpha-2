@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% set active_menu = "publish" %}
+{% from "_formhelpers.html" import render_field %}
+{% block title %}Publish on Ethereum{% endblock %}
+
+{% block content %}
+    <div class="ui text container text-center">
+        <div class="ui horizontal divider">Publish your video on Ethereum</div>
+        <p>Congratulations. You've made it to the <b>last step</b>, which </p>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        setTimeout(function () {
+            window.location.reload();
+        }, 60 * 1000);
+
+
+        // start here
+        $(function () {
+        });
+    </script>
+{% endblock %}
