@@ -58,7 +58,7 @@ def search():
            c.display_name AS channel_name, c.id AS channel_id
     FROM video v LEFT JOIN channel c
     ON v.channel_id = c.id
-    WHERE to_tsvector(v.title || ' ' || v.description) @@ to_tsquery(:search)
+    WHERE to_tsvector(v.title || ' ' || v.description) @@ plainto_tsquery(:search)
      AND v.published_at IS NOT NULL
     ORDER BY v.published_at DESC
     LIMIT 10;
