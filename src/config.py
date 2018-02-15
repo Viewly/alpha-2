@@ -1,4 +1,7 @@
+import json
 from os import getenv
+
+from toolz import pipe
 
 IS_PRODUCTION = bool(getenv('PRODUCTION', False))
 
@@ -58,9 +61,18 @@ SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly Alpha 2. Please confirm you
 CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0')
 CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 
+# Ethereum chain
+ETH_CHAIN = getenv('ETH_CHAIN')
+INFURA_KEY = getenv('INFURA_KEY')
+
+# Ethereum Contracts
+VIEW_TOKEN_ADDRESS = getenv('VIEW_TOKEN_ADDRESS')
+VIDEO_PUBLISHER_ADDRESS = getenv('VIDEO_PUBLISHER_ADDRESS')
+VIDEO_PUBLISHER_ABI = \
+    pipe('src/conf/VideoPublisher.json', open, lambda x: x.read(), json.loads)['abi']
+
 
 def load_json_config(name):
-    import json
     env = 'prod' if IS_PRODUCTION else 'dev'
     return json.loads(open(f'src/conf/{name}.{env}.json', 'r').read())
 
