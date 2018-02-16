@@ -270,7 +270,7 @@ def publish_add_details(video_id):
         'publish-add-details.html',
         form=form,
         error=error,
-        video_id=video.id,
+        video=video,
     )
 
 
@@ -291,9 +291,9 @@ def publish_add_thumbnails(video_id):
 
     return render_template(
         'publish-add-thumbnails.html',
+        video=video,
         error=error,
         current_thumbnail=get_thumbnail_cdn_url(video, 'tiny'),
-        video_id=video.id,
         s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADS_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],

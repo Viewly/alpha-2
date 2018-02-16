@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% set active_menu = "publish" %}
+{% set active_submenu = "publish" %}
 {% from "_formhelpers.html" import render_field %}
 {% block title %}Publish on Ethereum{% endblock %}
 
 {% block content %}
+    {% include '_breadcrumbs.html' %}
     <div class="ui text container text-center">
         <div class="ui horizontal divider">Publish your video on Ethereum</div>
         <p>Congratulations. You've made it to the <b>last step</b>, which </p>

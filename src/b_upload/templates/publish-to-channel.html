@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% set active_menu = "publish" %}
+{% set active_submenu = "channel" %}
 {% from "_formhelpers.html" import render_field %}
 {% block title %}Add to Channel{% endblock %}
 
 {% block content %}
+    {% include '_breadcrumbs.html' %}
     <div class="ui text container text-center">
         {% if not video.file_mapper.thumbnail_files
           or video.transcoder_status._name_ != 'complete' %}
@@ -103,7 +105,10 @@
         var publishForm = function () {
             $('#publish-video').click(function () {
                 var channel_id = $(".dropdown").dropdown('get value')[4];
-                if (!channel_id) { window.alert("Please select a channel"); return; }
+                if (!channel_id) {
+                    window.alert("Please select a channel");
+                    return;
+                }
                 $.post(
                     window.location.href,
                     {channel_id: channel_id},
