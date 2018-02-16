@@ -110,6 +110,18 @@ def human_date(dto: dt.datetime):
     return dto.strftime('%b %d, %Y')
 
 
+@app.template_filter('toHex')
+def to_hex(data: str):
+    data = data.encode('ascii').hex()
+    return f'0x{data}'
+
+
+@app.template_filter('toWei')
+def to_hex(amount: int):
+    from eth_utils import to_wei
+    return to_wei(amount, 'ether')
+
+
 @app.template_filter('fileSize')
 def file_size(size: int):
     return maya.humanize.naturalsize(size, gnu=True)

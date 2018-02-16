@@ -91,9 +91,9 @@
 {% block scripts %}
     {% if video.transcoder_status._name_ == 'processing' %}
         <script>
-            setTimeout(function () {
+            setInterval(function () {
                 window.location.reload();
-            }, 60 * 1000);
+            }, 10 * 1000);
         </script>
     {% endif %}
 

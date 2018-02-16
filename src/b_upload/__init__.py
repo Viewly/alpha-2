@@ -2,6 +2,7 @@ import base64
 import datetime as dt
 import hashlib
 import hmac
+import json
 
 import boto3
 from botocore.exceptions import ClientError
@@ -25,6 +26,13 @@ from wtforms import (
     TextAreaField,
 )
 
+from src.config import (
+    VIDEO_PUBLISHER_ADDRESS,
+    VIDEO_PUBLISHER_ABI,
+    VIEW_TOKEN_ABI,
+    VIEW_TOKEN_ADDRESS,
+    ETH_CHAIN,
+)
 from .. import app, db
 from ..models import (
     Video,
@@ -355,6 +363,11 @@ def publish_to_ethereum(video_id):
     return render_template(
         'publish-to-ethereum.html',
         video=video,
+        video_publisher_address=VIDEO_PUBLISHER_ADDRESS,
+        video_publisher_abi=json.dumps(VIDEO_PUBLISHER_ABI),
+        view_token_address=VIEW_TOKEN_ADDRESS,
+        view_token_abi=json.dumps(VIEW_TOKEN_ABI),
+        eth_chain=ETH_CHAIN,
     )
 
 
