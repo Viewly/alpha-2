@@ -1,7 +1,16 @@
 import json
 from os import getenv
 
+from funcy import rpartial
 from toolz import pipe
+
+load_json_file = rpartial(pipe, open, lambda x: x.read(), json.loads)
+
+
+def load_json_config(name):
+    env = 'prod' if IS_PRODUCTION else 'dev'
+    return load_json_file(f'src/conf/{name}.{env}.json')
+
 
 IS_PRODUCTION = bool(getenv('PRODUCTION', False))
 
@@ -68,14 +77,9 @@ INFURA_KEY = getenv('INFURA_KEY')
 # Ethereum Contracts
 VIEW_TOKEN_ADDRESS = getenv('VIEW_TOKEN_ADDRESS')
 VIDEO_PUBLISHER_ADDRESS = getenv('VIDEO_PUBLISHER_ADDRESS')
-VIDEO_PUBLISHER_ABI = \
-    pipe('src/conf/VideoPublisher.json', open, lambda x: x.read(), json.loads)['abi']
 
-
-def load_json_config(name):
-    env = 'prod' if IS_PRODUCTION else 'dev'
-    return json.loads(open(f'src/conf/{name}.{env}.json', 'r').read())
-
+VIEW_TOKEN_ABI = load_json_file('src/conf/ViewToken.abi.json')
+VIDEO_PUBLISHER_ABI = load_json_file('src/conf/VideoPublisher.abi.json')
 
 # Elastic Transcoder
 elastic_transcoder = load_json_config('elastic_transcoder')
