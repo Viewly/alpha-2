@@ -72,6 +72,20 @@
 
         {% endif %}
     </div>
+
+    <div class="ui mini modal">
+        <div class="header">Channel needed</div>
+        <div class="content">
+            <p>Please <b>select a channel</b> to publish your video to.</p>
+        </div>
+        <div class="actions">
+            <div class="ui blue ok button">
+                <i class="checkmark icon"></i>
+                OK
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block scripts %}
@@ -106,7 +120,7 @@
             $('#publish-video').click(function () {
                 var channel_id = $(".dropdown").dropdown('get value')[4];
                 if (!channel_id) {
-                    window.alert("Please select a channel");
+                    $('.mini.modal').modal('show');
                     return;
                 }
                 $.post(
