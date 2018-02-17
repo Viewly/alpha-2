@@ -10,42 +10,44 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
-<body>
+<body class="theme-dark">
+    <div class="theme-container">
 
-<div class="ui container">
-    <br>
-    <br>
-    <br>
-    <div class="ui text container text-center">
-        <a href="/">
-            <img src="{{ url_for('static', filename='img/logo-lg2.png') }}" class="logo" alt="">
-        </a>
-        <br>
-{#        [<a href="/">Homepage</a>]#}
-    </div>
-    <br>
-    <br>
+        <div class="ui container">
+            <br>
+            <br>
+            <br>
+            <div class="ui text container text-center">
+                <a href="/">
+                    <img class="logo-registration" src="{{ url_for('static', filename='img/logo-viewly-vertical.png') }}" class="logo" alt="">
+                </a>
+                <br>
+        {#        [<a href="/">Homepage</a>]#}
+            </div>
+            <br>
+            <br>
 
-    <div class="ui raised very padded text container segment">
-        {% include "partials/_messages.html" %}
+            <div class="ui raised very padded text container segment">
+                {% include "partials/_messages.html" %}
 
-        {% block content %}
-        {% endblock %}
-        <br>
+                {% block content %}
+                {% endblock %}
+                <br>
 
-        <div class="ui horizontal divider">
-            Looking for something else?
+                <div class="ui horizontal divider">
+                    Looking for something else?
+                </div>
+                {% include "security/_menu.html" %}
+
+            </div>
+
+            <br>
+            <br>
+            <br>
+
+
         </div>
-        {% include "security/_menu.html" %}
-
-    </div>
-
-    <br>
-    <br>
-    <br>
-
-
-</div>
+    </div> <!-- theme container -->
 
 
 <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>

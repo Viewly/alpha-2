@@ -63,6 +63,10 @@
     border-radius: 2px;
     font-size: 16px;
     padding: 10px 20px; }
+  .c-btn--primary.c-btn--medium {
+    border-radius: 2px;
+    font-size: 16px;
+    padding: 16px; }
   .c-btn--primary.c-btn--alternative {
     background-color: #fff;
     background-image: none;
@@ -133,9 +137,9 @@
 .theme-dark .theme-container {
   color: #fcfcfc; }
 
-.theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4, .theme-light h5, .theme-light h6, .theme-light p, .theme-light ul, .theme-light li, .theme-light b, .theme-light strong, .theme-light em {
+.theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4, .theme-light h5, .theme-light h6, .theme-light p, .theme-light b, .theme-light strong, .theme-light em {
   color: #333333; }
-.theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4, .theme-dark h5, .theme-dark h6, .theme-dark p, .theme-dark ul, .theme-dark li, .theme-dark b, .theme-dark strong, .theme-dark em {
+.theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4, .theme-dark h5, .theme-dark h6, .theme-dark p, .theme-dark b, .theme-dark strong, .theme-dark em {
   color: #fcfcfc; }
 
 .theme-light .ui.header {
@@ -152,6 +156,12 @@
 
 .ui.container {
   padding-top: 1em; }
+
+.ui.form li {
+  color: #ff0264;
+  list-style: none;
+  padding: 0;
+  margin: 0; }
 
 /* Search */
 #search-box.ui.input input {
@@ -171,3 +181,10 @@
     border: 1px solid #666666;
     background: transparent;
     color: #fcfcfc; }
+
+.logo-registration {
+  width: 200px;
+  height: auto; }
+
+.ui.form .field.error .input, .ui.form .field.error label, .ui.form .fields.error .field .input, .ui.form .fields.error .field label {
+  color: #ff0264; }

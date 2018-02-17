@@ -15,8 +15,7 @@
   }
 }
 
-
-h1, h2, h3, h4, h5, h6, p, ul, li, b, strong, em {
+h1, h2, h3, h4, h5, h6, p, b, strong, em {
   @include themify($themes) {
     color: themed('textColorPrimary');
   }	
@@ -39,6 +38,13 @@ h1, h2, h3, h4, h5, h6, p, ul, li, b, strong, em {
   padding-top: 1em;
 }
 
+.ui.form li {
+  color: $color-red;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 
 /* Search */
 
@@ -58,3 +64,18 @@ h1, h2, h3, h4, h5, h6, p, ul, li, b, strong, em {
   }
 }
 
+.logo-registration {
+  width: 200px;
+  height: auto;
+}
+
+
+.ui.form .field.error .input, .ui.form .field.error label, .ui.form .fields.error .field .input, .ui.form .fields.error .field label {
+    color: $color-red;
+}
+
+.error li {
+  @include themify($themes) {
+    color: themed('textColorAlert');
+  }
+}

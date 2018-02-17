@@ -65,6 +65,11 @@
         font-size: 16px;
         padding: $spacing-unit-small $spacing-unit;
     }
+    &.c-btn--medium {
+        border-radius: 2px;
+        font-size: 16px;
+        padding: 16px;
+    }    
 
     &.c-btn--alternative {
         background-color: #fff;
