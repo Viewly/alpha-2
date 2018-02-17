@@ -1,26 +1,26 @@
 
 $themes: (
   light: (
-    colorAccent: $color-teal,
-    colorAccentHover: $color-teal-dark,
+/*    colorAccent: $color-teal,
+    colorAccentHover: $color-teal-dark,*/
     backgroundColor: $color-background-off-white,
-    border: 1px solid $color-border-light,
+/*    border: 1px solid $color-border-light,*/
     textColorPrimary: $color-text-dark,
-    textColorSecondary: $color-text-gray,
+/*    textColorSecondary: $color-text-gray,
     textColorAccent: $color-text-teal,
     textColorAccentHover: $color-teal,
-    textColorError: $color-text-red,
+    textColorError: $color-text-red,*/
   ),
   dark: (
-    colorAccent: $color-teal,
-    colorAccentHover: $color-teal,
+    /*colorAccent: $color-teal,*/
+    /*colorAccentHover: $color-teal,*/
     backgroundColor: $color-bg-black,
-    border: 1px solid $color-border-dark,
+/*    border: 1px solid $color-border-dark,*/
     textColorPrimary: $color-text-white,
-    textColorSecondary: $color-text-gray-light,
+/*    textColorSecondary: $color-text-gray-light,
     textColorAccent: $color-teal,
     textColorAccentHover: $color-teal-light,
-    textColorError: $color-text-red,
+    textColorError: $color-text-red,*/
   ),
 );
 
