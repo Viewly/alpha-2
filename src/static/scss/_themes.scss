@@ -4,7 +4,9 @@ $themes: (
 /*    colorAccent: $color-teal,
     colorAccentHover: $color-teal-dark,*/
     backgroundColor: $color-background-off-white,
-/*    border: 1px solid $color-border-light,*/
+    border: 1px solid $color-border-light,
+    borderMediumContrast: 1px solid #999,
+    borderHighContrast: 1px solid $color-border-dark,
     textColorPrimary: $color-text-dark,
 /*    textColorSecondary: $color-text-gray,
     textColorAccent: $color-text-teal,
@@ -15,7 +17,9 @@ $themes: (
     /*colorAccent: $color-teal,*/
     /*colorAccentHover: $color-teal,*/
     backgroundColor: $color-bg-black,
-/*    border: 1px solid $color-border-dark,*/
+    border: 1px solid $color-border-dark,
+    borderMediumContrast: 1px solid #666,
+    borderHighContrast: 1px solid $color-border-light,
     textColorPrimary: $color-text-white,
 /*    textColorSecondary: $color-text-gray-light,
     textColorAccent: $color-teal,
