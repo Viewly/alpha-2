@@ -1,0 +1,46 @@
+
+$themes: (
+  light: (
+    colorAccent: $color-teal,
+    colorAccentHover: $color-teal-dark,
+    backgroundColor: $color-background-off-white,
+    border: 1px solid $color-border-light,
+    textColorPrimary: $color-text-dark,
+    textColorSecondary: $color-text-gray,
+    textColorAccent: $color-text-teal,
+    textColorAccentHover: $color-teal,
+    textColorError: $color-text-red,
+  ),
+  dark: (
+    colorAccent: $color-teal,
+    colorAccentHover: $color-teal,
+    backgroundColor: $color-bg-black,
+    border: 1px solid $color-border-dark,
+    textColorPrimary: $color-text-white,
+    textColorSecondary: $color-text-gray-light,
+    textColorAccent: $color-teal,
+    textColorAccentHover: $color-teal-light,
+    textColorError: $color-text-red,
+  ),
+);
+
+/*
+ * Implementation of themes
+ */
+@mixin themify($themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}

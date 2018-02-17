@@ -1,0 +1,30 @@
+
+
+
+@import "variables";
+@import "themes";
+
+
+.theme-dark {
+	background-color: $color-bg-black;
+}
+
+.theme-container {	
+  @include themify($themes) {
+    color: themed('textColorPrimary');
+  }
+}
+
+
+h1, h2, h3, h4, h5, h6, p, ul, li, b, strong, em {
+  @include themify($themes) {
+    color: themed('textColorPrimary');
+  }	
+}
+
+.ui.header {
+  @include themify($themes) {
+    color: themed('textColorPrimary');
+  }
+}
+
