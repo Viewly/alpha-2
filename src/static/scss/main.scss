@@ -52,6 +52,44 @@ h1, h2, h3, h4, h5, h6, p, b, strong, em {
   margin: 0;
 }
 
+.ui.table {
+  background: transparent;
+   @include themify($themes) {
+    color: themed('textColorPrimary');
+    border: themed('border');
+  }  
+}
+
+.ui.table tr {
+   @include themify($themes) {
+    border-bottom: themed('borderMediumContrast');
+  }  
+}
+
+.ui.table th, .ui.table td {
+  padding: 14px 16px;
+}
+
+
+.theme-dark .ui.table thead th {
+  background: #000;
+  color: #fff;
+}
+
+
+.ui.celled.table tr td, .ui.celled.table tr th {
+  @include themify($themes) {
+      border-left: themed('border');
+  }
+}
+
+.ui.table tr td {
+   @include themify($themes) {
+      border-top: themed('border');
+  }
+}
+
+
 
 /* Search */
 
@@ -101,3 +139,11 @@ h1, h2, h3, h4, h5, h6, p, b, strong, em {
   }
 }
 
+
+.ui.button:not(.icon)>.icon:not(.button):not(.dropdown) {
+    margin: 0;
+}
+
+.ui.red.button:hover, .ui.red.buttons .button:hover {
+    background-color: $color-red;
+}

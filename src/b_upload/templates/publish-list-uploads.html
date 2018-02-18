@@ -23,7 +23,7 @@
                     <td>{{ video.uploaded_at | humanDate }}</td>
                     <td>{{ get_transcoding_status(video.id).upper() }}</td>
                     <td><a href="{{ url_for('.publish_add_details', video_id=video.id) }}"
-                           class="ui button blue">Publish</a>
+                           class="c-btn c-btn--primary c-btn--small">Publish</a>
                         <a href="javascript:"
                            onclick="deleteVideo('{{ video.id }}')"
                            id="delete-{{ video.id }}"

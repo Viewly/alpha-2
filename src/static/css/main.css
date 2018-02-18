@@ -49,7 +49,7 @@
   font-size: 18px;
   font-weight: bold;
   line-height: 1;
-  min-width: 150px;
+  min-width: 100px;
   padding: 20px 30px;
   /**
    * 1. Reset image from primary button.
@@ -168,6 +168,37 @@
   padding: 0;
   margin: 0; }
 
+.ui.table {
+  background: transparent; }
+  .theme-light .ui.table {
+    color: #333333;
+    border: 1px solid #eeeeee; }
+  .theme-dark .ui.table {
+    color: #fcfcfc;
+    border: 1px solid #232f38; }
+
+.theme-light .ui.table tr {
+  border-bottom: 1px solid #999999; }
+.theme-dark .ui.table tr {
+  border-bottom: 1px solid #666666; }
+
+.ui.table th, .ui.table td {
+  padding: 14px 16px; }
+
+.theme-dark .ui.table thead th {
+  background: #000;
+  color: #fff; }
+
+.theme-light .ui.celled.table tr td, .theme-light .ui.celled.table tr th {
+  border-left: 1px solid #eeeeee; }
+.theme-dark .ui.celled.table tr td, .theme-dark .ui.celled.table tr th {
+  border-left: 1px solid #232f38; }
+
+.theme-light .ui.table tr td {
+  border-top: 1px solid #eeeeee; }
+.theme-dark .ui.table tr td {
+  border-top: 1px solid #232f38; }
+
 /* Search */
 #search-box.ui.input input {
   background: transparent; }
@@ -204,3 +235,9 @@
 .theme-dark .ui.menu:not(.vertical) .item {
   color: #fcfcfc;
   border-left: 1px solid #232f38; }
+
+.ui.button:not(.icon) > .icon:not(.button):not(.dropdown) {
+  margin: 0; }
+
+.ui.red.button:hover, .ui.red.buttons .button:hover {
+  background-color: #ff0264; }
