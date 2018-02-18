@@ -21,6 +21,13 @@ h1, h2, h3, h4, h5, h6, p, b, strong, em {
   }	
 }
 
+
+.text-link {
+   @include themify($themes) {
+    color: themed('textColorLink');
+  }  
+}
+
 .ui.header {
   @include themify($themes) {
     color: themed('textColorPrimary');
@@ -74,8 +81,23 @@ h1, h2, h3, h4, h5, h6, p, b, strong, em {
     color: $color-red;
 }
 
+.ui.positive.message {
+  background-color: transparent;  
+  box-shadow: 0 0 0 1px #00c88a inset, 0 0 0 0 transparent;
+}
+
+
 .error li {
   @include themify($themes) {
     color: themed('textColorAlert');
   }
 }
+
+
+.ui.menu:not(.vertical) .item {
+  @include themify($themes) {
+    color: themed('textColorPrimary');
+    border-left: themed('border');
+  }
+}
+

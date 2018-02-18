@@ -8,6 +8,8 @@ $themes: (
     borderMediumContrast: 1px solid #999,
     borderHighContrast: 1px solid $color-border-dark,
     textColorPrimary: $color-text-dark,
+    textColorSubtle: blue,
+    textColorLink: blue,
 /*    textColorSecondary: $color-text-gray,
     textColorAccent: $color-text-teal,
     textColorAccentHover: $color-teal,
@@ -21,6 +23,8 @@ $themes: (
     borderMediumContrast: 1px solid #666,
     borderHighContrast: 1px solid $color-border-light,
     textColorPrimary: $color-text-white,
+    textColorSubtle: red,
+    textColorLink: $color-cyan,
 /*    textColorSecondary: $color-text-gray-light,
     textColorAccent: $color-teal,
     textColorAccentHover: $color-teal-light,
@@ -48,3 +52,4 @@ $themes: (
 @function themed($key) {
   @return map-get($theme-map, $key);
 }
+

@@ -142,6 +142,11 @@
 .theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4, .theme-dark h5, .theme-dark h6, .theme-dark p, .theme-dark b, .theme-dark strong, .theme-dark em {
   color: #fcfcfc; }
 
+.theme-light .text-link {
+  color: blue; }
+.theme-dark .text-link {
+  color: cyan; }
+
 .theme-light .ui.header {
   color: #333333; }
 .theme-dark .ui.header {
@@ -188,3 +193,14 @@
 
 .ui.form .field.error .input, .ui.form .field.error label, .ui.form .fields.error .field .input, .ui.form .fields.error .field label {
   color: #ff0264; }
+
+.ui.positive.message {
+  background-color: transparent;
+  box-shadow: 0 0 0 1px #00c88a inset, 0 0 0 0 transparent; }
+
+.theme-light .ui.menu:not(.vertical) .item {
+  color: #333333;
+  border-left: 1px solid #eeeeee; }
+.theme-dark .ui.menu:not(.vertical) .item {
+  color: #fcfcfc;
+  border-left: 1px solid #232f38; }

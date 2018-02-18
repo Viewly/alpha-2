@@ -4,8 +4,11 @@
 
 {% block styles %}
     <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/fine-uploader-new.css') }}">
+          href="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/fine-uploader-new.css') }}">      
+
     <script src="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/s3.fine-uploader.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/upload.css') }}">
     <script type="text/template" id="qq-template">
         <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
@@ -15,7 +18,9 @@
             <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
                 <span class="qq-upload-drop-area-text-selector"></span>
             </div>
-            <div class="qq-upload-button-selector qq-upload-button">
+            <!-- <div class="c-btn c-btn--primary c-btn--small"> -->
+            <div class="qq-upload-button-selector c-btn c-btn--primary c-btn--hollow c-btn--small">
+                
                 <div>Select video(s)</div>
             </div>
             <span class="qq-drop-processing-selector qq-drop-processing">
@@ -75,19 +80,19 @@
         {% if pending_count %}
             <div class="ui positive message">
                 <p>You have <b>{{ pending_count }} video(s)</b> ready to be
-                    <a href="{{ url_for('.publish_list_uploads') }}">published</a>.</p>
+                    <a class="text-link" href="{{ url_for('.publish_list_uploads') }}">published</a></p>
             </div>
         {% endif %}
 
         <div class="upload-area">
-            <div class="ui horizontal divider">Upload your video files</div>
+            <div class="ui horizontal divider"><p>Upload your video files</p></div>
             <div id="fine-uploader"></div>
 
             <div id="next_steps" class="text-center" style="{% if not pending_count %}display: none;{% endif %}">
                 <br>
-                    <p>When you're done uploading, you can proceed to</p>
+                    <!-- <p>When you're done uploading, you can proceed to</p> -->
                     <a href="{{ url_for('.publish_list_uploads') }}"
-                       class="ui button huge blue">Publish your video(s)</a>
+                       class="c-btn c-btn--primary">Next</a>
                 <br>
             </div>
         </div>

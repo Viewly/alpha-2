@@ -1,0 +1,159 @@
+
+.qq-upload-button-selector {
+	margin-bottom: 1em;
+}
+
+.theme-light {
+	.qq-uploader {
+		color: #000;
+		background: #fff;
+		border: 1px dashed #ccc;
+		transition: 0.2s all ease-in-out;
+	}
+	.qq-upload-drop-area-active {
+		border: 1px dashed blue;
+	}	
+}
+
+.theme-dark {
+	.qq-uploader {
+	    color: #fff;
+	    background: #000;
+	    border: 2px dashed #333;
+	    transition: 0.2s all ease-in-out;
+	}
+	.qq-upload-drop-area {
+		background: #000;
+	}
+	.qq-upload-drop-area-active {
+		border: 1px dashed cyan;
+		background: #111;
+	}		
+}
+
+
+.qq-upload-button-hover {
+    &:not(:disabled) {
+        &:hover {
+        	background-image: linear-gradient(to left, #006cff 0%, #00b8ff 40%, #006cff 100%);
+            background-position: 100%;
+            color: #fff;
+        }
+    }
+}
+
+.qq-progress-bar {
+	background-image: linear-gradient(to left, #006cff 0%, #00b8ff 40%, #006cff 100%);
+	margin: 0 20px 16px 20px;
+	padding: 0 20px;
+}
+
+.qq-total-progress-bar-container {
+	float: none;
+	width: 100%;
+	border-radius: 10px;
+	margin: 0 0 20px 0;
+}
+
+
+.qq-upload-list li {
+	background-color: transparent;
+	margin-bottom: 1em;
+}
+
+.theme-dark .qq-upload-list li {
+	border: 1px solid #444;
+	color: #fff;
+	padding: 20px 0;
+}
+
+.qq-upload-cancel {
+	border: transparent;
+	background-color: #ff0264;
+}
+
+.qq-upload-list li.qq-upload-success {
+	transition: 0.3s all ease-in-out;
+	background-color: transparent;
+	border: transparent;
+	box-shadow: 0 0 0 2px #00c88a inset;
+}
+
+.qq-upload-delete {
+	background-color: #ff0264;
+	text-shadow: none;
+	box-shadow: none;
+}
+
+.qq-progress-bar-container-selector {
+	width: 95%;
+}
+
+
+/* CSS spinner */
+
+.qq-upload-spinner {
+	font-size: 10px;
+	margin: 0px auto;
+	text-indent: -9999em;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background: #ffffff;
+	background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+	background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+	background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+	background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+	background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+	position: relative;
+	-webkit-animation: load3 1.4s infinite linear;
+	animation: load3 1.4s infinite linear;
+	-webkit-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	transform: translateZ(0);
+}
+
+.qq-upload-spinner:before {
+	width: 50%;
+	height: 50%;
+	background: #ffffff;
+	border-radius: 100% 0 0 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	content: '';
+}
+.qq-upload-spinner:after {
+	background: #000;
+	width: 75%;
+	height: 75%;
+	border-radius: 50%;
+	content: '';
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
