@@ -1,5 +1,6 @@
 .idea/
 .env
+postgres_data/
 
 
 # Created by .ignore support plugin (hsz.mobi)

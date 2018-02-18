@@ -1,4 +1,16 @@
+import json
 from os import getenv
+
+from funcy import rpartial
+from toolz import pipe
+
+load_json_file = rpartial(pipe, open, lambda x: x.read(), json.loads)
+
+
+def load_json_config(name):
+    env = 'prod' if IS_PRODUCTION else 'dev'
+    return load_json_file(f'src/conf/{name}.{env}.json')
+
 
 IS_PRODUCTION = bool(getenv('PRODUCTION', False))
 
@@ -58,12 +70,16 @@ SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly Alpha 2. Please confirm you
 CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0')
 CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 
+# Ethereum chain
+ETH_CHAIN = getenv('ETH_CHAIN')
+INFURA_KEY = getenv('INFURA_KEY')
 
-def load_json_config(name):
-    import json
-    env = 'prod' if IS_PRODUCTION else 'dev'
-    return json.loads(open(f'src/conf/{name}.{env}.json', 'r').read())
+# Ethereum Contracts
+VIEW_TOKEN_ADDRESS = getenv('VIEW_TOKEN_ADDRESS')
+VIDEO_PUBLISHER_ADDRESS = getenv('VIDEO_PUBLISHER_ADDRESS')
 
+VIEW_TOKEN_ABI = load_json_file('src/conf/ViewToken.abi.json')
+VIDEO_PUBLISHER_ABI = load_json_file('src/conf/VideoPublisher.abi.json')
 
 # Elastic Transcoder
 elastic_transcoder = load_json_config('elastic_transcoder')

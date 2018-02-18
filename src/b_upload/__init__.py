@@ -2,6 +2,7 @@ import base64
 import datetime as dt
 import hashlib
 import hmac
+import json
 
 import boto3
 from botocore.exceptions import ClientError
@@ -25,6 +26,13 @@ from wtforms import (
     TextAreaField,
 )
 
+from src.config import (
+    VIDEO_PUBLISHER_ADDRESS,
+    VIDEO_PUBLISHER_ABI,
+    VIEW_TOKEN_ABI,
+    VIEW_TOKEN_ADDRESS,
+    ETH_CHAIN,
+)
 from .. import app, db
 from ..models import (
     Video,
@@ -270,7 +278,7 @@ def publish_add_details(video_id):
         'publish-add-details.html',
         form=form,
         error=error,
-        video_id=video.id,
+        video=video,
     )
 
 
@@ -291,9 +299,9 @@ def publish_add_thumbnails(video_id):
 
     return render_template(
         'publish-add-thumbnails.html',
+        video=video,
         error=error,
         current_thumbnail=get_thumbnail_cdn_url(video, 'tiny'),
-        video_id=video.id,
         s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADS_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
@@ -311,17 +319,18 @@ def publish_to_channel(video_id):
     ).first()
     if not video:
         return redirect(url_for('.publish_list_uploads'))
+    if video.channel_id:
+        return redirect(url_for('.publish_to_ethereum', video_id=video.id))
     if video.published_at:
         return redirect(f'/v/{video.id}')
 
     if request.method == 'POST':
-        # do some publishing here
         video.channel_id = request.form['channel_id']
         assert db.session.query(Channel).filter_by(
             id=video.channel_id,
             user_id=current_user.id,
         ).first()
-        video.published_at = dt.datetime.utcnow()
+        # video.published_at = dt.datetime.utcnow()
         db.session.add(video)
         db.session.commit()
         return jsonify(video_id=video.id)
@@ -335,6 +344,30 @@ def publish_to_channel(video_id):
         video=video,
         source=get_video_cdn_assets(video),
         channels=channels,
+    )
+
+
+@upload.route("publish/to_ethereum/<string:video_id>", methods=['GET'])
+@login_required
+def publish_to_ethereum(video_id):
+    """ Publish the last uploaded video """
+    video = db.session.query(Video).filter_by(
+        id=video_id,
+        user_id=current_user.id,
+    ).first()
+    if not video:
+        return redirect(url_for('.publish_list_uploads'))
+    if video.published_at:
+        return redirect(f'/v/{video.id}')
+
+    return render_template(
+        'publish-to-ethereum.html',
+        video=video,
+        video_publisher_address=VIDEO_PUBLISHER_ADDRESS,
+        video_publisher_abi=json.dumps(VIDEO_PUBLISHER_ABI),
+        view_token_address=VIEW_TOKEN_ADDRESS,
+        view_token_abi=json.dumps(VIEW_TOKEN_ABI),
+        eth_chain=ETH_CHAIN,
     )
 
 

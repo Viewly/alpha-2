@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% set active_menu = "publish" %}
+{% set active_submenu = "channel" %}
 {% from "_formhelpers.html" import render_field %}
-{% block title %}Publish to Channel{% endblock %}
+{% block title %}Add to Channel{% endblock %}
 
 {% block content %}
+    {% include '_breadcrumbs.html' %}
     <div class="ui text container text-center">
         {% if not video.file_mapper.thumbnail_files
           or video.transcoder_status._name_ != 'complete' %}
@@ -39,7 +41,7 @@
         {% else %}
             <div class="ui horizontal divider">Video Preview</div>
             <div id="player"></div>
-
+            <div class="ui horizontal divider">Choose a channel</div>
             {% if channels %}
                 <div class="ui form text text-left">
                     <div class="field">
@@ -70,14 +72,28 @@
 
         {% endif %}
     </div>
+
+    <div class="ui mini modal">
+        <div class="header">Channel needed</div>
+        <div class="content">
+            <p>Please <b>select a channel</b> to publish your video to.</p>
+        </div>
+        <div class="actions">
+            <div class="ui blue ok button">
+                <i class="checkmark icon"></i>
+                OK
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block scripts %}
     {% if video.transcoder_status._name_ == 'processing' %}
         <script>
-            setTimeout(function () {
+            setInterval(function () {
                 window.location.reload();
-            }, 60 * 1000);
+            }, 10 * 1000);
         </script>
     {% endif %}
 
@@ -103,7 +119,10 @@
         var publishForm = function () {
             $('#publish-video').click(function () {
                 var channel_id = $(".dropdown").dropdown('get value')[4];
-                if (!channel_id) { window.alert("Please select a channel"); return; }
+                if (!channel_id) {
+                    $('.mini.modal').modal('show');
+                    return;
+                }
                 $.post(
                     window.location.href,
                     {channel_id: channel_id},
@@ -111,7 +130,7 @@
                     }, 'json')
                     .done(function (data) {
                         window.location.replace(
-                            "{{ url_for('view_video', video_id=video.id) }}")
+                            "{{ url_for('.publish_to_ethereum', video_id=video.id) }}")
                     })
                     .fail(function () {
                             window.alert('Error occurred while publishing')

@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% set active_menu = "publish" %}
+{% set active_submenu = "about" %}
 {% from "_formhelpers.html" import render_field %}
 {% block title %}Set title and description{% endblock %}
 
 {% block content %}
+    {% include '_breadcrumbs.html' %}
     <br>
     <div class="ui text container text-center">
         {% if error %}
@@ -22,14 +24,7 @@
         <br>
     </form>
 
-{#    {% if form.description.data %}#}
-        <h3 class="ui dividing header">Preview</h3>
-{#        <h2 class="ui left floated header">{{ form.title.data }}</h2>#}
-{#        <br><br>#}
-{#        <div class="Post">#}
-{#            {{ form.description.data | markdown }}#}
-{#        </div>#}
-{#    {% endif %}#}
+    <h3 class="ui dividing header">Preview</h3>
 
     {% if form.description.data %}
         <div class="ui segment">
@@ -55,7 +50,7 @@
 
     <br><br>
     <div class="ui text container text-center">
-        <a href="{{ url_for('.publish_add_thumbnails', video_id=video_id) }}"
+        <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}"
            class="ui button blue huge">Next: Add Cover Image</a>
     </div>
 

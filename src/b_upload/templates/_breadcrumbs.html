@@ -1,0 +1,38 @@
+<div class="ui text container text-center">
+    <div class="ui big breadcrumb">
+        <a class="section {% if active_submenu == 'about' %}active{% endif %}"
+           href="{{ url_for('.publish_add_details', video_id=video.id) }}">
+            About Video</a>
+
+
+        <i class="right angle icon divider"></i>
+        {% if active_submenu == 'about' %}
+            <div class="section">Cover Image</div>
+        {% else %}
+            <a class="section {% if active_submenu == 'cover' %}active{% endif %}"
+               href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}">
+                Cover Image</a>
+        {% endif %}
+
+
+        {% if not video.channel_id %}
+            <i class="right angle icon divider"></i>
+            {% if active_submenu == 'channel' %}
+                <a class="active section">Set Channel</a>
+            {% else %}
+                <div class="section">Set Channel</div>
+            {% endif %}
+        {% endif %}
+
+
+        {% if not video.published_at %}
+            <i class="right angle icon divider"></i>
+            {% if active_submenu == 'publish' %}
+                <a class="active section">Publish</a>
+            {% else %}
+                <div class="section">Publish</div>
+            {% endif %}
+        {% endif %}
+
+    </div>
+</div>

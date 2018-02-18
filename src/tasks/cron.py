@@ -1,5 +1,8 @@
+import datetime as dt
+
 from celery.schedules import crontab
 
+from src.tasks.eth import is_video_published
 from . import (
     new_celery,
     db_session,
@@ -20,6 +23,11 @@ cron.conf.update(
 cron.conf.beat_schedule = {
     'refresh-transcoder-jobs': {
         'task': 'src.tasks.cron.refresh_transcoder_jobs',
+        'schedule': crontab(minute='*/1'),
+        'args': ()
+    },
+    'refresh-unpublished-videos': {
+        'task': 'src.tasks.cron.refresh_unpublished_videos',
         'schedule': crontab(minute='*/1'),
         'args': ()
     },
@@ -47,5 +55,22 @@ def refresh_transcoder_jobs():
         status = get_job_status(video.transcoder_job_id)
         video.transcoder_status = status_map[status]
         session.add(video)
+
+    session.commit()
+
+
+@cron.task(ignore_result=True)
+def refresh_unpublished_videos():
+    session = db_session()
+    unpublished_videos = \
+        session.query(Video).filter(
+            Video.channel_id is not None,
+            Video.published_at == None
+        )
+
+    for video in unpublished_videos:
+        if is_video_published(video.id):
+            video.published_at = dt.datetime.utcnow()
+            session.add(video)
 
     session.commit()
