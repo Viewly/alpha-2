@@ -147,3 +147,23 @@ h1, h2, h3, h4, h5, h6, p, b, strong, em {
 .ui.red.button:hover, .ui.red.buttons .button:hover {
     background-color: $color-red;
 }
+
+
+
+.template-publish-add-details {
+  .ui.form .field > label {
+    @include themify($themes) {
+      color: themed('textColorPrimary');
+    }
+  }
+  .ui.segment.preview {
+     background: transparent; 
+     padding: 24px;
+      @include themify($themes) {
+        color: themed('textColorPrimary');
+        border: themed('borderMediumContrast');
+    }
+  }
+}
+
+

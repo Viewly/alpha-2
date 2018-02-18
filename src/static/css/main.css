@@ -241,3 +241,17 @@
 
 .ui.red.button:hover, .ui.red.buttons .button:hover {
   background-color: #ff0264; }
+
+.theme-light .template-publish-add-details .ui.form .field > label {
+  color: #333333; }
+.theme-dark .template-publish-add-details .ui.form .field > label {
+  color: #fcfcfc; }
+.template-publish-add-details .ui.segment.preview {
+  background: transparent;
+  padding: 24px; }
+  .theme-light .template-publish-add-details .ui.segment.preview {
+    color: #333333;
+    border: 1px solid #999999; }
+  .theme-dark .template-publish-add-details .ui.segment.preview {
+    color: #fcfcfc;
+    border: 1px solid #666666; }

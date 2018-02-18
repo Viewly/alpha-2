@@ -6,30 +6,31 @@
 
 {% block content %}
     {% include '_breadcrumbs.html' %}
-    <br>
-    <div class="ui text container text-center">
-        {% if error %}
-            <p class="ui red message close">{{ error }}</p>
-            <br>
-        {% endif %}
-    </div>
-    <div class="ui text container">
-    <h3 class="ui dividing header">About</h3>
-    <form method="post" class="ui form">
-        {{ form.csrf_token }}
-        {{ render_field(form.title) }}
-        {{ render_field(form.description) }}
-
-        <button class="ui button blue">Save</button>
+    <div class="template-publish-add-details">
         <br>
-    </form>
+        <div class="ui text container text-center">
+            {% if error %}
+                <p class="ui red message close">{{ error }}</p>
+                <br>
+            {% endif %}
+        </div>
+        <div class="ui text container">
+        <h3 class="ui dividing header">About</h3>
+        <form method="post" class="ui form">
+            {{ form.csrf_token }}
+            {{ render_field(form.title) }}
+            {{ render_field(form.description) }}
+
+            <button class="c-btn c-btn--primary c-btn--small">Save and preview</button>
+            <br>
+        </form>
 
     <h3 class="ui dividing header">Preview</h3>
 
-    {% if form.description.data %}
-        <div class="ui segment">
-            <h2 class="ui left floated header">{{ form.title.data }}</h2>
-            <div class="ui relaxed divided items">
+        {% if form.description.data %}
+            <div class="ui segment preview">
+                <h2 class="ui left floated header">{{ form.title.data }}</h2>
+                <div class="ui relaxed divided items">
                 <div class="item">
                     <div class="content">
                         <div class="description">
@@ -39,7 +40,9 @@
                                 {% endif %}
                             </div>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
@@ -48,7 +51,7 @@
     <br><br>
     <div class="ui text container text-center">
         <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}"
-           class="ui button blue huge">Next: Add Cover Image</a>
+           class="c-btn c-btn--primary">Next: Add Cover Image</a>
     </div>
 
 {% endblock %}
