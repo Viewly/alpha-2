@@ -18,15 +18,19 @@
             </thead>
             <tbody>
             {% for video in videos %}
-                <tr>
+                <tr id="row-{{ video.id }}">
                     <td>{{ video.title }}</td>
                     <td>{{ video.uploaded_at | humanDate }}</td>
                     <td>{% if video.transcoder_status %}
                         {{ video.transcoder_status._name_.upper() }}
-                        {% else %}PENDING{% endif %}</td>
+                    {% else %}PENDING{% endif %}</td>
                     <td><a href="{{ url_for('.publish_add_details', video_id=video.id) }}"
                            class="ui button blue">Publish</a>
-                        <a href="" class="ui button red"><i class="trash icon"></i></a>
+                        <a href="javascript:"
+                           onclick="deleteVideo('{{ video.id }}')"
+                           id="delete-{{ video.id }}"
+                           class="ui button red">
+                            <i class="trash icon"></i></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -37,4 +41,16 @@
 {% endblock %}
 
 {% block scripts %}
+    <script>
+        function deleteVideo(videoId) {
+            $(`#delete-${videoId}`).addClass('loading disabled');
+            $.ajax({
+                url: '{{ url_for(".delete_video", video_id="") }}' + videoId,
+                type: 'DELETE',
+                success: function (result) {
+                    $(`#row-${videoId}`).remove();
+                }
+            });
+        }
+    </script>
 {% endblock %}
