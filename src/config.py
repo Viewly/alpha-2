@@ -70,6 +70,9 @@ SECURITY_EMAIL_SUBJECT_REGISTER = "Welcome to Viewly Alpha 2. Please confirm you
 CELERY_BACKEND_URL = getenv('CELERY_BACKEND_URL', 'redis://localhost:6379/0')
 CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 
+# Logging
+SENTRY_DSN = getenv('SENTRY_DSN')
+
 # Ethereum chain
 ETH_CHAIN = getenv('ETH_CHAIN')
 INFURA_KEY = getenv('INFURA_KEY')
