@@ -9,7 +9,7 @@ def get_manifest_cdn_url(video: Video):
     if video.transcoder_status == TranscoderStatus.complete:
         return \
             f"{CDN_URL}/{video.file_mapper.video_manifest_version}" \
-            f"/{video.id}/dash-main.mpd"
+            f"/{video.id}/dash.mpd"
 
 
 def get_thumbnail_cdn_url(video: Video, size_name='small'):
