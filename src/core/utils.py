@@ -4,7 +4,7 @@ import shutil
 from contextlib import suppress
 from functools import wraps
 
-from funcy.decorators import contextmanager
+from funcy import contextmanager
 
 
 def sha1sum(filename):

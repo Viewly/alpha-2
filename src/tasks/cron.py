@@ -2,12 +2,12 @@ import datetime as dt
 
 from celery.schedules import crontab
 
-from src.tasks.eth import is_video_published
+from ..core.eth import is_video_published
 from . import (
     new_celery,
     db_session,
 )
-from .et import get_job_status
+from ..core.et import get_job_status
 from ..models import Video, TranscoderStatus
 
 cron = new_celery(

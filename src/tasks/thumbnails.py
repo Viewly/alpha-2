@@ -7,7 +7,7 @@ from . import (
     db_session,
     new_celery,
 )
-from .media import (
+from ..core.media import (
     img_resize_multi_to_s3,
     img_from_s3,
 )

@@ -23,7 +23,7 @@ def get_video_stream(ffprobe_out: dict) -> dict:
 
 def get_video_resolution(ffprobe_out: dict) -> tuple:
     video = get_video_stream(ffprobe_out)
-    return (video['coded_width'], video['coded_height'])
+    return video['coded_width'], video['coded_height']
 
 
 def get_video_framerate(ffprobe_out: dict) -> int:

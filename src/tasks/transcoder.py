@@ -2,7 +2,7 @@ from . import (
     db_session,
     new_celery,
 )
-from .et import create_job
+from ..core.et import create_job
 from ..models import Video, TranscoderStatus
 
 transcoder = new_celery(
