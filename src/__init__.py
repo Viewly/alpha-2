@@ -1,3 +1,5 @@
+from os import getenv
+
 import delegator
 from flask import (
     Flask,
@@ -10,10 +12,11 @@ from flask_security import (
     SQLAlchemyUserDatastore,
 )
 from flask_sqlalchemy import SQLAlchemy
+from raven.contrib.flask import Sentry
 
-# Initialize Flask
 from .config import IS_PRODUCTION
 
+# Initialize Flask
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config.from_pyfile('config.py')
 
@@ -21,6 +24,9 @@ app.config.from_pyfile('config.py')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 mail = Mail(app)
+
+# Optionally initialize Sentry (error logging)
+sentry = Sentry(app) if getenv('SENTRY_DSN') else None
 
 # Markdown Support
 md_features = ['autolink', 'fenced_code', 'underline', 'highlight', 'quote',
