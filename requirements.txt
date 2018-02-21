@@ -17,3 +17,4 @@ Pillow
 psycopg2-binary
 web3
 eth_utils
+delegator.py
