@@ -13,7 +13,11 @@ from ..core.ffprobe import (
     get_duration,
 )
 from ..core.media import run_ffprobe_s3
-from ..models import Video, TranscoderStatus
+from ..models import (
+    Video,
+    TranscoderStatus,
+    TranscoderJob,
+)
 
 transcoder = new_celery(
     'transcoder',
@@ -34,9 +38,8 @@ transcoder.conf.update(
 def start_transcoder_job(video_id: str):
     session = db_session()
     video = session.query(Video).filter_by(id=video_id).one()
-    is_pending = not video.transcoder_status \
-                 or video.transcoder_status == TranscoderStatus.pending
-    if video and is_pending:
+    transcoder_jobs = session.query(TranscoderJob).filter_by(video_id=video_id).all()
+    if video and not transcoder_jobs:
         try:
             input_key = video.file_mapper.s3_upload_video_key
             output_path = f"v1/{video.id}/"
@@ -51,12 +54,12 @@ def start_transcoder_job(video_id: str):
                 'duration': get_duration(ffprobe_out),
             }
 
-            fallback = create_fallback_job(
+            fallback_job = create_fallback_job(
                 input_key,
                 output_path,
                 video_resolution=get_video_resolution(ffprobe_out),
             )
-            dash = create_dash_job(
+            dash_job = create_dash_job(
                 input_key,
                 output_path,
                 video_resolution=get_video_resolution(ffprobe_out),
@@ -64,11 +67,21 @@ def start_transcoder_job(video_id: str):
             )
         except Exception as e:
             # todo: log the exception
-            video.transcoder_status = TranscoderStatus.failed
+            # todo: mark transcoding as failed
             print(e)
         else:
-            video.transcoder_status = TranscoderStatus.processing
-            video.transcoder_job_id = fallback['Job']['Id']
+            session.add(TranscoderJob(
+                id=dash_job['Job']['Id'],
+                preset_type='dash',
+                status=TranscoderStatus.processing,
+                video_id=video_id,
+            ))
+            session.add(TranscoderJob(
+                id=fallback_job['Job']['Id'],
+                preset_type='fallback',
+                status=TranscoderStatus.processing,
+                video_id=video_id,
+            ))
 
         session.add(video)
         session.commit()

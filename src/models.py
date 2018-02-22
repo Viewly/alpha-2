@@ -84,11 +84,6 @@ class TranscoderStatus(enum.Enum):
 class Video(db.Model):
     id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id)
 
-    # transcoder
-    # ----------
-    transcoder_job_id = db.Column(db.String(30))
-    transcoder_status = db.Column(db.Enum(TranscoderStatus))
-
     # publish
     # -------
     title = db.Column(db.String(255))
@@ -153,4 +148,11 @@ class FileMapper(db.Model):
     # what are the resized thumbnail files
     thumbnail_files = db.Column(JSONB)
 
+    video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
+
+
+class TranscoderJob(db.Model):
+    id = db.Column(db.String(20), unique=True, primary_key=True)
+    status = db.Column(db.Enum(TranscoderStatus), nullable=False)
+    preset_type = db.Column(db.String(20), nullable=False)
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
