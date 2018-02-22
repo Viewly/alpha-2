@@ -2,7 +2,17 @@ from . import (
     db_session,
     new_celery,
 )
-from ..core.et import create_job
+from ..core.et import (
+    create_dash_job,
+    create_fallback_job,
+)
+from ..core.ffprobe import (
+    get_video_resolution,
+    has_audio_stream,
+    get_video_framerate,
+    get_duration,
+)
+from ..core.media import run_ffprobe_s3
 from ..models import Video, TranscoderStatus
 
 transcoder = new_celery(
@@ -14,21 +24,6 @@ transcoder.conf.update(
     enable_utc=True,
     result_expires=3600,
 )
-
-
-@transcoder.task(ignore_result=True)
-def analyze_video(video_id: str):
-    pass
-
-
-@transcoder.task(ignore_result=True)
-def generate_snapshots(video_id: str):
-    pass
-
-
-@transcoder.task(ignore_result=True)
-def generate_timeline(video_id: str):
-    pass
 
 
 @transcoder.task(
@@ -45,23 +40,40 @@ def start_transcoder_job(video_id: str):
         try:
             input_key = video.file_mapper.s3_upload_video_key
             output_path = f"v1/{video.id}/"
-            response = create_job(input_key, output_path)
+
+            ffprobe_out = run_ffprobe_s3(input_key)
+            if not ffprobe_out:
+                # todo: mark transcoding as failed?
+                return
+            video.video_metadata = {
+                'resolution': get_video_resolution(ffprobe_out),
+                'framerate': get_video_framerate(ffprobe_out),
+                'duration': get_duration(ffprobe_out),
+            }
+
+            fallback = create_fallback_job(
+                input_key,
+                output_path,
+                video_resolution=get_video_resolution(ffprobe_out),
+            )
+            dash = create_dash_job(
+                input_key,
+                output_path,
+                video_resolution=get_video_resolution(ffprobe_out),
+                has_audio=has_audio_stream(ffprobe_out),
+            )
         except Exception as e:
             # todo: log the exception
             video.transcoder_status = TranscoderStatus.failed
             print(e)
         else:
             video.transcoder_status = TranscoderStatus.processing
-            video.transcoder_job_id = response['Job']['Id']
+            video.transcoder_job_id = fallback['Job']['Id']
 
         session.add(video)
         session.commit()
 
 # VIDEO PIPELINE
-# download the video
-# analyze the video (format, encoding, size, resolution, etc)
-# if invalid, delete it, and invalidate upload
-# if valid, kick off the transcoder job
 # once the transcoding is done:
 # generate the timeline from 720p version
 # generate the snapshots for ML analysis

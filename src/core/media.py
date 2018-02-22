@@ -5,7 +5,18 @@ from typing import List, Dict
 
 from PIL import Image, ImageOps
 
+from .ffprobe import (
+    run_ffprobe
+)
 from .s3 import S3Transfer
+
+
+def run_ffprobe_s3(key: str, **kwargs):
+    s3_transfer = S3Transfer(**kwargs)
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        video_file = str(pathlib.Path(tmp_dir) / 'video.tmp')
+        s3_transfer.download_file(key, video_file)
+        return run_ffprobe(video_file)
 
 
 def img_from_s3(key: str, **kwargs) -> Image:
