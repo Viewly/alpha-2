@@ -12,7 +12,7 @@ from flask_security import (
 from sqlalchemy import desc
 
 from . import app, db
-from .models import Video, Channel
+from .models import Video, Channel, TranscoderJob
 from .videourl import guess_thumbnail_cdn_url
 
 
@@ -94,10 +94,19 @@ def utility_processor():
     def block_num():
         return 0
 
+    def get_transcoding_status(video_id: str):
+        job = TranscoderJob.query.filter_by(
+            video_id=video_id,
+            preset_type='fallback').first()
+        if job:
+            return job.status.name
+        return 'pending'
+
     return dict(
         block_num=block_num,
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
+        get_transcoding_status=get_transcoding_status,
     )
 
 
