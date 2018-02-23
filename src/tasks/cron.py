@@ -13,6 +13,7 @@ from ..models import (
     TranscoderStatus,
     TranscoderJob,
 )
+from ..tasks.transcoder import generate_manifest_file
 
 cron = new_celery(
     'cron-tasks',
@@ -56,6 +57,8 @@ def refresh_transcoder_jobs():
     for job in unfinished_jobs:
         status = get_job_status(job.id)
         job.status = status_map[status]
+        if job.status == TranscoderStatus.complete:
+            generate_manifest_file.delay(job.video_id)
         session.add(job)
 
     session.commit()

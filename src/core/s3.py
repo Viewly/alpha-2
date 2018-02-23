@@ -47,6 +47,17 @@ class S3Transfer:
             key,
         )
 
+    def upload_fileobj(self, obj, key: str, overwrite=True):
+        # don't overwrite unless allowed
+        if self.key_exists(key) and not overwrite:
+            return
+
+        return self.s3.upload_fileobj(
+            obj,
+            self._bucket_name,
+            key,
+        )
+
     def key_exists(self, key):
         try:
             self.s3.get_object_acl(
