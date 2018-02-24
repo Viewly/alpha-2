@@ -70,10 +70,14 @@ def img_resize_multi(
         resizer = lambda size: img.resize(size, Image.LANCZOS)
 
     available_sizes = []
-    for size in filter(lambda x: img.size >= x['size'], sizes):
+    for size in filter(lambda x: larger_or_equal_size(img.size, x['size']), sizes):
         file_name = '%s.%s' % (size['name'], output_ext)
         available_sizes.append({**size, 'file': file_name})
         tmp_ = resizer(size['size'])
         tmp_.save(tmp_dir / file_name)
 
     return available_sizes
+
+
+def larger_or_equal_size(first: tuple, second: tuple):
+    return first[0] >= second[0] and first[1] >= second[1]
