@@ -1,11 +1,7 @@
-import json
-from io import BytesIO
-
 from . import (
     db_session,
     new_celery,
 )
-from ..config import S3_VIDEOS_REGION, S3_VIDEOS_BUCKET
 from ..core.et import (
     create_dash_job,
     create_fallback_job,
@@ -17,7 +13,6 @@ from ..core.ffprobe import (
     get_duration,
 )
 from ..core.media import run_ffprobe_s3
-from ..core.s3 import S3Transfer
 from ..models import (
     Video,
     TranscoderStatus,
@@ -99,35 +94,6 @@ def start_transcoder_job(video_id: str):
 
         session.add(video)
         session.commit()
-
-
-@transcoder.task(
-    ignore_result=True,
-    autoretry_for=(Exception,),
-    retry_kwargs={'max_retries': 3},
-)
-def generate_manifest_file(video_id: str):
-    session = db_session()
-    video = session.query(Video).filter_by(id=video_id).one()
-
-    manifest_key = f"v1/{video.id}/manifest.json"
-    manifest = json.dumps(generate_manifest(video))
-
-    s3 = S3Transfer(S3_VIDEOS_REGION, S3_VIDEOS_BUCKET)
-    manifest_obj = BytesIO(bytes(manifest, 'utf-8'))
-    s3.upload_fileobj(manifest_obj, manifest_key, overwrite=True)
-
-
-def generate_manifest(video: Video):
-    return {
-        'formats': video.file_mapper.video_formats,
-        'cover': video.file_mapper.thumbnail_files['small'].split('/')[1],
-        'timeline': '',
-        'info': {
-            'duration': video.video_metadata.get('duration', 0),
-        }
-    }
-
 
 # VIDEO PIPELINE
 # once the transcoding is done:

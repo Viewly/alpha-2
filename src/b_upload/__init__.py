@@ -34,6 +34,7 @@ from src.config import (
     ETH_CHAIN,
 )
 from .. import app, db
+from ..methods import get_thumbnail_cdn_url
 from ..models import (
     Video,
     FileMapper,
@@ -42,9 +43,6 @@ from ..models import (
 )
 from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
-from ..videourl import (
-    get_thumbnail_cdn_url,
-)
 
 upload = Blueprint(
     'upload',
