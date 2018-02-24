@@ -48,7 +48,6 @@ def start_transcoder_job(video_id: str):
         try:
             input_key = video.file_mapper.s3_upload_video_key
             output_path = f"v1/{video.id}"
-            video.file_mapper.s3_videos_path = output_path
 
             ffprobe_out = run_ffprobe_s3(input_key)
             if not ffprobe_out:
@@ -111,7 +110,7 @@ def generate_manifest_file(video_id: str):
     session = db_session()
     video = session.query(Video).filter_by(id=video_id).one()
 
-    manifest_key = f"{video.file_mapper.s3_videos_path}/manifest.json"
+    manifest_key = f"v1/{video.id}/manifest.json"
     manifest = json.dumps(generate_manifest(video))
 
     s3 = S3Transfer(S3_VIDEOS_REGION, S3_VIDEOS_BUCKET)
