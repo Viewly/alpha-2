@@ -39,7 +39,7 @@ def create_dash_job(
 
     # 720p input is minimum for DASH
     if video_resolution[0] < 1280 or video_resolution[1] < 720:
-        return
+        return None, ''
 
     outputs = []
     if video_resolution[0] >= 1920 and video_resolution[1] >= 1080:
@@ -95,7 +95,7 @@ def create_dash_job(
         OutputKeyPrefix=output_path,
         Playlists=[
             {
-                'Name': 'dash',
+                'Name': 'main',
                 'Format': 'MPEG-DASH',
                 'OutputKeys': lpluck('Key', outputs)
             },
@@ -103,19 +103,16 @@ def create_dash_job(
         UserMetadata={},
     )
 
-    return response
+    return response, f"{output_path}main.mpd"
 
 
 def create_fallback_job(
         input_key,
         output_path,
         video_resolution: tuple):
-    if 'fallback' not in output_path:
-        output_path += 'fallback/'
-
     if video_resolution[0] >= 1280 and video_resolution[1] >= 720:
         outputs = [{
-            'Key': '720.mp4',
+            'Key': '720p.mp4',
             'ThumbnailPattern': '',
             'Rotate': 'auto',
             'PresetId': config['presets']['fallback']['720p'],
@@ -156,4 +153,4 @@ def create_fallback_job(
         UserMetadata={},
     )
 
-    return response
+    return response, f"{output_path}{outputs[0]['Key']}"

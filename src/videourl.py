@@ -6,7 +6,7 @@ from .config import CDN_URL
 
 
 def get_manifest_cdn_url(video_id: str):
-    return f"{CDN_URL}/v1/{video_id}/dash.mpd"
+    return f"{CDN_URL}/v1/{video_id}/mpeg-dash/main.mpd"
 
 
 def get_thumbnail_cdn_url(video: Video, size_name='small'):

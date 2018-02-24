@@ -42,7 +42,8 @@ def start_transcoder_job(video_id: str):
     if video and not transcoder_jobs:
         try:
             input_key = video.file_mapper.s3_upload_video_key
-            output_path = f"v1/{video.id}/"
+            output_path = f"v1/{video.id}"
+            video.file_mapper.s3_videos_path = output_path
 
             ffprobe_out = run_ffprobe_s3(input_key)
             if not ffprobe_out:
@@ -54,34 +55,43 @@ def start_transcoder_job(video_id: str):
                 'duration': get_duration(ffprobe_out),
             }
 
-            fallback_job = create_fallback_job(
+            fallback_job, fallback_key = create_fallback_job(
                 input_key,
-                output_path,
+                output_path=f"{output_path}/fallback/",
                 video_resolution=get_video_resolution(ffprobe_out),
             )
-            dash_job = create_dash_job(
+            dash_job, dash_key = create_dash_job(
                 input_key,
-                output_path,
+                output_path=f"{output_path}/mpeg-dash/",
                 video_resolution=get_video_resolution(ffprobe_out),
                 has_audio=has_audio_stream(ffprobe_out),
             )
+
+            # todo: this should be in refresh_transcoder_jobs(), because
+            # if transcoding fails, this format will not be actually available
+            video.file_mapper.video_formats = {
+                'mpeg-dash': dash_key,
+                'fallback': fallback_key,
+            }
         except Exception as e:
             # todo: log the exception
             # todo: mark transcoding as failed
             print(e)
         else:
-            session.add(TranscoderJob(
-                id=dash_job['Job']['Id'],
-                preset_type='dash',
-                status=TranscoderStatus.processing,
-                video_id=video_id,
-            ))
-            session.add(TranscoderJob(
-                id=fallback_job['Job']['Id'],
-                preset_type='fallback',
-                status=TranscoderStatus.processing,
-                video_id=video_id,
-            ))
+            if dash_job:
+                session.add(TranscoderJob(
+                    id=dash_job['Job']['Id'],
+                    preset_type='mpeg-dash',
+                    status=TranscoderStatus.processing,
+                    video_id=video_id,
+                ))
+            if fallback_job:
+                session.add(TranscoderJob(
+                    id=fallback_job['Job']['Id'],
+                    preset_type='fallback',
+                    status=TranscoderStatus.processing,
+                    video_id=video_id,
+                ))
 
         session.add(video)
         session.commit()

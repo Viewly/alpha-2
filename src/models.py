@@ -139,14 +139,11 @@ class FileMapper(db.Model):
     s3_upload_video_key = db.Column(db.String(50))
     s3_upload_thumbnail_key = db.Column(db.String(50))
 
-    # what schema will the encoded files follow
-    video_manifest_version = db.Column(db.String(10))
-
-    # what are the transcoded video files
-    video_files = db.Column(JSONB)
-
-    # what are the resized thumbnail files
-    thumbnail_files = db.Column(JSONB)
+    # videos bucket
+    s3_videos_path = db.Column(db.String(50))
+    # s3_thumbnails_path = db.Column(db.String(50))
+    video_formats = db.Column(JSONB)
+    thumbnail_files = db.Column(JSONB)  # thumbnail_formats
 
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
 

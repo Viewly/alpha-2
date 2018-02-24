@@ -150,7 +150,6 @@ def s3_success():
     video.file_mapper = FileMapper(
         s3_upload_bucket=request.form.get('bucket'),
         s3_upload_video_key=request.form.get('key'),
-        video_manifest_version='v1',
     )
     db.session.add(video)
     db.session.commit()
