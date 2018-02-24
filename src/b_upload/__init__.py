@@ -34,6 +34,7 @@ from src.config import (
     ETH_CHAIN,
 )
 from .. import app, db
+from ..methods import get_thumbnail_cdn_url
 from ..models import (
     Video,
     FileMapper,
@@ -42,10 +43,6 @@ from ..models import (
 )
 from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
-from ..videourl import (
-    get_thumbnail_cdn_url,
-    get_video_cdn_assets,
-)
 
 upload = Blueprint(
     'upload',
@@ -340,7 +337,6 @@ def publish_to_channel(video_id):
     return render_template(
         'publish-to-channel.html',
         video=video,
-        source=get_video_cdn_assets(video),
         channels=channels,
     )
 

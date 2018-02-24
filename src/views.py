@@ -12,8 +12,8 @@ from flask_security import (
 from sqlalchemy import desc
 
 from . import app, db
+from .methods import guess_thumbnail_cdn_url
 from .models import Video, Channel, TranscoderJob
-from .videourl import guess_thumbnail_cdn_url
 
 
 # router

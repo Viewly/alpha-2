@@ -37,6 +37,9 @@ class S3Transfer:
         )
 
     def upload_file(self, file_path: str, key: str, overwrite=True):
+        # s3 weirdness prevention
+        key = key.lstrip('/')
+
         # don't overwrite unless allowed
         if self.key_exists(key) and not overwrite:
             return
@@ -48,6 +51,9 @@ class S3Transfer:
         )
 
     def upload_fileobj(self, obj, key: str, overwrite=True):
+        # s3 weirdness prevention
+        key = key.lstrip('/')
+
         # don't overwrite unless allowed
         if self.key_exists(key) and not overwrite:
             return

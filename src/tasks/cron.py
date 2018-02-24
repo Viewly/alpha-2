@@ -6,6 +6,7 @@ from . import (
     new_celery,
     db_session,
 )
+from .shared import generate_manifest_file
 from ..core.et import get_job_status
 from ..core.eth import is_video_published
 from ..models import (
@@ -13,7 +14,6 @@ from ..models import (
     TranscoderStatus,
     TranscoderJob,
 )
-from ..tasks.transcoder import generate_manifest_file
 
 cron = new_celery(
     'cron-tasks',

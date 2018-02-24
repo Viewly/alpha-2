@@ -13,7 +13,19 @@ from sqlalchemy.sql import func
 from sqlalchemy.sql.functions import coalesce
 
 from . import db
-from .utils import gen_uid, gen_video_id
+
+CHARSET = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+
+
+def gen_uid():
+    import uuid
+    return str(uuid.uuid4()).replace('-', '')[::2]
+
+
+def gen_video_id(length=12):
+    from random import sample
+    return ''.join(sample(CHARSET, length))
+
 
 roles_users = db.Table(
     'roles_users',
