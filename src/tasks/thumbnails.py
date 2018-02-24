@@ -7,10 +7,6 @@ from . import (
     db_session,
     new_celery,
 )
-from ..core.media import (
-    img_resize_multi_to_s3,
-    img_from_s3,
-)
 from ..config import (
     S3_UPLOADS_BUCKET,
     S3_UPLOADS_REGION,
@@ -20,7 +16,12 @@ from ..config import (
     AWS_MANAGER_PUBLIC_KEY,
     AWS_MANAGER_PRIVATE_KEY,
 )
+from ..core.media import (
+    img_resize_multi_to_s3,
+    img_from_s3,
+)
 from ..models import Video
+from ..tasks.transcoder import generate_manifest_file
 
 thumbnails = new_celery(
     'thumbnails',
@@ -39,7 +40,7 @@ thumbnails.conf.update(
 )
 def process_thumbnails(video_id: str):
     session = db_session()
-    video = session.query(Video).filter_by(id=video_id).first()
+    video = session.query(Video).filter_by(id=video_id).one()
     # download the original
     img = img_from_s3(
         video.file_mapper.s3_upload_thumbnail_key,
@@ -71,6 +72,8 @@ def process_thumbnails(video_id: str):
     video.file_mapper.thumbnail_files = thumbs
     session.add(video)
     session.commit()
+
+    generate_manifest_file.delay(video.id)
 
 
 @thumbnails.task(

@@ -8,7 +8,7 @@
     {% include '_breadcrumbs.html' %}
     <div class="ui text container text-center">
         {% if not video.file_mapper.thumbnail_files
-          or video.transcoder_status._name_ != 'complete' %}
+          or get_transcoding_status(video.id) != 'complete' %}
             <div class="ui horizontal divider">Pending</div>
             <table class="ui celled table">
                 <thead>
@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>{{ video.transcoder_status._name_.upper() }}</td>
+                    <td>{{ get_transcoding_status(video.id).upper() }}</td>
                     <td>
                         {% if video.file_mapper.thumbnail_files %}
                             <i class="checkmark icon green"></i>
@@ -89,11 +89,11 @@
 {% endblock %}
 
 {% block scripts %}
-    {% if video.transcoder_status._name_ == 'processing' %}
+    {% if get_transcoding_status(video.id) in ['pending', 'processing'] %}
         <script>
             setInterval(function () {
                 window.location.reload();
-            }, 10 * 1000);
+            }, 15 * 1000);
         </script>
     {% endif %}
 

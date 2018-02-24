@@ -5,11 +5,8 @@ from .models import (
 from .config import CDN_URL
 
 
-def get_manifest_cdn_url(video: Video):
-    if video.transcoder_status == TranscoderStatus.complete:
-        return \
-            f"{CDN_URL}/{video.file_mapper.video_manifest_version}" \
-            f"/{video.id}/dash-main.mpd"
+def get_manifest_cdn_url(video_id: str):
+    return f"{CDN_URL}/v1/{video_id}/mpeg-dash/main.mpd"
 
 
 def get_thumbnail_cdn_url(video: Video, size_name='small'):
@@ -22,7 +19,7 @@ def get_thumbnail_cdn_url(video: Video, size_name='small'):
 def get_video_cdn_assets(video: Video):
     # TODO: degrade gracefully if large thumbnail size not available
     return {
-        'video': get_manifest_cdn_url(video),
+        'video': get_manifest_cdn_url(video.id),
         'poster': get_thumbnail_cdn_url(video, 'small'),
     }
 

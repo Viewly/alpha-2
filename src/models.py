@@ -84,11 +84,6 @@ class TranscoderStatus(enum.Enum):
 class Video(db.Model):
     id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id)
 
-    # transcoder
-    # ----------
-    transcoder_job_id = db.Column(db.String(30))
-    transcoder_status = db.Column(db.Enum(TranscoderStatus))
-
     # publish
     # -------
     title = db.Column(db.String(255))
@@ -144,13 +139,15 @@ class FileMapper(db.Model):
     s3_upload_video_key = db.Column(db.String(50))
     s3_upload_thumbnail_key = db.Column(db.String(50))
 
-    # what schema will the encoded files follow
-    video_manifest_version = db.Column(db.String(10))
+    # s3_thumbnails_path = db.Column(db.String(50))
+    video_formats = db.Column(JSONB)
+    thumbnail_files = db.Column(JSONB)  # thumbnail_formats
 
-    # what are the transcoded video files
-    video_files = db.Column(JSONB)
+    video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
 
-    # what are the resized thumbnail files
-    thumbnail_files = db.Column(JSONB)
 
+class TranscoderJob(db.Model):
+    id = db.Column(db.String(20), unique=True, primary_key=True)
+    status = db.Column(db.Enum(TranscoderStatus), nullable=False)
+    preset_type = db.Column(db.String(20), nullable=False)
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)

@@ -38,7 +38,7 @@ from ..models import (
     Video,
     FileMapper,
     Channel,
-    TranscoderStatus,
+    TranscoderJob,
 )
 from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
@@ -145,13 +145,11 @@ def s3_success():
     video = Video(
         user_id=current_user.id,
         title=request.form.get('name').split('.')[0],
-        transcoder_status=TranscoderStatus.pending,
         uploaded_at=dt.datetime.utcnow(),
     )
     video.file_mapper = FileMapper(
         s3_upload_bucket=request.form.get('bucket'),
         s3_upload_video_key=request.form.get('key'),
-        video_manifest_version='v1',
     )
     db.session.add(video)
     db.session.commit()
@@ -408,8 +406,11 @@ def delete_unpublished_video(video: Video):
         obj.load()
         obj.delete()
     except ClientError:
-        return make_response('S3 Error', 500)
+        # todo: log error
+        pass
     else:
+        for job in db.session.query(TranscoderJob).filter_by(video_id=video.id):
+            db.session.delete(job)
         db.session.delete(video)
         db.session.commit()
     return make_response('', 200)

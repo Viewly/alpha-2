@@ -2,13 +2,18 @@ import datetime as dt
 
 from celery.schedules import crontab
 
-from ..core.eth import is_video_published
 from . import (
     new_celery,
     db_session,
 )
 from ..core.et import get_job_status
-from ..models import Video, TranscoderStatus
+from ..core.eth import is_video_published
+from ..models import (
+    Video,
+    TranscoderStatus,
+    TranscoderJob,
+)
+from ..tasks.transcoder import generate_manifest_file
 
 cron = new_celery(
     'cron-tasks',
@@ -38,10 +43,8 @@ cron.conf.beat_schedule = {
 def refresh_transcoder_jobs():
     session = db_session()
     unfinished_jobs = \
-        session.query(Video).filter(
-            Video.transcoder_job_id is not None,
-            Video.transcoder_status != TranscoderStatus.complete,
-            Video.transcoder_status != TranscoderStatus.failed,
+        session.query(TranscoderJob).filter_by(
+            status=TranscoderStatus.processing
         )
 
     status_map = {
@@ -51,10 +54,12 @@ def refresh_transcoder_jobs():
         "Error": TranscoderStatus.failed,
     }
 
-    for video in unfinished_jobs:
-        status = get_job_status(video.transcoder_job_id)
-        video.transcoder_status = status_map[status]
-        session.add(video)
+    for job in unfinished_jobs:
+        status = get_job_status(job.id)
+        job.status = status_map[status]
+        if job.status == TranscoderStatus.complete:
+            generate_manifest_file.delay(job.video_id)
+        session.add(job)
 
     session.commit()
 

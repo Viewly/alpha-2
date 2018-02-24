@@ -19,11 +19,9 @@
             <tbody>
             {% for video in videos %}
                 <tr id="row-{{ video.id }}">
-                    <td>{{ video.title }}</td>
+                    <td>{{ video.title | truncate(40) }}</td>
                     <td>{{ video.uploaded_at | humanDate }}</td>
-                    <td>{% if video.transcoder_status %}
-                        {{ video.transcoder_status._name_.upper() }}
-                    {% else %}PENDING{% endif %}</td>
+                    <td>{{ get_transcoding_status(video.id).upper() }}</td>
                     <td><a href="{{ url_for('.publish_add_details', video_id=video.id) }}"
                            class="ui button blue">Publish</a>
                         <a href="javascript:"
