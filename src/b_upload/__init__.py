@@ -44,7 +44,6 @@ from ..tasks.thumbnails import process_thumbnails
 from ..tasks.transcoder import start_transcoder_job
 from ..videourl import (
     get_thumbnail_cdn_url,
-    get_video_cdn_assets,
 )
 
 upload = Blueprint(
@@ -340,7 +339,6 @@ def publish_to_channel(video_id):
     return render_template(
         'publish-to-channel.html',
         video=video,
-        source=get_video_cdn_assets(video),
         channels=channels,
     )
 
