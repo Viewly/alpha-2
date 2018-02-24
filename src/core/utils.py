@@ -5,6 +5,7 @@ from contextlib import suppress
 from functools import wraps
 
 from funcy import contextmanager
+from toolz import keyfilter
 
 
 def sha1sum(filename):
@@ -83,3 +84,13 @@ def cleanup_after(fn):
 
 def allowed_extension(filename, whitelist):
     return '.' in filename and filename.rsplit('.', 1)[-1] in whitelist
+
+
+# toolz
+# -----
+def keep(d, whitelist):
+    return keyfilter(lambda k: k in whitelist, d)
+
+
+def omit(d, blacklist):
+    return keyfilter(lambda k: k not in blacklist, d)
