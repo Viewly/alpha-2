@@ -83,10 +83,33 @@
 <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
 <script src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
 <script>
-    var loadPlayer = function () {
-        var player = new Clappr.Player({
-            source: '{{ source.video }}',
-            poster: '{{ source.poster }}',
+    let cdnUrl = "{{ cdn_url() }}";
+    let manifestUrl = `${cdnUrl}/v1/{{ video_id }}/manifest.json`;
+
+    let loadManifest = function () {
+        fetch(manifestUrl, {
+            method: 'get'
+        }).then(function (response) {
+            response.json().then(manifest => loadPlayer(manifest))
+        }).catch(function (err) {
+            console.log(err)
+        });
+    };
+    let loadPlayer = function (manifest) {
+        let sources = [];
+
+        // todo, check if on safari
+        if (manifest.formats['mpeg-dash'] !== 'undefined') {
+            sources.push(`${cdnUrl}/${manifest.formats['mpeg-dash']}`)
+        }
+
+        if (manifest.formats['fallback'] !== 'undefined') {
+            sources.push(`${cdnUrl}/${manifest.formats['fallback']}`)
+        }
+
+        let player = new Clappr.Player({
+            sources: sources,
+            poster: manifest.cover,
             mute: false,
             height: window.innerHeight - 20,
             width: '100%',
@@ -95,13 +118,13 @@
                 DashShakaPlayback
             ]
         });
-        var playerElement = document.getElementById("player-full");
+        let playerElement = document.getElementById("player-full");
         player.attachTo(playerElement);
     };
 
     // start here
     $(function () {
-        loadPlayer();
+        loadManifest();
     });
 </script>
 

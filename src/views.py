@@ -31,12 +31,9 @@ def view_video(video_id):
 
 @app.route('/embed/<string:video_id>', methods=['GET'])
 def embed(video_id):
-    from .videourl import get_video_cdn_assets
-
-    video = Video.query.filter_by(id=video_id).first_or_404()
     return render_template(
         'embed.html',
-        source=get_video_cdn_assets(video),
+        video_id=video_id,
         autoPlay=request.args.get('autoPlay', True),
     )
 
@@ -106,6 +103,7 @@ def utility_processor():
         block_num=block_num,
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
+        cdn_url=lambda: app.config['CDN_URL'],
         get_transcoding_status=get_transcoding_status,
     )
 
