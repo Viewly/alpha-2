@@ -325,7 +325,7 @@ def publish_to_channel(video_id):
             id=video.channel_id,
             user_id=current_user.id,
         ).first()
-        # video.published_at = dt.datetime.utcnow()
+        video.published_at = dt.datetime.utcnow()
         db.session.add(video)
         db.session.commit()
         return jsonify(video_id=video.id)
