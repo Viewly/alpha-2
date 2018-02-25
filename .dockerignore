@@ -1,6 +1,9 @@
 .idea/
 .env
+docker.dev.env
 postgres_data/
+*compose*.yml
+*Dockerfile*
 
 
 # Created by .ignore support plugin (hsz.mobi)
@@ -49,7 +52,6 @@ target/
 .ipynb_checkpoints
 .python-version
 celerybeat-schedule
-.env
 venv/
 ENV/
 .spyderproject
