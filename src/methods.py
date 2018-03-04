@@ -30,5 +30,5 @@ def get_thumbnail_cdn_url(*args, **kwargs):
         return f"{CDN_URL}/{thumbnail}"
 
 
-def guess_thumbnail_cdn_url(video_id: str, size_name='small'):
+def guess_thumbnail_cdn_url(video_id: str, size_name='tiny'):
     return f"{CDN_URL}/thumbnails/{video_id}/{size_name}.png"
