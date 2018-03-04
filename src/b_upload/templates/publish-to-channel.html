@@ -8,6 +8,7 @@
     {% include '_breadcrumbs.html' %}
     <div class="ui text container text-center">
         {% if not video.file_mapper.thumbnail_files
+          or 'small' not in video.file_mapper.thumbnail_files
           or get_transcoding_status(video.id) != 'complete' %}
             <div class="ui horizontal divider">Pending</div>
             <table class="ui celled table">
@@ -21,8 +22,13 @@
                 <tr>
                     <td>{{ get_transcoding_status(video.id).upper() }}</td>
                     <td>
-                        {% if video.file_mapper.thumbnail_files %}
+                        {% if video.file_mapper.thumbnail_files
+                            and 'small' in video.file_mapper.thumbnail_files %}
                             <i class="checkmark icon green"></i>
+                        {% elif video.file_mapper.thumbnail_files %}
+                            <i class="cross file excel icon red"></i> Cover image is too
+                            small.
+                            <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}">Upload</a> new one.
                         {% else %}
                             {% if video.file_mapper.s3_upload_thumbnail_key %}
                                 PROCESSING
