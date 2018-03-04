@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Results for ...{% endblock %}
+{% block title %}New Videos{% endblock %}
 
 {% block content %}
     <p></p>
-    <h3>Search Results</h3>
+    <h3>New Videos</h3>
     <div class="ui relaxed items">
 
-        {% for video in results %}
+        {% for video in videos %}
             <div class="item">
                 <div class="ui small image">
                     <a href="{{ url_for('view_video', video_id=video.id) }}">
@@ -19,8 +19,18 @@
                        href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
                     <div class="meta">
                         {{ video.published_at | humanDate }} by
+                        {% if video.channel_id %}
                             <b><a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
-                                {{ video.channel_name }}</a></b>
+                                {{ video.channel.display_name }}</a></b>
+                        {% endif %}
+                    </div>
+                    <div class="extra">
+                        {% if not video.channel_id %}
+                            <div class="ui label">no-channel</div>
+                        {% endif %}
+                        {% if not video.published_at %}
+                            <div class="ui label">unpublished</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -31,7 +41,7 @@
     {% if page_num > 0 %}
          <a href="/new?page={{ page_num - 1 }}" class="ui button blue"><</a>
     {% endif %}
-    {% if results and results|length == items_per_page %}
+    {% if videos and videos|length == items_per_page %}
         <a href="/new?page={{ page_num + 1 }}" class="ui button blue">Next Page</a>
     {% endif %}
 {% endblock %}

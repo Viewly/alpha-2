@@ -48,7 +48,10 @@ def view_channel(channel_id):
 
 
 @app.route('/search', methods=['GET'])
-def search():
+def search(page_num=0, items_per_page=20):
+    limit = items_per_page
+    page_num = page_num or int(request.args.get('page', 0))
+
     search_query = request.args.get('q')
     q = """
     SELECT v.id, v.title, 
@@ -58,15 +61,39 @@ def search():
     WHERE to_tsvector(v.title || ' ' || v.description) @@ plainto_tsquery(:search)
      AND v.published_at IS NOT NULL
     ORDER BY v.published_at DESC
-    LIMIT 10;
+    LIMIT :limit OFFSET :offset;
     """
-    rs = db.session.execute(q, {"search": search_query})
+
+    rs = db.session.execute(q, {
+        "search": search_query,
+        "limit": limit,
+        "offset": limit * page_num,
+    })
     results = [dict(zip(rs.keys(), item)) for item in rs.fetchall()]
 
     return render_template(
         'search.html',
         results=results,
         query=search_query,
+        page_num=page_num,
+        items_per_page=items_per_page,
+    )
+
+
+@app.route('/new', methods=['GET'])
+def new(page_num=0, items_per_page=20):
+    limit = items_per_page
+    page_num = page_num or int(request.args.get('page', 0))
+
+    videos = (db.session.query(Video)
+              .order_by(desc(Video.uploaded_at))
+              .limit(limit).offset(limit * page_num).all())
+
+    return render_template(
+        'new.html',
+        videos=videos,
+        page_num=page_num,
+        items_per_page=items_per_page,
     )
 
 
