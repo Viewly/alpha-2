@@ -28,7 +28,12 @@
 
     </div>
 
-    <p>Showing top {{ results | length }} results.</p>
+    {% if page_num > 0 %}
+         <a href="/new?page={{ page_num - 1 }}" class="ui button blue"><</a>
+    {% endif %}
+    {% if results and results|length == items_per_page %}
+        <a href="/new?page={{ page_num + 1 }}" class="ui button blue">Next Page</a>
+    {% endif %}
 {% endblock %}
 
 
