@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Embedded Player</title>
+    <style>body {margin:0}</style>
+    {% include 'partials/player_js.html' %}
 </head>
 <body>
 
-<span id="player-full"></span>
-
-{% include 'partials/player_js.html' %}
+<span id="player-full"
+      style="border: 0px;border-radius: 0px;width: 100%;height: 100%"></span>
 
 </body>
 </html>
