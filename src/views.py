@@ -80,6 +80,23 @@ def search(page_num=0, items_per_page=20):
     )
 
 
+@app.route('/new', methods=['GET'])
+def new(page_num=0, items_per_page=20):
+    limit = items_per_page
+    page_num = page_num or int(request.args.get('page', 0))
+
+    videos = (db.session.query(Video)
+              .order_by(desc(Video.uploaded_at))
+              .limit(limit).offset(limit * page_num).all())
+
+    return render_template(
+        'new.html',
+        videos=videos,
+        page_num=page_num,
+        items_per_page=items_per_page,
+    )
+
+
 @app.route('/profile/edit', methods=['GET'])
 @login_required
 def edit_profile():
