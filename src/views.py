@@ -86,7 +86,8 @@ def new(page_num=0, items_per_page=20):
     page_num = page_num or int(request.args.get('page', 0))
 
     videos = (db.session.query(Video)
-              .order_by(desc(Video.uploaded_at))
+              .filter(Video.published_at != None, Video.channel_id != None)
+              .order_by(desc(Video.published_at))
               .limit(limit).offset(limit * page_num).all())
 
     return render_template(
