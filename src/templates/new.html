@@ -39,13 +39,18 @@
     </div>
 
     {% if page_num > 0 %}
-         <a href="/new?page={{ page_num - 1 }}" class="ui button blue"><</a>
+        <a href="/new?page={{ page_num - 1 }}" class="ui button blue"><</a>
     {% endif %}
     {% if videos and videos|length == items_per_page %}
         <a href="/new?page={{ page_num + 1 }}" class="ui button blue">Next Page</a>
     {% endif %}
 {% endblock %}
 
+{% block footer %}
+    <br>
+    <br>
+    {% include 'partials/footer.html' %}
+{% endblock %}
 
 {% block scripts %}
 {% endblock %}

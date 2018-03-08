@@ -1,0 +1,30 @@
+<div class="ui inverted vertical footer segment">
+    <div class="ui container">
+        <div class="ui stackable inverted divided equal height stackable grid">
+            <div class="three wide column">
+                <h4 class="ui inverted header">About</h4>
+                <div class="ui inverted link list">
+                    <a href="https://view.ly" class="item">Viewly</a>
+                    <a href="https://blog.view.ly" class="item">Blog</a>
+                    <a href="https://creator.view.ly" class="item">Creators</a>
+                    <a href="{{ url_for('.about') }}" class="item">Alpha</a>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header">Legal</h4>
+                <div class="ui inverted link list">
+                    <a href="https://viewly.typeform.com/to/cqwcMb"
+                       class="item" target="_blank">DMCA</a>
+                    <a href="#" class="item">Contact Us</a>
+                    <a href="#" class="item">Terms of Use</a>
+                    <a href="#" class="item">Privacy</a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header">Viewly Alpha</h4>
+                <p>Viewly Alpha is an experimental prototype. <a
+                        href="{{ url_for('.about') }}">Learn more</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
