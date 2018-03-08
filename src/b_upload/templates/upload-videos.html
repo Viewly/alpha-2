@@ -70,10 +70,10 @@
 {% endblock %}
 
 {% block content %}
+    <br>
     <div class="ui text container text-center">
-
         {% if pending_count %}
-            <div class="ui positive message">
+            <div class="ui positive message" style="margin-bottom: 1px;">
                 <p>You have <b>{{ pending_count }} video(s)</b> ready to be
                     <a href="{{ url_for('.publish_list_uploads') }}">published</a>.</p>
             </div>
