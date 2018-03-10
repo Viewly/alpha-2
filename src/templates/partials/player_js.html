@@ -1,8 +1,10 @@
 <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
 <script src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
-<script>
+<script type="application/javascript">
     let cdnUrl = "{{ cdn_url() }}";
     let manifestUrl = `${cdnUrl}/v1/{{ video_id }}/manifest.json`;
+
+    let player;
 
     let loadManifest = function () {
         fetch(manifestUrl, {
@@ -25,7 +27,7 @@
             sources.push(`${cdnUrl}/${manifest.formats['fallback']}`)
         }
 
-        let player = new Clappr.Player({
+        player = new Clappr.Player({
             sources: sources,
             poster: `${cdnUrl}/${manifest.cover}`,
             mute: false,
@@ -36,14 +38,17 @@
                 DashShakaPlayback
             ]
         });
-        let playerElement = document.getElementById("player-full");
-        player.attachTo(playerElement);
+        player.attachTo(document.getElementById("player-full"));
     };
 
     // start here
-    document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener("DOMContentLoaded", function () {
         loadManifest();
     });
+
+    window.onresize = function () {
+        player.resize({width: '100%', height: window.innerHeight - 1});
+    }
 </script>
 
 {#<script src="//cdn.jsdelivr.net/clappr.thumbnails-plugin/latest/clappr-thumbnails-plugin.js"></script>#}
