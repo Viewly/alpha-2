@@ -20,7 +20,12 @@ from .models import Video, Channel, TranscoderJob
 # ------
 @app.route('/')
 def index():
-    return render_template('homepage.html')
+    return new()
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
 @app.route('/v/<string:video_id>', methods=['GET'])

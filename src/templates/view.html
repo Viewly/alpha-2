@@ -46,7 +46,12 @@
     </div>
 
 
-    {% include 'partials/_disqus.html' %}
+    {% include 'partials/disqus.html' %}
+{% endblock %}
+
+{% block footer %}
+    <br>
+    {% include 'partials/footer.html' %}
 {% endblock %}
 
 {% block scripts %}
