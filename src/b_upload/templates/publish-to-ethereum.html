@@ -37,7 +37,7 @@
 
         <h3 class="ui dividing header">Publish trough Metamask</h3>
         <div id="metamask">
-            <a href="#" class="ui button blue large">Something</a>
+            <a href="#" class="ui button blue large">Loading...</a>
         </div>
 
         <div id="no-metamask">
@@ -56,7 +56,7 @@
         We are giving away $20 worth of VIEW tokens to <i>new creators</i> who sign up trough the <b><a
             href="https://viewly.typeform.com/to/cl6OJP" target="_blank">faucet</a></b>.
 {#        <br>#}
-{#        Alternatively, the tokens can also be <a href="">purchased</a> on exchanges.#}
+{#        The tokens can also be <a href="">purchased</a> on exchanges.#}
 
         <div class="ui modal">
             <div class="header">Manual Publishing</div>
@@ -212,6 +212,8 @@
         }
 
         function refreshBalance() {
+            if (typeof account === 'undefined')
+                return;
             if (typeof viewToken === 'undefined')
                 initContracts();
 
@@ -242,7 +244,7 @@
 
             // account not selected or wallet locked
             if (typeof account === 'undefined')
-                return 'Metamask wallet appears to be locked! Please unlock it to proceed';
+                return 'Metamask wallet appears to be <b>locked</b>! Please <i>unlock it</i> to proceed.';
 
             // already published
             if (isPublished)
