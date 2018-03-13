@@ -15,7 +15,7 @@ Then, add the `docker.dev.env` file into project root.
 
 ## Bring up the Docker stack
 ```
-docker-compose -f docker-compose.dev.yml up
+docker-compose -f docker-compose.web.yml -f docker-compose.workers.yml up
 ```
 If there are no errors, you should be able to open Alpha Web app at http://localhost:50001
 
@@ -31,12 +31,12 @@ _Note: To persist the data, PostgreSQL container will mount its data volume into
 If you've added extra dependencies or applied changes that require
 containers be rebuilt, you can use this command:
 ```
-docker-compose -f docker-compose.dev.yml build --no-cache
+docker-compose -f docker-compose.web.yml -f docker-compose.workers.yml  build --no-cache
 ```
 
 Alternatively you can just delete images when bringing _down_ the stack.
 ```
-docker-compose -f docker-compose.dev.yml down --rmi all
+docker-compose -f docker-compose.web.yml -f docker-compose.workers.yml  down --rmi all
 ```
 
 # Running Locally
@@ -51,7 +51,7 @@ Package Dependencies:
  
 Install JS dependencies:
 ```
-cd src/public
+cd src/static
 npm i
 ```
 

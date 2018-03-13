@@ -1,32 +1,5 @@
 version: '3'
 services:
-  celery-beat-tasks-cron:
-    build:
-      context: .
-      dockerfile: Dockerfile.worker
-    image: alpha:worker
-    command: celery -A src.tasks.cron beat
-    env_file:
-      - docker.dev.env
-    links:
-      - redis
-      - postgres
-    restart: always
-  celery-worker-tasks-cron:
-    build:
-      context: .
-      dockerfile: Dockerfile.worker
-    image: alpha:worker
-    command: celery worker -A src.tasks.cron -l info -c 1 -P solo
-    env_file:
-      - docker.dev.env
-    links:
-      - redis
-      - postgres
-    restart: always
-    depends_on:
-      - website
-    stop_grace_period: 3m30s
   website:
     build:
       context: .
