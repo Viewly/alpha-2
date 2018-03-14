@@ -16,34 +16,53 @@
 {% endblock %}
 
 {% block content %}
-    <div class="ui segment">
-        <h2 class="ui left floated header">{{ video.title }}</h2>
-        <div class="uis clearing divider"></div>
-        <div class="ui relaxed divided items">
 
-            <div class="item">
-                <div class="content">
-                    <img src="https://i.imgur.com/32AwiVw.jpg"
-                         class="ui circular avatar image">
-                    <b><a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
-                        {{ video.channel.display_name }}</a></b>
-                    published on {{ video.published_at | humanDate }}
-                    <br>
-                    <br>
+    <div style="margin-bottom: 8px;"></div>
+    <div class="ui centered divided grid">
+        <div class="row">
+            <div class="twelve wide column">
+                <div class="ui segment">
+                    <h2 class="ui left floated header">{{ video.title }}</h2>
+                    <div class="uis clearing divider"></div>
+                    <div class="ui relaxed divided items">
+                        <div class="item">
+                            <div class="content">
+                                <img src="https://i.imgur.com/32AwiVw.jpg"
+                                     class="ui circular avatar image">
+                                <b><a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
+                                    {{ video.channel.display_name }}</a></b>
+                                published on {{ video.published_at | humanDate }}
+                                <br>
+                                <br>
 
-                    <div class="description">
-                        <div class="Post">
-                            {% if video.description %}
-                                {{ video.description | markdown }}
-                            {% endif %}
+                                <div class="description">
+                                    <div class="Post">
+                                        {% if video.description %}
+                                            {{ video.description | markdown }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
+            </div>
 
+
+            <div class="four wide column">
+                <h2>Rewards</h2>
+                <a href="javascript:;" class="ui button blue">Vote for this video</a>
+                <i class="circular question icon"
+                   data-title="Support this creator and earn rewards"
+                   data-content="Vote if you like this video, and would like to support the creator who made it.
+                   Votes will be tallied up in the upcoming distribution game, and VIEW Token rewards will be distributed to successful creators and curators (voters)."
+                   data-variation="large wide"
+                   data-position="left center">
+                </i>
             </div>
         </div>
     </div>
+
 
 
     {% include 'partials/disqus.html' %}
@@ -68,6 +87,13 @@
             // todo, use rxjs to only accept last resize
             // event in last 100ms interval
             resizePlayer();
+        });
+    </script>
+
+    <script type="application/javascript">
+        // SEMANTIC.UI
+        $(function () {
+            $('.circular.question').popup();
         });
     </script>
 {% endblock %}
