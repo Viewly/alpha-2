@@ -10,3 +10,4 @@ RUN apt-get install -y ffmpeg
 COPY . /project_root
 WORKDIR /project_root
 RUN pip install -r requirements.txt
+RUN pip install -U web3  # regression fix
