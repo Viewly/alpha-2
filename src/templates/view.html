@@ -6,6 +6,7 @@
 {#{% block player %}#}
 {#    <div id="player-full"></div>#}
 {#{% endblock %}#}
+{#{% include 'partials/player_js.html' %}#}
 
 {% block player %}
     <iframe id="embedded-player"
@@ -51,7 +52,7 @@
 
             <div class="four wide column">
                 <h2>Rewards</h2>
-                <a href="javascript:;" class="ui button blue">Vote for this video</a>
+                <a href="javascript:;" id="vote-button" class="ui button blue">Vote for this video</a>
                 <i class="circular question icon"
                    data-title="Support this creator and earn rewards"
                    data-content="Vote if you like this video, and would like to support the creator who made it.
@@ -63,9 +64,25 @@
         </div>
     </div>
 
-
-
     {% include 'partials/disqus.html' %}
+
+    <div class="ui modal" id="metamask-modal">
+        <div class="header">Authorize the vote trough Metamask</div>
+        <div class="scrolling content">
+            <div id="metamask">
+                <div class="ui active inline loader"></div> Loading...
+            </div>
+
+            <div id="no-metamask">
+                You don't seem to have <a href="https://metamask.io/"
+                                          target="_blank">Metamask</a> installed.
+                <br>
+                <a href="https://metamask.io/" target="_blank">
+                    <img src="https://github.com/MetaMask/faq/raw/master/images/download-metamask-dark.png"
+                         width="330"></a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block footer %}
@@ -96,6 +113,230 @@
             $('.circular.question').popup();
         });
     </script>
-{% endblock %}
 
-{#{% include 'partials/player_js.html' %}#}
+    <script type="application/javascript">
+        let networks = {
+            "mainnet": '1',
+            "kovan": '42',
+        };
+        let w3;
+        let networkId;
+        let account;
+        let balance;
+
+        let ethChain = "{{ eth_chain() }}";
+        let viewTokenAddress = "{{ view_token_address() }}";
+        let viewTokenABI = {{ view_token_abi() | safe }};
+        let viewToken;
+
+        let videoId = "{{ video.id }}";
+
+        let signButton = `<a id="sign-button" class="ui button blue large">Vote with Metamask</a>`;
+        let spinner = `<div class="ui active inline loader"></div> Loading...`;
+
+        let isInitialized = false;
+
+        function initMetamask() {
+            if (typeof web3 !== 'undefined') {
+                $('#no-metamask').hide();
+                $('#metamask').show();
+
+                // metamask is our web3 provider
+                w3 = new Web3(web3.currentProvider);
+
+                // update metamask selected account and network
+                setInterval(function () {
+                    if (w3.eth.accounts[0] !== account) {
+                        account = w3.eth.accounts[0];
+                    }
+                    w3.version.getNetwork((err, netId) => {
+                        networkId = netId
+                    });
+                }, 100);
+            } else {
+                $('#no-metamask').show();
+                $('#metamask').hide();
+            }
+        }
+
+        function initContracts() {
+            if (typeof w3 === 'undefined')
+                return;
+            viewToken = w3.eth.contract(viewTokenABI).at(viewTokenAddress);
+        }
+
+        function refreshBalance() {
+            if (typeof account === 'undefined')
+                return;
+            if (typeof viewToken === 'undefined')
+                initContracts();
+
+            viewToken.balanceOf(account, (e, r) => {
+                balance = Number(r)
+            });
+        }
+
+        function signAddress(account) {
+            let msg = 'Viewly';
+            w3.eth.sign(account, w3.sha3(msg), (err, signature) => {
+            })
+        }
+
+        // METAMASK only!
+        function signVote(account, videoId, weight = 100) {
+            let message = [
+                [
+                    {type: 'string', name: 'Video ID', value: videoId},
+                    {type: 'uint8', name: 'Vote Weight (%)', value: weight}
+                ],
+                account,
+            ];
+            w3.currentProvider.sendAsync({
+                method: 'eth_signTypedData',
+                params: message,
+                from: account,
+            }, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    tryAgainButton();
+                    return;
+                }
+                let signature = result.result;
+                if (!signature) {
+                    console.log('Missing signature');
+                    tryAgainButton();
+                    return;
+                }
+                fetch("{{ url_for('api.voteapi') }}", {
+                    method: 'put',
+                    body: JSON.stringify({
+                        video_id: videoId,
+                        eth_address: account,
+                        ecc_message: JSON.stringify(message),
+                        ecc_signature: signature
+                    }),
+                    headers: new Headers({'Content-Type': 'application/json'})
+                }).then(function (response) {
+                    if (!response.ok) {
+                        console.log(response);
+                        tryAgainButton();
+                        return;
+                    }
+                    response.json().then(vote => successfulyVoted(vote))
+                }).catch(function (err) {
+                    console.log(err);
+                    tryAgainButton();
+                });
+            });
+        }
+
+        function checkIfVoted(account, videoId) {
+            if (localStorage.getItem(videoId) === 'true')
+                return;
+
+            fetch("{{ url_for('api.voteapi') }}", {
+                method: 'get',
+                body: JSON.stringify({
+                    video_id: videoId,
+                    eth_address: account,
+                }),
+                headers: new Headers({'Content-Type': 'application/json'})
+            }).then(function (response) {
+                response.json().then(vote => {
+                    localStorage.setItem(vote.video_id, 'true');
+                })
+            }).catch(function (err) {
+                console.log(err)
+            });
+        }
+
+        function successfulyVoted(vote) {
+            // set local storage
+            let key = `${vote.video_id}`;
+            localStorage.setItem(key, 'true');
+
+            // hide metamask dialog
+            $('#metamask-modal').modal('hide');
+        }
+
+        function disableVoteButton() {
+            if (localStorage.getItem(videoId) === 'true') {
+                $('#vote-button, #sign-button')
+                    .addClass('disabled')
+                    .html('<i class="check icon"></i> Voted');
+            }
+        }
+
+        function tryAgainButton() {
+            $('#vote-button, #sign-button')
+                .html('Vote failed. Try again.')
+        }
+
+        function getCurrentUI() {
+            // connected to wrong network
+            if (networkId !== networks[ethChain])
+                return `Connected to the unknown network (${networkId}).
+                <br>Please select ${ethChain.toUpperCase()} as the Ethereum network in Metamask.`;
+
+            // account not selected or wallet locked
+            if (typeof account === 'undefined')
+                return 'Metamask wallet appears to be <b>locked</b>! Please <i>unlock it</i> to proceed.';
+
+            // account has already voted
+            if (localStorage.getItem(videoId) === 'true') {
+                return `Selected account <b>${account}</b> has already voted for this video.`;
+            }
+
+            // account has no VIEW Tokens
+            if (balance === 0)
+                return `Selected account <b>${account}</b> has no VIEW Tokens, and thus cannot vote.`;
+            else if (balance > 0)
+                return `${signButton}`;
+
+            return `${spinner}`;
+        }
+
+        // start here
+        $(function () {
+            // check local storage and db first
+            checkIfVoted();
+            disableVoteButton();
+
+            // start metamask only when button is clicked
+            $('#vote-button').click(function () {
+                $('#vote-button')
+                    .html('Loading Metamask...');
+
+                // only call this code once
+                if (!isInitialized) {
+                    isInitialized = true;
+                    initMetamask();
+                    initContracts();
+
+                    setInterval(() => {
+                        disableVoteButton();
+                        refreshBalance();
+                    }, 250);
+
+                    setInterval(() => {
+                        $('#metamask').html(getCurrentUI());
+                    }, 1000);
+                }
+
+                setTimeout(() => {
+                    if (networkId === networks[ethChain]
+                        && typeof balance !== 'undefined'
+                        && balance > 0
+                        && localStorage.getItem(videoId) !== 'true') {
+                        // shortcut
+                        signVote(account, videoId);
+                    } else {
+                        $('#metamask-modal').modal('show');
+                    }
+                }, 500);
+
+            });
+        });
+    </script>
+
+{% endblock %}
