@@ -163,3 +163,26 @@ class TranscoderJob(db.Model):
     status = db.Column(db.Enum(TranscoderStatus), nullable=False)
     preset_type = db.Column(db.String(20), nullable=False)
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
+
+
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    # unique pairs
+    video_id = db.Column(db.String(12), db.ForeignKey('video.id'))
+    eth_address = db.Column(db.String(42), nullable=False)
+
+    ecc_message = db.Column(db.String(255), nullable=False)
+    ecc_signature = db.Column(db.String(132), nullable=False)
+
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    @declared_attr
+    def __table_args__(self):
+        return (
+            db.UniqueConstraint(
+                'video_id',
+                'eth_address',
+                name='_vote_id',
+            ),
+        )
