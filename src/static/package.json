@@ -7,7 +7,7 @@
     "fine-uploader": "^5.15.6",
     "jquery": "^2.2.0",
     "lodash": "^4.17.5",
-    "semantic-ui-css": "^2.3.0"
+    "semantic-ui": "^2.3.0"
   },
   "devDependencies": {}
 }
