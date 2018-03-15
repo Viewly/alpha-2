@@ -1,4 +1,5 @@
 import datetime as dt
+import json
 
 import maya
 from flask import (
@@ -134,10 +135,15 @@ def utility_processor():
 
     return dict(
         block_num=block_num,
+        get_transcoding_status=get_transcoding_status,
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
-        get_transcoding_status=get_transcoding_status,
+        eth_chain=lambda: app.config['ETH_CHAIN'],
+        view_token_abi=lambda: json.dumps(app.config['VIEW_TOKEN_ABI']),
+        video_publisher_abi=lambda: json.dumps(app.config['VIDEO_PUBLISHER_ABI']),
+        view_token_address=lambda: app.config['VIEW_TOKEN_ADDRESS'],
+        video_publisher_address=lambda: app.config['VIDEO_PUBLISHER_ADDRESS'],
     )
 
 
