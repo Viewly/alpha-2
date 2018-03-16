@@ -50,6 +50,10 @@ from .b_channel import channel as channel_blueprint
 
 app.register_blueprint(channel_blueprint, url_prefix='/channel')
 
+from .api import blueprint as api_blueprint
+
+app.register_blueprint(api_blueprint, url_prefix='/api')
+
 
 # Developer Helper Commands
 # -------------------------

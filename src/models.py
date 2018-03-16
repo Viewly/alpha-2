@@ -169,7 +169,7 @@ class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # unique pairs
-    video_id = db.Column(db.String(12), db.ForeignKey('video.id'))
+    video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
     eth_address = db.Column(db.String(42), nullable=False)
 
     ecc_message = db.Column(db.String(255), nullable=False)
