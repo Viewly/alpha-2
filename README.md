@@ -247,7 +247,7 @@ We also need the following CORS config:
 
 ## Elastic Transcoder
 Use `ElasticTranscoder.ipynb` to create and configure the ET pipeline. 
-Output configuration saved [here](src/conf/elastic_transcoder.prod.json).
+Output configuration saved [here](config/elastic_transcoder.prod.json).
 
 ## CloudFront
 Create a Cloudfront Distribution manually.
