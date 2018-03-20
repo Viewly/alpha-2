@@ -1,5 +1,5 @@
 import json
-from os import getenv
+from os import getenv, getcwd, path
 
 from funcy import rpartial
 from toolz import pipe
@@ -7,9 +7,17 @@ from toolz import pipe
 load_json_file = rpartial(pipe, open, lambda x: x.read(), json.loads)
 
 
+def config_folder_prefix():
+    # todo: improve this quick hack
+    # (currently tightly coupled to alpha-2 folder)
+    # It should find the correct config file path when
+    # ran from src/, tests/ or Docker based paths.
+    return path.join(getcwd().split('alpha-2')[0], 'alpha-2/config')
+
+
 def load_json_config(name):
     env = 'prod' if IS_PRODUCTION else 'dev'
-    return load_json_file(f'src/conf/{name}.{env}.json')
+    return load_json_file(f'{config_folder_prefix()}/{name}.{env}.json')
 
 
 IS_PRODUCTION = bool(getenv('PRODUCTION', False))
@@ -81,8 +89,8 @@ INFURA_KEY = getenv('INFURA_KEY')
 VIEW_TOKEN_ADDRESS = getenv('VIEW_TOKEN_ADDRESS')
 VIDEO_PUBLISHER_ADDRESS = getenv('VIDEO_PUBLISHER_ADDRESS')
 
-VIEW_TOKEN_ABI = load_json_file('src/conf/ViewToken.abi.json')
-VIDEO_PUBLISHER_ABI = load_json_file('src/conf/VideoPublisher.abi.json')
+VIEW_TOKEN_ABI = load_json_file(f'{config_folder_prefix()}/ViewToken.abi.json')
+VIDEO_PUBLISHER_ABI = load_json_file(f'{config_folder_prefix()}/VideoPublisher.abi.json')
 
 # Elastic Transcoder
 elastic_transcoder = load_json_config('elastic_transcoder')

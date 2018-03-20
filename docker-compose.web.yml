@@ -21,7 +21,7 @@ services:
       - migrations
     restart: always
     volumes:
-      - .:/project_root:ro
+      - .:/alpha-2:ro
   migrations:
     build:
       context: .

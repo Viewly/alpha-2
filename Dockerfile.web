@@ -2,7 +2,7 @@ FROM python:3.6.4
 MAINTAINER furion <_@furion.me>
 
 # add our code
-COPY . /project_root
+COPY . /alpha-2
 
 # install node.js
 RUN apt-get update && \
@@ -11,10 +11,10 @@ RUN apt-get update && \
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 # compile the dependencies
-WORKDIR /project_root/src/static
+WORKDIR /alpha-2/src/static
 RUN npm install
 
-WORKDIR /project_root
+WORKDIR /alpha-2
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
