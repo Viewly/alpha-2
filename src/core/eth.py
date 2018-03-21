@@ -1,4 +1,14 @@
+import binascii
+
 import web3
+from eth_keys import KeyAPI
+from eth_utils import (
+    is_address,
+    is_same_address,
+    keccak,
+    remove_0x_prefix,
+    big_endian_to_int,
+)
 
 from ..config import (
     VIDEO_PUBLISHER_ADDRESS,
@@ -9,8 +19,7 @@ from ..config import (
 
 
 def get_web3(http_url: str) -> web3.Web3:
-    from web3 import Web3, HTTPProvider
-    return Web3(HTTPProvider(http_url))
+    return web3.Web3(web3.HTTPProvider(http_url))
 
 
 def get_publishing_contract():
@@ -26,3 +35,30 @@ def get_publishing_contract():
 def is_video_published(video_id: str):
     instance = get_publishing_contract()
     return instance.call().videos(video_id)
+
+
+def recover_address(data: str, signature: str) -> str:
+    signature = binascii.unhexlify(remove_0x_prefix(signature))
+    data = keccak(text=data)
+    data = f"\\x19Ethereum Signed Message:\n{len(data)}{data}"
+    data = bytes(data, 'utf-8')
+
+    # web3js outputs in rsv order
+    vrs = (
+        ord(signature[64:65]) - 27,
+        big_endian_to_int(signature[0:32]),
+        big_endian_to_int(signature[32:64]),
+    )
+    sig = KeyAPI.Signature(vrs=vrs)
+    return sig.recover_public_key_from_msg(data).to_address()
+
+
+def is_valid_signature(data, signature, address) -> bool:
+    return is_same_address(
+        address,
+        recover_address(data, signature)
+    )
+
+
+def is_valid_address(address: str) -> bool:
+    return is_address(address)
