@@ -9,8 +9,5 @@
     "lodash": "^4.17.5",
     "semantic-ui-css": "^2.3.0"
   },
-  "devDependencies": {
-    "vue": "2.1.10",
-    "vue-resource": "1.0.3"
-  }
+  "devDependencies": {}
 }
