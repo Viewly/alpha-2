@@ -20,5 +20,9 @@ RUN pip install -r requirements.txt
 # regression fix
 RUN pip install -U git+https://github.com/ethereum/web3.py@v4.0.0-beta.11
 
+# build Flask-Assets (scss)
+ENV FLASK_APP src/views.py
+RUN flask assets build
+
 EXPOSE 5000
 CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "src.views:app"]

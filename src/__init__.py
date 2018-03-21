@@ -4,6 +4,7 @@ import delegator
 from flask import (
     Flask,
 )
+from flask_assets import Environment, Bundle
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_misaka import Misaka
@@ -27,6 +28,18 @@ mail = Mail(app)
 
 # Optionally initialize Sentry (error logging)
 sentry = Sentry(app) if getenv('SENTRY_DSN') else None
+
+# Initialize Flask-Assets
+assets = Environment(app)
+scss_files = [
+    'base.scss',
+]
+scss = Bundle(
+    *(f'scss/{x}' for x in scss_files),
+    filters='pyscss',
+    output='css/scss_all.css'
+)
+assets.register('scss_all', scss)
 
 # Markdown Support
 md_features = ['autolink', 'fenced_code', 'underline', 'highlight', 'quote',
