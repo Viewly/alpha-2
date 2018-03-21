@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}{{ video.title }}{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
 
 {#{% set autoPlay = 1 %}#}
 {#{% set video_id = video.id %}#}
@@ -36,12 +39,10 @@
                                 <br>
                                 <br>
 
-                                <div class="description">
-                                    <div class="Post">
-                                        {% if video.description %}
-                                            {{ video.description | markdown }}
-                                        {% endif %}
-                                    </div>
+                                <div class="description Post">
+                                    {% if video.description %}
+                                        {{ video.description | markdown }}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

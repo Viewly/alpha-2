@@ -3,6 +3,9 @@
 {% set active_submenu = "about" %}
 {% from "_formhelpers.html" import render_field %}
 {% block title %}Set title and description{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
 
 {% block content %}
     {% include '_breadcrumbs.html' %}
@@ -32,12 +35,10 @@
             <div class="ui relaxed divided items">
                 <div class="item">
                     <div class="content">
-                        <div class="description">
-                            <div class="Post">
-                                {% if form.description.data %}
-                                    {{ form.description.data | markdown }}
-                                {% endif %}
-                            </div>
+                        <div class="description Post">
+                            {% if form.description.data %}
+                                {{ form.description.data | markdown }}
+                            {% endif %}
                         </div>
                     </div>
                 </div>

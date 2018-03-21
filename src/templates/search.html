@@ -24,15 +24,23 @@
                     </div>
                 </div>
             </div>
+        {% else %}
+            No results
         {% endfor %}
 
     </div>
 
     {% if page_num > 0 %}
-         <a href="/new?page={{ page_num - 1 }}" class="ui button blue"><</a>
+         <a href="/new?page={{ page_num - 1 }}"
+           class="ui left icon button">
+            <i class="left arrow icon"></i>
+        </a>
     {% endif %}
     {% if results and results|length == items_per_page %}
-        <a href="/new?page={{ page_num + 1 }}" class="ui button blue">Next Page</a>
+        <a href="/new?page={{ page_num + 1 }}"
+           class="ui right labeled icon button">
+            <i class="right arrow icon"></i>
+            Next</a>
     {% endif %}
 {% endblock %}
 
