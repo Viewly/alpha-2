@@ -15,15 +15,20 @@
                         <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Uploads</th>
                             <th>Created On</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for channel in channels %}
+                        {% for channel, video_count in channels %}
                             <tr>
-                                <td><b>
+                                <td>
+                                    <b><img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
                                     <a href="{{ url_for('view_channel', channel_id=channel.id) }}">
-                                        {{ channel.display_name }}</a></b></td>
+                                        {{ channel.display_name }}</a>
+                                    </b>
+                                </td>
+                                <td>{{ video_count }}</td>
                                 <td>{{ channel.created_at | humanDate }}</td>
                             </tr>
                         {% endfor %}

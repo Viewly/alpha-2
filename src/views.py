@@ -10,7 +10,7 @@ from flask_security import (
     current_user,
     login_required,
 )
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 
 from . import app, db
 from .methods import guess_thumbnail_cdn_url
@@ -107,9 +107,20 @@ def new(page_num=0, items_per_page=20):
 @app.route('/profile/edit', methods=['GET'])
 @login_required
 def edit_profile():
+    """
+    select channel.*, count(video.id) as video_count
+     from channel
+     join video on video.channel_id = channel.id
+     group by channel.id
+     having channel.user_id = :user_id;
+    """
+    channels = db.session.query(Channel, func.count(Video.id))\
+        .join(Video)\
+        .group_by(Channel)\
+        .having(Channel.user_id == current_user.id)
     return render_template(
         'edit_profile.html',
-        channels=Channel.query.filter_by(user_id=current_user.id),
+        channels=channels,
     )
 
 
