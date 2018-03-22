@@ -18,7 +18,7 @@ WORKDIR /alpha-2
 RUN pip install -r requirements.txt
 
 # regression fix
-RUN pip install -U git+https://github.com/ethereum/web3.py@v4.0.0-beta.11
+RUN pip install -U web3
 
 # build Flask-Assets (scss)
 ENV FLASK_APP src/views.py
