@@ -19,6 +19,12 @@ docker-compose -f docker-compose.web.yml -f docker-compose.workers.yml up
 ```
 If there are no errors, you should be able to open Alpha Web app at http://localhost:50001
 
+You will need to install npm/gulp dependencies locally. 
+See "Install JS dependencies" below.
+
+Any local file changes will be reflected inside of container automatically, allowing 
+for convenient dockerized development.
+
 _Note: To avoid conflicts with locally installed Postgres/Redis/Flask, the
 the Dockerized version of the app binds to ports that have `1` added at the end.
 For example, the PostgreSQL port binds to host on `54321` rather than `5432`. The latter 
@@ -26,6 +32,7 @@ is available within the container only._
 
 _Note: To persist the data, PostgreSQL container will mount its data volume into
 `postgres_data` locally. Remove this folder if you wish to start from scratch._
+
 
 ## Re-building the stack from scratch
 If you've added extra dependencies or applied changes that require
@@ -51,8 +58,8 @@ Package Dependencies:
  
 Install JS dependencies:
 ```
-cd src/static
-npm i
+cd src/static &&  npm install
+cd semantic   &&  gulp build
 ```
 
 Install Python dependencies:
