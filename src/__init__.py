@@ -36,7 +36,7 @@ scss_files = [
 ]
 scss = Bundle(
     *(f'scss/{x}' for x in scss_files),
-    filters='pyscss',
+    filters='libsass',
     output='css/scss_all.css'
 )
 assets.register('scss_all', scss)
