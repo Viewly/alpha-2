@@ -9,7 +9,7 @@ Flask-Misaka
 Flask-WTF
 Flask-Restful
 Flask-Assets
-pyscss
+libsass
 marshmallow_sqlalchemy
 bcrypt
 python-slugify
