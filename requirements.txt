@@ -8,6 +8,8 @@ Flask-Migrate
 Flask-Misaka
 Flask-WTF
 Flask-Restful
+Flask-Assets
+pyscss
 marshmallow_sqlalchemy
 bcrypt
 python-slugify
