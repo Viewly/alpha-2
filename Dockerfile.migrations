@@ -6,4 +6,7 @@ COPY . /alpha-2
 WORKDIR /alpha-2
 RUN pip install -r requirements.txt
 
+# regression fix
+RUN pip install -U web3
+
 CMD ["sh", "run-migrations.sh"]
