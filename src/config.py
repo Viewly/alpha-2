@@ -25,10 +25,6 @@ IS_PRODUCTION = bool(getenv('PRODUCTION', False))
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
 
-# assets compilation
-ASSETS_DEBUG = not IS_PRODUCTION
-AUTO_BUILD = not IS_PRODUCTION
-
 # needed for Disqus plugin, shared /w nginx reverse proxy
 VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'http://localhost:5000')
 

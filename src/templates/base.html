@@ -7,9 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
-    {% assets "scss_all" %}
-        <link rel=stylesheet type=text/css href="{{ ASSET_URL }}">
-    {% endassets %}
+    <link href="{{ url_for('static', filename='css/compiled/base.scss.css') }}" rel="stylesheet" type="text/css">
 
     {% block styles %}
     {% endblock %}

@@ -1,11 +1,9 @@
-import glob
 from os import getenv
 
 import delegator
 from flask import (
     Flask,
 )
-from flask_assets import Environment, Bundle
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_misaka import Misaka
@@ -15,6 +13,7 @@ from flask_security import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
+from sassutils.wsgi import SassMiddleware
 
 from .config import IS_PRODUCTION
 
@@ -29,16 +28,6 @@ mail = Mail(app)
 
 # Optionally initialize Sentry (error logging)
 sentry = Sentry(app) if getenv('SENTRY_DSN') else None
-
-# Initialize Flask-Assets
-assets = Environment(app)
-scss_files = glob.glob('src/static/scss/**/*.scss', recursive=True)
-scss = Bundle(
-    *(x.split('/static/')[-1] for x in scss_files),
-    filters='libsass',
-    output='css/scss_all.css'
-)
-assets.register('scss_all', scss)
 
 # Markdown Support
 md_features = ['autolink', 'fenced_code', 'underline', 'highlight', 'quote',
@@ -101,3 +90,9 @@ if not IS_PRODUCTION:
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.jinja_env.auto_reload = True
     app.jinja_env.cache = {}
+
+# Initialize scss compilation in development
+if not IS_PRODUCTION:
+    app.wsgi_app = SassMiddleware(app.wsgi_app, {
+        'src': ('static/scss', 'static/css/compiled', '/static/css/compiled')
+    })
