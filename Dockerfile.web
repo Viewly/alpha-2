@@ -20,9 +20,8 @@ RUN pip install -r requirements.txt
 # regression fix
 RUN pip install -U web3
 
-# build Flask-Assets (scss)
-ENV FLASK_APP src/views.py
-RUN flask assets build
+## compile sass/scss
+RUN python setup.py build_sass
 
 EXPOSE 5000
 CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "src.views:app"]

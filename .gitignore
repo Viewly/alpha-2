@@ -3,7 +3,7 @@ node_modules
 *.env
 celerybeat*
 postgres_data
-*scss_all.css
+*.scss.css*
 
 # Created by .ignore support plugin (hsz.mobi)
 __pycache__/
