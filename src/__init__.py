@@ -1,3 +1,4 @@
+import glob
 from os import getenv
 
 import delegator
@@ -31,11 +32,9 @@ sentry = Sentry(app) if getenv('SENTRY_DSN') else None
 
 # Initialize Flask-Assets
 assets = Environment(app)
-scss_files = [
-    'base.scss',
-]
+scss_files = glob.glob('src/static/scss/**/*.scss', recursive=True)
 scss = Bundle(
-    *(f'scss/{x}' for x in scss_files),
+    *(x.split('/static/')[-1] for x in scss_files),
     filters='libsass',
     output='css/scss_all.css'
 )
