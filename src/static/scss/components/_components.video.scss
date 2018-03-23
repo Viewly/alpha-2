@@ -6,6 +6,9 @@
     margin-bottom: $spacing-unit-large;
 }
 
+    /**
+     * Video image.
+     */
     .c-video__img {
         display: block;
         margin-bottom: $spacing-unit-tiny;
@@ -67,5 +70,29 @@
             .play {
                 @include visible;
             }
+        }
+    }
+
+    /**
+     * Video title
+     */
+    .c-video__title {
+        $font-size: 17px;
+        $line-height: 1.4;
+        $max-number-of-lines: 2;
+        $max-height: $font-size * ($line-height - .2) * $max-number-of-lines;
+
+        color: #333;
+        display: block;
+        font-size: $font-size;
+        font-weight: 400;
+        margin-bottom: $spacing-unit-tiny;
+        max-height: round($max-height);
+        transition: $global-transition;
+        overflow: hidden;
+
+        &:hover {
+            color: color('brand-secondary');
+            text-decoration: none;
         }
     }
