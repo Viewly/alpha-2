@@ -115,9 +115,9 @@ def edit_profile():
      group by channel.id
      having channel.user_id = :user_id;
     """
-    channels = db.session.query(Channel, func.count(Video.id))\
-        .join(Video)\
-        .group_by(Channel)\
+    channels = db.session.query(Channel, func.count(Video.id)) \
+        .join(Video) \
+        .group_by(Channel) \
         .having(Channel.user_id == current_user.id)
     return render_template(
         'edit_profile.html',
