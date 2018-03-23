@@ -1,0 +1,13 @@
+/*------------------------------------*\
+    #LINKS
+\*------------------------------------*/
+
+a {
+    color: $global-link-color;
+    transition: $global-transition;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
