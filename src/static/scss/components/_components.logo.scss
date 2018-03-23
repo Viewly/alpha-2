@@ -1,0 +1,47 @@
+/*------------------------------------*\
+    #LOGO
+\*------------------------------------*/
+
+.c-logo {
+    align-items: center;
+    color: #333;
+    display: flex;
+    font-size: 19px;
+    margin-right: $spacing-unit-huge;
+    transition: $global-transition;
+
+    img {
+        animation: scale .35s alternate infinite ease-in;
+        animation-play-state: paused;
+        height: auto;
+        margin-right: $spacing-unit-small;
+        transition: inherit;
+        width: 24px;
+        will-change: transform;
+    }
+
+    &:hover {
+        color: color('brand-secondary');
+        text-decoration: none;
+
+        img {
+            animation-play-state: running;
+        }
+    }
+
+    &:focus {
+        img {
+            transform: scale(.9);
+        }
+    }
+
+    @keyframes scale {
+        100% {
+            transform: scale(.95);
+        }
+
+        100% {
+            transform: scale(1.1);
+        }
+    }
+}
