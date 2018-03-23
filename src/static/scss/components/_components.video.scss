@@ -10,6 +10,7 @@
      * Video image.
      */
     .c-video__img {
+        background-color: #fff;
         display: block;
         margin-bottom: $spacing-unit-tiny;
         transition: $global-transition;
@@ -90,7 +91,7 @@
         $font-size: 17px;
         $line-height: 1.45;
         $max-number-of-lines: 2;
-        $max-height: $font-size * ($line-height - .2) * $max-number-of-lines;
+        $max-height: $font-size * ($line-height - .3) * $max-number-of-lines;
 
         color: #3a5161;
         display: block;

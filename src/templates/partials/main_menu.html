@@ -1,18 +1,15 @@
-<div class="ui large top menu" style="margin-bottom: 0px;">
-    <div class="header item">
-        <img class="logo" src="{{ url_for('static', filename='img/favicon.ico') }}"
-             style="width: 20px;">
-        &nbsp;&nbsp;Viewly &alpha;
-    </div>
-    <a class="item" href="/">Home</a>
-    <div class="item">
-        <div id="search-box" class="ui action left icon input">
-            <i class="search icon"></i>
-            <input placeholder="Search" value="{{ query }}">
-            <button class="ui button">Submit</button>
+<div class="c-header">
+    <a class="c-logo" href="/">
+        <img src="{{ url_for('static', filename='img/favicon.ico') }}">
+        Viewly &alpha;
+    </a>
+    <div class="c-header__search">
+        <div id="search-box" class="ui action icon input">
+            <button class="ui button"><i class="search icon" style="margin-right: 0"></i></button>
+            <input placeholder="Search videos" value="{{ query }}">
         </div>
     </div>
-    <div class="right menu">
+    <div class="c-header__options">
         {% if current_user.is_active %}
             {% if current_user.can_upload %}
                 <a class="item {% if active_menu == 'upload' %}active{% endif %}"
@@ -30,7 +27,7 @@
                 </div>
             </div>
             <div class="ui dropdown item">
-                <i class="user icon"></i> Me
+                <img src="https://d3iw72m71ie81c.cloudfront.net/male-3.jpg" class="ui circular avatar image">
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="item" href="{{ url_for('edit_profile') }}"><i
@@ -40,6 +37,10 @@
                 </div>
             </div>
         {% else %}
+            <div class="item">
+                <a href="{{ url_for('security.login') }}"
+                   class="">Login</a>
+            </div>
             <div class="item">
                 <a href="{{ url_for('security.register') }}"
                    class="ui primary basic button">Sign Up</a>

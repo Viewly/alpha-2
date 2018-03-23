@@ -1,0 +1,31 @@
+/*------------------------------------*\
+    #LOGO
+\*------------------------------------*/
+
+.c-logo {
+    align-items: center;
+    color: #333;
+    display: flex;
+    font-size: 19px;
+    margin-right: $spacing-unit-huge;
+    transition: $global-transition;
+
+    img {
+        height: auto;
+        margin-right: $spacing-unit-small;
+        transition: inherit;
+        width: 24px;
+        will-change: transform;
+    }
+
+    &:hover {
+        color: color('brand-secondary');
+        text-decoration: none;
+    }
+
+    &:focus {
+        img {
+            transform: scale(.9);
+        }
+    }
+}

@@ -1,3 +1,13 @@
 /*------------------------------------*\
     #SHAME
 \*------------------------------------*/
+
+body {
+    background-color: lighten(#eef1f2, 2%);
+    padding-top: $header-height;
+}
+
+
+.button {
+    border-radius: 2px !important;
+}
