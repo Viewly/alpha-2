@@ -78,21 +78,54 @@
      */
     .c-video__title {
         $font-size: 17px;
-        $line-height: 1.4;
+        $line-height: 1.45;
         $max-number-of-lines: 2;
         $max-height: $font-size * ($line-height - .2) * $max-number-of-lines;
 
-        color: #333;
+        color: #3a5161;
         display: block;
         font-size: $font-size;
         font-weight: 400;
-        margin-bottom: $spacing-unit-tiny;
+        margin-bottom: $spacing-unit-tiny - 2;
         max-height: round($max-height);
-        transition: $global-transition;
         overflow: hidden;
+        transition: $global-transition;
 
         &:hover {
             color: color('brand-secondary');
             text-decoration: none;
         }
     }
+
+    /**
+     * Video footer
+     */
+    .c-video__footer {
+        color: color('light-grey');
+        display: block;
+        font-size: 13px;
+        font-weight: 400;
+
+        a {
+            color: inherit;
+
+            &:hover {
+                color: color('brand-secondary');
+                text-decoration: none;
+            }
+        }
+
+        .avatar {
+            font-size: 10px;
+        }
+    }
+
+        .c-video__date {
+            margin-left: $spacing-unit-tiny - 2;
+
+            &::before {
+                content: '\2219';
+                font-size: 16px;
+                margin-right: $spacing-unit-tiny - 2;
+            }
+        }
