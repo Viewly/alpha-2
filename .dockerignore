@@ -1,7 +1,18 @@
 .idea/
-.env
+
+# npm deps and compiled assets
+node_modules
+*.scss.css*
+
+# docker pollution
 docker.dev.env
-postgres_data/
+postgres_data
+
+# runtime pollution
+.env
+celerybeat*
+
+# docker-compose
 *compose*.yml
 *Dockerfile*
 
