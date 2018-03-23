@@ -1,9 +1,16 @@
 .idea/
+
+# npm deps and compiled assets
 node_modules
-*.env
-celerybeat*
-postgres_data
 *.scss.css*
+
+# docker pollution
+docker.dev.env
+postgres_data
+
+# runtime pollution
+.env
+celerybeat*
 
 # Created by .ignore support plugin (hsz.mobi)
 __pycache__/
