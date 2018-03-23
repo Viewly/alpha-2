@@ -1,5 +1,6 @@
 import datetime as dt
 import json
+from typing import Union
 
 import maya
 from flask import (
@@ -171,6 +172,11 @@ def human_date(dto: dt.datetime):
 def to_hex(data: str):
     data = data.encode('ascii').hex()
     return f'0x{data}'
+
+
+@app.template_filter('toDuration')
+def to_duration(seconds: Union[int, float]):
+    return str(dt.timedelta(seconds=int(seconds)))
 
 
 @app.template_filter('toWei')
