@@ -87,7 +87,7 @@ def search(page_num=0, items_per_page=20):
 
 
 @app.route('/new', methods=['GET'])
-def new(page_num=0, items_per_page=20):
+def new(page_num=0, items_per_page=18):
     limit = items_per_page
     page_num = page_num or int(request.args.get('page', 0))
 
