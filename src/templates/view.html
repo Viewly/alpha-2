@@ -273,6 +273,12 @@
                 .html('Vote failed. Try again.')
         }
 
+        function resetVoteButton() {
+            if (localStorage.getItem(videoId) !== 'true') {
+                $('#vote-button').html('Vote for this video');
+            }
+        }
+
         function getCurrentUI() {
             // connected to wrong network
             if (networkId !== networks[ethChain])
@@ -332,7 +338,11 @@
                         // shortcut
                         signVote(account, videoId);
                     } else {
-                        $('#metamask-modal').modal('show');
+                        $('#metamask-modal')
+                            .modal({
+                                onHide: () => resetVoteButton()
+                            })
+                            .modal('show');
                     }
                 }, 500);
 
