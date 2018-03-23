@@ -37,10 +37,13 @@
             width: 100%;
         }
 
-        .play {
+        .c-video__play-icon {
             @include invisible;
             color: #fff;
             font-size: 44px;
+            height: 1em;
+            display: block;
+            width: 1em;
             line-height: 1;
             text-shadow: 2px 2px 2px rgba(#333, .4);
             transform: translate(-50%, -50%);
@@ -51,7 +54,7 @@
             z-index: 20;
 
             @include mq(medium) {
-                font-size: 30px;
+                font-size: 36px;
             }
 
             @include mq(large) {
@@ -68,7 +71,7 @@
             transform: scale(1.02);
 
             &::before,
-            .play {
+            .c-video__play-icon {
                 @include visible;
             }
         }
