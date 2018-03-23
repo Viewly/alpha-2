@@ -74,6 +74,16 @@
     }
 
     /**
+     * Video content
+     *
+     * 1. When titles are longer it doesn't look if they go all the way to the
+     *    end of the line. So let's make sure there are some breathing room.
+     */
+    .c-video__content {
+        padding-right: $spacing-unit-tiny; /* [1] */
+    }
+
+    /**
      * Video title
      */
     .c-video__title {
