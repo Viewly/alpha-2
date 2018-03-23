@@ -1,0 +1,49 @@
+/*------------------------------------*\
+    #TYPE
+\*------------------------------------*/
+
+/**
+ * Type weights
+ */
+.u-type-ultralight {
+    font-weight: 100 !important;
+}
+
+.u-type-light {
+    font-weight: 300 !important;
+}
+
+.u-type-regular {
+    font-weight: 400 !important;
+}
+
+.u-type-semibold {
+    font-weight: 500 !important;
+}
+
+.u-type-bold {
+    font-weight: 700 !important;
+}
+
+.u-type-extrabold {
+    font-weight: 800 !important;
+}
+
+/**
+ * Type transforms
+ */
+.u-type-uppercase {
+    text-transform: uppercase !important;
+}
+
+.u-type-lowercase {
+    text-transform: lowercase !important;
+}
+
+.u-type-capitalize {
+    text-transform: capitalize !important;
+}
+
+.u-type-no-transfrom {
+    text-transform: none !important;
+}

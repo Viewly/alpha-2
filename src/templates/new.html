@@ -5,32 +5,41 @@
 {% block content %}
     <p></p>
     <h3>New Videos</h3>
-    <div class="ui relaxed items">
+    <div class="o-grid c-videos-grid">
 
         {% for video in videos %}
-            <div class="item">
-                <div class="ui small image">
-                    <a href="{{ url_for('view_video', video_id=video.id) }}">
+            <div class="o-grid__cell c-videos-grid__cell">
+                <div class="c-video">
+                    <a class="c-video__img" href="{{ url_for('view_video', video_id=video.id) }}">
                         <img src="{{ guess_thumbnail_cdn_url(video.id) }}">
+                        <i class="play icon"></i>
                     </a>
-                </div>
-                <div class="content">
-                    <a class="header"
-                       href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
-                    <div class="meta">
-                        {{ video.published_at | humanDate }} by
-                        {% if video.channel_id %}
-                            <b><a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
-                                {{ video.channel.display_name }}</a></b>
-                        {% endif %}
-                    </div>
-                    <div class="extra">
-                        {% if not video.channel_id %}
-                            <div class="ui label">no-channel</div>
-                        {% endif %}
-                        {% if not video.published_at %}
-                            <div class="ui label">unpublished</div>
-                        {% endif %}
+                    <div class="c-video__content">
+                        <a class="c-video__title"
+                            href="{{ url_for('view_video', video_id=video.id) }}"
+                            title="{{ video.title }}"
+                        >
+                            {{ video.title }}
+                        </a>
+                        <div class="c-video__footer">
+                            {% if video.channel_id %}
+                                <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
+                                    <img src="https://d3iw72m71ie81c.cloudfront.net/male-3.jpg" class="ui circular avatar image">
+                                    {{ video.channel.display_name }}
+                                </a>
+                            {% endif %}
+                            <span class="c-video__date">
+                                {{ video.published_at | humanDate }}
+                            </span>
+                        </div>
+                        <div class="extra">
+                            {% if not video.channel_id %}
+                                <div class="ui label">no-channel</div>
+                            {% endif %}
+                            {% if not video.published_at %}
+                                <div class="ui label">unpublished</div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

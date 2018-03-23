@@ -1,0 +1,37 @@
+/*------------------------------------*\
+    #TEXTS
+\*------------------------------------*/
+
+/**
+ * Nicer ampersand
+ */
+.u-amp {
+    font-family: Baskerville, Palatino, "Palatino Linotype", "Book Antiqua", serif;
+    font-size: 1.4em;
+    font-style: italic;
+    font-weight: normal;
+}
+
+/**
+ * Text alignment
+ */
+.u-text-center {
+    text-align: center !important;
+}
+
+.u-text-left {
+    text-align: left !important;
+}
+
+.u-text-right {
+    text-align: right !important;
+}
+
+/**
+ * Trim text
+ */
+.u-text-trim {
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+}

@@ -1,0 +1,141 @@
+/*------------------------------------*\
+    #VIDEO
+\*------------------------------------*/
+
+.c-video {
+    margin-bottom: $spacing-unit-large;
+}
+
+    /**
+     * Video image.
+     */
+    .c-video__img {
+        display: block;
+        margin-bottom: $spacing-unit-tiny;
+        transition: $global-transition;
+        transform-origin: 50% 100%;
+        will-change: transform;
+        position: relative;
+
+        &:before {
+            @include invisible;
+            background-color: rgba(color('brand-secondary'), .5);
+            content: '';
+            transition: inherit;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        img {
+            display: block;
+            height: auto;
+            width: 100%;
+        }
+
+        .play {
+            @include invisible;
+            color: #fff;
+            font-size: 44px;
+            line-height: 1;
+            text-shadow: 2px 2px 2px rgba(#333, .4);
+            transform: translate(-50%, -50%);
+            transition: inherit;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 20;
+
+            @include mq(medium) {
+                font-size: 30px;
+            }
+
+            @include mq(large) {
+                font-size: 40px;
+            }
+
+            @include mq(extralarge) {
+                font-size: 50px;
+            }
+        }
+
+        &:hover {
+            text-decoration: none;
+            transform: scale(1.02);
+
+            &::before,
+            .play {
+                @include visible;
+            }
+        }
+    }
+
+    /**
+     * Video content
+     *
+     * 1. When titles are longer it doesn't look if they go all the way to the
+     *    end of the line. So let's make sure there are some breathing room.
+     */
+    .c-video__content {
+        padding-right: $spacing-unit-tiny; /* [1] */
+    }
+
+    /**
+     * Video title
+     */
+    .c-video__title {
+        $font-size: 17px;
+        $line-height: 1.45;
+        $max-number-of-lines: 2;
+        $max-height: $font-size * ($line-height - .2) * $max-number-of-lines;
+
+        color: #3a5161;
+        display: block;
+        font-size: $font-size;
+        font-weight: 400;
+        margin-bottom: $spacing-unit-tiny - 2;
+        max-height: round($max-height);
+        overflow: hidden;
+        transition: $global-transition;
+
+        &:hover {
+            color: color('brand-secondary');
+            text-decoration: none;
+        }
+    }
+
+    /**
+     * Video footer
+     */
+    .c-video__footer {
+        color: color('light-grey');
+        display: block;
+        font-size: 13px;
+        font-weight: 400;
+
+        a {
+            color: inherit;
+
+            &:hover {
+                color: color('brand-secondary');
+                text-decoration: none;
+            }
+        }
+
+        .avatar {
+            font-size: 10px;
+        }
+    }
+
+        .c-video__date {
+            margin-left: $spacing-unit-tiny - 2;
+
+            &::before {
+                content: '\2219';
+                font-size: 16px;
+                margin-right: $spacing-unit-tiny - 2;
+            }
+        }

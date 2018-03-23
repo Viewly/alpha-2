@@ -1,0 +1,15 @@
+/*------------------------------------*\
+    #VIDEOS GRID
+\*------------------------------------*/
+
+.c-videos-grid {}
+
+    .c-videos-grid__cell {
+        @include mq(medium) {
+            width: 50%;
+        }
+
+        @include mq(large) {
+            width: calc(100% * 1 / 3);
+        }
+    }

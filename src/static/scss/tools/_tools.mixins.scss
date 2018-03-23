@@ -1,0 +1,39 @@
+/*------------------------------------*\
+    #MIXINS
+\*------------------------------------*/
+
+// Invisible
+@mixin invisible {
+    opacity: 0;
+    visibility: hidden;
+}
+
+// Visible
+@mixin visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+// Word break
+@mixin break-words {
+    hyphens: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+@mixin trim-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+// Font smoothing
+@mixin font-smoothing($value: on) {
+    @if $value == on {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    } @else {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}

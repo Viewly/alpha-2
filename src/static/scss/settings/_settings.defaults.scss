@@ -1,0 +1,57 @@
+/*------------------------------------*\
+    #DEFAULT SETTINGS
+\*------------------------------------*/
+
+
+// High-level base settings.
+$global-font-size:                      18px;
+$global-line-height:                    30px;
+$global-link-color:                     #288ae2;
+$global-border-radius:                  2px;
+$global-transition:                     all .2s ease;
+
+// Inuit settings.
+//
+// Annotation: Some of these settings are later aliased in
+// `_settings.aliases.scss` for easier use in the rest of the project.
+$inuit-global-font-size:                $global-font-size;
+$inuit-global-line-height:              $global-line-height;
+
+$inuit-global-spacing-unit:             20px;
+$inuit-global-spacing-unit-tiny:        round($inuit-global-spacing-unit / 3);
+$inuit-global-spacing-unit-small:       round($inuit-global-spacing-unit / 2);
+$inuit-global-spacing-unit-large:       $inuit-global-spacing-unit * 2;
+$inuit-global-spacing-unit-huge:        $inuit-global-spacing-unit * 3;
+
+$inuit-font-size-h1:                    48px;
+$inuit-font-size-h2:                    44px;
+$inuit-font-size-h3:                    38px;
+$inuit-font-size-h4:                    24px;
+$inuit-font-size-h5:                    20px;
+$inuit-font-size-h6:                    18px;
+
+
+// Breakpoints.
+$mq-breakpoints: (
+    medium: 530px,
+    large: 780px,
+    extralarge: 1025px
+);
+
+
+// Uncomment the lines below to show debugging tools in the browser.
+// $mq-show-breakpoints: (medium, large, extralarge);
+// body::before { z-index: 9999 !important; }
+
+
+// Colors
+$colors: (
+    'light-blue': #0ff,
+    'blue': #006cff,
+    'grey': #5b6a72,
+    'light-grey': #898989,
+
+    // Brand colors
+    'brand-primary': 'light-blue',
+    'brand-secondary': 'blue'
+);
