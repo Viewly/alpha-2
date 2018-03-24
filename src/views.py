@@ -51,7 +51,15 @@ def view_channel(channel_id):
     videos = (Video.query.filter_by(channel_id=channel_id)
               .order_by(desc(Video.published_at))
               .limit(10).all())
-    return render_template('channel.html', channel=channel, videos=videos)
+
+    return render_template(
+        'channel.html',
+        channel=channel,
+        videos=videos,
+        s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
+        s3_bucket_region=app.config['S3_UPLOADS_REGION'],
+        s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
+    )
 
 
 @app.route('/search', methods=['GET'])

@@ -51,7 +51,8 @@ def img_resize_multi(
         img: Image,
         sizes: List[Dict] = None,
         output_ext: str = 'png',
-        min_size_name: str = None, **kwargs) -> list:
+        min_size_name: str = None,
+        aspect_ratio: tuple = (16, 9), **kwargs) -> list:
     """
     Resize an original image into multiple sizes.
     Write the outputted files into a temporary directory.
@@ -66,7 +67,7 @@ def img_resize_multi(
     ]
 
     # ShrinkToFit original img into 16:9 ratio
-    if Fraction(*img.size) != Fraction(16, 9):
+    if Fraction(*img.size) != Fraction(*aspect_ratio):
         resizer = lambda size: ImageOps.fit(img, size=size, method=Image.LANCZOS)
     else:
         resizer = lambda size: img.resize(size, Image.LANCZOS)
