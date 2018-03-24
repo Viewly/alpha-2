@@ -4,6 +4,7 @@ from fractions import Fraction
 from typing import List, Dict
 
 from PIL import Image, ImageOps
+from funcy import lpluck
 
 from .ffprobe import (
     run_ffprobe
@@ -35,7 +36,7 @@ def img_resize_multi_to_s3(image: Image, output_key_prefix: str, **kwargs):
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_dir = pathlib.Path(tmpdir)
-        available_sizes = img_resize_multi(tmp_dir, image)
+        available_sizes = img_resize_multi(tmp_dir, image, **kwargs)
 
         s3_transfer = S3Transfer(**kwargs)
         for file in tmp_dir.glob('*'):
@@ -49,7 +50,8 @@ def img_resize_multi(
         tmp_dir: pathlib.Path,
         img: Image,
         sizes: List[Dict] = None,
-        output_ext: str = 'png') -> list:
+        output_ext: str = 'png',
+        min_size_name: str = None, **kwargs) -> list:
     """
     Resize an original image into multiple sizes.
     Write the outputted files into a temporary directory.
@@ -76,8 +78,16 @@ def img_resize_multi(
         tmp_ = resizer(size['size'])
         tmp_.save(tmp_dir / file_name)
 
+    if min_size_name \
+            and min_size_name not in lpluck('name', available_sizes):
+        raise MinResNotAvailableError
+
     return available_sizes
 
 
 def larger_or_equal_size(first: tuple, second: tuple):
     return first[0] >= second[0] and first[1] >= second[1]
+
+
+class MinResNotAvailableError(BaseException):
+    pass

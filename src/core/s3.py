@@ -19,6 +19,7 @@ class S3Transfer:
             region_name=None,
             bucket_name=None,
             accelerated_transfer=True,
+            **kwargs,
     ):
         self._region_name = region_name or S3_UPLOADS_REGION
         self._bucket_name = bucket_name or S3_UPLOADS_BUCKET
