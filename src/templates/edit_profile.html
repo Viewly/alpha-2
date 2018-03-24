@@ -23,9 +23,11 @@
                         {% for channel, video_count in channels %}
                             <tr>
                                 <td>
-                                    <b><img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
-                                    <a href="{{ url_for('view_channel', channel_id=channel.id) }}">
-                                        {{ channel.display_name }}</a>
+                                    <b>
+                                        <img src="{{ guess_avatar_cdn_url(channel.id, 'tiny') }}"
+                                             class="ui circular avatar image">
+                                        <a href="{{ url_for('view_channel', channel_id=channel.id) }}">
+                                            {{ channel.display_name }}</a>
                                     </b>
                                 </td>
                                 <td>{{ video_count }}</td>

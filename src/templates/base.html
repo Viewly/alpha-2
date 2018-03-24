@@ -53,6 +53,13 @@
             $(this).closest('.message').transition('fade');
         });
     });
+
+    // global missing image replacement
+    $(function () {
+        $(".avatar.image").on("error", function () {
+            $(this).attr('src', 'https://i.imgur.com/32AwiVw.jpg');
+        });
+    });
 </script>
 
 {% block scripts %}

@@ -86,7 +86,9 @@
 
 {% block content %}
     <p></p>
-    <h2><img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
+    <h2>
+        <img src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
+             class="ui circular avatar image">
         {{ channel.display_name }}</h2>
 
     {% if current_user.id == channel.user_id %}
@@ -135,22 +137,22 @@
         <div class="header">Channel profile picture</div>
         <div class="content">
 
-                <div id="fine-uploader"></div>
-                <div class="text text-center">
-                    <i>A minimum image size of 128 x 128px is required.</i>
-                </div>
+            <div id="fine-uploader"></div>
+            <div class="text text-center">
+                <i>A minimum image size of 128 x 128px is required.</i>
+            </div>
 
+            <br>
+            <div id="next_steps" class="text-center"
+                 style="{% if not current_thumbnail %}display: none;{% endif %}">
+                <p>
+                    <i>It might take a few minutes for image to update on site.</i>
+                </p>
+                <a href="javascript:"
+                   onclick="$('#avatar-modal').modal('hide')"
+                   class="ui button blue huge">Finish</a>
                 <br>
-                <div id="next_steps" class="text-center"
-                     style="{% if not current_thumbnail %}display: none;{% endif %}">
-                    <p>
-                        <i>It might take a few minutes for image to update on site.</i>
-                    </p>
-                    <a href="javascript:"
-                       onclick="$('#avatar-modal').modal('hide')"
-                       class="ui button blue huge">Finish</a>
-                    <br>
-                </div>
+            </div>
 
         </div>
     </div>
