@@ -14,7 +14,10 @@ from flask_security import (
 from sqlalchemy import desc, func
 
 from . import app, db
-from .methods import guess_thumbnail_cdn_url
+from .methods import (
+    guess_thumbnail_cdn_url,
+    guess_avatar_cdn_url,
+)
 from .models import Video, Channel, TranscoderJob
 
 
@@ -157,6 +160,7 @@ def utility_processor():
         block_num=block_num,
         get_transcoding_status=get_transcoding_status,
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
+        guess_avatar_cdn_url=guess_avatar_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
         eth_chain=lambda: app.config['ETH_CHAIN'],

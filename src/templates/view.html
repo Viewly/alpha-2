@@ -31,7 +31,7 @@
                     <div class="ui relaxed divided items">
                         <div class="item">
                             <div class="content">
-                                <img src="https://i.imgur.com/32AwiVw.jpg"
+                                <img src="{{ guess_avatar_cdn_url(video.channel_id, 'tiny') }}"
                                      class="ui circular avatar image">
                                 <b><a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
                                     {{ video.channel.display_name }}</a></b>
