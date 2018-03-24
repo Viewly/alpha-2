@@ -33,7 +33,7 @@ from ..models import (
     Channel,
     TranscoderJob,
 )
-from ..tasks.thumbnails import process_thumbnails
+from ..tasks.thumbnails import process_thumbnails, process_avatar
 from ..tasks.transcoder import start_transcoder_job
 
 upload = Blueprint(
@@ -182,6 +182,33 @@ def s3_thumb_success():
 
     return jsonify(
         video_id=video.id,
+    )
+
+
+@upload.route("s3/avatar_success", methods=['GET', 'POST'])
+@login_required
+def s3_avatar_success():
+    channel = Channel.query.filter_by(
+        user_id=current_user.id,
+        id=request.form.get('channel_id'),
+    ).first_or_404()
+
+    profile = channel.profile or {}
+    profile['s3_avatar_key'] = request.form.get('key')
+
+    channel.profile = profile
+    db.session.add(channel)
+    db.session.commit()
+
+    # start the thumbnail resizing
+    process_avatar.delay(channel.id)
+
+    # if the bucket policy were public, we wouldn't need this
+    with suppress(Exception):
+        s3_make_public(app.config['S3_UPLOADS_BUCKET'], profile['s3_avatar_key'])
+
+    return jsonify(
+        channel_id=channel.id,
     )
 
 
