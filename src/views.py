@@ -1,5 +1,6 @@
 import datetime as dt
 import json
+from typing import Union
 
 import maya
 from flask import (
@@ -114,9 +115,9 @@ def edit_profile():
      group by channel.id
      having channel.user_id = :user_id;
     """
-    channels = db.session.query(Channel, func.count(Video.id))\
-        .join(Video)\
-        .group_by(Channel)\
+    channels = db.session.query(Channel, func.count(Video.id)) \
+        .join(Video) \
+        .group_by(Channel) \
         .having(Channel.user_id == current_user.id)
     return render_template(
         'edit_profile.html',
@@ -171,6 +172,11 @@ def human_date(dto: dt.datetime):
 def to_hex(data: str):
     data = data.encode('ascii').hex()
     return f'0x{data}'
+
+
+@app.template_filter('toDuration')
+def to_duration(seconds: Union[int, float]):
+    return str(dt.timedelta(seconds=int(seconds)))
 
 
 @app.template_filter('toWei')
