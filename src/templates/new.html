@@ -49,18 +49,22 @@
 
     </div>
 
+    <div class="c-direction-buttons">
+
     {% if page_num > 0 %}
         <a href="/new?page={{ page_num - 1 }}"
-           class="ui left icon button">
-            <i class="left arrow icon"></i>
+           class="c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
+            <i class="left angle icon"></i>
+            Previous
         </a>
     {% endif %}
     {% if videos and videos|length == items_per_page %}
         <a href="/new?page={{ page_num + 1 }}"
-           class="ui right labeled icon button">
-            <i class="right arrow icon"></i>
+           class="c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
+            <i class="right angle icon"></i>
             Next</a>
     {% endif %}
+    </div>
 {% endblock %}
 
 {% block footer %}

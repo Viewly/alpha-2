@@ -10,6 +10,7 @@
 
 
 // Tools
+@import '../node_modules/inuitcss/tools/tools.clearfix';
 @import 'tools/tools.functions';
 @import 'tools/tools.mixins';
 @import '../node_modules/sass-mq/mq';
@@ -29,11 +30,13 @@
 @import 'components/components.header';
 @import 'components/components.logo';
 @import 'components/components.footer';
+@import 'components/components.direction-buttons';
 @import 'components/components.videos-grid';
 @import 'components/components.video';
 
 
 // Utilities
+@import '../node_modules/inuitcss/utilities/utilities.clearfix';
 @import 'utilities/utilities.type';
 @import 'utilities/utilities.text';
 @import 'utilities/utilities.shame';
