@@ -6,6 +6,7 @@ import maya
 from flask import (
     render_template,
     request,
+    jsonify,
 )
 from flask_security import (
     current_user,
@@ -134,6 +135,12 @@ def edit_profile():
         'edit_profile.html',
         channels=channels,
     )
+
+
+@app.route('/auth_token', methods=['GET'])
+@login_required
+def auth_token():
+    return jsonify({'auth_token': current_user.get_auth_token()})
 
 
 @app.errorhandler(404)
