@@ -1,7 +1,7 @@
 <div class="c-header">
     <a class="c-logo" href="/">
         <img src="{{ url_for('static', filename='img/favicon.ico') }}">
-        Viewly &alpha;
+        Viewly <span>&alpha;</span>
     </a>
     <div class="c-header__search">
         <div id="search-box" class="ui action icon input">
@@ -12,9 +12,9 @@
     <div class="c-header__options">
         {% if current_user.is_active %}
             {% if current_user.can_upload %}
-                <a class="item {% if active_menu == 'upload' %}active{% endif %}"
+                <a class="item c-header__btn c-header__btn--upload ui primary basic button"
                    href="{{ url_for('upload.upload_videos') }}">
-                    <i class="cloud upload icon"></i> Upload</a>
+                    <i class="icon upload"></i> Upload</a>
             {% endif %}
             <div class="ui dropdown item">
                 <i class="list icon"></i> Channels

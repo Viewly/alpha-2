@@ -12,10 +12,12 @@
     .c-video__img {
         background-color: #fff;
         display: block;
+        border-radius: 2px;
         margin-bottom: $spacing-unit-tiny;
         transition: $global-transition;
         transform-origin: 50% 100%;
         will-change: transform;
+        overflow: hidden;
         position: relative;
 
         &:before {

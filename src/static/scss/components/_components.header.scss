@@ -7,13 +7,18 @@
     align-items: center;
     display: flex;
     height: $header-height;
-    padding-left: $spacing-unit;
-    padding-right: $spacing-unit;
+    padding-left: $spacing-unit-small;
+    padding-right: $spacing-unit-small;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
+
+    @include mq(medium) {
+        padding-left: $spacing-unit;
+        padding-right: $spacing-unit;
+    }
 
     &::before {
         background: linear-gradient(to right, color('brand-secondary') 0%, #00b8ff 50%);
@@ -42,6 +47,10 @@
 
         width: 350px;
         position: relative;
+
+        @include mq($until: large) {
+            display: none;
+        }
 
         .action {
             width: 100%;
@@ -119,4 +128,18 @@
         border: 1px solid darken(#eef1f2, 4%) !important;
         box-shadow: none !important;
         -webkit-box-shadow: none !important;
+
+        @include mq($until: medium) {
+            padding: .5em 1em;
+        }
+
+        &:hover {
+            background-color: #eef1f2 !important;
+        }
+    }
+
+    .c-header__btn--upload[class][class][class][class] {
+        .icon {
+            margin-left: 0 !important;
+        }
     }
