@@ -35,7 +35,7 @@ class VoteApi(Resource):
             .filter(Vote.video_id == args['video_id'],
                     Vote.eth_address == args['eth_address']) \
             .first()
-        return vote or ({}, 404)
+        return vote_schema.dump(vote) or ({}, 404)
 
     def put(self):
         args = parser.parse_args()
