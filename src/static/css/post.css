@@ -1,6 +1,6 @@
 .Post {
-  font-size: 120%;
-  line-height: 150%;
+  font-size: 16px !important;
+  line-height: 1.5;
 }
 
 .Post {
@@ -8,6 +8,7 @@
   word-wrap: break-word;
   word-break: break-word;
   hyphens: auto;
+  max-width: 35em;
 }
 .Post img {
   max-width: 350px;
@@ -36,6 +37,7 @@
   font-size: 90%;
 }
 .Post code {
+  display: block;
   padding: 0.2rem;
   font-size: 85%;
   border-radius: 3px;
