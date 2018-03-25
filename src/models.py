@@ -186,3 +186,20 @@ class Vote(db.Model):
                 name='_vote_id',
             ),
         )
+
+
+class Follow(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    @declared_attr
+    def __table_args__(self):
+        return (
+            db.UniqueConstraint(
+                'user_id',
+                'channel_id',
+                name='_follow_id',
+            ),
+        )
