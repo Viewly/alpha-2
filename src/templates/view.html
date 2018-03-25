@@ -39,11 +39,19 @@
                                 <br>
                                 <br>
 
-                                <div class="description Post">
-                                    {% if video.description %}
+                                {% if video.description %}
+                                    <div class="description Post">
                                         {{ video.description | markdown }}
-                                    {% endif %}
-                                </div>
+                                    </div>
+
+                                    <br>
+                                    <div id="description-show-more"
+                                         class="ui bottom attached black basic button"
+                                         style="display: none;">
+                                        <i class="add icon"></i>
+                                        Show more
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -71,7 +79,8 @@
         <div class="header">Authorize the vote trough Metamask</div>
         <div class="scrolling content">
             <div id="metamask">
-                <div class="ui active inline loader"></div> Loading...
+                <div class="ui active inline loader"></div>
+                Loading...
             </div>
 
             <div id="no-metamask">
@@ -96,12 +105,12 @@
         let resizePlayer = function () {
             // let the player take 80% of available screen height
             document.getElementById('embedded-player')
-                .setAttribute('height', String(window.innerHeight*0.8));
+                .setAttribute('height', String(window.innerHeight * 0.8));
         };
-        window.onload = function() {
+        window.onload = function () {
             resizePlayer();
         };
-        window.addEventListener("resize", function() {
+        window.addEventListener("resize", function () {
             // todo, use rxjs to only accept last resize
             // event in last 100ms interval
             resizePlayer();
@@ -112,6 +121,23 @@
         // SEMANTIC.UI
         $(function () {
             $('.circular.question').popup();
+        });
+    </script>
+
+    <script type="application/javascript">
+        // Show more logic (description)
+        $(function () {
+            const visibleHeight = 100;
+            let el = $('.description.Post');
+            if (el.height() > visibleHeight) {
+                el.css({height: visibleHeight + "px", overflow: 'hidden'});
+                $('#description-show-more')
+                    .show()
+                    .on('click', () => {
+                        $('#description-show-more').hide();
+                        el.animate({height: '100%'}, 600, "linear");
+                    });
+            }
         });
     </script>
 
