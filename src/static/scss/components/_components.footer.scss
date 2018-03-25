@@ -1,0 +1,28 @@
+/*------------------------------------*\
+    #FOOTER
+\*------------------------------------*/
+
+.c-footer {
+    background-color: darken(#eef1f2, 1%);
+    border-top: 1px solid #d0d8db;
+    padding-top: $spacing-unit-large;
+    padding-bottom: $spacing-unit-large;
+
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+    .c-footer__heading {
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .c-footer__btn[class][class][class][class] {
+        border: 1px solid #d0d8db !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+    }
