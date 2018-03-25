@@ -1,9 +1,20 @@
-<div class="ui inverted vertical footer segment">
+<div class="c-footer">
     <div class="ui container">
-        <div class="ui stackable inverted divided equal height stackable grid">
+        <div class="ui stackable equal height stackable grid">
+            <div class="six wide column">
+                <h4 class="c-footer__heading">Viewly Alpha</h4>
+                <p>
+                    Viewly Alpha is an <a href="{{ url_for('.about') }}">experimental</a> prototype.
+                </p>
+                <a href="https://viewly.typeform.com/to/MXeBzl"
+                   target="_blank"
+                   class="c-footer__btn ui button grey basic">
+                    <i class="icon envelope"></i>
+                    Submit your ideas</a>
+            </div>
             <div class="three wide column">
-                <h4 class="ui inverted header">About</h4>
-                <div class="ui inverted link list">
+                <h4 class="c-footer__heading">About</h4>
+                <div class="ui link list">
                     <a href="https://view.ly" class="item">Viewly</a>
                     <a href="https://blog.view.ly" class="item">Blog</a>
                     <a href="https://creator.view.ly" class="item">Creators</a>
@@ -11,8 +22,8 @@
                 </div>
             </div>
             <div class="three wide column">
-                <h4 class="ui inverted header">Legal</h4>
-                <div class="ui inverted link list">
+                <h4 class="c-footer__heading">Legal</h4>
+                <div class="ui link list">
                     <a href="https://viewly.typeform.com/to/cqwcMb"
                        class="item" target="_blank">DMCA</a>
                     <a href="https://viewly.typeform.com/to/eGUK0a"
@@ -20,15 +31,6 @@
                     <a href="#" class="item">Terms of Use</a>
                     <a href="#" class="item">Privacy</a>
                 </div>
-            </div>
-            <div class="seven wide column">
-                <h4 class="ui inverted header">Viewly Alpha</h4>
-                <p>
-                    Viewly Alpha is an <a href="{{ url_for('.about') }}">experimental</a> prototype.
-                </p>
-                <a href="https://viewly.typeform.com/to/MXeBzl"
-                   target="_blank"
-                   class="ui button grey inverted">Submit your ideas</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,19 @@
+/*------------------------------------*\
+    #DIRECTION BUTTONS
+\*------------------------------------*/
+
+.c-direction-buttons {
+    @include inuit-clearfix;
+}
+
+    .c-direction-buttons__btn {
+        font-weight: 400 !important;
+    }
+
+    .c-direction-buttons__btn--previous {
+        float: left;
+    }
+
+    .c-direction-buttons__btn--next {
+        float: right;
+    }
