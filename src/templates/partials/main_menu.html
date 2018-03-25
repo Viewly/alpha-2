@@ -14,10 +14,13 @@
             {% if current_user.can_upload %}
                 <a class="item c-header__btn c-header__btn--upload ui primary basic button"
                    href="{{ url_for('upload.upload_videos') }}">
-                    <i class="icon upload"></i> Upload</a>
+                    <i class="icon upload"></i>
+                    <span class="c-header__btn__text">Upload</span>
+                </a>
             {% endif %}
             <div class="ui dropdown item">
-                <i class="list icon"></i> Channels
+                <i class="list icon"></i>
+                <span class="c-header__btn__text">Channels</span>
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="item" href="{{ url_for('edit_profile') }}"><i

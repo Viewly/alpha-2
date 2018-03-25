@@ -48,8 +48,12 @@
         width: 350px;
         position: relative;
 
-        @include mq($until: large) {
+        @include mq($until: 820px) {
             display: none;
+        }
+
+        @include mq(820px, 960px) {
+            width: 280px;
         }
 
         .action {
@@ -122,6 +126,12 @@
         .icon {
             margin-left: $spacing-unit-tiny !important;
         }
+
+        @include mq($until: medium) {
+            .dropdown.icon {
+                display: none;
+            }
+        }
     }
 
     .c-header__btn[class][class][class][class] {
@@ -138,7 +148,15 @@
         }
     }
 
+        .c-header__btn__text {
+            @include mq($until: medium) {
+                display: none;
+            }
+        }
+
     .c-header__btn--upload[class][class][class][class] {
+        margin-right: 0;
+
         .icon {
             margin-left: 0 !important;
         }

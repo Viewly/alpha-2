@@ -20,7 +20,7 @@
         overflow: hidden;
         position: relative;
 
-        &:before {
+        &::before {
             @include invisible;
             background-color: rgba(color('brand-secondary'), .5);
             content: '';
