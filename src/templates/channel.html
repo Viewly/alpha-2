@@ -89,7 +89,19 @@
     <h2>
         <img src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
              class="ui circular avatar image">
-        {{ channel.display_name }}</h2>
+        {{ channel.display_name }}
+
+        {% if current_user %}
+            <a href="javascript:"
+               id="follow-button"
+               style="display: none;"
+               class="ui button">Follow</a>
+            <a href="javascript:"
+               id="un-follow-button"
+               style="display: none;"
+               class="ui button">Follow</a>
+        {% endif %}
+    </h2>
 
     {% if current_user.id == channel.user_id %}
         <a href="javascript:" id="avatar-button">Change Profile Pic</a>
@@ -160,6 +172,95 @@
 {% endblock %}
 
 {% block scripts %}
+    <script type="text/javascript">
+
+        let userId = "{{ current_user.id }}";
+        let channelId = "{{ channel.id }}";
+
+        function checkIfFollowing(userId, channelId) {
+            let key = `Follow-${userId}-${channelId}`;
+            if (localStorage.getItem(key) === 'true')
+                return;
+
+            fetch("{{ url_for('api.followapi') }}", {
+                method: 'get',
+                body: {
+                    channel_id: channelId,
+                },
+                headers: new Headers({'Content-Type': 'application/json'})
+            }).then(function (response) {
+                response.json().then(vote => {
+                    localStorage.setItem(key, 'true');
+                })
+            }).catch(function (err) {
+                console.log(err)
+            });
+        }
+
+        function localStorageKeyFor(follow) {
+            return `Follow-${follow.user_id}-${follow.channel_id}`;
+        }
+
+        function follow(channelId) {
+            fetch("{{ url_for('api.followapi') }}", {
+                method: 'put',
+                body: JSON.stringify({
+                    channel_id: channelId,
+                }),
+                headers: new Headers({'Content-Type': 'application/json'})
+            }).then(function (response) {
+                if (!response.ok) {
+                    console.log(response);
+                    return;
+                }
+                response.json().then(follow => {
+                    localStorage.setItem(localStorageKeyFor(follow), 'true');
+                    refreshFollowButton();
+                })
+            }).catch(function (err) {
+                console.log(err)
+            });
+        }
+
+        function unFollow(channelId) {
+            fetch("{{ url_for('api.followapi') }}", {
+                method: 'delete',
+                body: JSON.stringify({
+                    channel_id: channelId,
+                }),
+                headers: new Headers({'Content-Type': 'application/json'})
+            }).then(function (response) {
+                response.json().then(follow => {
+                    localStorage.removeItem(localStorageKeyFor(follow));
+                    refreshFollowButton();
+                })
+            }).catch(function (err) {
+                console.log(err)
+            });
+        }
+
+        function refreshFollowButton() {
+            checkIfFollowing(userId, channelId);
+
+            let key = `Follow-${userId}-${channelId}`;
+            if (localStorage.getItem(key) === 'true') {
+                $('#follow-button').hide();
+                $('#un-follow-button').show().click(function () {
+                    unFollow(channelId);
+                });
+            } else {
+                $('#un-follow-button').hide();
+                $('#follow-button').show().click(function () {
+                    follow(channelId);
+                });
+            }
+        }
+
+        $(function () {
+            refreshFollowButton();
+        });
+    </script>
+
     <script type="text/javascript">
         $(function () {
             $('#avatar-button').click(function () {
