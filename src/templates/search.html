@@ -26,9 +26,10 @@
                 </div>
             </li>
         {% else %}
-            <li>
-                <h5>No results found</h5>
-                <p>Try different keywords</p>
+            <li class="c-videos-list__item c-videos-list__item--no-results c-no-results">
+                <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-results.svg') }}" class="logo" alt="">
+                <h3 class="c-no-results__title">No results found</h3>
+                <p>Try searching again using broader keywords.</p>
             </li>
         {% endfor %}
     </ul>

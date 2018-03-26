@@ -43,3 +43,21 @@ body {
         background-color: darken(#00a8ff, 2%) !important;
     }
 }
+
+
+.c-no-results {
+    margin-top: $spacing-unit-large;
+    text-align: center;
+}
+
+    .c-no-results__img {
+        display: block;
+        max-width: 260px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .c-no-results__title {
+        font-weight: 700;
+        margin-bottom: $spacing-unit-small;
+    }

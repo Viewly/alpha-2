@@ -31,3 +31,10 @@
             width: 100%;
         }
     }
+
+    .c-videos-list__item--no-results {
+        @include mq($from: medium, $until: $tweakpoint-videos-list) {
+            max-width: none;
+            width: 100%;
+        }
+    }
