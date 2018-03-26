@@ -2,17 +2,26 @@
     #VIDEO DESCRIPTION
 \*------------------------------------*/
 
+$tweakpoint-video-description-header:           650px;
+
+
+
+
+
 .c-video-description {
     margin-top: $spacing-unit;
     margin-bottom: $spacing-unit-huge;
 }
 
     .c-video-description__title {
-        font-size: 28px;
+        font-size: 26px;
         font-weight: 700;
         max-width: 30em;
         margin-bottom: $spacing-unit-large;
 
+        @include mq(medium) {
+            font-size: 28px;
+        }
 
         @include mq(large) {
             font-size: 32px;
@@ -20,9 +29,12 @@
     }
 
     .c-video-description__header {
-        display: flex;
-        justify-content: space-between;
         margin-bottom: $spacing-unit-large;
+
+        @include mq($tweakpoint-video-description-header) {
+            display: flex;
+            justify-content: space-between;
+        }
 
         a {
             color: #333;
@@ -45,3 +57,11 @@
             }
         }
     }
+
+        .c-video-description__header__item {
+            @include mq($until: $tweakpoint-video-description-header) {
+                &:not(:first-child) {
+                    margin-top: $spacing-unit;
+                }
+            }
+        }

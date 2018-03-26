@@ -44,19 +44,19 @@
                         <a href="javascript:"
                            id="follow-button"
                            style="display: none;"
-                           class="ui blue button">+ Follow</a>
+                           class="ui button c-btn--primary">+ Follow</a>
                         <a href="javascript:"
                            id="un-follow-button"
                            style="display: none;"
-                           class="ui negative button">Unfollow</a>
+                           class="ui button">Unfollow</a>
                     {% endif %}
-                    <a href="javascript:;" id="vote-button" class="ui button blue">Vote for this video</a>
+                    <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
                     <i class="circular question icon"
                        data-title="Support this creator and earn rewards"
                        data-content="If you enjoyed this video and would like to support the creator, please consider voting.
                        Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
                        data-variation="large wide"
-                       data-position="left center">
+                       data-position="bottom right">
                     </i>
                 </div>
             </header>
@@ -314,7 +314,7 @@
 
         function resetVoteButton() {
             if (localStorage.getItem(videoId) !== 'true') {
-                $('#vote-button').html('Vote for this video');
+                $('#vote-button').html('Vote');
             }
         }
 

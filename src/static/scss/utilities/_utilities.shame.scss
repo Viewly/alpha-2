@@ -11,3 +11,23 @@ body {
 .button {
     border-radius: 2px !important;
 }
+
+.c-btn--primary {
+    background-color: #0048ff !important;
+    color: #fff !important;
+    font-weight: 400 !important;
+
+    &:hover {
+        background-color: darken(#0048ff, 2%) !important;
+    }
+}
+
+.c-btn--secondary {
+    background-color: #00a8ff !important;
+    color: #fff !important;
+    font-weight: 400 !important;
+
+    &:hover {
+        background-color: darken(#00a8ff, 2%) !important;
+    }
+}
