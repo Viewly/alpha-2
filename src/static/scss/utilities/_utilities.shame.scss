@@ -14,6 +14,12 @@ body {
     padding-top: $header-height;
 }
 
+.c-content {
+    @media (min-height: 660px) {
+        min-height: 45vh;
+    }
+}
+
 .button {
     border-radius: 2px !important;
 }
