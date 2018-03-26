@@ -2,6 +2,12 @@
     #HEADER
 \*------------------------------------*/
 
+$header-tweakpoint:         820px;
+
+
+
+
+
 .c-header {
     background-color: #fff;
     align-items: center;
@@ -43,20 +49,61 @@
 }
 
     .c-header__search {
-        $buton-width: 40px;
+        $buton-width: 46px;
 
+        align-items: center;
+        display: flex;
         width: 350px;
         position: relative;
 
-        @include mq($until: 820px) {
+        @include mq($until: $header-tweakpoint) {
+            background-color: #fff;
             display: none;
+            padding-left: $spacing-unit-small;
+            padding-right: $spacing-unit-small;
+            width: 100%;
+            position: absolute;
+            top: $spacing-unit-small;
+            bottom: $spacing-unit-small;
+            left: 0;
+            right: 0;
+            z-index: 10;
         }
 
-        @include mq(820px, 960px) {
+        .c-header__search__close {
+            color: #333;
+            margin-right: $spacing-unit-small;
+            padding-left: $spacing-unit-tiny;
+            padding-right: $spacing-unit-tiny;
+            transition: $global-transition;
+
+            .icon {
+                transition: inherit;
+            }
+
+            @include mq($from: $header-tweakpoint) {
+                display: none;
+            }
+
+            &:hover {
+                text-decoration: none;
+
+                .icon {
+                    transform: translateX(-3px);
+                }
+            }
+        }
+
+        @include mq($header-tweakpoint, 960px) {
             width: 280px;
         }
 
+        /**
+         * 1. Make sure children (like button) inherit border radius.
+         */
         .action {
+            border-radius: 2px;
+            overflow: hidden; /* [1] */
             width: 100%;
         }
 
@@ -71,6 +118,13 @@
             top: 0;
             left: 0;
             bottom: 0;
+
+            @include mq($until: $header-tweakpoint) {
+                background-color: color('brand-secondary') !important;
+                color: #fff !important;
+                left: auto;
+                right: 0;
+            }
 
             &:hover {
                 background: none;
@@ -89,7 +143,7 @@
         input {
             background-color: rgba(#eef1f2, 0) !important;
             border: none !important;
-            border-radius: 2px !important;
+            border-radius: inherit !important;
             font-size: 16px !important;
             padding-left: $buton-width !important;
             transition: $global-transition !important;
@@ -107,11 +161,27 @@
                 background-color: #eef1f2 !important;
                 color: #333 !important;
             }
+
+            @include mq($until: $header-tweakpoint) {
+                background-color: rgba(#eef1f2, .7) !important;
+                padding-right: $buton-width !important;
+                padding-left: $spacing-unit !important;
+
+                &:hover {
+                    background-color: rgba(#eef1f2, .8) !important;
+                }
+
+                &:focus {
+                    background-color: #eef1f2 !important;
+                    color: #333 !important;
+                }
+            }
         }
     }
 
     .c-header__options {
         align-items: center;
+        color: #5d5d5d;
         display: flex;
         margin-left: auto;
 
@@ -125,6 +195,11 @@
 
         .icon {
             margin-left: $spacing-unit-tiny !important;
+        }
+
+        .dropdown.item {
+            align-items: center;
+            display: inline-flex;
         }
 
         @include mq($until: medium) {
@@ -156,6 +231,8 @@
 
     .c-header__btn--upload[class][class][class][class] {
         margin-right: 0;
+        padding-left: 1em;
+        padding-right: 1em;
 
         .icon {
             margin-left: 0 !important;
