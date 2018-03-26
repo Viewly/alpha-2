@@ -86,3 +86,32 @@ $tweakpoint-video-description-header:           650px;
                 }
             }
         }
+
+    .c-video-description__text {}
+
+    .c-video-description__text--truncated {
+        overflow: hidden;
+        position: relative;
+
+        &::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.48) 0%, #FFFFFF 100%);
+            content: '';
+            height: 40%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+        }
+    }
+
+    .c-video-description__read-more {
+        color: #333;
+        font-size: 14px;
+        font-weight: 700;
+
+        &:hover {
+            color: color('brand-secondary');
+            text-decoration: none;
+        }
+    }

@@ -21,7 +21,7 @@
 
 {% block content %}
 
-    <div class="ui c-video-description">
+    <div class="ui c-video-description u-clearfix">
         <h2 class="c-video-description__title">{{ video.title }}</h2>
         <div class="content">
             <header class="c-video-description__header">
@@ -62,16 +62,16 @@
             </header>
 
             {% if video.description %}
-                <div class="description Post">
+                <div class="c-video-description__text description Post js-video-description-text">
                     {{ video.description | markdown }}
                 </div>
 
                 <br>
-                <div id="description-show-more"
-                     class="ui bottom basic button tiny"
+                <a href="" id="description-show-more"
+                     class="c-video-description__read-more"
                      style="display: none;">
                     Read more &hellip;
-                </div>
+                </a>
             {% endif %}
         </div>
     </div>
@@ -140,14 +140,17 @@
         // Show more logic (description)
         $(function () {
             const visibleHeight = 100;
-            let el = $('.description.Post');
+            let el = $('.js-video-description-text');
             if (el.height() > visibleHeight) {
-                el.css({height: visibleHeight + "px", overflow: 'hidden'});
+                el.css({height: visibleHeight + "px"});
+                el.addClass('c-video-description__text--truncated');
                 $('#description-show-more')
                     .show()
-                    .on('click', () => {
+                    .on('click', (e) => {
+                        e.preventDefault();
                         $('#description-show-more').hide();
-                        el.animate({height: '100%'}, 600, "linear");
+                        el.css({height: 'auto'});
+                        el.removeClass('c-video-description__text--truncated');
                     });
             }
         });
