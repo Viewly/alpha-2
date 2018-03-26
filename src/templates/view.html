@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ video.title }}{% endblock %}
+{% block meta_title %}{{ video.title }}{% endblock %}
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
 {% endblock %}
