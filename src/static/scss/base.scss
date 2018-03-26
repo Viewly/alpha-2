@@ -23,7 +23,9 @@
 
 
 // Objects
+@import '../node_modules/inuitcss/objects/objects.flag';
 @import '../node_modules/inuit-flexgrid/objects/objects.grid';
+@import 'objects/objects.avatars';
 
 
 // Components
@@ -33,6 +35,7 @@
 @import 'components/components.direction-buttons';
 @import 'components/components.videos-grid';
 @import 'components/components.video';
+@import 'components/components.video-description';
 
 
 // Utilities

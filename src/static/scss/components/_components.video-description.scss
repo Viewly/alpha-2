@@ -1,0 +1,117 @@
+/*------------------------------------*\
+    #VIDEO DESCRIPTION
+\*------------------------------------*/
+
+$tweakpoint-video-description-header:           650px;
+
+
+
+
+
+.c-video-description {
+    background-color: #fff;
+    padding-top: $spacing-unit;
+    padding-bottom: $spacing-unit-large;
+    margin-bottom: $spacing-unit;
+    position: relative;
+
+    &::before,
+    &::after {
+        background-color: inherit;
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 45vw;
+    }
+
+    &::before {
+        left: 100%;
+    }
+
+    &::after {
+        right: 100%;
+    }
+}
+
+    .c-video-description__title {
+        font-size: 26px;
+        font-weight: 700;
+        max-width: 30em;
+        margin-bottom: $spacing-unit-large;
+
+        @include mq(medium) {
+            font-size: 28px;
+        }
+
+        @include mq(large) {
+            font-size: 32px;
+        }
+    }
+
+    .c-video-description__header {
+        margin-bottom: $spacing-unit-large;
+
+        @include mq($tweakpoint-video-description-header) {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        a {
+            color: #333;
+            font-size: 16px;
+            font-weight: 700;
+
+            &:hover {
+                color: color('brand-secondary');
+                text-decoration: none;
+            }
+        }
+
+        p {
+            color: color('light-grey');
+            font-size: 14px;
+            margin-bottom: 2px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+        .c-video-description__header__item {
+            @include mq($until: $tweakpoint-video-description-header) {
+                &:not(:first-child) {
+                    margin-top: $spacing-unit;
+                }
+            }
+        }
+
+    .c-video-description__text {}
+
+    .c-video-description__text--truncated {
+        overflow: hidden;
+        position: relative;
+
+        &::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.48) 0%, #FFFFFF 100%);
+            content: '';
+            height: 40%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+        }
+    }
+
+    .c-video-description__read-more {
+        color: #333;
+        font-size: 14px;
+        font-weight: 700;
+
+        &:hover {
+            color: color('brand-secondary');
+            text-decoration: none;
+        }
+    }
