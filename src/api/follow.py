@@ -33,7 +33,7 @@ class FollowApi(Resource):
             .filter(Follow.user_id == current_user.id,
                     Follow.channel_id == args['channel_id']) \
             .first()
-        return follow_schema.dump(follow) or ({}, 404)
+        return follow_schema.dump(follow).data or ({}, 404)
 
     def put(self):
         args = parser.parse_args()
@@ -45,7 +45,7 @@ class FollowApi(Resource):
 
         db.session.add(follow)
         db.session.commit()
-        return follow_schema.dump(follow)
+        return follow_schema.dump(follow).data
 
     def delete(self):
         args = parser.parse_args()
