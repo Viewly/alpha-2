@@ -21,66 +21,59 @@
 
 {% block content %}
 
-    <div style="margin-bottom: 8px;"></div>
-    <div class="ui centered divided grid">
-        <div class="row">
-            <div class="twelve wide column">
-                <div class="ui">
-                    <h2 class="ui left floated header">{{ video.title }}</h2>
-                    <div class="uis clearing divider"></div>
-                    <div class="ui relaxed divided items">
-                        <div class="item">
-                            <div class="content">
-                                <img src="{{ guess_avatar_cdn_url(video.channel_id, 'tiny') }}"
-                                     class="ui circular avatar image">
-                                <b><a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
-                                    {{ video.channel.display_name }}</a></b>
-                                published on {{ video.published_at | humanDate }}
-                                {% if current_user %}
-                                    <a href="javascript:"
-                                       id="follow-button"
-                                       style="display: none;"
-                                       class="ui  basic blue right floated button">Follow {{ video.channel.display_name }}</a>
-                                    <a href="javascript:"
-                                       id="un-follow-button"
-                                       style="display: none;"
-                                       class="ui  basic negative right floated button">Stop Following</a>
-                                {% endif %}
-
-                                <br>
-                                <br>
-
-                                {% if video.description %}
-                                    <div class="description Post">
-                                        {{ video.description | markdown }}
-                                    </div>
-
-                                    <br>
-                                    <div id="description-show-more"
-                                         class="ui bottom attached black basic button"
-                                         style="display: none;">
-                                        <i class="add icon"></i>
-                                        Show more
-                                    </div>
-                                {% endif %}
-                            </div>
+    <div class="ui c-video-description">
+        <h2 class="c-video-description__title">{{ video.title }}</h2>
+        <div class="content">
+            <header class="c-video-description__header">
+                <div class="c-video-description__header__item">
+                    <div class="o-flag o-flag--small">
+                        <div class="o-flag__img">
+                            <img class="o-avatar o-avatar--large" src="{{ guess_avatar_cdn_url(video.channel_id, 'small') }}">
+                        </div>
+                        <div class="o-flag__body">
+                            <p>
+                                <a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
+                                    {{ video.channel.display_name }}</a>
+                            </p>
+                            <p>Published on {{ video.published_at | humanDate }}</p>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="c-video-description__header__item">
+                    {% if current_user %}
+                        <a href="javascript:"
+                           id="follow-button"
+                           style="display: none;"
+                           class="ui blue button">+ Follow</a>
+                        <a href="javascript:"
+                           id="un-follow-button"
+                           style="display: none;"
+                           class="ui negative button">Unfollow</a>
+                    {% endif %}
+                    <a href="javascript:;" id="vote-button" class="ui button blue">Vote for this video</a>
+                    <i class="circular question icon"
+                       data-title="Support this creator and earn rewards"
+                       data-content="If you enjoyed this video and would like to support the creator, please consider voting.
+                       Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
+                       data-variation="large wide"
+                       data-position="left center">
+                    </i>
+                </div>
+            </header>
 
+            {% if video.description %}
+                <div class="description Post">
+                    {{ video.description | markdown }}
+                </div>
 
-            <div class="four wide column">
-                <h2>Rewards</h2>
-                <a href="javascript:;" id="vote-button" class="ui button blue">Vote for this video</a>
-                <i class="circular question icon"
-                   data-title="Support this creator and earn rewards"
-                   data-content="If you enjoyed this video and would like to support the creator, please consider voting.
-                   Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
-                   data-variation="large wide"
-                   data-position="left center">
-                </i>
-            </div>
+                <br>
+                <div id="description-show-more"
+                     class="ui bottom attached black basic button"
+                     style="display: none;">
+                    <i class="add icon"></i>
+                    Show more
+                </div>
+            {% endif %}
         </div>
     </div>
 

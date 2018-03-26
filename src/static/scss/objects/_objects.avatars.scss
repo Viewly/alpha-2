@@ -1,0 +1,29 @@
+/*------------------------------------*\
+    #AVATARS
+\*------------------------------------*/
+
+.o-avatar {
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 30px;
+    height: 1em;
+    max-width: none;
+    vertical-align: middle;
+    width: 1em;
+}
+
+.o-avatar--tiny {
+    font-size: 10px;
+}
+
+.o-avatar--small {
+    font-size: 20px;
+}
+
+.o-avatar--large {
+    font-size: 48px;
+}
+
+.o-avatar--huge {
+    font-size: 90px;
+}
