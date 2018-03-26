@@ -5,6 +5,7 @@
 body {
     background-color: lighten(#eef1f2, 2%);
     padding-top: $header-height;
+    overflow-x: hidden;
 }
 
 

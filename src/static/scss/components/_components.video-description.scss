@@ -9,8 +9,29 @@ $tweakpoint-video-description-header:           650px;
 
 
 .c-video-description {
-    margin-top: $spacing-unit;
-    margin-bottom: $spacing-unit-huge;
+    background-color: #fff;
+    padding-top: $spacing-unit;
+    padding-bottom: $spacing-unit-large;
+    margin-bottom: $spacing-unit;
+    position: relative;
+
+    &::before,
+    &::after {
+        background-color: inherit;
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 45vw;
+    }
+
+    &::before {
+        left: 100%;
+    }
+
+    &::after {
+        right: 100%;
+    }
 }
 
     .c-video-description__title {
