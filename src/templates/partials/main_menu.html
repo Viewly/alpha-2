@@ -3,7 +3,7 @@
         <img src="{{ url_for('static', filename='img/favicon.ico') }}">
         Viewly <span>&alpha;</span>
     </a>
-    <div class="c-header__search">
+    <div class="c-header__search c-header__search--hidden-on-mobile js-search">
         <a href="" class="c-header__search__close js-close-search">
             <i class="arrow left icon" style="margin-right: 0"></i>
         </a>
@@ -13,6 +13,11 @@
         </div>
     </div>
     <div class="c-header__options">
+        <div class="item c-header__options__mobile-search">
+            <a href="" class="js-show-search">
+                <i class="search icon" style="margin-right: 0"></i>
+            </a>
+        </div>
         {% if current_user.is_active %}
             {% if current_user.can_upload %}
                 <a class="item c-header__btn c-header__btn--upload ui primary basic button"
@@ -59,6 +64,20 @@
 <script type="application/javascript">
     // SEARCH BOX
     $(function () {
+        var showMobileSearch = $('.js-show-search');
+        var closeMobileSearch = $('.js-close-search');
+        var searchForm = $('.js-search');
+
+        showMobileSearch.on('click', function(e) {
+            e.preventDefault();
+            searchForm.removeClass('c-header__search--hidden-on-mobile');
+        });
+
+        closeMobileSearch.on('click', function(e) {
+            e.preventDefault();
+            searchForm.addClass('c-header__search--hidden-on-mobile');
+        });
+
         var performSearch = function () {
             var query = $("#search-box input").val();
             if (query.length > 0) {

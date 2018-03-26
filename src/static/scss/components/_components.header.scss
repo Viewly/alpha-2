@@ -2,7 +2,7 @@
     #HEADER
 \*------------------------------------*/
 
-$header-tweakpoint:         820px;
+$tweakpoint-header:         820px;
 
 
 
@@ -56,9 +56,8 @@ $header-tweakpoint:         820px;
         width: 350px;
         position: relative;
 
-        @include mq($until: $header-tweakpoint) {
+        @include mq($until: $tweakpoint-header) {
             background-color: #fff;
-            display: none;
             padding-left: $spacing-unit-small;
             padding-right: $spacing-unit-small;
             width: 100%;
@@ -68,6 +67,10 @@ $header-tweakpoint:         820px;
             left: 0;
             right: 0;
             z-index: 10;
+
+            &.c-header__search--hidden-on-mobile {
+                display: none;
+            }
         }
 
         .c-header__search__close {
@@ -81,7 +84,7 @@ $header-tweakpoint:         820px;
                 transition: inherit;
             }
 
-            @include mq($from: $header-tweakpoint) {
+            @include mq($from: $tweakpoint-header) {
                 display: none;
             }
 
@@ -94,7 +97,7 @@ $header-tweakpoint:         820px;
             }
         }
 
-        @include mq($header-tweakpoint, 960px) {
+        @include mq($tweakpoint-header, 960px) {
             width: 280px;
         }
 
@@ -119,7 +122,7 @@ $header-tweakpoint:         820px;
             left: 0;
             bottom: 0;
 
-            @include mq($until: $header-tweakpoint) {
+            @include mq($until: $tweakpoint-header) {
                 background-color: color('brand-secondary') !important;
                 color: #fff !important;
                 left: auto;
@@ -162,7 +165,7 @@ $header-tweakpoint:         820px;
                 color: #333 !important;
             }
 
-            @include mq($until: $header-tweakpoint) {
+            @include mq($until: $tweakpoint-header) {
                 background-color: rgba(#eef1f2, .7) !important;
                 padding-right: $buton-width !important;
                 padding-left: $spacing-unit !important;
@@ -214,6 +217,21 @@ $header-tweakpoint:         820px;
         }
     }
 
+        .c-header__options__mobile-search {
+
+            @include mq($tweakpoint-header) {
+                display: none;
+            }
+
+            a {
+                color: inherit;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+
     .c-header__btn[class][class][class][class] {
         border: 1px solid darken(#eef1f2, 4%) !important;
         box-shadow: none !important;
@@ -229,7 +247,7 @@ $header-tweakpoint:         820px;
     }
 
         .c-header__btn__text {
-            @include mq($until: $header-tweakpoint) {
+            @include mq($until: $tweakpoint-header) {
                 display: none;
             }
         }
@@ -242,7 +260,7 @@ $header-tweakpoint:         820px;
         .icon {
             margin-left: 0 !important;
 
-            @include mq($until: $header-tweakpoint) {
+            @include mq($until: $tweakpoint-header) {
                 margin-right: 0 !important;
             }
         }
