@@ -13,9 +13,9 @@
     {% block styles %}
     {% endblock %}
 
-    <meta property="og:title" content="Viewly–A decentralized video platform">
-    <meta property="og:description" content="Viewly is a decentralized video platform, powered by smart contracts and IPFS.">
-    <meta property="og:image" content="https://view.ly/img/logo-viewly-square.png">
+    <meta property="og:title" content="{% block meta_title %}Viewly–A tokenized video platform{% endblock %}">
+    <meta property="og:description" content="{% block meta_description %}Viewly is a tokenized video platform, aiming to provide a more fair and efficient means of content delivery and monetization."{% endblock %}>
+    <meta property="og:image" content="{% block meta_image %}https://view.ly/img/logo-viewly-square.png{% endblock %}">
 
     <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/lodash/lodash.min.js') }}"></script>
