@@ -35,22 +35,21 @@ $tweakpoint-video-description-header:           650px;
 }
 
     .c-video-description__title {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 700;
-        max-width: 30em;
-        margin-bottom: $spacing-unit-large;
+        margin-bottom: $spacing-unit + 5;
 
         @include mq(medium) {
-            font-size: 28px;
+            font-size: 26px;
         }
 
         @include mq(large) {
-            font-size: 32px;
+            font-size: 28px;
         }
     }
 
     .c-video-description__header {
-        margin-bottom: $spacing-unit-large;
+        margin-bottom: $spacing-unit + 5;
 
         @include mq($tweakpoint-video-description-header) {
             display: flex;
