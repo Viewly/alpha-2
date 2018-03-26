@@ -105,7 +105,7 @@
 
 {% include 'partials/follow_js.html' %}
 {% block scripts %}
-    {% if current_user %}
+    {% if current_user.is_authenticated %}
         <script type="application/javascript">
             $(function () {
                 refreshFollowButton('{{ video.channel.id }}');
@@ -224,6 +224,14 @@
             })
         }
 
+        function localStorageKeyFor(voteOrVideoId) {
+            if (typeof(voteOrVideoId) === 'object') {
+                if (voteOrVideoId.video_id !== 'undefined')
+                    return `Vote-${voteOrVideoId.video_id}`;
+            }
+            return `Vote-${voteOrVideoId}`;
+        }
+
         // METAMASK only!
         function signVote(account, videoId, weight = 100) {
             let message = [
@@ -273,19 +281,23 @@
         }
 
         function checkIfVoted(account, videoId) {
-            if (localStorage.getItem(videoId) === 'true')
+            if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true')
                 return;
+            if (account === 'undefined') {
+                return;
+            }
 
-            fetch("{{ url_for('api.voteapi') }}", {
+            let url = `{{ url_for('api.voteapi') }}?video_id=${videoId}&eth_address=${account}`;
+            fetch(url, {
                 method: 'get',
-                body: JSON.stringify({
-                    video_id: videoId,
-                    eth_address: account,
-                }),
                 headers: new Headers({'Content-Type': 'application/json'})
             }).then(function (response) {
+                if (!response.ok) {
+                    console.log(response);
+                    return;
+                }
                 response.json().then(vote => {
-                    localStorage.setItem(vote.video_id, 'true');
+                    localStorage.setItem(localStorageKeyFor(vote), 'true');
                 })
             }).catch(function (err) {
                 console.log(err)
@@ -294,15 +306,14 @@
 
         function successfulyVoted(vote) {
             // set local storage
-            let key = `${vote.video_id}`;
-            localStorage.setItem(key, 'true');
+            localStorage.setItem(localStorageKeyFor(vote), 'true');
 
             // hide metamask dialog
             $('#metamask-modal').modal('hide');
         }
 
         function disableVoteButton() {
-            if (localStorage.getItem(videoId) === 'true') {
+            if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true') {
                 $('#vote-button, #sign-button')
                     .addClass('disabled')
                     .html('<i class="check icon"></i> Voted');
@@ -315,7 +326,7 @@
         }
 
         function resetVoteButton() {
-            if (localStorage.getItem(videoId) !== 'true') {
+            if (localStorage.getItem(localStorageKeyFor(videoId)) !== 'true') {
                 $('#vote-button').html('Vote');
             }
         }
@@ -347,7 +358,7 @@
         // start here
         $(function () {
             // check local storage and db first
-            checkIfVoted();
+            checkIfVoted(account, videoId);
             disableVoteButton();
 
             // start metamask only when button is clicked
@@ -372,13 +383,19 @@
                 }
 
                 setTimeout(() => {
-                    if (networkId === networks[ethChain]
+                    checkIfVoted(account, videoId);
+                }, 250);
+
+                setTimeout(() => {
+                    if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true') {
+                        // do nothing, already voted
+                    } else if (networkId === networks[ethChain]
                         && typeof balance !== 'undefined'
-                        && balance > 0
-                        && localStorage.getItem(videoId) !== 'true') {
+                        && balance > 0) {
                         // shortcut
                         signVote(account, videoId);
                     } else {
+                        // help the user out with a modal
                         $('#metamask-modal')
                             .modal({
                                 onHide: () => resetVoteButton()
