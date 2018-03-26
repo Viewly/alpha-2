@@ -33,7 +33,7 @@ $inuit-font-size-h6:                    18px;
 
 // Breakpoints.
 $mq-breakpoints: (
-    medium: 530px,
+    medium: 560px,
     large: 780px,
     extralarge: 1025px
 );
@@ -59,3 +59,7 @@ $colors: (
 
 // Header
 $header-height:         60px;
+
+
+// Videos list
+$tweakpoint-videos-list:        720px;

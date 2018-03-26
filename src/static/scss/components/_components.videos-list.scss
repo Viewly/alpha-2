@@ -1,0 +1,33 @@
+/*------------------------------------*\
+    #VIDEOS LIST
+\*------------------------------------*/
+
+.c-videos-list {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+
+    @include mq($from: medium, $until: $tweakpoint-videos-list) {
+        display: flex;
+        flex-flow: row wrap;
+    }
+}
+
+    .c-videos-list__item {
+        @include mq($from: medium, $until: $tweakpoint-videos-list) {
+            width: 50%;
+
+            &:nth-child(odd) {
+                padding-right: round($spacing-unit / 2);
+            }
+
+            &:nth-child(even) {
+                padding-left: round($spacing-unit / 2);
+            }
+        }
+
+        @include mq(large) {
+            max-width: 800px;
+            width: 100%;
+        }
+    }

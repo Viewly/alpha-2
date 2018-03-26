@@ -107,42 +107,46 @@
         <a href="javascript:" id="avatar-button">Change Profile Pic</a>
     {% endif %}
 
-    <div class="ui relaxed items">
+    <h3>Showing latest {{ videos | count }} videos.</h3>
+
+    <ul class="c-videos-list">
+
         {% for video in videos %}
-            <div class="item">
-                <div class="ui small image">
-                    <a href="{{ url_for('view_video', video_id=video.id) }}">
+            <div class="c-videos-list__item">
+                <div class="c-video">
+                    <a class="c-video__img" href="{{ url_for('view_video', video_id=video.id) }}">
                         <img src="{{ guess_thumbnail_cdn_url(video.id) }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" data-poster="" class="c-video__play-icon"><path fill="currentColor" d="M1.425.35L14.575 8l-13.15 7.65V.35z"></path></svg>
                     </a>
-                </div>
-                <div class="content">
-                    <a class="header"
-                       href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
+                    <div class="c-video__content">
+                        <a class="c-video__title"
+                           href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
 
-                    <div class="meta">
-                        Published on {{ video.published_at | humanDate }}
-                    </div>
+                        <div class="c-video__footer">
+                            {{ video.published_at | humanDate }}
+                        </div>
 
-                    {% if current_user.id == channel.user_id %}
-                        <div class="extra">
-                            <div class="ui compact simple selection dropdown">
-                                <i class="dropdown icon"></i>
-                                <div class="text">Edit</div>
-                                <div class="menu">
-                                    <a href="{{ url_for('upload.publish_add_details', video_id=video.id) }}"
-                                       class="item">Info</a>
-                                    <a href="{{ url_for('upload.publish_add_thumbnails', video_id=video.id) }}"
-                                       class="item">Cover</a>
+                        {% if current_user.id == channel.user_id %}
+                            <div class="extra">
+                                <div class="ui compact simple selection dropdown">
+                                    <i class="dropdown icon"></i>
+                                    <div class="text">Edit</div>
+                                    <div class="menu">
+                                        <a href="{{ url_for('upload.publish_add_details', video_id=video.id) }}"
+                                           class="item">Info</a>
+                                        <a href="{{ url_for('upload.publish_add_thumbnails', video_id=video.id) }}"
+                                           class="item">Cover</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
 
+                    </div>
                 </div>
             </div>
         {% endfor %}
-        <p>Showing latest {{ videos | count }} videos.</p>
-    </div>
+    </ul>
+
 
 
     <div class="ui modal" id="avatar-modal">
@@ -169,6 +173,12 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block footer %}
+    <br>
+    <br>
+    {% include 'partials/footer.html' %}
 {% endblock %}
 
 {% include 'partials/follow_js.html' %}
