@@ -171,109 +171,16 @@
 
 {% endblock %}
 
+{% include 'partials/follow_js.html' %}
 {% block scripts %}
-    <script type="text/javascript">
 
-        let userId = "{{ current_user.id }}";
-        let channelId = "{{ channel.id }}";
-
-        function checkIfFollowing(userId, channelId) {
-            let key = `Follow-${userId}-${channelId}`;
-            if (localStorage.getItem(key) === 'true')
-                return;
-
-            fetch("{{ url_for('api.followapi') }}?channel_id="+channelId, {
-                method: 'get',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Authentication-Token': "{{ current_user.get_auth_token() }}"
-                })
-            }).then(function (response) {
-                if (!response.ok) {
-                    console.log(response);
-                    return;
-                }
-                response.json().then(follow => {
-                    localStorage.setItem(localStorageKeyFor(follow), 'true');
-                })
-            }).catch(function (err) {
-                console.log(err)
+    {% if current_user %}
+        <script type="application/javascript">
+            $(function () {
+                refreshFollowButton('{{ channel.id }}');
             });
-        }
-
-        function localStorageKeyFor(follow) {
-            return `Follow-${follow.user_id}-${follow.channel_id}`;
-        }
-
-        function follow(channelId) {
-            fetch("{{ url_for('api.followapi') }}", {
-                method: 'put',
-                body: JSON.stringify({
-                    channel_id: channelId,
-                }),
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Authentication-Token': "{{ current_user.get_auth_token() }}"
-                })
-            }).then(function (response) {
-                if (!response.ok) {
-                    console.log(response);
-                    return;
-                }
-                response.json().then(follow => {
-                    localStorage.setItem(localStorageKeyFor(follow), 'true');
-                    refreshFollowButton(userId, channelId);
-                })
-            }).catch(function (err) {
-                console.log(err)
-            });
-        }
-
-        function unFollow(channelId) {
-            fetch("{{ url_for('api.followapi') }}", {
-                method: 'delete',
-                body: JSON.stringify({
-                    channel_id: channelId,
-                }),
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Authentication-Token': "{{ current_user.get_auth_token() }}"
-                })
-            }).then(function (response) {
-                response.json().then(() => {
-                    localStorage.removeItem(`Follow-${userId}-${channelId}`);
-                    refreshFollowButton(userId, channelId);
-                })
-            }).catch(function (err) {
-                console.log(err)
-            });
-        }
-
-        function refreshFollowButton(userId, channelId) {
-            checkIfFollowing(userId, channelId);
-
-            let key = `Follow-${userId}-${channelId}`;
-            if (localStorage.getItem(key) === 'true') {
-                $('#follow-button').hide();
-                $('#un-follow-button').show().one('click', function () {
-                    $('#follow-button').removeClass('disabled');
-                    $('#un-follow-button').addClass('disabled');
-                    unFollow(channelId);
-                });
-            } else {
-                $('#un-follow-button').hide();
-                $('#follow-button').show().one('click', function () {
-                    $('#follow-button').addClass('disabled');
-                    $('#un-follow-button').removeClass('disabled');
-                    follow(channelId);
-                });
-            }
-        }
-
-        $(function () {
-            refreshFollowButton(userId, channelId);
-        });
-    </script>
+        </script>
+    {% endif %}
 
     <script type="text/javascript">
         $(function () {
