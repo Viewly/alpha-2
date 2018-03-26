@@ -105,7 +105,7 @@
 
 {% include 'partials/follow_js.html' %}
 {% block scripts %}
-    {% if current_user %}
+    {% if current_user.is_authenticated %}
         <script type="application/javascript">
             $(function () {
                 refreshFollowButton('{{ video.channel.id }}');
