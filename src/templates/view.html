@@ -36,6 +36,17 @@
                                 <b><a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
                                     {{ video.channel.display_name }}</a></b>
                                 published on {{ video.published_at | humanDate }}
+                                {% if current_user %}
+                                    <a href="javascript:"
+                                       id="follow-button"
+                                       style="display: none;"
+                                       class="ui  basic blue right floated button">Follow {{ video.channel.display_name }}</a>
+                                    <a href="javascript:"
+                                       id="un-follow-button"
+                                       style="display: none;"
+                                       class="ui  basic negative right floated button">Stop Following</a>
+                                {% endif %}
+
                                 <br>
                                 <br>
 
@@ -100,7 +111,16 @@
     {% include 'partials/footer.html' %}
 {% endblock %}
 
+{% include 'partials/follow_js.html' %}
 {% block scripts %}
+    {% if current_user %}
+        <script type="application/javascript">
+            $(function () {
+                refreshFollowButton('{{ video.channel.id }}');
+            });
+        </script>
+    {% endif %}
+
     <script type="application/javascript">
         let resizePlayer = function () {
             // let the player take 80% of available screen height
