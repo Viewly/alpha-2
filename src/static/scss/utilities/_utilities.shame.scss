@@ -4,9 +4,9 @@
 
 body {
     background-color: lighten(#eef1f2, 2%);
-    padding-top: $header-height;
     color: #313131;
     overflow-x: hidden;
+    padding-top: $header-height;
 }
 
 .button {
@@ -32,3 +32,21 @@ body {
         background-color: darken(#00a8ff, 2%) !important;
     }
 }
+
+
+.c-no-results {
+    margin-top: $spacing-unit-large;
+    text-align: center;
+}
+
+    .c-no-results__img {
+        display: block;
+        max-width: 260px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .c-no-results__title {
+        font-weight: 700;
+        margin-bottom: $spacing-unit-small;
+    }

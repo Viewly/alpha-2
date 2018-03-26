@@ -5,30 +5,34 @@
 {% block content %}
     <p></p>
     <h3>Search Results</h3>
-    <div class="ui relaxed items">
 
+    <ul class="c-videos-list">
         {% for video in results %}
-            <div class="item">
-                <div class="ui small image">
-                    <a href="{{ url_for('view_video', video_id=video.id) }}">
+            <li class="c-videos-list__item">
+                <div class="c-video">
+                    <a class="c-video__img" href="{{ url_for('view_video', video_id=video.id) }}">
                         <img src="{{ guess_thumbnail_cdn_url(video.id) }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" data-poster="" class="c-video__play-icon"><path fill="currentColor" d="M1.425.35L14.575 8l-13.15 7.65V.35z"></path></svg>
                     </a>
-                </div>
-                <div class="content">
-                    <a class="header"
-                       href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
-                    <div class="meta">
-                        {{ video.published_at | humanDate }} by
-                            <b><a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
-                                {{ video.channel_name }}</a></b>
+                    <div class="c-video__content">
+                        <a class="c-video__title"
+                           href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
+                        <div class="c-video__footer">
+                            {{ video.published_at | humanDate }} by
+                                <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
+                                    {{ video.channel_name }}</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </li>
         {% else %}
-            No results
+            <li class="c-videos-list__item c-videos-list__item--no-results c-no-results">
+                <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-results.svg') }}" class="logo" alt="">
+                <h3 class="c-no-results__title">No results found</h3>
+                <p>Try searching again using broader keywords.</p>
+            </li>
         {% endfor %}
-
-    </div>
+    </ul>
 
     <div class="c-direction-buttons">
         {% if page_num > 0 %}
@@ -45,7 +49,6 @@
         {% endif %}
     </div>
 {% endblock %}
-
 
 {% block scripts %}
 {% endblock %}

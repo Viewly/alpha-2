@@ -4,6 +4,12 @@
 
 .c-video {
     margin-bottom: $spacing-unit-large;
+
+    .c-videos-list & {
+        @include mq($tweakpoint-videos-list) {
+            display: flex;
+        }
+    }
 }
 
     /**
@@ -19,6 +25,14 @@
         will-change: transform;
         overflow: hidden;
         position: relative;
+
+        .c-videos-list & {
+            @include mq($tweakpoint-videos-list) {
+                flex-shrink: 0;
+                margin-right: $spacing-unit + 10;
+                width: 304px;
+            }
+        }
 
         &::before {
             @include invisible;
@@ -87,6 +101,12 @@
      */
     .c-video__content {
         padding-right: $spacing-unit-tiny; /* [1] */
+
+        .c-videos-list & {
+            @include mq($tweakpoint-videos-list) {
+                padding-top: $spacing-unit-tiny;
+            }
+        }
     }
 
     /**
@@ -133,6 +153,10 @@
 
         .avatar {
             font-size: 10px;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: $spacing-unit-small;
         }
     }
 
