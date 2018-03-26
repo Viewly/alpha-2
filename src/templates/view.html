@@ -13,11 +13,12 @@
 {#{% include 'partials/player_js.html' %}#}
 
 {% block player %}
-    <iframe id="embedded-player"
-        width="100%" height="680"
-        src="/embed/{{ video.id }}?autoPlay=1"
-        frameborder="0" scrolling="0" allowfullscreen>
-    </iframe>
+    <div class="c-video-player o-ratio o-ratio--16:9">
+        <iframe id="embedded-player"
+            src="/embed/{{ video.id }}?autoPlay=1"
+            frameborder="0" scrolling="0" allowfullscreen>
+        </iframe>
+    </div>
 {% endblock %}
 
 {% block content %}
@@ -111,22 +112,6 @@
             });
         </script>
     {% endif %}
-
-    <script type="application/javascript">
-        let resizePlayer = function () {
-            // let the player take 80% of available screen height
-            document.getElementById('embedded-player')
-                .setAttribute('height', String(window.innerHeight * 0.75));
-        };
-        window.onload = function () {
-            resizePlayer();
-        };
-        window.addEventListener("resize", function () {
-            // todo, use rxjs to only accept last resize
-            // event in last 100ms interval
-            resizePlayer();
-        });
-    </script>
 
     <script type="application/javascript">
         // SEMANTIC.UI
