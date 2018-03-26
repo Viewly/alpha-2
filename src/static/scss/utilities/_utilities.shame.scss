@@ -2,11 +2,16 @@
     #SHAME
 \*------------------------------------*/
 
+html {
+    background-color: $footer-background-color;
+}
+
 body {
     background-color: lighten(#eef1f2, 2%);
-    padding-top: $header-height;
     color: #313131;
+    height: auto;
     overflow-x: hidden;
+    padding-top: $header-height;
 }
 
 .button {

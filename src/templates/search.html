@@ -26,7 +26,10 @@
                 </div>
             </li>
         {% else %}
-            No results
+            <li>
+                <h5>No results found</h5>
+                <p>Try different keywords</p>
+            </li>
         {% endfor %}
     </ul>
 
@@ -45,13 +48,6 @@
         {% endif %}
     </div>
 {% endblock %}
-
-{% block footer %}
-    <br>
-    <br>
-    {% include 'partials/footer.html' %}
-{% endblock %}
-
 
 {% block scripts %}
 {% endblock %}
