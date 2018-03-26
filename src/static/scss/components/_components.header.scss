@@ -193,7 +193,12 @@ $header-tweakpoint:         820px;
             margin-right: 0 !important;
         }
 
-        .icon {
+        .list.icon {
+            position: relative;
+            top: -2px;
+        }
+
+        .dropdown.icon {
             margin-left: $spacing-unit-tiny !important;
         }
 
@@ -224,7 +229,7 @@ $header-tweakpoint:         820px;
     }
 
         .c-header__btn__text {
-            @include mq($until: medium) {
+            @include mq($until: $header-tweakpoint) {
                 display: none;
             }
         }
@@ -236,5 +241,9 @@ $header-tweakpoint:         820px;
 
         .icon {
             margin-left: 0 !important;
+
+            @include mq($until: $header-tweakpoint) {
+                margin-right: 0 !important;
+            }
         }
     }
