@@ -33,13 +33,13 @@
     <div class="c-direction-buttons">
         {% if page_num > 0 %}
              <a href="/new?page={{ page_num - 1 }}"
-               class="c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
+               class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
                 <i class="left arrow icon"></i>
             </a>
         {% endif %}
         {% if results and results|length == items_per_page %}
             <a href="/new?page={{ page_num + 1 }}"
-               class="c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
+               class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
                 <i class="right arrow icon"></i>
                 Next</a>
         {% endif %}
