@@ -23,7 +23,7 @@
     {#<script src="{{ url_for('static', filename='bundle.js') }}"></script>#}
 
 </head>
-<body>
+<body class="{{ pageClass }}">
 
 {% block menu %}
     {% include "partials/main_menu.html" %}

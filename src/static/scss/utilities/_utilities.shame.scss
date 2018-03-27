@@ -6,7 +6,11 @@ body {
     background-color: lighten(#eef1f2, 2%);
     color: #313131;
     overflow-x: hidden;
-    padding-top: $header-height;
+    padding-top: $header-height + $spacing-unit-large;
+
+    &.c-page-view {
+        padding-top: $header-height;
+    }
 }
 
 .button {
