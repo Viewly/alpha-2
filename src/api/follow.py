@@ -37,11 +37,17 @@ class FollowApi(Resource):
 
     def put(self):
         args = parser.parse_args()
-        follow = Follow(
+        follow = db.session.query(Follow).filter_by(
             user_id=current_user.id,
-            channel_id=args['channel_id'],
-            created_at=dt.datetime.utcnow(),
-        )
+            channel_id=args['channel_id']
+        ).first()
+
+        if not follow:
+            follow = Follow(
+                user_id=current_user.id,
+                channel_id=args['channel_id'],
+                created_at=dt.datetime.utcnow(),
+            )
 
         db.session.add(follow)
         db.session.commit()
