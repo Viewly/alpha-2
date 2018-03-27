@@ -33,14 +33,6 @@
                                 {{ video.published_at | humanDate }}
                             </span>
                         </div>
-                        <div class="extra">
-                            {% if not video.channel_id %}
-                                <div class="ui label">no-channel</div>
-                            {% endif %}
-                            {% if not video.published_at %}
-                                <div class="ui label">unpublished</div>
-                            {% endif %}
-                        </div>
                     </div>
                 </div>
             </div>
