@@ -3,6 +3,9 @@
         let userId = '{{ current_user.id }}';
 
         function checkIfFollowing(channelId) {
+            if (channelId === 'undefined') {
+                return;
+            }
             let key = `Follow-${userId}-${channelId}`;
             if (localStorage.getItem(key) === 'true')
                 return;
@@ -19,14 +22,15 @@
                     return;
                 }
                 response.json().then(follow => {
-                    localStorage.setItem(localStorageKeyFor(follow), 'true');
+                    localStorage.setItem(followToKey(follow), 'true');
+                    refreshFollowButton(channelId);
                 })
             }).catch(function (err) {
                 console.log(err)
             });
         }
 
-        function localStorageKeyFor(follow) {
+        function followToKey(follow) {
             return `Follow-${follow.user_id}-${follow.channel_id}`;
         }
 
@@ -46,7 +50,7 @@
                     return;
                 }
                 response.json().then(follow => {
-                    localStorage.setItem(localStorageKeyFor(follow), 'true');
+                    localStorage.setItem(followToKey(follow), 'true');
                     refreshFollowButton(channelId);
                 })
             }).catch(function (err) {
