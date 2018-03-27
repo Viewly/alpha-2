@@ -1,0 +1,75 @@
+/*------------------------------------*\
+    #HELPERS
+\*------------------------------------*/
+
+.u-horizontally-center {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/**
+ * Hide visually and from screenreaders, but maintain layout.
+ */
+.u-invisible {
+    visibility: hidden !important;
+}
+
+/**
+ * Floating
+ */
+.u-float-left {
+    float: left !important;
+}
+
+.u-float-right {
+    float: right !important;
+}
+
+/**
+ * Vertical alignment
+ */
+.u-align-top {
+    vertical-align: top !important;
+}
+
+.u-align-middle {
+    vertical-align: middle !important;
+}
+
+.u-align-bottom {
+    vertical-align: bottom !important;
+}
+
+/**
+ * Vertical alignment in flexbox
+ */
+.u-align-self-flex-start {
+    align-self: flex-start !important;
+}
+
+.u-align-self-flex-end {
+    align-self: flex-end !important;
+}
+
+.u-align-self-center {
+    align-self: center !important;
+}
+
+.u-align-self-baseline {
+    align-self: baseline !important;
+}
+
+.u-align-self-stretch {
+    align-self: stretch !important;
+}
+
+/**
+ * Display
+ */
+.u-block {
+    display: block !important;
+}
+
+.u-inline-block {
+    display: inline-block !important;
+}

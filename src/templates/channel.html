@@ -87,27 +87,42 @@
 {% endblock %}
 
 {% block content %}
-    <p></p>
-    <h2>
-        <img src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
-             class="ui circular avatar image">
-        {{ channel.display_name }}
+    <div class="u-inline-block">
+        <div class="o-flag o-flag--small o-flag--reverse">
+            <div class="o-flag__img">
+                {% if current_user %}
+                    <a href="javascript:"
+                       id="follow-button"
+                       style="display: none;"
+                       class="ui button mini c-btn--primary">+ Follow</a>
+                    <a href="javascript:"
+                       id="un-follow-button"
+                       style="display: none;"
+                       class="ui button mini">Unfollow</a>
+                {% endif %}
+            </div>
+            <div class="o-flag__body">
+                <div class="o-flag o-flag--small">
+                    <div class="o-flag__img">
+                        <div class="c-widget">
+                            <img src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
+                                class="o-avatar o-avatar--large">
+                            {% if current_user.id == channel.user_id %}
+                                <a class="c-widget__action" href="javascript:" id="avatar-button"><i class="pencil alternate icon tiny"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="o-flag__body">
+                        <h2>
+                            {{ channel.display_name }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        {% if current_user %}
-            <a href="javascript:"
-               id="follow-button"
-               style="display: none;"
-               class="ui button">Follow</a>
-            <a href="javascript:"
-               id="un-follow-button"
-               style="display: none;"
-               class="ui button">Stop Following</a>
-        {% endif %}
-    </h2>
 
-    {% if current_user.id == channel.user_id %}
-        <a href="javascript:" id="avatar-button">Change Profile Pic</a>
-    {% endif %}
 
     <h3>Showing latest {{ videos | count }} videos.</h3>
 

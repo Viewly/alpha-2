@@ -6,20 +6,25 @@ body {
     background-color: lighten(#eef1f2, 2%);
     color: #313131;
     overflow-x: hidden;
-    padding-top: $header-height;
+    padding-top: $header-height + $spacing-unit-large;
+
+    &.c-page-view {
+        padding-top: $header-height;
+    }
 }
 
 .button {
     border-radius: 2px !important;
+    white-space: nowrap;
 }
 
 .c-btn--primary {
-    background-color: #0048ff !important;
+    background-color: color('brand-secondary') !important;
     color: #fff !important;
     font-weight: 400 !important;
 
     &:hover {
-        background-color: darken(#0048ff, 2%) !important;
+        background-color: darken(color('brand-secondary'), 2%) !important;
     }
 }
 
@@ -49,4 +54,38 @@ body {
     .c-no-results__title {
         font-weight: 700;
         margin-bottom: $spacing-unit-small;
+    }
+
+
+.c-widget {
+    display: inline-block;
+    position: relative;
+}
+
+    .c-widget__action {
+        background-color: color('brand-secondary');
+        border-radius: 50%;
+        color: #fff;
+        font-size: 18px;
+        height: 1em;
+        transform-origin: 0 100%;
+        width: 1em;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 10;
+
+        .icon {
+            transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+
+        &:hover {
+            background-color: darken(color('brand-secondary'), 4%);
+            color: #fff;
+            text-decoration: none;
+            transform: scale(1.1);
+        }
     }
