@@ -6,7 +6,7 @@
 // High-level base settings.
 $global-font-size:                      18px;
 $global-line-height:                    30px;
-$global-link-color:                     #0048ff;
+$global-link-color:                     darken(#006cff, 5%);
 $global-border-radius:                  2px;
 $global-transition:                     all .2s ease;
 
@@ -46,8 +46,8 @@ $mq-breakpoints: (
 
 // Colors
 $colors: (
-    'light-blue': #0ff,
-    'blue': #0048ff,
+    'light-blue': #00a8ff,
+    'blue': #006cff,
     'grey': #5b6a72,
     'light-grey': #898989,
 

@@ -27,7 +27,7 @@ $tweakpoint-header:         820px;
     }
 
     &::before {
-        background: linear-gradient(to right, color('brand-secondary') 0%, #00b8ff 50%);
+        background: linear-gradient(to right, color('brand-secondary') 0%, color('brand-primary') 100%);
         content: '';
         height: 3px;
         position: absolute;
@@ -235,6 +235,7 @@ $tweakpoint-header:         820px;
     .c-header__btn[class][class][class][class] {
         border: 1px solid darken(#eef1f2, 4%) !important;
         box-shadow: none !important;
+        color: $global-link-color !important;
         -webkit-box-shadow: none !important;
 
         @include mq($until: medium) {
