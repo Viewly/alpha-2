@@ -90,7 +90,7 @@
     <div class="u-inline-block">
         <div class="o-flag o-flag--small o-flag--reverse">
             <div class="o-flag__img">
-                {% if current_user %}
+                {% if current_user and current_user.id != channel.user_id %}
                     <a href="javascript:"
                        id="follow-button"
                        style="display: none;"

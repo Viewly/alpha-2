@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="c-video-description__header__item">
-                    {% if current_user %}
+                    {% if current_user and current_user.id != video.channel.user_id %}
                         <a href="javascript:"
                            id="follow-button"
                            style="display: none;"
