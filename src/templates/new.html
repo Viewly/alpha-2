@@ -13,7 +13,7 @@
                     <a class="c-video__img" href="{{ url_for('view_video', video_id=video.id) }}">
                         <img src="{{ guess_thumbnail_cdn_url(video.id, 'small') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" data-poster="" class="c-video__play-icon"><path fill="currentColor" d="M1.425.35L14.575 8l-13.15 7.65V.35z"></path></svg>
-                        <span>{{ video.video_metadata.duration | toDuration }}</span>
+                        <span class="c-video__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
                     </a>
                     <div class="c-video__content">
                         <a class="c-video__title"

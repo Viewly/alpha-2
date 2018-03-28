@@ -59,7 +59,7 @@
             width: 100%;
         }
 
-        span {
+        .c-video__duration-indicator {
             background-color: #333;
             border-radius: 2px;
             color: #fff;
@@ -117,7 +117,7 @@
                 @include visible;
             }
 
-            span {
+            .c-video__duration-indicator {
                 opacity: 1;
             }
         }
