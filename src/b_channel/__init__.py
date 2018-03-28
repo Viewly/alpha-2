@@ -11,7 +11,7 @@ from flask_security import (
 )
 from flask_wtf import FlaskForm
 from wtforms import StringField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 from .. import db
 from ..models import Channel
@@ -24,7 +24,16 @@ channel = Blueprint(
 
 
 class CreateChannelForm(FlaskForm):
-    name = StringField('Display Name for your channel', validators=[DataRequired()])
+    name = StringField(
+        'Display Name for your channel',
+        validators=[
+            DataRequired(),
+            Length(
+                min=3,
+                max=25,
+                message='Channel names should be 3 to 25 characters long'
+            )]
+    )
 
 
 @channel.route('/create', methods=['GET', 'POST'])
