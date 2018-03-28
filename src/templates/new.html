@@ -24,21 +24,14 @@
                             {% if video.channel_id %}
                                 <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
                                     <img src="{{ guess_avatar_cdn_url(video.channel_id, 'tiny') }}"
-                                         class="ui circular avatar image">
+                                         class="ui circular avatar image"
+                                         id="avatar-img">
                                     {{ video.channel.display_name }}
                                 </a>
                             {% endif %}
                             <span class="c-video__date">
                                 {{ video.published_at | humanDate }}
                             </span>
-                        </div>
-                        <div class="extra">
-                            {% if not video.channel_id %}
-                                <div class="ui label">no-channel</div>
-                            {% endif %}
-                            {% if not video.published_at %}
-                                <div class="ui label">unpublished</div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -106,7 +106,8 @@
                     <div class="o-flag__img">
                         <div class="c-widget">
                             <img src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
-                                class="o-avatar o-avatar--large">
+                                class="o-avatar o-avatar--large"
+                                id="avatar-img">
                             {% if current_user.id == channel.user_id %}
                                 <a class="c-widget__action" href="javascript:" id="avatar-button"><i class="pencil alternate icon tiny"></i></a>
                             {% endif %}
