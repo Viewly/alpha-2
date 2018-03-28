@@ -66,13 +66,17 @@
             display: block;
             font-size: 12px;
             line-height: 1.2;
-            opacity: .8;
+            opacity: 0;
             padding: 2px 4px;
             transition: inherit;
             position: absolute;
             bottom: $spacing-unit-tiny;
             right: $spacing-unit-tiny;
             z-index: 20;
+
+            .c-videos-list & {
+                opacity: .8;
+            }
         }
 
         .c-video__play-icon {
