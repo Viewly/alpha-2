@@ -197,7 +197,12 @@ def to_hex(data: str):
 
 @app.template_filter('toDuration')
 def to_duration(seconds: Union[int, float]):
-    return str(dt.timedelta(seconds=int(seconds)))
+    duration = str(dt.timedelta(seconds=int(seconds)))
+    if duration[:3] == '0:0':
+        duration = duration[3:]
+    elif duration[:2] == '0:':
+        duration = duration[2:]
+    return duration
 
 
 @app.template_filter('toWei')
