@@ -123,14 +123,15 @@ def edit_profile():
     """
     select channel.*, count(video.id) as video_count
      from channel
-     join video on video.channel_id = channel.id
+     left join video on video.channel_id = channel.id
      group by channel.id
      having channel.user_id = :user_id;
     """
-    channels = db.session.query(Channel, func.count(Video.id)) \
-        .join(Video) \
+    channels = db.session.query(Channel, func.count(Video.id).label('video_count')) \
+        .outerjoin(Video) \
         .group_by(Channel) \
-        .having(Channel.user_id == current_user.id)
+        .having(Channel.user_id == current_user.id) \
+        .order_by(desc('video_count'))
     return render_template(
         'edit_profile.html',
         channels=channels,

@@ -10,8 +10,9 @@ from flask_security import (
     current_user,
 )
 from flask_wtf import FlaskForm
+from sqlalchemy import func
 from wtforms import StringField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 from .. import db
 from ..models import Channel
@@ -24,7 +25,16 @@ channel = Blueprint(
 
 
 class CreateChannelForm(FlaskForm):
-    name = StringField('Display Name for your channel', validators=[DataRequired()])
+    name = StringField(
+        'Display Name for your channel',
+        validators=[
+            DataRequired(),
+            Length(
+                min=3,
+                max=25,
+                message='Channel names should be 3 to 25 characters long'
+            )]
+    )
 
 
 @channel.route('/create', methods=['GET', 'POST'])
@@ -41,14 +51,20 @@ def create():
         error = 'You already have 10 channels. Cannot create another one at this time.'
     else:
         if form.validate_on_submit():
+            display_name = form.name.data.strip()
             chan = Channel(
                 user_id=current_user.id,
-                display_name=form.name.data,
+                display_name=display_name,
                 created_at=dt.datetime.utcnow()
             )
-            db.session.add(chan)
-            db.session.commit()
-            return redirect(f'/c/{chan.id}')
+
+            if db.session.query(Channel).filter_by(
+                    display_name=func.lower(display_name)).count() > 0:
+                error = f'Display name "{display_name}" is already taken!'
+            else:
+                db.session.add(chan)
+                db.session.commit()
+                return redirect(f'/c/{chan.id}')
 
     return render_template(
         'create.html',
