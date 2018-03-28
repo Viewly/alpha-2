@@ -85,6 +85,15 @@ class Channel(db.Model):
     user = db.relationship('User', back_populates='channels')
     videos = db.relationship('Video', backref='channel')
 
+    @declared_attr
+    def __table_args__(self):
+        return (
+            db.Index(
+                'ix_lc_unique_display_name',
+                func.lower(self.display_name),
+                unique=True),
+        )
+
 
 class TranscoderStatus(enum.Enum):
     pending = 0
