@@ -73,7 +73,8 @@ def search(page_num=0, items_per_page=20):
 
     search_query = request.args.get('q')
     q = """
-    SELECT v.id, v.title, 
+    SELECT v.id, v.title,
+           v.video_metadata,
            c.display_name AS channel_name, c.id AS channel_id
     FROM video v LEFT JOIN channel c
     ON v.channel_id = c.id
