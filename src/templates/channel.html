@@ -143,6 +143,10 @@
 
                         <div class="c-video__footer">
                             {{ video.published_at | humanDate }}
+                            {% if not video.published_at %}
+                                <a href="{{ url_for('upload.publish_to_ethereum', video_id=video.id) }}"
+                                   class="ui red label">Unpublished</a>
+                            {% endif %}
                         </div>
 
                         {% if current_user.id == channel.user_id %}
