@@ -25,6 +25,16 @@
 {% block content %}
 
     <div class="ui c-video-description u-clearfix">
+        {% if not video.published_at %}
+            <div class="ui warning message">
+                <div class="header">
+                    This video has not been published!
+                </div>
+                To make this video publicly accessible,
+                please <a href="{{ url_for('upload.publish_to_ethereum', video_id=video.id) }}">publish</a> it.
+                Unpublished videos will be deleted 7 days after uploading.
+            </div>
+        {% endif %}
         <h2 class="c-video-description__title">{{ video.title }}</h2>
         <div class="content">
             <header class="c-video-description__header">

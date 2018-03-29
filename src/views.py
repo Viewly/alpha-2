@@ -7,6 +7,7 @@ from flask import (
     render_template,
     request,
     jsonify,
+    abort,
 )
 from flask_security import (
     current_user,
@@ -37,6 +38,8 @@ def about():
 @app.route('/v/<string:video_id>', methods=['GET'])
 def view_video(video_id):
     video = Video.query.filter_by(id=video_id).first_or_404()
+    if not video.published_at and not is_owner(video.user_id):
+        return abort(404)
     return render_template('view.html', video=video)
 
 
@@ -52,14 +55,17 @@ def embed(video_id):
 @app.route('/c/<string:channel_id>', methods=['GET'])
 def view_channel(channel_id):
     channel = Channel.query.filter_by(id=channel_id).first_or_404()
-    videos = (Video.query.filter_by(channel_id=channel_id)
-              .order_by(desc(Video.published_at))
-              .limit(10).all())
+    videos = \
+        Video.query.filter_by(channel_id=channel_id).order_by(desc(Video.published_at))
+
+    # do not show unpublished videos to public
+    if not is_owner(channel.user_id):
+        videos = videos.filter(Video.published_at != None)
 
     return render_template(
         'channel.html',
         channel=channel,
-        videos=videos,
+        videos=videos.limit(10).all(),
         s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADS_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
@@ -214,6 +220,10 @@ def to_hex(amount: int):
 @app.template_filter('fileSize')
 def file_size(size: int):
     return maya.humanize.naturalsize(size, gnu=True)
+
+
+def is_owner(user_id):
+    return current_user.is_authenticated and current_user.id == user_id
 
 
 if __name__ == '__main__':
