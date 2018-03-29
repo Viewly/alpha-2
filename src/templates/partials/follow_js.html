@@ -1,6 +1,7 @@
 {% if current_user.is_authenticated %}
     <script type="text/javascript">
         let userId = '{{ current_user.id }}';
+        const authToken = "{{ current_user.get_auth_token() }}";
 
         function checkIfFollowing(channelId) {
             if (channelId === 'undefined') {
@@ -14,7 +15,7 @@
                 method: 'get',
                 headers: new Headers({
                     'Content-Type': 'application/json',
-                    'Authentication-Token': "{{ current_user.get_auth_token() }}"
+                    'Authentication-Token': authToken
                 })
             }).then(function (response) {
                 if (!response.ok) {
@@ -42,7 +43,7 @@
                 }),
                 headers: new Headers({
                     'Content-Type': 'application/json',
-                    'Authentication-Token': "{{ current_user.get_auth_token() }}"
+                    'Authentication-Token': authToken
                 })
             }).then(function (response) {
                 if (!response.ok) {
@@ -66,7 +67,7 @@
                 }),
                 headers: new Headers({
                     'Content-Type': 'application/json',
-                    'Authentication-Token': "{{ current_user.get_auth_token() }}"
+                    'Authentication-Token': authToken
                 })
             }).then(function (response) {
                 response.json().then(() => {
