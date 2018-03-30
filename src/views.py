@@ -16,6 +16,7 @@ from flask_security import (
 from sqlalchemy import desc, func
 
 from . import app, db
+from .core.html import html2text, markdown2html
 from .methods import (
     guess_thumbnail_cdn_url,
     guess_avatar_cdn_url,
@@ -80,6 +81,7 @@ def search(page_num=0, items_per_page=20):
     search_query = request.args.get('q')
     q = """
     SELECT v.id, v.title,
+           v.description,
            v.video_metadata,
            c.display_name AS channel_name, c.id AS channel_id
     FROM video v LEFT JOIN channel c
@@ -171,9 +173,16 @@ def utility_processor():
             return job.status.name
         return 'pending'
 
+    def description2text(description):
+        try:
+            return html2text(markdown2html(description))
+        except:
+            return ''
+
     return dict(
         block_num=block_num,
         get_transcoding_status=get_transcoding_status,
+        description2text=description2text,
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         guess_avatar_cdn_url=guess_avatar_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),

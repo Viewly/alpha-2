@@ -25,3 +25,4 @@ eth-keys
 web3
 delegator.py
 raven
+beautifulsoup4

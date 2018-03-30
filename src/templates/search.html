@@ -21,6 +21,10 @@
                             {{ video.published_at | humanDate }} by
                                 <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
                                     {{ video.channel_name }}</a>
+                            {% if video.description %}
+                                <br><br>
+                                {{ description2text(video.description) | truncate(250) }}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
