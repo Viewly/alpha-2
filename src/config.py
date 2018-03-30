@@ -82,6 +82,10 @@ CELERY_BROKER_URL = getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 # Logging
 SENTRY_DSN = getenv('SENTRY_DSN')
 
+# Disqus
+DISQUS_PUBLIC_KEY = getenv('DISQUS_PUBLIC_KEY')
+DISQUS_SECRET_KEY = getenv('DISQUS_SECRET_KEY')
+
 # Ethereum chain
 ETH_CHAIN = getenv('ETH_CHAIN')
 INFURA_KEY = getenv('INFURA_KEY')
