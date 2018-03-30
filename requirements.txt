@@ -1,4 +1,5 @@
 gunicorn
+newrelic
 funcy
 toolz
 flask

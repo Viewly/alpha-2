@@ -12,6 +12,9 @@ postgres_data
 .env
 celerybeat*
 
+# sensitive runtime configs
+newrelic.ini
+
 # Created by .ignore support plugin (hsz.mobi)
 __pycache__/
 *.py[cod]
