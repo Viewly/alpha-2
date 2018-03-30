@@ -204,6 +204,20 @@ def human_date(dto: dt.datetime):
     return dto.strftime('%b %d, %Y')
 
 
+@app.template_filter('ageDate')
+def age_date(dto: dt.datetime):
+    if not dto:
+        return ''
+    if type(dto) == str:
+        m = maya.parse(dto)
+    elif type(dto) == dt.datetime:
+        m = maya.MayaDT.from_datetime(dto)
+    else:
+        raise NotImplementedError(
+            f'Date {dto} is of unsupported type')
+    return m.slang_time()
+
+
 @app.template_filter('toHex')
 def to_hex(data: str):
     data = data.encode('ascii').hex()
