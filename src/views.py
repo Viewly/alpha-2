@@ -87,6 +87,7 @@ def search(page_num=0, items_per_page=20):
     SELECT v.id, v.title,
            v.description,
            v.video_metadata,
+           v.published_at,
            c.display_name AS channel_name, c.id AS channel_id
     FROM video v LEFT JOIN channel c
     ON v.channel_id = c.id
