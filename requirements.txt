@@ -27,3 +27,4 @@ delegator.py
 raven
 lxml
 beautifulsoup4
+moviepy
