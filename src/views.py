@@ -17,6 +17,10 @@ from sqlalchemy import desc, func
 
 from . import app, db
 from .core.html import html2text, markdown2html
+from .disqus import (
+    get_disqus_sso,
+    get_disqus_user,
+)
 from .methods import (
     guess_thumbnail_cdn_url,
     guess_avatar_cdn_url,
@@ -183,6 +187,8 @@ def utility_processor():
         block_num=block_num,
         get_transcoding_status=get_transcoding_status,
         description2text=description2text,
+        get_disqus_sso=get_disqus_sso,
+        get_disqus_user=get_disqus_user,
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         guess_avatar_cdn_url=guess_avatar_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
