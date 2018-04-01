@@ -18,9 +18,11 @@
                         <a class="c-video__title"
                            href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
                         <div class="c-video__footer">
-                            {{ video.published_at | humanDate }} by
-                                <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
-                                    {{ video.channel_name }}</a>
+                            <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
+                                {{ video.channel_name }}</a>
+                            <span class="c-video__date">
+                                {{ video.published_at | ageDate }}
+                            </span>
                             {% if video.description %}
                                 <br><br>
                                 {{ description2text(video.description) | truncate(250) }}
