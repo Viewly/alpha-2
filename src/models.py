@@ -163,6 +163,7 @@ class FileMapper(db.Model):
     # s3_thumbnails_path = db.Column(db.String(50))
     video_formats = db.Column(JSONB)
     thumbnail_files = db.Column(JSONB)  # thumbnail_formats
+    timeline_file = db.Column(db.String(50))
 
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
 
