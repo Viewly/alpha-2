@@ -7,6 +7,7 @@ from . import (
     db_session,
 )
 from .shared import generate_manifest_file
+from .transcoder import transcoder_post_processing
 from ..core.et import get_job_status
 from ..core.eth import is_video_published
 from ..models import (
@@ -59,9 +60,9 @@ def refresh_transcoder_jobs():
         job.status = status_map[status]
         if job.status == TranscoderStatus.complete:
             generate_manifest_file.delay(job.video_id)
+            transcoder_post_processing.delay(job.video_id, job.id)
         session.add(job)
-
-    session.commit()
+        session.commit()
 
 
 @cron.task(ignore_result=True)

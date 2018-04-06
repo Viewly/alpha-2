@@ -15,6 +15,10 @@ from .ffprobe import (
 )
 from .s3 import S3Transfer
 from .utils import ensure_directory, cleanup
+from ..config import (
+    S3_VIDEOS_BUCKET,
+    S3_VIDEOS_REGION,
+)
 
 
 def run_ffprobe_s3(key: str, **kwargs):
@@ -109,7 +113,8 @@ def video_post_processing_s3(key: str, s3_output_key_prefix: str, **kwargs) -> s
     Returns:
         A filename of the tile sheet containing meta-embedded properties.
     """
-    s3_transfer = S3Transfer(**kwargs)
+    s3_transfer = S3Transfer(
+        region_name=S3_VIDEOS_REGION, bucket_name=S3_VIDEOS_BUCKET, **kwargs)
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_dir = pathlib.Path(tmpdir)
 
