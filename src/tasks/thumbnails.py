@@ -53,7 +53,7 @@ def process_thumbnails(video_id: str):
             image=img,
             min_size_name='small',
             aspect_ratio=(16, 9),
-            output_key_prefix=f'thumbnails/{video.id}/',
+            s3_output_key_prefix=f'thumbnails/{video.id}/',
             region_name=S3_VIDEOS_REGION,
             bucket_name=S3_VIDEOS_BUCKET,
         )
@@ -108,7 +108,7 @@ def process_avatar(channel_id: str):
             min_size_name='small',
             aspect_ratio=(1, 1),
             sizes=resize_formats,
-            output_key_prefix=f'avatars/{channel.id}/',
+            s3_output_key_prefix=f'avatars/{channel.id}/',
             region_name=S3_VIDEOS_REGION,
             bucket_name=S3_VIDEOS_BUCKET,
         )

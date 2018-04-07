@@ -5,6 +5,7 @@ from . import (
 from ..core.et import (
     create_dash_job,
     create_fallback_job,
+    get_job,
 )
 from ..core.ffprobe import (
     get_video_resolution,
@@ -12,12 +13,16 @@ from ..core.ffprobe import (
     get_video_framerate,
     get_duration,
 )
-from ..core.media import run_ffprobe_s3
+from ..core.media import (
+    run_ffprobe_s3,
+    video_post_processing_s3,
+)
 from ..models import (
     Video,
     TranscoderStatus,
     TranscoderJob,
 )
+from .shared import generate_manifest_file
 
 transcoder = new_celery(
     'transcoder',
@@ -95,9 +100,38 @@ def start_transcoder_job(video_id: str):
         session.add(video)
         session.commit()
 
-# VIDEO PIPELINE
-# once the transcoding is done:
-# generate the timeline from 720p version
-# generate the snapshots for ML analysis
-# generate the transcriptions (for ml, subtitles, seo)
-# generate the metadata file for embedded player
+
+@transcoder.task(
+    ignore_result=True,
+    autoretry_for=(Exception,),
+    retry_kwargs={'max_retries': 5},
+)
+def transcoder_post_processing(video_id: str, transcoder_job_id: str):
+    """
+    Post Processing:
+      - generate preview timelines
+      - generate snapshots for ML Analysis
+    """
+    session = db_session()
+    video = session.query(Video).filter_by(id=video_id).one()
+    tj = session.query(TranscoderJob).filter_by(
+        id=transcoder_job_id, video_id=video_id).one()
+    if tj.preset_type != 'fallback' or tj.status != TranscoderStatus.complete:
+        return
+
+    job = get_job(transcoder_job_id)
+    input_key = "%s%s" % (
+        job['Job']['OutputKeyPrefix'],
+        job['Job']['Outputs'][0]['Key'])
+
+    video.file_mapper.timeline_file = \
+        video_post_processing_s3(
+            key=input_key,
+            s3_timeline_key_prefix=f"v1/{video.id}",
+            s3_snapshots_key_prefix=f"snapshots/{video.id}",
+        )
+
+    session.add(video)
+    session.commit()
+
+    generate_manifest_file.delay(video_id)

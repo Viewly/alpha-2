@@ -24,6 +24,7 @@ from .disqus import (
 from .methods import (
     guess_thumbnail_cdn_url,
     guess_avatar_cdn_url,
+    guess_timeline_cdn_url,
 )
 from .models import Video, Channel, TranscoderJob
 
@@ -192,6 +193,7 @@ def utility_processor():
         get_disqus_user=get_disqus_user,
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         guess_avatar_cdn_url=guess_avatar_cdn_url,
+        guess_timeline_cdn_url=guess_timeline_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
         eth_chain=lambda: app.config['ETH_CHAIN'],

@@ -5,7 +5,7 @@ def generate_manifest(video):
     return {
         'formats': video.file_mapper.video_formats,
         'cover': get_thumbnail(video, 'large'),
-        'timeline': '',
+        'timeline': video.file_mapper.timeline_file,
         'info': {
             'duration': video.video_metadata.get('duration', 0),
         }
@@ -36,3 +36,7 @@ def guess_thumbnail_cdn_url(video_id: str, size_name='tiny'):
 
 def guess_avatar_cdn_url(channel_id: str, size_name='tiny'):
     return f"{CDN_URL}/avatars/{channel_id}/{size_name}.png"
+
+
+def guess_timeline_cdn_url(video_id: str, timeline_file: str):
+    return f"{CDN_URL}/v1/{video_id}/{timeline_file}"
