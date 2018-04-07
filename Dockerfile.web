@@ -17,9 +17,6 @@ RUN npm install
 WORKDIR /alpha-2
 RUN pip install -r requirements.txt
 
-# regression fix
-RUN pip install -U web3
-
 ## compile sass/scss
 RUN python setup.py build_sass
 
