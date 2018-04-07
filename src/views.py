@@ -24,7 +24,7 @@ from .disqus import (
 from .methods import (
     guess_thumbnail_cdn_url,
     guess_avatar_cdn_url,
-guess_timeline_cdn_url,
+    guess_timeline_cdn_url,
 )
 from .models import Video, Channel, TranscoderJob
 

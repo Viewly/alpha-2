@@ -127,7 +127,8 @@ def transcoder_post_processing(video_id: str, transcoder_job_id: str):
     video.file_mapper.timeline_file = \
         video_post_processing_s3(
             key=input_key,
-            s3_output_key_prefix=f"snapshots/{video.id}",
+            s3_timeline_key_prefix=f"v1/{video.id}",
+            s3_snapshots_key_prefix=f"snapshots/{video.id}",
         )
 
     session.add(video)

@@ -39,4 +39,4 @@ def guess_avatar_cdn_url(channel_id: str, size_name='tiny'):
 
 
 def guess_timeline_cdn_url(video_id: str, timeline_file: str):
-    return f"{CDN_URL}/snapshots/{video_id}/{timeline_file}"
+    return f"{CDN_URL}/v1/{video_id}/{timeline_file}"

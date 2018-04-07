@@ -8,7 +8,6 @@ from typing import List, Dict
 
 from PIL import Image, ImageOps
 from funcy import lpluck, chunks, first, last
-from moviepy import editor
 
 from .ffprobe import (
     run_ffprobe
@@ -102,7 +101,10 @@ class MinResNotAvailableError(BaseException):
     pass
 
 
-def video_post_processing_s3(key: str, s3_output_key_prefix: str, **kwargs) -> str:
+def video_post_processing_s3(
+        key: str,
+        s3_timeline_key_prefix: str,
+        s3_snapshots_key_prefix: str, **kwargs) -> str:
     """
     Given a video file, do the following:
      - download the video from S3
@@ -122,21 +124,24 @@ def video_post_processing_s3(key: str, s3_output_key_prefix: str, **kwargs) -> s
         video_file = str(tmp_dir / 'video.tmp')
         s3_transfer.download_file(key, video_file)
 
-        # create directories for temporary files
-        ensure_directory(str(tmp_dir / 'timeline'))
-        ensure_directory(str(tmp_dir / 'random'))
-
         # generate timed snapshots for preview tiles
+        ensure_directory(str(tmp_dir / 'timeline'))
         window_seconds = generate_preview_images(tmp_dir, video_file)
         tile_sheet_name = stitch_tile_sheet(tmp_dir, window_seconds)
-        cleanup(str(tmp_dir / 'timeline'))  # discard temporary snapshots
+        tile_sheet_path = str(tmp_dir / tile_sheet_name)
+        s3_transfer.upload_file(
+            tile_sheet_path,
+            f'{s3_timeline_key_prefix.rstrip("/")}/{tile_sheet_name}')
+        cleanup([tile_sheet_path, str(tmp_dir / 'timeline')])
 
         # generate random snapshots for machine learning
+        ensure_directory(str(tmp_dir / 'random'))
         generate_random_images(tmp_dir, video_file)
 
-        # upload images back to s3
+        # upload snapshots to s3
+        # todo: upload these as "reduced redundancy" to save $$
         for file in tmp_dir.rglob('*.%s' % kwargs.get("output_ext", "png")):
-            output_key = f'{s3_output_key_prefix.rstrip("/")}/' \
+            output_key = f'{s3_snapshots_key_prefix.rstrip("/")}/' \
                          f'{file.relative_to(tmp_dir)}'
             s3_transfer.upload_file(str(file), output_key)
 
@@ -149,6 +154,7 @@ def generate_random_images(
         size=None,
         aspect_ratio=(16, 9), **kwargs):
     """ Generate uniformly distributed random snapshots from a video."""
+    from moviepy import editor
     clip = editor.VideoFileClip(video_file)
 
     # hard-coded steps of snapshot smoothness
@@ -181,6 +187,7 @@ def generate_preview_images(
         size=(192, 108),
         aspect_ratio=(16, 9), **kwargs):
     """ Generate small resolution, periodic frame snapshots from a video. """
+    from moviepy import editor
     clip = editor.VideoFileClip(video_file)
 
     # hard-coded steps of snapshot smoothness
