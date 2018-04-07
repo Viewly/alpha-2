@@ -8,6 +8,7 @@ from eth_utils import (
     keccak,
     remove_0x_prefix,
     big_endian_to_int,
+    to_hex,
 )
 
 from ..config import (
@@ -22,7 +23,7 @@ def get_web3(http_url: str) -> web3.Web3:
     return web3.Web3(web3.HTTPProvider(http_url))
 
 
-def get_publishing_contract():
+def video_publisher_contract():
     infura_url = f'https://{ETH_CHAIN}.infura.io/{INFURA_KEY}'
     w3 = get_web3(infura_url)
 
@@ -33,8 +34,8 @@ def get_publishing_contract():
 
 
 def is_video_published(video_id: str):
-    instance = get_publishing_contract()
-    return instance.call().videos(video_id)
+    instance = video_publisher_contract()
+    return instance.functions.videos(to_hex(video_id)).call()
 
 
 def recover_address(data: str, signature: str) -> str:

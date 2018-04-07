@@ -16,6 +16,7 @@ celerybeat*
 newrelic.ini
 
 # Created by .ignore support plugin (hsz.mobi)
+.pytest_cache
 __pycache__/
 *.py[cod]
 *$py.class
