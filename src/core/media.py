@@ -4,7 +4,7 @@ import pathlib
 import random
 import tempfile
 from fractions import Fraction
-from typing import List, Dict
+from typing import List, Dict, Union
 
 from PIL import Image, ImageOps
 from funcy import lpluck, chunks, first, last
@@ -104,7 +104,7 @@ class MinResNotAvailableError(BaseException):
 def video_post_processing_s3(
         key: str,
         s3_timeline_key_prefix: str,
-        s3_snapshots_key_prefix: str, **kwargs) -> str:
+        s3_snapshots_key_prefix: str, **kwargs) -> Union[str, None]:
     """
     Given a video file, do the following:
      - download the video from S3
@@ -127,6 +127,8 @@ def video_post_processing_s3(
         # generate timed snapshots for preview tiles
         ensure_directory(str(tmp_dir / 'timeline'))
         window_seconds = generate_preview_images(tmp_dir, video_file)
+        if not window_seconds:
+            return
         tile_sheet_name = stitch_tile_sheet(tmp_dir, window_seconds)
         tile_sheet_path = str(tmp_dir / tile_sheet_name)
         s3_transfer.upload_file(
@@ -156,6 +158,9 @@ def generate_random_images(
     """ Generate uniformly distributed random snapshots from a video."""
     from moviepy import editor
     clip = editor.VideoFileClip(video_file)
+
+    if int(clip.duration) < 1:
+        return 0
 
     # hard-coded steps of snapshot smoothness
     if clip.duration < 30:
@@ -189,6 +194,9 @@ def generate_preview_images(
     """ Generate small resolution, periodic frame snapshots from a video. """
     from moviepy import editor
     clip = editor.VideoFileClip(video_file)
+
+    if int(clip.duration) < 1:
+        return 0
 
     # hard-coded steps of snapshot smoothness
     if clip.duration < 15:
