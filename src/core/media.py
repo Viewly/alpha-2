@@ -189,7 +189,7 @@ def generate_random_images(
 def generate_preview_images(
         tmp_directory,
         video_file,
-        size=(192, 108),
+        size=(240, 135),
         aspect_ratio=(16, 9), **kwargs):
     """ Generate small resolution, periodic frame snapshots from a video. """
     from moviepy import editor
