@@ -115,6 +115,7 @@ def video_post_processing_s3(
     Returns:
         A filename of the tile sheet containing meta-embedded properties.
     """
+    ext = kwargs.get("output_ext", "png")
     s3_transfer = S3Transfer(
         region_name=S3_VIDEOS_REGION, bucket_name=S3_VIDEOS_BUCKET, **kwargs)
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -126,10 +127,11 @@ def video_post_processing_s3(
 
         # generate timed snapshots for preview tiles
         ensure_directory(str(tmp_dir / 'timeline'))
-        window_seconds = generate_preview_images(tmp_dir, video_file)
+        # we are forcing png format here to avoid excess degradation on stitching step
+        window_seconds = generate_preview_images(tmp_dir, video_file, output_ext='png')
         if not window_seconds:
             return
-        tile_sheet_name = stitch_tile_sheet(tmp_dir, window_seconds)
+        tile_sheet_name = stitch_tile_sheet(tmp_dir, window_seconds, output_ext=ext)
         tile_sheet_path = str(tmp_dir / tile_sheet_name)
         s3_transfer.upload_file(
             tile_sheet_path,
@@ -138,11 +140,11 @@ def video_post_processing_s3(
 
         # generate random snapshots for machine learning
         ensure_directory(str(tmp_dir / 'random'))
-        generate_random_images(tmp_dir, video_file)
+        generate_random_images(tmp_dir, video_file, output_ext=ext)
 
         # upload snapshots to s3
         # todo: upload these as "reduced redundancy" to save $$
-        for file in tmp_dir.rglob('*.%s' % kwargs.get("output_ext", "png")):
+        for file in tmp_dir.rglob(f'*.{ext}'):
             output_key = f'{s3_snapshots_key_prefix.rstrip("/")}/' \
                          f'{file.relative_to(tmp_dir)}'
             s3_transfer.upload_file(str(file), output_key)
@@ -232,7 +234,8 @@ def stitch_tile_sheet(tmp_directory, window_seconds=5, **kwargs) -> Image:
     # sort frames by filenames
     timeline_dir = os.path.join(tmp_directory, 'timeline')
     timeline_filenames = sorted([int(x.split('.')[0]) for x in os.listdir(timeline_dir)])
-    files = [os.path.join(timeline_dir, f'{x}.{ext}') for x in timeline_filenames]
+    # the source is always .png (hard-coded)
+    files = [os.path.join(timeline_dir, f'{x}.png') for x in timeline_filenames]
 
     if not files:
         return
