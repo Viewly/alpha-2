@@ -19,6 +19,12 @@ from ..config import (
     S3_VIDEOS_REGION,
 )
 
+codec_defaults = dict(
+    optimize=True,  # .png level 9 compress_level, extra pass on .jpg
+    quality=90,  # JPEG only
+    progressive=True,  # progressive JPEG
+)
+
 
 def run_ffprobe_s3(key: str, **kwargs):
     s3_transfer = S3Transfer(**kwargs)
@@ -78,7 +84,7 @@ def img_resize_multi(
         file_name = '%s.%s' % (size['name'], kwargs.get("output_ext", "png"))
         available_sizes.append({**size, 'file': file_name})
         tmp_ = img_resize(img, size['size'], aspect_ratio=aspect_ratio)
-        tmp_.save(tmp_dir / file_name)
+        tmp_.save(tmp_dir / file_name, **codec_defaults)
 
     if min_size_name \
             and min_size_name not in lpluck('name', available_sizes):
@@ -183,7 +189,7 @@ def generate_random_images(
         if size:
             img = img_resize(img, size=size, aspect_ratio=aspect_ratio)
         file_name = f'{i}.{kwargs.get("output_ext", "png")}'
-        img.save(str(tmp_directory / 'random' / file_name))
+        img.save(str(tmp_directory / 'random' / file_name), **codec_defaults)
 
     return num_of_chunks
 
@@ -220,7 +226,7 @@ def generate_preview_images(
         if size:
             img = img_resize(img, size=size, aspect_ratio=aspect_ratio)
         file_name = f'{i}.{kwargs.get("output_ext", "png")}'
-        img.save(str(tmp_directory / 'timeline' / file_name))
+        img.save(str(tmp_directory / 'timeline' / file_name), **codec_defaults)
 
     return window_seconds
 
@@ -270,7 +276,7 @@ def stitch_tile_sheet(tmp_directory, window_seconds=5, **kwargs) -> Image:
 
     file_name = "tilesheet_%d_%d_%d_%d.%s" % (
         len(frames), window_seconds, tile_width, tile_height, ext)
-    spritesheet.save(os.path.join(tmp_directory, file_name))
+    spritesheet.save(os.path.join(tmp_directory, file_name), **codec_defaults)
 
     return file_name
 
