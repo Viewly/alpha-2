@@ -164,6 +164,39 @@ def page_not_found(_):
     return render_template('404.html'), 404
 
 
+auth_token_cache = dict()
+
+
+def get_auth_token_cached(current_user):
+    """ Cache users tokens. If token is less then 15 min away from expiry, expired or
+    not in cache, generate a fresh auth token.
+
+    # todo
+    Note: This method is a hack. Replace it with encrypted, auto-expiring redis cache
+    as soon as the redis cluster is deployed.
+
+    Faults:
+     - will only work if user is served from precisely this server && instance
+     - will cause memory leaks if not pruned every once in a while
+    """
+    global auth_token_cache
+
+    if not current_user or not current_user.is_authenticated:
+        return
+
+    def _has_expired(dto: dt.datetime) -> bool:
+        valid_age = dto + dt.timedelta(
+            seconds=app.config['SECURITY_TOKEN_MAX_AGE']) - dt.timedelta(900)
+        return valid_age > dt.datetime.now()
+
+    cache = auth_token_cache.get(current_user.id)
+    if not cache or (cache and _has_expired(cache[1])):
+        auth_token_cache[current_user.id] = \
+            (current_user.get_auth_token(), dt.datetime.now())
+
+    return auth_token_cache[current_user.id][0]
+
+
 # template helpers
 # ----------------
 @app.context_processor
@@ -201,6 +234,7 @@ def utility_processor():
         video_publisher_abi=lambda: json.dumps(app.config['VIDEO_PUBLISHER_ABI']),
         view_token_address=lambda: app.config['VIEW_TOKEN_ADDRESS'],
         video_publisher_address=lambda: app.config['VIDEO_PUBLISHER_ADDRESS'],
+        get_auth_token_cached=get_auth_token_cached,
     )
 
 
