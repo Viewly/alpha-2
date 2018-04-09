@@ -1,7 +1,7 @@
 {% if current_user.is_authenticated %}
     <script type="text/javascript">
         let userId = '{{ current_user.id }}';
-        const authToken = "{{ current_user.get_auth_token() }}";
+        const authToken = "{{ get_auth_token_cached(current_user) }}";
 
         function checkIfFollowing(channelId) {
             if (channelId === 'undefined') {
