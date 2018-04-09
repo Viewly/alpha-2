@@ -21,7 +21,7 @@ from ..config import (
 
 codec_defaults = dict(
     optimize=True,  # .png level 9 compress_level, extra pass on .jpg
-    quality=90,  # JPEG only
+    quality=95,  # JPEG only
     progressive=True,  # progressive JPEG
 )
 
@@ -132,17 +132,17 @@ def video_post_processing_s3(
         s3_transfer.download_file(key, video_file)
 
         # generate timed snapshots for preview tiles
-        ensure_directory(str(tmp_dir / 'timeline'))
-        # we are forcing png format here to avoid excess degradation on stitching step
-        window_seconds = generate_preview_images(tmp_dir, video_file, output_ext='png')
-        if not window_seconds:
+        tile_sheet_name = stitch_tile_sheet(
+            tmp_dir,
+            *generate_preview_images(video_file),
+            output_ext=ext)
+        if not tile_sheet_name:
             return
-        tile_sheet_name = stitch_tile_sheet(tmp_dir, window_seconds, output_ext=ext)
         tile_sheet_path = str(tmp_dir / tile_sheet_name)
         s3_transfer.upload_file(
             tile_sheet_path,
             f'{s3_timeline_key_prefix.rstrip("/")}/{tile_sheet_name}')
-        cleanup([tile_sheet_path, str(tmp_dir / 'timeline')])
+        cleanup(tile_sheet_path)
 
         # generate random snapshots for machine learning
         ensure_directory(str(tmp_dir / 'random'))
@@ -195,7 +195,6 @@ def generate_random_images(
 
 
 def generate_preview_images(
-        tmp_directory,
         video_file,
         size=(240, 135),
         aspect_ratio=(16, 9), **kwargs):
@@ -204,7 +203,7 @@ def generate_preview_images(
     clip = editor.VideoFileClip(video_file)
 
     if int(clip.duration) < 1:
-        return 0
+        return [], 0
 
     # hard-coded steps of snapshot smoothness
     if clip.duration < 15:
@@ -220,34 +219,28 @@ def generate_preview_images(
     else:
         window_seconds = 30
 
-    ensure_directory(os.path.join(tmp_directory, 'timeline'))
+    images = []
     for i in range(0, int(clip.duration), window_seconds):  # capture every N'th second
         img = Image.fromarray(clip.get_frame(i))
         if size:
             img = img_resize(img, size=size, aspect_ratio=aspect_ratio)
-        file_name = f'{i}.{kwargs.get("output_ext", "png")}'
-        img.save(str(tmp_directory / 'timeline' / file_name), **codec_defaults)
+        images.append(img)
 
-    return window_seconds
+    return images, window_seconds
 
 
-def stitch_tile_sheet(tmp_directory, window_seconds=5, **kwargs) -> Image:
+def stitch_tile_sheet(
+        tmp_directory,
+        images: list,
+        window_seconds=5, **kwargs) -> Image:
     """
     Take the output of generate_preview_images, and stitch all images into
     a grid based tile image.
     """
-    ext = kwargs.get("output_ext", "png")
-    # sort frames by filenames
-    timeline_dir = os.path.join(tmp_directory, 'timeline')
-    timeline_filenames = sorted([int(x.split('.')[0]) for x in os.listdir(timeline_dir)])
-    # the source is always .png (hard-coded)
-    files = [os.path.join(timeline_dir, f'{x}.png') for x in timeline_filenames]
-
-    if not files:
+    if not images:
         return
 
-    frames = list(map(image_from_file, files))
-
+    frames = [x.getdata() for x in images]
     max_frames_row = 10
     tile_width = frames[0].size[0]
     tile_height = frames[0].size[1]
@@ -260,7 +253,7 @@ def stitch_tile_sheet(tmp_directory, window_seconds=5, **kwargs) -> Image:
         spritesheet_width = tile_width * len(frames)
         spritesheet_height = tile_height
 
-    spritesheet = Image.new("RGBA", (int(spritesheet_width), int(spritesheet_height)))
+    spritesheet = Image.new("RGB", (int(spritesheet_width), int(spritesheet_height)))
 
     for current_frame in frames:
         top = tile_height * math.floor((frames.index(current_frame)) / max_frames_row)
@@ -274,8 +267,11 @@ def stitch_tile_sheet(tmp_directory, window_seconds=5, **kwargs) -> Image:
 
         spritesheet.paste(cut_frame, box)
 
+    ext = kwargs.get("output_ext", "png")
     file_name = "tilesheet_%d_%d_%d_%d.%s" % (
         len(frames), window_seconds, tile_width, tile_height, ext)
+    if ext in ['jpg', 'jpeg'] and spritesheet.mode in ('RGBA', 'LA'):
+        spritesheet = spritesheet.convert('RGB')  # jpeg does not support alpha channels
     spritesheet.save(os.path.join(tmp_directory, file_name), **codec_defaults)
 
     return file_name
