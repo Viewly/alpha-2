@@ -26,6 +26,13 @@ codec_defaults = dict(
 )
 
 
+def img_save(img, file_path, codec_settings=codec_defaults):
+    """ Safely store Image objects to files. """
+    if last(file_path.split('.')) in ['jpg', 'jpeg'] and img.mode in ('RGBA', 'LA'):
+        img = img.convert('RGB')  # jpeg does not support alpha channels
+    img.save(file_path, **codec_settings)
+
+
 def run_ffprobe_s3(key: str, **kwargs):
     s3_transfer = S3Transfer(**kwargs)
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -84,7 +91,7 @@ def img_resize_multi(
         file_name = '%s.%s' % (size['name'], kwargs.get("output_ext", "png"))
         available_sizes.append({**size, 'file': file_name})
         tmp_ = img_resize(img, size['size'], aspect_ratio=aspect_ratio)
-        tmp_.save(tmp_dir / file_name, **codec_defaults)
+        img_save(tmp_, str(tmp_dir / file_name))
 
     if min_size_name \
             and min_size_name not in lpluck('name', available_sizes):
@@ -189,7 +196,7 @@ def generate_random_images(
         if size:
             img = img_resize(img, size=size, aspect_ratio=aspect_ratio)
         file_name = f'{i}.{kwargs.get("output_ext", "png")}'
-        img.save(str(tmp_directory / 'random' / file_name), **codec_defaults)
+        img_save(img, str(tmp_directory / 'random' / file_name))
 
     return num_of_chunks
 
@@ -270,9 +277,7 @@ def stitch_tile_sheet(
     ext = kwargs.get("output_ext", "png")
     file_name = "tilesheet_%d_%d_%d_%d.%s" % (
         len(frames), window_seconds, tile_width, tile_height, ext)
-    if ext in ['jpg', 'jpeg'] and spritesheet.mode in ('RGBA', 'LA'):
-        spritesheet = spritesheet.convert('RGB')  # jpeg does not support alpha channels
-    spritesheet.save(os.path.join(tmp_directory, file_name), **codec_defaults)
+    img_save(spritesheet, os.path.join(tmp_directory, file_name))
 
     return file_name
 
