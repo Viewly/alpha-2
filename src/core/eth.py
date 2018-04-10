@@ -1,7 +1,6 @@
 import binascii
 
 import web3
-from eth_keys import KeyAPI
 from eth_utils import (
     is_address,
     is_same_address,
@@ -9,6 +8,7 @@ from eth_utils import (
     remove_0x_prefix,
     big_endian_to_int,
     to_hex,
+    to_normalized_address,
 )
 
 from ..config import (
@@ -39,6 +39,7 @@ def is_video_published(video_id: str):
 
 
 def recover_address(data: str, signature: str) -> str:
+    from eth_keys import KeyAPI
     signature = binascii.unhexlify(remove_0x_prefix(signature))
     data = keccak(text=data)
     data = f"\\x19Ethereum Signed Message:\n{len(data)}{data}"
@@ -63,3 +64,7 @@ def is_valid_signature(data, signature, address) -> bool:
 
 def is_valid_address(address: str) -> bool:
     return is_address(address)
+
+
+def normalize_address(address: str) -> str:
+    return to_normalized_address(address)

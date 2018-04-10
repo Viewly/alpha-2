@@ -182,8 +182,16 @@ class Vote(db.Model):
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
     eth_address = db.Column(db.String(42), nullable=False)
 
+    # vote properties
+    weight = db.Column(db.Integer)
+
+    # signature
     ecc_message = db.Column(db.String(255), nullable=False)
     ecc_signature = db.Column(db.String(132), nullable=False)
+
+    # derived properties (from blockchain)
+    token_amount = db.Column(db.Integer)
+    delegated_amount = db.Column(db.Integer)
 
     created_at = db.Column(db.DateTime(timezone=True), nullable=False)
 
