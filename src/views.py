@@ -185,14 +185,14 @@ def get_auth_token_cached(current_user):
         return
 
     def _has_expired(dto: dt.datetime) -> bool:
-        valid_age = dto + dt.timedelta(
-            seconds=app.config['SECURITY_TOKEN_MAX_AGE']) - dt.timedelta(900)
-        return valid_age > dt.datetime.now()
+        return dto < dt.datetime.now()
 
     cache = auth_token_cache.get(current_user.id)
-    if not cache or (cache and _has_expired(cache[1])):
+    if (cache and _has_expired(cache[1])) or not cache:
+        expiry_time = dt.datetime.now() + dt.timedelta(
+            seconds=(app.config['SECURITY_TOKEN_MAX_AGE'] - 900))
         auth_token_cache[current_user.id] = \
-            (current_user.get_auth_token(), dt.datetime.now())
+            (current_user.get_auth_token(), expiry_time)
 
     return auth_token_cache[current_user.id][0]
 
