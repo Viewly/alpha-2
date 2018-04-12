@@ -61,6 +61,10 @@ class VoteApi(Resource):
             assert vote.video_id == message[0].get('value')
             assert vote.weight == message[1].get('value')
             assert 0 > vote.weight <= 100, f'Invalid Voting Weight of {vote.weight}'
+            timestamp_delta = \
+                (dt.datetime.utcnow() -
+                 dt.datetime.fromtimestamp(message[2].get('value') // 1000)).seconds
+            assert 0 >= timestamp_delta < 3600, 'Vote is older than 1 hour'
 
             # assert is_valid_signature(
             #     vote.ecc_message, vote.ecc_signature, vote.eth_address)

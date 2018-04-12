@@ -236,7 +236,8 @@
             let message = [
                 [
                     {type: 'string', name: 'Video ID', value: videoId},
-                    {type: 'uint8', name: 'Vote Weight (%)', value: weight}
+                    {type: 'uint8', name: 'Vote Weight (%)', value: weight},
+                    {type: 'uint32', name: 'Timestamp', value: Date.now()}
                 ],
                 account,
             ];
