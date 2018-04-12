@@ -11,6 +11,7 @@ from .. import db
 from ..core.eth import (
     is_valid_address,
     normalize_address,
+    is_typed_signature_valid,
 )
 from ..models import Vote
 
@@ -66,8 +67,8 @@ class VoteApi(Resource):
                  dt.datetime.fromtimestamp(message[2].get('value') // 1000)).seconds
             assert 0 >= timestamp_delta < 3600, 'Vote is older than 1 hour'
 
-            # assert is_valid_signature(
-            #     vote.ecc_message, vote.ecc_signature, vote.eth_address)
+            assert is_typed_signature_valid(
+                message, vote.ecc_signature, vote.eth_address)
         except Exception as e:
             return dict(message=str(e)), 500
 

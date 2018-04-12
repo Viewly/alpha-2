@@ -20,12 +20,12 @@ delegator.py
 celery[redis,auth]
 Pillow
 psycopg2-binary
-eth-utils
-eth-keys
-web3
 delegator.py
 raven
 lxml
 beautifulsoup4
 moviepy
 pytest
+eth-utils
+eth-account
+web3
