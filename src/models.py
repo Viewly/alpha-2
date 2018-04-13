@@ -183,7 +183,7 @@ class Vote(db.Model):
     eth_address = db.Column(db.String(42), nullable=False)
 
     # vote properties
-    weight = db.Column(db.Integer)
+    weight = db.Column(db.Integer, nullable=False)
 
     # signature
     ecc_message = db.Column(db.String(255), nullable=False)
