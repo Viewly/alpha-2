@@ -18,6 +18,8 @@ from ..config import (
     VIDEO_PUBLISHER_ABI,
     ETH_CHAIN,
     INFURA_KEY,
+    VIEW_TOKEN_ADDRESS,
+    VIEW_TOKEN_ABI,
 )
 
 
@@ -25,14 +27,32 @@ def get_web3(http_url: str) -> web3.Web3:
     return web3.Web3(web3.HTTPProvider(http_url))
 
 
-def video_publisher_contract():
+def get_infura_web3() -> web3.Web3:
     infura_url = f'https://{ETH_CHAIN}.infura.io/{INFURA_KEY}'
-    w3 = get_web3(infura_url)
+    return get_web3(infura_url)
+
+
+def video_publisher_contract():
+    w3 = get_infura_web3()
 
     return w3.eth.contract(
         address=VIDEO_PUBLISHER_ADDRESS,
         abi=VIDEO_PUBLISHER_ABI,
     )
+
+
+def view_token_contract():
+    w3 = get_infura_web3()
+
+    return w3.eth.contract(
+        address=VIEW_TOKEN_ADDRESS,
+        abi=VIEW_TOKEN_ABI,
+    )
+
+
+def view_token_balance(address: str, block_num: int = 'latest'):
+    instance = view_token_contract()
+    return instance.functions.balanceOf(address).call(block_identifier=block_num)
 
 
 def is_video_published(video_id: str):

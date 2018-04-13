@@ -1,4 +1,5 @@
 from src.core.eth import *
+from eth_utils import to_wei
 
 
 def test_is_video_published():
@@ -23,3 +24,10 @@ def test_is_signature_valid():
         signature=signature,
         address=address,
     )
+
+
+def test_historic_view_token_balance():
+    address = '0xaAF3FFEE9d4C976aA8d0CB1bb84c3C90ee6E9118'
+    assert view_token_balance(address, block_num=5876634) == 0
+    assert view_token_balance(address, block_num=5876635) == to_wei(1000, 'ether')
+    assert view_token_balance(address, block_num=6855595) == to_wei(740, 'ether')
