@@ -217,12 +217,6 @@
             });
         }
 
-        function signAddress(account) {
-            let msg = 'Viewly';
-            w3.eth.sign(account, w3.sha3(msg), (err, signature) => {
-            })
-        }
-
         function localStorageKeyFor(voteOrVideoId) {
             if (typeof(voteOrVideoId) === 'object') {
                 if (voteOrVideoId.video_id !== 'undefined')
@@ -233,17 +227,17 @@
 
         // METAMASK only!
         function signVote(account, videoId, weight = 100) {
-            let message = [
+            let params = [
                 [
                     {type: 'string', name: 'Video ID', value: videoId},
                     {type: 'uint8', name: 'Vote Weight (%)', value: weight},
-                    {type: 'uint32', name: 'Timestamp', value: Date.now()}
+                    {type: 'uint32', name: 'Timestamp', value: Math.floor(Date.now()/1000)}
                 ],
                 account,
             ];
             w3.currentProvider.sendAsync({
                 method: 'eth_signTypedData',
-                params: message,
+                params: params,
                 from: account,
             }, function (err, result) {
                 if (err) {
@@ -263,7 +257,7 @@
                         video_id: videoId,
                         weight: weight,
                         eth_address: account,
-                        ecc_message: JSON.stringify(message),
+                        ecc_message: JSON.stringify(params),
                         ecc_signature: signature
                     }),
                     headers: new Headers({'Content-Type': 'application/json'})

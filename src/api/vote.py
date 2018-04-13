@@ -12,6 +12,7 @@ from ..core.eth import (
     is_valid_address,
     normalize_address,
     is_typed_signature_valid,
+    is_same_address,
 )
 from ..models import Vote
 
@@ -43,33 +44,31 @@ class VoteApi(Resource):
 
     def put(self):
         args = parser.parse_args()
-        vote = Vote(
-            video_id=args['video_id'],
-            weight=args['weight'],
-            eth_address=args['eth_address'],
-            ecc_message=args['ecc_message'],
-            ecc_signature=args['ecc_signature'],
-            created_at=dt.datetime.utcnow(),
-        )
 
-        # validate ETH address, signed message and the signature
+        # validate ETH address, message integrity and the signature
         try:
-            assert is_valid_address(vote.eth_address)
-            vote.eth_address = normalize_address(vote.eth_address)
-
-            message, addr = json.loads(vote.ecc_message)
-            assert vote.eth_address == normalize_address(addr)
-            assert vote.video_id == message[0].get('value')
-            assert vote.weight == message[1].get('value')
-            assert 0 > vote.weight <= 100, f'Invalid Voting Weight of {vote.weight}'
+            message, address = json.loads(args['ecc_message'])
+            assert is_valid_address(address)
+            assert is_same_address(address, args['eth_address'])
+            vote = Vote(
+                video_id=args['video_id'],
+                weight=args['weight'],
+                eth_address=normalize_address(address),
+                ecc_message=json.dumps(message),
+                ecc_signature=args['ecc_signature'],
+                created_at=dt.datetime.utcnow(),
+            )
+            assert vote.video_id == message[0]['value']
+            assert vote.weight == message[1]['value']
+            assert 0 < vote.weight <= 100, f'Invalid Voting Weight of {vote.weight}'
             timestamp_delta = \
                 (dt.datetime.utcnow() -
-                 dt.datetime.fromtimestamp(message[2].get('value') // 1000)).seconds
-            assert 0 >= timestamp_delta < 3600, 'Vote is older than 1 hour'
-
+                 dt.datetime.utcfromtimestamp(message[2]['value'])).seconds
+            assert 0 <= timestamp_delta < 3600, 'Vote is older than 1 hour'
             assert is_typed_signature_valid(
                 message, vote.ecc_signature, vote.eth_address)
         except Exception as e:
+            # todo, log exception to sentry
             return dict(message=str(e)), 500
 
         db.session.add(vote)
