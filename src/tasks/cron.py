@@ -1,6 +1,9 @@
 import datetime as dt
+import random
 
 from celery.schedules import crontab
+from eth_utils import from_wei
+from funcy import partial, rpartial, compose
 
 from . import (
     new_celery,
@@ -9,9 +12,15 @@ from . import (
 from .shared import generate_manifest_file
 from .transcoder import transcoder_post_processing
 from ..core.et import get_job_status
-from ..core.eth import is_video_published
+from ..core.eth import (
+    is_video_published,
+    view_token_balance,
+    get_infura_web3,
+    find_block_from_timestamp,
+)
 from ..models import (
     Video,
+    Vote,
     TranscoderStatus,
     TranscoderJob,
 )
@@ -78,5 +87,45 @@ def refresh_unpublished_videos():
         if is_video_published(video.id):
             video.published_at = dt.datetime.utcnow()
             session.add(video)
+
+    session.commit()
+
+
+@cron.task(ignore_result=True)
+def evaluate_votes():
+    """
+    Evaluate token balances of the voter for the past 7 days.
+
+    The purpose of this method is to prevent abuse caused by
+    people who are voting and moving their tokens in an attempt to
+    be able to vote again.
+
+    The evaluation will pick random blocks in the average of 1
+    block per hour, and acknowledge the minimum balance during
+    this period as the voting power.
+    """
+    session = db_session()
+    pending_votes = session.query(Vote).filter(Vote.token_amount == None)
+
+    w3 = get_infura_web3()
+
+    for vote in pending_votes:
+        review_period_end = int(vote.created_at.timestamp())
+        review_period_start = int((vote.created_at - dt.timedelta(days=7)).timestamp())
+
+        find_block = partial(find_block_from_timestamp, w3)
+        review_block_range = [find_block(x).number for x in (review_period_start, review_period_end)]
+
+        # get 100 random VIEW balances on the voter's address for the last 7 days
+        balances = map(
+            lambda block_num: view_token_balance(vote.eth_address, block_num=block_num),
+            (random.randrange(*review_block_range) for _ in range(7 * 24))
+        )
+
+        to_eth = compose(int, rpartial(from_wei, 'ether'))
+        min_balance = min(to_eth(x) for x in balances)
+
+        vote.token_amount = min_balance
+        session.add(vote)
 
     session.commit()

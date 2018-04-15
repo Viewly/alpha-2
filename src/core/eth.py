@@ -4,6 +4,7 @@ from eth_utils import (
     decode_hex,
     keccak,
     is_0x_prefixed,
+    to_checksum_address,
 )
 from eth_utils import (
     is_address,
@@ -53,6 +54,7 @@ def view_token():
 
 def view_token_balance(address: str, block_num: int = 'latest'):
     instance = view_token()
+    address = to_checksum_address(address)
     return instance.functions.balanceOf(address).call(block_identifier=block_num)
 
 
@@ -163,9 +165,9 @@ def is_typed_signature_valid(message, signature, address) -> bool:
 def find_block_from_timestamp(
         w3,
         timestamp: int,
-        low: int=0,
-        high: int=0,
-        search_range: int = 50_000,
+        low: int = 0,
+        high: int = 0,
+        search_range: int = 150_000,
         accuracy_range_seconds: int = 180):
     """
     A basic algorithm to find a block number from a timestamp.
@@ -177,7 +179,7 @@ def find_block_from_timestamp(
              If left empty, head block - search_range is used (approx 10 days).
         high: Higher search boundary. If left empty, blockchain head is used.
         search_range: How many blocks to look into the past if `low` is not provided.
-                      Defaults to 10 days on mainnet.
+                      Defaults to approx 1 month on mainnet.
         accuracy_range_seconds: How many seconds of precision does the resulting block need to fall into.
                         Defaults to 3 minutes on mainnet.
 
@@ -193,7 +195,7 @@ def find_block_from_timestamp(
     median_block = w3.eth.getBlock(median)
     # print(median_block.number, median_block.timestamp)
 
-    if abs(median_block.timestamp - timestamp) < accuracy_range_seconds:
+    if abs(median_block.timestamp - timestamp) <= accuracy_range_seconds:
         return median_block
 
     # block not found in range provided
