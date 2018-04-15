@@ -32,7 +32,7 @@ def get_infura_web3() -> web3.Web3:
     return get_web3(infura_url)
 
 
-def video_publisher_contract():
+def video_publisher():
     w3 = get_infura_web3()
 
     return w3.eth.contract(
@@ -41,7 +41,7 @@ def video_publisher_contract():
     )
 
 
-def view_token_contract():
+def view_token():
     w3 = get_infura_web3()
 
     return w3.eth.contract(
@@ -51,12 +51,12 @@ def view_token_contract():
 
 
 def view_token_balance(address: str, block_num: int = 'latest'):
-    instance = view_token_contract()
+    instance = view_token()
     return instance.functions.balanceOf(address).call(block_identifier=block_num)
 
 
 def is_video_published(video_id: str):
-    instance = video_publisher_contract()
+    instance = video_publisher()
     return instance.functions.videos(to_hex(video_id)).call()
 
 
