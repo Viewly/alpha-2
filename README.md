@@ -330,3 +330,10 @@ Create `viewly-alpha-manager` API account with the above policy.
 | ----------------------- | ------- |
 | AWS_MANAGER_PUBLIC_KEY  |         |
 | AWS_MANAGER_PRIVATE_KEY |         |
+
+
+## Testing
+Make sure the .env is loaded. Tests require 'Kovan' chain.
+```
+PYTHONPATH=$(pwd) py.test 
+```
