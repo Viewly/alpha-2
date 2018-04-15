@@ -4,6 +4,7 @@ from eth_utils import (
     decode_hex,
     keccak,
     is_0x_prefixed,
+    to_checksum_address,
 )
 from eth_utils import (
     is_address,
@@ -28,11 +29,12 @@ def get_web3(http_url: str) -> web3.Web3:
 
 
 def get_infura_web3() -> web3.Web3:
+    assert ETH_CHAIN, 'Ethereum chain not provided'
     infura_url = f'https://{ETH_CHAIN}.infura.io/{INFURA_KEY}'
     return get_web3(infura_url)
 
 
-def video_publisher_contract():
+def video_publisher():
     w3 = get_infura_web3()
 
     return w3.eth.contract(
@@ -41,7 +43,7 @@ def video_publisher_contract():
     )
 
 
-def view_token_contract():
+def view_token():
     w3 = get_infura_web3()
 
     return w3.eth.contract(
@@ -51,12 +53,13 @@ def view_token_contract():
 
 
 def view_token_balance(address: str, block_num: int = 'latest'):
-    instance = view_token_contract()
+    instance = view_token()
+    address = to_checksum_address(address)
     return instance.functions.balanceOf(address).call(block_identifier=block_num)
 
 
 def is_video_published(video_id: str):
-    instance = video_publisher_contract()
+    instance = video_publisher()
     return instance.functions.videos(to_hex(video_id)).call()
 
 
@@ -157,3 +160,59 @@ def is_typed_signature_valid(message, signature, address) -> bool:
     msg_hash = eth_typed_data_message(infer_int_lengths(message))
     recovered_address = Account().recoverHash(msg_hash, signature=signature)
     return is_same_address(address, recovered_address)
+
+
+def find_block_from_timestamp(
+        w3,
+        timestamp: int,
+        low: int = 0,
+        high: int = 0,
+        search_range: int = 150_000,
+        accuracy_range_seconds: int = 180):
+    """
+    A basic algorithm to find a block number from a timestamp.
+
+    Args:
+        w3: web3 instance
+        timestamp: Target block timestamp
+        low: A lower boundary to include in search.
+             If left empty, head block - search_range is used (approx 10 days).
+        high: Higher search boundary. If left empty, blockchain head is used.
+        search_range: How many blocks to look into the past if `low` is not provided.
+                      Defaults to approx 1 month on mainnet.
+        accuracy_range_seconds: How many seconds of precision does the resulting block need to fall into.
+                        Defaults to 3 minutes on mainnet.
+
+    Returns:
+        A block closest to the provided timestamp, or None if not found.
+    """
+    if not high:
+        high = w3.eth.blockNumber
+    if not low:
+        low = high - search_range
+
+    median = (high + low) // 2
+    median_block = w3.eth.getBlock(median)
+    # print(median_block.number, median_block.timestamp)
+
+    if abs(median_block.timestamp - timestamp) <= accuracy_range_seconds:
+        return median_block
+
+    # block not found in range provided
+    if abs(high - low) <= 1:
+        return
+
+    # binary search
+    if timestamp > median_block.timestamp:
+        low = median_block.number
+    else:
+        high = median_block.number
+
+    return find_block_from_timestamp(
+        w3,
+        timestamp,
+        low=low,
+        high=high,
+        search_range=search_range,
+        accuracy_range_seconds=accuracy_range_seconds
+    )

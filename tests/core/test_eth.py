@@ -2,10 +2,6 @@ from src.core.eth import *
 from eth_utils import to_wei
 
 
-def test_is_video_published():
-    assert is_video_published('20ltwfLhmxDa')
-
-
 def test_address_utils():
     assert is_valid_address('0xF03f8D65BaFA598611C3495124093c56e8F638f0')
     assert normalize_address('0xF03f8D65BaFA598611C3495124093c56e8F638f0') \
@@ -26,8 +22,41 @@ def test_is_signature_valid():
     )
 
 
+def test_is_video_published():
+    assert ETH_CHAIN == 'kovan', 'This test was designed for Kovan chain.'
+
+    assert not is_video_published('gibberish')
+    assert is_video_published('20ltwfLhmxDa')
+
+
 def test_historic_view_token_balance():
+    assert ETH_CHAIN == 'kovan', 'This test was designed for Kovan chain.'
+
     address = '0xaAF3FFEE9d4C976aA8d0CB1bb84c3C90ee6E9118'
     assert view_token_balance(address, block_num=5876634) == 0
     assert view_token_balance(address, block_num=5876635) == to_wei(1000, 'ether')
     assert view_token_balance(address, block_num=6855595) == to_wei(740, 'ether')
+
+
+def test_find_block_from_timestamp():
+    assert ETH_CHAIN == 'kovan', 'This test was designed for Kovan chain.'
+
+    w3 = get_infura_web3()
+
+    # block out of search range
+    assert not find_block_from_timestamp(w3, 1_000_000_000)
+
+    # block in search range
+    # fix the high so that the test works in the future as well
+    match = find_block_from_timestamp(w3, 1_523_500_232, high=6877888)
+    assert match and abs(match.number - 6833449) < 30,\
+        'Block should have been found'
+
+    # very accurate match
+    match = find_block_from_timestamp(
+        w3,
+        timestamp=1_523_500_232,
+        high=6877888,
+        accuracy_range_seconds=1)
+    assert match and match.number == 6833449,\
+        'Accurate block should have been found'
