@@ -3,7 +3,7 @@ import random
 
 from celery.schedules import crontab
 from eth_utils import from_wei
-from funcy import partial, rpartial, compose
+from funcy import partial, rpartial, compose, chunks
 
 from . import (
     new_celery,
@@ -116,10 +116,12 @@ def evaluate_votes():
         find_block = partial(find_block_from_timestamp, w3)
         review_block_range = [find_block(x).number for x in (review_period_start, review_period_end)]
 
-        # get 100 random VIEW balances on the voter's address for the last 7 days
+        # get random VIEW balances on the voter's address for the last 7 days
+        # split search range into chunks that contain ~ 1 hour worth of blocks
+        chunk_size = (review_block_range[1] - review_block_range[0]) // (7 * 24)
         balances = map(
             lambda block_num: view_token_balance(vote.eth_address, block_num=block_num),
-            (random.randrange(*review_block_range) for _ in range(7 * 24))
+            (random.randrange(*chunk_range) for chunk_range in chunks(chunk_size, review_block_range))
         )
 
         to_eth = compose(int, rpartial(from_wei, 'ether'))
