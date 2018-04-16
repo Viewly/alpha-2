@@ -128,6 +128,7 @@ def evaluate_votes():
         min_balance = min(to_eth(x) for x in balances)
 
         vote.token_amount = min_balance
+        vote.delegated_amount = 0  # todo: implement delegation contract
         session.add(vote)
 
     session.commit()
