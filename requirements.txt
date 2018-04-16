@@ -26,6 +26,6 @@ lxml
 beautifulsoup4
 moviepy
 pytest
-eth-utils
-eth-account
-web3
+web3==4.1.0
+eth-utils==1.0.2
+eth-account==0.2.0a0
