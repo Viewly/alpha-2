@@ -1,6 +1,7 @@
 import datetime as dt
 import json
 from typing import Union
+import pytz
 
 import maya
 from flask import (
@@ -218,6 +219,13 @@ def utility_processor():
         except:
             return ''
 
+    def can_vote(publish_dto) -> bool:
+        if not publish_dto:
+            return False
+        publish_dto = publish_dto.replace(tzinfo=None)
+        deadline = publish_dto + dt.timedelta(days=app.config['DISTRIBUTION_GAME_DAYS'])
+        return deadline > dt.datetime.utcnow()
+
     return dict(
         block_num=block_num,
         get_transcoding_status=get_transcoding_status,
@@ -235,6 +243,7 @@ def utility_processor():
         view_token_address=lambda: app.config['VIEW_TOKEN_ADDRESS'],
         video_publisher_address=lambda: app.config['VIDEO_PUBLISHER_ADDRESS'],
         get_auth_token_cached=get_auth_token_cached,
+        can_vote=can_vote,
     )
 
 
