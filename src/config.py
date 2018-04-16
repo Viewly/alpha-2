@@ -97,6 +97,9 @@ VIDEO_PUBLISHER_ADDRESS = environ['VIDEO_PUBLISHER_ADDRESS']
 VIEW_TOKEN_ABI = load_json_file(f'{config_folder_prefix()}/ViewToken.abi.json')
 VIDEO_PUBLISHER_ABI = load_json_file(f'{config_folder_prefix()}/VideoPublisher.abi.json')
 
+# Ethereum contract configuration / Governance
+DISTRIBUTION_GAME_DAYS = getenv('DISTRIBUTION_GAME_DAYS', 7)
+
 # Elastic Transcoder
 elastic_transcoder = load_json_config('elastic_transcoder')
 
