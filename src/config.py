@@ -1,5 +1,5 @@
 import json
-from os import getenv, getcwd, path
+from os import getenv, environ, getcwd, path
 
 from funcy import rpartial
 from toolz import pipe
@@ -29,23 +29,23 @@ SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')
 VIRTUAL_HOST = getenv('VIRTUAL_HOST', 'http://localhost:5000')
 
 # amazon manager credentials
-AWS_MANAGER_PUBLIC_KEY = getenv('AWS_MANAGER_PUBLIC_KEY')
-AWS_MANAGER_PRIVATE_KEY = getenv('AWS_MANAGER_PRIVATE_KEY')
+AWS_MANAGER_PUBLIC_KEY = environ['AWS_MANAGER_PUBLIC_KEY']
+AWS_MANAGER_PRIVATE_KEY = environ['AWS_MANAGER_PRIVATE_KEY']
 
 # amazon s3 upload signatures
-S3_UPLOADER_PUBLIC_KEY = getenv('S3_UPLOADER_PUBLIC_KEY')
-S3_UPLOADER_PRIVATE_KEY = getenv('S3_UPLOADER_PRIVATE_KEY')
+S3_UPLOADER_PUBLIC_KEY = environ['S3_UPLOADER_PUBLIC_KEY']
+S3_UPLOADER_PRIVATE_KEY = environ['S3_UPLOADER_PRIVATE_KEY']
 
 # amazon s3 upload bucket
-S3_UPLOADS_BUCKET = getenv('S3_UPLOADS_BUCKET')
-S3_UPLOADS_REGION = getenv('S3_UPLOADS_REGION')
+S3_UPLOADS_BUCKET = environ['S3_UPLOADS_BUCKET']
+S3_UPLOADS_REGION = environ['S3_UPLOADS_REGION']
 
 # amazon s3 processed assets (videos, thumbnails, etc.) location
-S3_VIDEOS_BUCKET = getenv('S3_VIDEOS_BUCKET')
-S3_VIDEOS_REGION = getenv('S3_VIDEOS_REGION')
+S3_VIDEOS_BUCKET = environ['S3_VIDEOS_BUCKET']
+S3_VIDEOS_REGION = environ['S3_VIDEOS_REGION']
 
 # amazon Cloud Formation distribution ID
-CDN_DISTRIBUTION_ID = getenv('CDN_DISTRIBUTION_ID')
+CDN_DISTRIBUTION_ID = environ['CDN_DISTRIBUTION_ID']
 
 # videos and thumbnails CDN
 CDN_URL = getenv('CDN_URL', 'https://cdn.view.ly')
@@ -87,12 +87,12 @@ DISQUS_PUBLIC_KEY = getenv('DISQUS_PUBLIC_KEY')
 DISQUS_SECRET_KEY = getenv('DISQUS_SECRET_KEY')
 
 # Ethereum chain
-ETH_CHAIN = getenv('ETH_CHAIN')
-INFURA_KEY = getenv('INFURA_KEY')
+ETH_CHAIN = environ['ETH_CHAIN']
+INFURA_KEY = environ['INFURA_KEY']
 
 # Ethereum Contracts
-VIEW_TOKEN_ADDRESS = getenv('VIEW_TOKEN_ADDRESS')
-VIDEO_PUBLISHER_ADDRESS = getenv('VIDEO_PUBLISHER_ADDRESS')
+VIEW_TOKEN_ADDRESS = environ['VIEW_TOKEN_ADDRESS']
+VIDEO_PUBLISHER_ADDRESS = environ['VIDEO_PUBLISHER_ADDRESS']
 
 VIEW_TOKEN_ABI = load_json_file(f'{config_folder_prefix()}/ViewToken.abi.json')
 VIDEO_PUBLISHER_ABI = load_json_file(f'{config_folder_prefix()}/VideoPublisher.abi.json')
