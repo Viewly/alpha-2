@@ -17,6 +17,8 @@ $auth-sidebar-width-large:              500px;
      * Auth logo
      */
     .c-auth__logo {
+        animation: scale .35s alternate infinite ease-in;
+        animation-play-state: paused;
         display: block;
         height: $auth-logo-height;
         width: auto;
@@ -25,12 +27,24 @@ $auth-sidebar-width-large:              500px;
         left: $spacing-unit;
         z-index: 200;
 
+
         &:hover {
+            animation-play-state: running;
             text-decoration: none;
         }
 
         @include mq($auth-tweakpoint) {
             position: fixed;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(.98);
+            }
+
+            100% {
+                transform: scale(1.03);
+            }
         }
     }
 
