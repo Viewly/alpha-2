@@ -11,6 +11,10 @@ body {
     &.c-page-view {
         padding-top: $header-height;
     }
+
+    &.c-page-auth {
+        padding-top: 0;
+    }
 }
 
 .button {

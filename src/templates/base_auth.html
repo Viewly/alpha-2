@@ -9,47 +9,40 @@
     <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="{{ url_for('static', filename='css/compiled/base.scss.css') }}" rel="stylesheet" type="text/css">
+
 </head>
-<body>
+<body class="c-page-auth">
 
-<div class="ui container">
-    <br>
-    <br>
-    <br>
-    <div class="ui text container text-center">
-        <a href="/">
-            <img src="{{ url_for('static', filename='img/logo-lg2.png') }}" class="logo" alt="">
+    <div class="c-auth">
+        <a class="c-auth__logo" href="/">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}" class="logo" alt="">
         </a>
-        <br>
-{#        [<a href="/">Homepage</a>]#}
-    </div>
-    <br>
-    <br>
+        <div class="c-auth__main">
+            <div class="c-auth__main__content">
+                {% include "partials/flash_messages.html" %}
 
-    <div class="ui raised very padded text container segment">
-        {% include "partials/flash_messages.html" %}
+                {% block content %}
+                {% endblock %}
 
-        {% block content %}
-        {% endblock %}
-        <br>
-
-        <div class="ui horizontal divider">
-            Looking for something else?
+                <div class="ui horizontal divider">
+                    Looking for something else?
+                </div>
+                {% include "security/_menu.html" %}
+            </div>
         </div>
-        {% include "security/_menu.html" %}
-
+        <div class="c-auth__sidebar">
+            <div class="c-auth__sidebar__content">
+                <h1 class="c-auth__sidebar__title">Video Platform. Decentralized.</h1>
+                <p>Enjoy videos without ads. Engage with your favourite creators. Support awesome work.</p>
+            </div>
+        </div>
     </div>
 
-    <br>
-    <br>
-    <br>
 
-
-</div>
-
-
-<script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
 
 </body>
 </html>

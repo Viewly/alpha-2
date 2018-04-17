@@ -1,0 +1,98 @@
+/*------------------------------------*\
+    #AUTH
+\*------------------------------------*/
+
+$auth-tweakpoint:                       940px;
+$auth-tweakpoint-large:                 1200px;
+
+$auth-sidebar-width:                    420px;
+$auth-sidebar-width-large:              500px;
+
+
+.c-auth {}
+
+    /**
+     * Auth logo
+     */
+    .c-auth__logo {
+        display: block;
+        height: auto;
+        width: 42px;
+        position: fixed;
+        top: $spacing-unit;
+        left: $spacing-unit;
+        z-index: 200;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    /**
+     * Auth main block
+     */
+    .c-auth__main {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+
+        @include mq($auth-tweakpoint) {
+            margin-left: $auth-sidebar-width;
+        }
+
+        @include mq($auth-tweakpoint-large) {
+            margin-left: $auth-sidebar-width-large;
+        }
+    }
+
+        .c-auth__main__content {
+            max-width: 600px;
+            padding-left: $spacing-unit-large;
+            padding-right: $spacing-unit-large;
+            padding-top: 100px;
+            padding-bottom: $spacing-unit-large;
+            width: 100%;
+        }
+
+    /**
+     * Auth sidebar
+     */
+    .c-auth__sidebar {
+        align-items: center;
+        background-color: rgba(16,24,43, .81);
+        background-image: url('/static/img/auth-sidebar.jpg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #fff;
+        display: none;
+        font-size: 16px;
+        height: 100vh;
+        justify-content: center;
+        text-align: center;
+        width: $auth-sidebar-width;
+        position: fixed;
+        top: 0;
+        z-index: 100;
+
+        @include mq($auth-tweakpoint) {
+            display: flex;
+        }
+
+        @include mq($auth-tweakpoint-large) {
+            width: $auth-sidebar-width-large;
+        }
+    }
+
+        .c-auth__sidebar__content {
+            padding-left: $spacing-unit-large;
+            padding-right: $spacing-unit-large;
+            padding-top: $spacing-unit-huge;
+            padding-bottom: $spacing-unit-huge;
+        }
+
+        .c-auth__sidebar__title {
+            font-size: 44px;
+        }
+
