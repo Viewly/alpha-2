@@ -1,0 +1,18 @@
+/*------------------------------------*\
+    #ERRORS LIST
+\*------------------------------------*/
+
+/**
+ * 1. Reset semantic ui styles.
+ */
+.c-errors-list {
+    color: #9f3a38;
+    list-style-position: inside;
+    margin-bottom: $spacing-unit;
+    margin-top: $spacing-unit-tiny;
+    padding-left: 0; /* [1] */
+
+    li:only-child {
+        list-style-type: none;
+    }
+}
