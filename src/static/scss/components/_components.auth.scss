@@ -70,7 +70,7 @@ $auth-sidebar-width-large:              500px;
     }
 
         .c-auth__main__content {
-            max-width: 560px;
+            max-width: 460px;
             padding-left: $spacing-unit;
             padding-right: $spacing-unit;
             padding-top: 100px;
@@ -85,7 +85,11 @@ $auth-sidebar-width-large:              500px;
 
         .c-auth__main__header {
             font-size: 15px;
-            margin-bottom: $spacing-unit-huge;
+            margin-bottom: $spacing-unit-large;
+
+            @include mq($auth-tweakpoint) {
+                margin-bottom: $spacing-unit-huge;
+            }
         }
 
         .c-auth__main__title {
