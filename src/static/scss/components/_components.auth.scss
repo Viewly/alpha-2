@@ -7,7 +7,7 @@ $auth-tweakpoint-large:                 1200px;
 
 $auth-logo-height:                      34px;
 
-$auth-sidebar-width:                    420px;
+$auth-sidebar-width:                    400px;
 $auth-sidebar-width-large:              500px;
 
 
@@ -139,6 +139,10 @@ $auth-sidebar-width-large:              500px;
         }
 
         .c-auth__sidebar__title {
-            font-size: 44px;
+            font-size: 40px;
+
+            @include mq($auth-tweakpoint-large) {
+                font-size: 44px;
+            }
         }
 
