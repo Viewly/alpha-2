@@ -11,7 +11,7 @@
         {{ login_user_form.hidden_tag() }}
         {{ render_field_with_errors(login_user_form.email) }}
         {{ render_field_with_errors(login_user_form.password) }}
-        {{ render_field_with_errors(login_user_form.remember) }}
+        {{ render_checkbox_field(login_user_form.remember) }}
         {#        {{ render_field(login_user_form.next) }}#}
         {#        {{ render_field(login_user_form.submit) }}#}
         <button class="c-btn--primary ui blue button large u-margin-top">Log In</button>
