@@ -19,6 +19,10 @@
         <a class="c-auth__logo" href="/">
             <img src="{{ url_for('static', filename='img/logo.svg') }}" class="logo" alt="">
         </a>
+        <div class="c-auth__switch">
+            {% block switch %}
+            {% endblock %}
+        </div>
         <div class="c-auth__main">
             <div class="c-auth__main__content">
                 {% include "partials/flash_messages.html" %}

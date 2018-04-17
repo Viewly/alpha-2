@@ -1,6 +1,10 @@
 {% extends 'base_auth.html' %}
 {% block title %}Viewly Login{% endblock %}
 
+{% block switch %}
+    Don't have an account? <a href="/register">Register</a>
+{% endblock %}
+
 {% block content %}
     <div class="c-auth__main__header">
         <h2 class="c-auth__main__title">{{ _('Log in to View.ly') }}</h2>

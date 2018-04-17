@@ -5,6 +5,8 @@
 $auth-tweakpoint:                       940px;
 $auth-tweakpoint-large:                 1200px;
 
+$auth-logo-height:                      34px;
+
 $auth-sidebar-width:                    420px;
 $auth-sidebar-width-large:              500px;
 
@@ -16,8 +18,8 @@ $auth-sidebar-width-large:              500px;
      */
     .c-auth__logo {
         display: block;
-        height: auto;
-        width: 42px;
+        height: $auth-logo-height;
+        width: auto;
         position: absolute;
         top: $spacing-unit;
         left: $spacing-unit;
@@ -29,6 +31,23 @@ $auth-sidebar-width-large:              500px;
 
         @include mq($auth-tweakpoint) {
             position: fixed;
+        }
+    }
+
+    /**
+     * Auth switch
+     */
+    .c-auth__switch {
+        display: block;
+        height: $auth-logo-height;
+        line-height: $auth-logo-height;
+        position: absolute;
+        top: $spacing-unit;
+        right: $spacing-unit;
+        z-index: 200;
+
+        @include mq($auth-tweakpoint) {
+            right: $spacing-unit-large;
         }
     }
 
