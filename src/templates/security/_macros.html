@@ -14,7 +14,7 @@
 
 {% macro render_field(field) %}
     <div class="field {% if field.errors %}error{% endif %}">
-        asdfa{{ field.label(class_="c-label") }}
+        {{ field.label(class_="c-label") }}
         {{ field(**kwargs)|safe }}
     </div>
     {% if field.errors %}

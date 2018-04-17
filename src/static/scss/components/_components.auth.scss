@@ -55,8 +55,14 @@ $auth-sidebar-width-large:              500px;
             width: 100%;
         }
 
+        .c-auth__main__header {
+            font-size: 15px;
+            margin-bottom: $spacing-unit-huge;
+        }
+
         .c-auth__main__title {
             font-size: 32px;
+            margin-bottom: $spacing-unit-tiny;
         }
 
     /**
