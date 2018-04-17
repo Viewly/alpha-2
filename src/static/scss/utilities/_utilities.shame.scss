@@ -42,6 +42,22 @@ body {
     }
 }
 
+.c-field {
+    input {
+        background-color: #fdfdfd !important;
+        border-radius: 2px !important;
+        border-width: 2px !important;
+        padding-top: .8em !important;
+        padding-bottom: .8em !important;
+    }
+
+    &:not(.error) {
+        input {
+            border-color: lighten(#d7d7d7, 5%) !important;
+        }
+    }
+}
+
 
 .c-no-results {
     margin-top: $spacing-unit-large;
