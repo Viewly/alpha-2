@@ -1,6 +1,7 @@
 <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
 <script src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
 <script src="//cdn.jsdelivr.net/clappr.thumbnails-plugin/latest/clappr-thumbnails-plugin.js"></script>
+<script src="//cdn.rawgit.com/Viewly/clappr-playback-speed/5f8d3a30/dist/main.min.js"></script>
 <script type="application/javascript">
     let cdnUrl = "{{ cdn_url() }}";
     let manifestUrl = `${cdnUrl}/v1/{{ video_id }}/manifest.json`;
@@ -66,7 +67,8 @@
             },
             plugins: [
                 DashShakaPlayback,
-                ClapprThumbnailsPlugin
+                ClapprThumbnailsPlugin,
+                PlaybackSpeedPlugin
             ]
         });
         player.attachTo(document.getElementById("player-full"));
