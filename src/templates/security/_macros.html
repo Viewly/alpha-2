@@ -26,7 +26,7 @@
 {% macro render_checkbox_field(field) -%}
     <label>
         <span class="o-flag o-flag--tiny">
-            <span class="o-flag__img">{{ field(type='checkbox', **kwargs) }}</span>
+            <span class="o-flag__img">{{ field(type='checkbox', class_="c-checkbox", **kwargs) }}</span>
             <span class="o-flag__body">{{ field.label }}</span>
         </span>
     </label>
