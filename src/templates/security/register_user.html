@@ -2,7 +2,7 @@
 {% block title %}Viewly Registration{% endblock %}
 
 {% block content %}
-    <h2 class="">{{ _('Register') }}</h2>
+    <h2 class="c-auth__main__title">{{ _('Register') }}</h2>
 
     <form class="ui form" action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
         {{ register_user_form.hidden_tag() }}
@@ -12,6 +12,6 @@
             {{ render_field_with_errors(register_user_form.password_confirm) }}
         {% endif %}
 
-        <button class="ui blue button">Register</button>
+        <button class="c-btn--primary ui blue button">Register</button>
     </form>
 {% endblock %}
