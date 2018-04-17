@@ -1,9 +1,9 @@
 {% extends 'base_auth.html' %}
-{% block title %}Send Confirmation{% endblock %}
+{% block title %}Re-Send Confirmation{% endblock %}
 
 {% block content %}
     <div class="c-auth__main__header">
-      <h2 class="c-auth__main__title">{{ _('Send Confirmation Instructions') }}</h2>
+      <h2 class="c-auth__main__title">Confirmation Instructions</h2>
     </div>
 
     <form class="ui form" action="{{ url_for_security('send_confirmation') }}" method="POST"
@@ -11,6 +11,6 @@
         {{ send_confirmation_form.hidden_tag() }}
         {{ render_field_with_errors(send_confirmation_form.email) }}
 
-        <button class="c-btn--primary ui blue button large u-margin-top">Send Confirmation</button>
+        <button class="c-btn--primary ui blue button large u-margin-top">Re-Send Confirmation</button>
     </form>
 {% endblock %}

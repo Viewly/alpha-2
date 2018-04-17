@@ -2,23 +2,36 @@
 {% block title %}Viewly Registration{% endblock %}
 
 {% block switch %}
-    Already have an account? <a href="/login">Log in</a>
+    Already have an account?
+    <a href="{{ url_for_security('login') }}{% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}">Log in</a>
 {% endblock %}
 
 {% block content %}
-    <div class="c-auth__main__header">
-        <h2 class="c-auth__main__title">{{ _('Register') }}</h2>
-        <p>Welcome! Please enter your account details.</p>
-    </div>
+    {% if not security.registerable %}
+        Registrations are currently closed.
+    {% else %}
+        <div class="c-auth__main__header">
+            <h2 class="c-auth__main__title">{{ _('Register') }}</h2>
+            <p>Welcome! Please enter your new account details.</p>
+        </div>
 
-    <form class="ui form" action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
-        {{ register_user_form.hidden_tag() }}
-        {{ render_field_with_errors(register_user_form.email) }}
-        {{ render_field_with_errors(register_user_form.password) }}
-        {% if register_user_form.password_confirm %}
-            {{ render_field_with_errors(register_user_form.password_confirm) }}
+        <form class="ui form" action="{{ url_for_security('register') }}" method="POST"
+              name="register_user_form">
+            {{ register_user_form.hidden_tag() }}
+            {{ render_field_with_errors(register_user_form.email) }}
+            {{ render_field_with_errors(register_user_form.password) }}
+            {% if register_user_form.password_confirm %}
+                {{ render_field_with_errors(register_user_form.password_confirm) }}
+            {% endif %}
+
+            <button class="c-btn--primary ui blue button large u-margin-top">Register</button>
+        </form>
+        <br>
+        {% if security.confirmable %}
+            <i>
+                Lost account confirmation email? Get new one
+                <a href="{{ url_for_security('send_confirmation') }}">here.</a>
+            </i>
         {% endif %}
-
-        <button class="c-btn--primary ui blue button large u-margin-top">Register</button>
-    </form>
+    {% endif %}
 {% endblock %}
