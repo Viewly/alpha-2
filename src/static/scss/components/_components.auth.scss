@@ -18,13 +18,17 @@ $auth-sidebar-width-large:              500px;
         display: block;
         height: auto;
         width: 42px;
-        position: fixed;
+        position: absolute;
         top: $spacing-unit;
         left: $spacing-unit;
         z-index: 200;
 
         &:hover {
             text-decoration: none;
+        }
+
+        @include mq($auth-tweakpoint) {
+            position: fixed;
         }
     }
 
@@ -48,11 +52,16 @@ $auth-sidebar-width-large:              500px;
 
         .c-auth__main__content {
             max-width: 600px;
-            padding-left: $spacing-unit-large;
-            padding-right: $spacing-unit-large;
+            padding-left: $spacing-unit;
+            padding-right: $spacing-unit;
             padding-top: 100px;
             padding-bottom: $spacing-unit-large;
             width: 100%;
+
+            @include mq($auth-tweakpoint) {
+                padding-left: $spacing-unit-large;
+                padding-right: $spacing-unit-large;
+            }
         }
 
         .c-auth__main__header {
@@ -61,8 +70,12 @@ $auth-sidebar-width-large:              500px;
         }
 
         .c-auth__main__title {
-            font-size: 32px;
+            font-size: 28px;
             margin-bottom: $spacing-unit-tiny;
+
+            @include mq($auth-tweakpoint) {
+                font-size: 32px;
+            }
         }
 
     /**
