@@ -11,6 +11,10 @@ body {
     &.c-page-view {
         padding-top: $header-height;
     }
+
+    &.c-page-auth {
+        padding-top: 0;
+    }
 }
 
 .button {
@@ -35,6 +39,47 @@ body {
 
     &:hover {
         background-color: darken(color('brand-primary'), 2%) !important;
+    }
+}
+
+.c-field {
+    margin-bottom: $spacing-unit !important;
+
+    input {
+        background-color: #fdfdfd !important;
+        border-radius: 2px !important;
+        border-width: 2px !important;
+        padding-top: .85em !important;
+        padding-bottom: .85em !important;
+    }
+
+    &:not(.error) {
+        input {
+            border-color: lighten(#d7d7d7, 5%) !important;
+
+            &:hover {
+                border-color: lighten(#d7d7d7, 1%) !important;
+            }
+
+            &:focus {
+                border-color: color('brand-secondary') !important;
+            }
+        }
+    }
+}
+
+.c-field--forgot-password {
+    margin-top: -$spacing-unit-small;
+    margin-bottom: $spacing-unit;
+
+    a {
+        color: #a5a5a9;
+        font-weight: normal;
+
+        &:hover {
+            color: color('brand-secondary');
+            text-decoration: none;
+        }
     }
 }
 
@@ -90,3 +135,13 @@ body {
         top: 50%;
         left: 50%;
     }
+
+
+.c-label {
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+}
+
+.c-checkbox {
+    vertical-align: baseline !important;
+}

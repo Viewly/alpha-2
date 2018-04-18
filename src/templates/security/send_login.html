@@ -2,12 +2,14 @@
 {% block title %}Send Login token to Email{% endblock %}
 
 {% block content %}
-    <h2 class="ui header">{{ _('Send Login token to Email') }}</h2>
+    <div class="c-auth__main__header">
+      <h2 class="c-auth__main__title">{{ _('Send Login token to Email') }}</h2>
+    </div>
 
     <form class="ui form" action="{{ url_for_security('login') }}" method="POST" name="send_login_form">
         {{ send_login_form.hidden_tag() }}
         {{ render_field_with_errors(send_login_form.email) }}
 
-        <button class="ui blue button">Send Login</button>
+        <button class="c-btn--primary ui blue button large">Send Login</button>
     </form>
 {% endblock %}
