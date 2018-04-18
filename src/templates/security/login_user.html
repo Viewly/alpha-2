@@ -22,11 +22,10 @@
                 {{ render_checkbox_field(login_user_form.remember) }}
             </div>
             <div class="o-grid__cell u-text-right">
-                <a href="/reset">Forgot password?</a><br>
+                <a href="{{ url_for_security('forgot_password') }}">Forgot password?</a>
+                <br>
             </div>
         </div>
-        {#        {{ render_field(login_user_form.next) }}#}
-        {#        {{ render_field(login_user_form.submit) }}#}
-        <button class="c-btn--primary ui blue button large u-margin-top">Log In</button>
+        <button class="c-btn--primary ui blue button large">Log In</button>
     </form>
 {% endblock %}
