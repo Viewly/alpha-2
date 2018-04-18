@@ -28,7 +28,7 @@ codec_defaults = dict(
 
 def img_save(img, file_path, codec_settings=codec_defaults):
     """ Safely store Image objects to files. """
-    if last(file_path.split('.')) in ['jpg', 'jpeg'] and img.mode in ('RGBA', 'LA'):
+    if last(file_path.split('.')) in ['jpg', 'jpeg'] and img.mode in ('RGBA', 'LA', 'P'):
         img = img.convert('RGB')  # jpeg does not support alpha channels
     img.save(file_path, **codec_settings)
 
