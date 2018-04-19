@@ -85,8 +85,12 @@ body {
 
 
 .c-no-results {
-    margin-top: $spacing-unit-large;
+    margin-top: $spacing-unit-huge;
     text-align: center;
+
+    @include mq(medium) {
+        margin-top: 100px;
+    }
 }
 
     .c-no-results__img {
@@ -94,6 +98,11 @@ body {
         max-width: 260px;
         margin-left: auto;
         margin-right: auto;
+        width: 55%;
+
+        @include mq(medium) {
+            width: 100%;
+        }
     }
 
     .c-no-results__title {
