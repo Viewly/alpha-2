@@ -21,22 +21,30 @@ $tweakpoint-channel-header:             720px;
      *
      * We're using `o-grid` for the layout so here we need to do a few tweaks to
      * get the design right.
+     *
+     * 1. Make grid cells not grow nor shrink so that we can do tweaks explained
+     *    below.
+     * 2. For the first cell we need to control its width to get the most
+     *    optimal channel description line width, and to make room in the row
+     *    for other grid cells.
+     * 3. For cells other than the first make sure their width is dictated by
+     *    their content.
      */
     .c-channel-header__cell {
-        flex: 0 0 auto;
+        flex: 0 0 auto; /* [1] */
         margin-bottom: $spacing-unit-small;
 
         @include mq($from: medium) {
-            width: auto;
+            width: auto; /* [3] */
         }
 
         &:first-child {
             @include mq($from: medium, $until: $tweakpoint-channel-header) {
-                width: 60%;
+                width: 60%; /* [2] */
             }
 
             @include mq($tweakpoint-channel-header) {
-                width: 50%;
+                width: 50%; /* [2] */
             }
         }
     }
