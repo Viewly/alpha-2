@@ -103,7 +103,7 @@
                     </div>
                     <div class="o-flag__body">
                         <h2 class="c-channel-header__name">{{ channel.display_name }}</h2>
-                        <p class="c-channel-header__description">is creating Internet videos and podcasts</p>
+                        {# <p class="c-channel-header__description">is creating Internet videos and podcasts</p> #}
                         {% if not current_user.is_active %}
                             <div class="c-channel-header__inline-details">
                                 {% include 'partials/channel-details.html' %}
