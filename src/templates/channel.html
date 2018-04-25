@@ -87,26 +87,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="u-inline-block">
-        <div class="o-flag o-flag--small o-flag--reverse">
-            <div class="o-flag__img">
-                {% if current_user and current_user.id != channel.user_id %}
-                    <a href="javascript:"
-                       id="follow-button"
-                       style="display: none;"
-                       class="ui button mini c-btn--primary">+ Follow</a>
-                    <a href="javascript:"
-                       id="un-follow-button"
-                       style="display: none;"
-                       class="ui button mini">Unfollow</a>
-                {% endif %}
-            </div>
-            <div class="o-flag__body">
+    <div class="c-channel-header">
+        <div class="o-grid o-grid--middle o-grid--between">
+            <div class="c-channel-header__cell o-grid__cell">
                 <div class="o-flag o-flag--small">
-                    <div class="o-flag__img">
+                    <div class="o-flag__img u-align-top">
                         <div class="c-widget">
                             <img src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
-                                class="o-avatar o-avatar--large"
+                                class="o-avatar o-avatar--huge"
                                 id="avatar-img">
                             {% if current_user.id == channel.user_id %}
                                 <a class="c-widget__action" href="javascript:" id="avatar-button"><svg class="c-widget__icon o-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg></a>
@@ -114,18 +102,39 @@
                         </div>
                     </div>
                     <div class="o-flag__body">
-                        <h2>
-                            {{ channel.display_name }}
-                        </h2>
+                        <h2 class="c-channel-header__name">{{ channel.display_name }}</h2>
+                        <p class="c-channel-header__description">is creating Internet videos and podcasts</p>
+                        {% if not current_user.is_active %}
+                            <div class="c-channel-header__inline-details">
+                                {% include 'partials/channel-details.html' %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+            {% if current_user.is_active %}
+                <div class="c-channel-header__cell o-grid__cell">
+                    <div class="c-channel-header__sidebar">
+                        {% include 'partials/channel-details.html' %}
+
+                        {% if current_user.id != channel.user_id %}
+                            <a href="javascript:"
+                               id="follow-button"
+                               style="display: none;"
+                               class="ui button large c-channel-header__btn c-btn--primary">+ Follow</a>
+                            <a href="javascript:"
+                               id="un-follow-button"
+                               style="display: none;"
+                               class="ui button large c-channel-header__btn">Unfollow</a>
+                        {% else %}
+                            <a href="" class="ui button large c-channel-header__btn c-btn--primary">Edit info</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 
-
-
-    <h3>Showing latest {{ videos | count }} videos.</h3>
 
     <ul class="o-grid c-videos-grid">
 

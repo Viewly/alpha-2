@@ -3,7 +3,7 @@
 \*------------------------------------*/
 
 body {
-    background-color: lighten(#eef1f2, 2%);
+    background-color: $global-background-color;
     color: #313131;
     overflow-x: hidden;
     padding-top: $header-height + $spacing-unit-large;
