@@ -2,9 +2,18 @@
     #FOOTER
 \*------------------------------------*/
 
+$tweakpoint-footer:                     680px;
+$tweakpoint-footer-large:               880px;
+
+$footer-logo-height:                    34px;
+
+
+
+
+
 .c-footer {
     background-color: darken(#eef1f2, 1%);
-    border-top: 1px solid #d0d8db;
+    border-top: 1px solid #dbdcdd;
     margin-top: $spacing-unit-large;
     padding-top: $spacing-unit-large;
     padding-bottom: $spacing-unit-large;
@@ -16,14 +25,157 @@
     }
 }
 
+    /**
+     * Footer logo
+     */
+    .c-footer__logo {
+        display: block;
+
+        img {
+            display: block;
+            height: $footer-logo-height;
+            width: auto;
+        }
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    /**
+     * Footer heading
+     */
     .c-footer__heading {
         font-weight: 700;
         letter-spacing: 1px;
+        margin-bottom: $spacing-unit;
         text-transform: uppercase;
+
+        @include mq($until: $tweakpoint-footer) {
+            margin-bottom: $spacing-unit-tiny;
+        }
     }
 
-    .c-footer__btn[class][class][class][class] {
-        border: 1px solid #d0d8db !important;
-        box-shadow: none !important;
-        -webkit-box-shadow: none !important;
+    /**
+     * Footer content
+     *
+     * 1. On intermediate breakpoint headings in the sidebar need to be aligned
+     *    with the heading from the main section. Since on this breakpoint
+     *    logo's parent (`c-footer__main__item`) is no longer a flex item
+     *    (but block) and has a bottom margin we need to hack the spacing by
+     *    exactly that: setting the top margin as (logo height + logo's parent
+     *    bottom margin).
+     */
+    .c-footer__content {
+        margin-bottom: $spacing-unit-large;
     }
+
+        .c-footer__content__cell {
+            @include mq($from: $tweakpoint-footer, $until: large) {
+                width: 50%;
+
+                &:last-child {
+                    margin-top: $footer-logo-height + $spacing-unit; /* [1] */
+                }
+            }
+
+            @include mq($from: large, $until: $tweakpoint-footer-large) {
+                &:first-child {
+                    width: 56%;
+                }
+
+                &:last-child {
+                    width: 44%;
+                }
+            }
+
+            @include mq($tweakpoint-footer-large) {
+                width: 50%;
+            }
+        }
+
+        /**
+         * Footer main section
+         */
+        .c-footer__main {
+            @include mq(large) {
+                display: flex;
+            }
+        }
+
+            .c-footer__main__item {
+                flex: 0 0 auto;
+
+                &:not(:last-child) {
+                    @include mq($until: large) {
+                        margin-bottom: $spacing-unit;
+                    }
+
+                    @include mq(large) {
+                        margin-right: 50px;
+                    }
+
+                    @include mq(extralarge) {
+                        margin-right: 80px;
+                    }
+                }
+            }
+
+        /**
+         * Footer sidebar
+         */
+        .c-footer__sidebar {
+            margin-top: $spacing-unit-large;
+
+            @include mq($tweakpoint-footer) {
+                border-left: 1px solid #dbdcdd;
+                display: flex;
+                height: 100%;
+                padding-left: $spacing-unit-huge;
+                margin-top: 0;
+            }
+
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            li {
+                @include mq($until: $tweakpoint-footer) {
+                    display: inline-block;
+                    vertical-align: middle;
+
+                    &:not(:last-child) {
+                        margin-right: $spacing-unit;
+                    }
+                }
+            }
+
+            a {
+                color: #5e6169;
+
+                &:hover {
+                    color: color('brand-secondary');
+                }
+            }
+        }
+
+            .c-footer__sidebar__item {
+                flex: 0 0 auto;
+
+                &:not(:last-child) {
+                    @include mq($until: $tweakpoint-footer) {
+                        margin-bottom: $spacing-unit + 10;
+                    }
+
+                    @include mq($tweakpoint-footer) {
+                        margin-right: 50px;
+                    }
+
+                    @include mq($tweakpoint-footer-large) {
+                        margin-right: 80px;
+                    }
+                }
+            }
+

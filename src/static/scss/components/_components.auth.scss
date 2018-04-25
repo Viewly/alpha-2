@@ -2,8 +2,8 @@
     #AUTH
 \*------------------------------------*/
 
-$auth-tweakpoint:                       940px;
-$auth-tweakpoint-large:                 1200px;
+$tweakpoint-auth:                       940px;
+$tweakpoint-auth-large:                 1200px;
 
 $auth-logo-height:                      34px;
 
@@ -27,13 +27,12 @@ $auth-sidebar-width-large:              500px;
         left: $spacing-unit;
         z-index: 200;
 
-
         &:hover {
             animation-play-state: running;
             text-decoration: none;
         }
 
-        @include mq($auth-tweakpoint) {
+        @include mq($tweakpoint-auth) {
             position: fixed;
         }
 
@@ -60,7 +59,7 @@ $auth-sidebar-width-large:              500px;
         right: $spacing-unit;
         z-index: 200;
 
-        @include mq($auth-tweakpoint) {
+        @include mq($tweakpoint-auth) {
             right: $spacing-unit-large;
         }
     }
@@ -74,11 +73,11 @@ $auth-sidebar-width-large:              500px;
         justify-content: center;
         min-height: 100vh;
 
-        @include mq($auth-tweakpoint) {
+        @include mq($tweakpoint-auth) {
             margin-left: $auth-sidebar-width;
         }
 
-        @include mq($auth-tweakpoint-large) {
+        @include mq($tweakpoint-auth-large) {
             margin-left: $auth-sidebar-width-large;
         }
     }
@@ -91,7 +90,7 @@ $auth-sidebar-width-large:              500px;
             padding-bottom: $spacing-unit-large;
             width: 100%;
 
-            @include mq($auth-tweakpoint) {
+            @include mq($tweakpoint-auth) {
                 padding-left: $spacing-unit-large;
                 padding-right: $spacing-unit-large;
             }
@@ -101,7 +100,7 @@ $auth-sidebar-width-large:              500px;
             font-size: 15px;
             margin-bottom: $spacing-unit-large;
 
-            @include mq($auth-tweakpoint) {
+            @include mq($tweakpoint-auth) {
                 margin-bottom: $spacing-unit-huge;
             }
         }
@@ -110,7 +109,7 @@ $auth-sidebar-width-large:              500px;
             font-size: 28px;
             margin-bottom: $spacing-unit-tiny;
 
-            @include mq($auth-tweakpoint) {
+            @include mq($tweakpoint-auth) {
                 font-size: 32px;
             }
         }
@@ -136,11 +135,11 @@ $auth-sidebar-width-large:              500px;
         top: 0;
         z-index: 100;
 
-        @include mq($auth-tweakpoint) {
+        @include mq($tweakpoint-auth) {
             display: flex;
         }
 
-        @include mq($auth-tweakpoint-large) {
+        @include mq($tweakpoint-auth-large) {
             width: $auth-sidebar-width-large;
         }
     }
@@ -155,7 +154,7 @@ $auth-sidebar-width-large:              500px;
         .c-auth__sidebar__title {
             font-size: 40px;
 
-            @include mq($auth-tweakpoint-large) {
+            @include mq($tweakpoint-auth-large) {
                 font-size: 44px;
             }
         }

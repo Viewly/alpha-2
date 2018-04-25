@@ -43,8 +43,8 @@ $mq-breakpoints: (
 
 
 // Uncomment the lines below to show debugging tools in the browser.
-// $mq-show-breakpoints: (medium, large, extralarge);
-// body::before { z-index: 9999 !important; }
+$mq-show-breakpoints: (medium, large, extralarge);
+body::before { z-index: 9999 !important; }
 
 
 // Colors
