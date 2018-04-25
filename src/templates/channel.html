@@ -127,10 +127,10 @@
 
     <h3>Showing latest {{ videos | count }} videos.</h3>
 
-    <ul class="c-videos-list">
+    <ul class="o-grid c-videos-grid">
 
         {% for video in videos %}
-            <li class="c-videos-list__item">
+            <li class="o-grid__cell c-videos-grid__cell">
                 <div class="c-video">
                     <a class="c-video__img" href="{{ url_for('view_video', video_id=video.id) }}">
                         <img src="{{ guess_thumbnail_cdn_url(video.id) }}">
