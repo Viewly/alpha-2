@@ -131,6 +131,12 @@ def s3_signature():
 @can_upload
 @login_required
 def s3_success():
+    # defensively prevent duplicates
+    # if s3_success is called multiple times for same upload, ignore
+    if db.session.query(FileMapper) \
+            .filter_by(s3_upload_video_key=request.form.get('key')).first():
+        return {}
+
     video = Video(
         user_id=current_user.id,
         title=request.form.get('name').split('.')[0],
