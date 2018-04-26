@@ -1,6 +1,11 @@
 ![](https://i.imgur.com/ekvJd60.png)
+
+
 # Viewly Alpha
 This is the second iteration of the Viewly Alpha (https://alpha.view.ly).
+
+## Staging
+![](https://app.cloud66.com/stacks/badge/dfc317287d0b0e00efe13a00cfecd90d.svg)
 
 # Running in Docker
 To run in Docker, make sure you have latest `docker` and `docker-compose` installed.
