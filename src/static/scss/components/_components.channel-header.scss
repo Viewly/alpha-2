@@ -1,0 +1,129 @@
+/*------------------------------------*\
+    #CHANNEL HEADER
+\*------------------------------------*/
+
+$tweakpoint-channel-header:             720px;
+
+
+
+
+
+.c-channel-header {
+    margin-bottom: $spacing-unit;
+
+    @include mq($tweakpoint-channel-header) {
+        margin-bottom: $spacing-unit-huge;
+    }
+}
+
+    /**
+     * Channel header layout tweaks
+     *
+     * We're using `o-grid` for the layout so here we need to do a few tweaks to
+     * get the design right.
+     *
+     * 1. Make grid cells not grow nor shrink so that we can do tweaks explained
+     *    below.
+     * 2. For the first cell we need to control its width to get the most
+     *    optimal channel description line width, and to make room in the row
+     *    for other grid cells.
+     * 3. For cells other than the first make sure their width is dictated by
+     *    their content.
+     */
+    .c-channel-header__cell {
+        flex: 0 0 auto; /* [1] */
+        margin-bottom: $spacing-unit-small;
+
+        @include mq($from: medium) {
+            width: auto; /* [3] */
+        }
+
+        &:first-child {
+            @include mq($from: medium, $until: $tweakpoint-channel-header) {
+                width: 60%; /* [2] */
+            }
+
+            @include mq($tweakpoint-channel-header) {
+                width: 50%; /* [2] */
+            }
+        }
+    }
+
+    /**
+     * Channel name
+     */
+    .c-channel-header__name {
+        font-size: 20px;
+        line-height: 1.2;
+        margin-bottom: 2px;
+
+        @include mq($tweakpoint-channel-header) {
+            font-size: 24px;
+        }
+    }
+
+    /**
+     * Channel description
+     */
+    .c-channel-header__description {
+        color: #6d6d6d;
+        margin-bottom: 0;
+    }
+
+    /**
+     * Channel header sidebar
+     */
+    .c-channel-header__sidebar {
+        align-items: center;
+        display: flex;
+    }
+
+        .c-channel-header__btn {
+            margin-left: auto !important;
+        }
+
+    /**
+     * Channel details
+     *
+     * 1. This block is shown in sidebar to users that are logged in, in which
+     *    case we apply a different style to it.
+     * 2. Reset semantic ui styles.
+     */
+    .c-channel-header__details {
+        align-items: center;
+        display: flex;
+        margin-top: $spacing-unit-tiny;
+
+        .c-channel-header__sidebar & { /* [1] */
+            margin-top: 0;
+        }
+
+        dl {
+            align-items: center;
+            display: flex;
+            margin: 0; /* [2] */
+            margin-right: $spacing-unit;
+
+            .c-channel-header__sidebar & { /* [1] */
+                display: block;
+            }
+        }
+
+        dt {
+            color: #313131;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-right: $spacing-unit-tiny;
+
+            .c-channel-header__sidebar & { /* [1] */
+                font-size: 20px;
+                font-weight: 400;
+                margin-right: 0;
+            }
+        }
+
+        dd {
+            color: #6d6d6d;
+            margin-left: 0; /* [2] */
+        }
+    }

@@ -23,6 +23,7 @@
 
 
 // Objects
+@import '../node_modules/inuitcss/objects/objects.wrapper';
 @import '../node_modules/inuitcss/objects/objects.flag';
 @import '../node_modules/inuitcss/objects/objects.ratio';
 @import '../node_modules/inuit-flexgrid/objects/objects.grid';
@@ -35,8 +36,10 @@
 @import 'components/components.logo';
 @import 'components/components.footer';
 @import 'components/components.direction-buttons';
+@import 'components/components.channel-header';
 @import 'components/components.videos-grid';
 @import 'components/components.videos-list';
+@import 'components/components.thumbnail';
 @import 'components/components.video';
 @import 'components/components.video-player';
 @import 'components/components.video-description';
@@ -46,7 +49,9 @@
 
 // Utilities
 @import '../node_modules/inuitcss/utilities/utilities.clearfix';
+@import '../node_modules/inuitcss/utilities/utilities.widths';
 @import '../node_modules/inuitcss/utilities/utilities.spacings';
+@import '../node_modules/inuitcss/utilities/utilities.responsive-spacings';
 @import 'utilities/utilities.type';
 @import 'utilities/utilities.text';
 @import 'utilities/utilities.helpers';

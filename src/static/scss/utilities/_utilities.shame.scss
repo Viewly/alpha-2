@@ -3,7 +3,7 @@
 \*------------------------------------*/
 
 body {
-    background-color: lighten(#eef1f2, 2%);
+    background-color: $global-background-color;
     color: #313131;
     overflow-x: hidden;
     padding-top: $header-height + $spacing-unit-large;
@@ -114,6 +114,14 @@ body {
 .c-widget {
     display: inline-block;
     position: relative;
+
+    .o-icon {
+        font-size: 12px;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
 }
 
     .c-widget__action {
@@ -122,7 +130,6 @@ body {
         color: #fff;
         font-size: 20px;
         height: 1em;
-        transform-origin: 0 100%;
         width: 1em;
         position: absolute;
         bottom: 0;
@@ -136,14 +143,7 @@ body {
         }
     }
 
-    .c-widget__icon {
-        fill: currentColor;
-        font-size: 12px;
-        transform: translate(-50%, -50%);
-        position: absolute;
-        top: 50%;
-        left: 50%;
-    }
+
 
 
 .c-label {

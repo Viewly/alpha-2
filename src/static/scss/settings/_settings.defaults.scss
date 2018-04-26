@@ -4,6 +4,7 @@
 
 
 // High-level base settings.
+$global-background-color:               #f4f6f6;
 $global-font-size:                      18px;
 $global-line-height:                    30px;
 $global-link-color:                     darken(#006cff, 5%);
@@ -29,6 +30,8 @@ $inuit-font-size-h3:                    38px;
 $inuit-font-size-h4:                    24px;
 $inuit-font-size-h5:                    20px;
 $inuit-font-size-h6:                    18px;
+
+$inuit-wrapper-width:                   1200px;
 
 
 // Breakpoints.
