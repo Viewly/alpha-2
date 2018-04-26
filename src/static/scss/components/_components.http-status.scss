@@ -1,0 +1,53 @@
+/*------------------------------------*\
+    #HTTP STATUS
+\*------------------------------------*/
+
+.c-http-status {
+    align-items: center;
+    color: #5f5f5f;
+    display: flex;
+    font-size: 14px;
+    height: 100vh;
+    justify-content: center;
+    text-align: center;
+}
+
+    .c-http-status__content {
+        flex: 0 0 auto;
+        max-width: 100%;
+        padding: $spacing-unit-small;
+
+        @include mq($until: medium) {
+            width: 30em;
+
+            br {
+                display: none;
+            }
+        }
+
+        @include mq(medium) {
+            padding: $spacing-unit;
+        }
+
+        @include mq(large) {
+            padding: $spacing-unit-large;
+        }
+    }
+
+    .c-http-status__title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: $spacing-unit-tiny;
+    }
+
+    .c-http-status__img {
+        display: block;
+        margin-bottom: 30px;
+        margin-left: auto;
+        margin-right: auto;
+
+        @include mq($until: medium) {
+            max-width: 260px;
+            width: 60%;
+        }
+    }

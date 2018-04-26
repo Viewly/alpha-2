@@ -7,6 +7,7 @@
 $global-background-color:               #f4f6f6;
 $global-font-size:                      18px;
 $global-line-height:                    30px;
+$global-text-color:                     #313131;
 $global-link-color:                     darken(#006cff, 5%);
 $global-border-radius:                  2px;
 $global-transition:                     all .2s ease;
@@ -61,7 +62,7 @@ $colors: (
 
 
 // Header
-$header-height:         60px;
+$header-height:                 60px;
 
 
 // Videos list

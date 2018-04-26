@@ -4,7 +4,7 @@
 
 body {
     background-color: $global-background-color;
-    color: #313131;
+    color: $global-text-color;
     overflow-x: hidden;
     padding-top: $header-height + $spacing-unit-large;
 
