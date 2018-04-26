@@ -187,20 +187,22 @@ $footer-logo-height:                    34px;
         padding-top: $spacing-unit-small;
         padding-bottom: $spacing-unit-small;
 
-        a {
-            display: block;
-            opacity: .8;
-            transition: $global-transition;
-
-            &:hover {
-                opacity: 1;
-                text-decoration: none;
-            }
-        }
-
         @include mq($until: $tweakpoint-footer) {
             padding-top: $spacing-unit;
             padding-bottom: $spacing-unit;
+        }
+
+        li {
+            a {
+                display: block;
+                opacity: .8;
+                transition: $global-transition;
+
+                &:hover {
+                    opacity: 1;
+                    text-decoration: none;
+                }
+            }
         }
     }
 
@@ -218,3 +220,23 @@ $footer-logo-height:                    34px;
                 }
             }
         }
+
+        .c-footer__bottom-bar__token-address {
+            @include mq($until: medium) {
+                font-size: 12px;
+            }
+
+            @include mq($until: $tweakpoint-footer-large) {
+                display: block;
+            }
+
+            a {
+                color: inherit;
+
+                &:hover {
+                    color: color('brand-secondary');
+                }
+            }
+        }
+
+
