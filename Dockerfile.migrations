@@ -1,12 +1,9 @@
-FROM python:3.6.4
+FROM python:3.6
 MAINTAINER furion <_@furion.me>
 
 # add our code
 COPY . /alpha-2
 WORKDIR /alpha-2
 RUN pip install -r requirements.txt
-
-# regression fix
-RUN pip install -U web3
 
 CMD ["sh", "run-migrations.sh"]
