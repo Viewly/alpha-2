@@ -60,7 +60,7 @@ def view_token_balance(address: str, block_num: int = 'latest'):
 
 def is_video_published(video_id: str):
     instance = video_publisher()
-    return instance.functions.videos(to_hex(video_id)).call()
+    return instance.functions.videos(to_hex(text=video_id)).call()
 
 
 def is_valid_address(address: str) -> bool:
