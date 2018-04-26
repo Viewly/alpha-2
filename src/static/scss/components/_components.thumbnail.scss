@@ -1,0 +1,148 @@
+/*------------------------------------*\
+    #THUMBNAIL
+\*------------------------------------*/
+
+.c-thumbnail {
+    background-color: #fff;
+    border-radius: 2px;
+    display: block;
+    margin-bottom: $spacing-unit-tiny;
+    transform-origin: 50% 100%;
+    transition: $global-transition;
+    will-change: transform;
+    position: relative;
+
+    .c-videos-list & {
+        @include mq($tweakpoint-videos-list) {
+            flex-shrink: 0;
+            margin-right: $spacing-unit + 10;
+            width: 304px;
+        }
+    }
+
+    &:hover {
+        text-decoration: none;
+
+        .c-thumbnail__img,
+        .c-thumbnail__link {
+            transform: scale(1.02);
+        }
+
+        .c-thumbnail__link,
+        .c-thumbnail__play-icon,
+        .c-thumbnail__edit {
+            @include visible;
+        }
+
+        .c-thumbnail__duration-indicator {
+            opacity: 1;
+        }
+    }
+}
+
+    .c-thumbnail__link {
+        @include invisible;
+        background-color: rgba(color('brand-secondary'), .5);
+        border-radius: inherit;
+        content: '';
+        height: 100%;
+        transform-origin: inherit;
+        transition: inherit;
+        will-change: inherit;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 10;
+    }
+
+    .c-thumbnail__img {
+        border-radius: inherit;
+        display: block;
+        height: auto;
+        transform-origin: inherit;
+        transition: inherit;
+        width: 100%;
+        will-change: inherit;
+    }
+
+    .c-thumbnail__duration-indicator {
+        background-color: #333;
+        border-radius: 2px;
+        color: #fff;
+        display: block;
+        font-size: 12px;
+        line-height: 1.2;
+        opacity: 0;
+        padding: 2px 4px;
+        pointer-events: none;
+        transition: inherit;
+        position: absolute;
+        bottom: $spacing-unit-tiny;
+        right: $spacing-unit-tiny;
+        z-index: 20;
+
+        .c-videos-list & {
+            opacity: .8;
+        }
+    }
+
+    .c-thumbnail__play-icon {
+        @include invisible;
+        color: #fff;
+        display: block;
+        font-size: 44px;
+        height: 1em;
+        line-height: 1;
+        pointer-events: none;
+        text-shadow: 2px 2px 2px rgba(#333, .4);
+        transform: translate(-50%, -50%);
+        transition: inherit;
+        width: 1em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 20;
+
+        @include mq(medium) {
+            font-size: 36px;
+        }
+
+        @include mq(large) {
+            font-size: 40px;
+        }
+
+        @include mq(extralarge) {
+            font-size: 50px;
+        }
+    }
+
+    .c-thumbnail__edit {
+        @include invisible;
+        background-color: #fff;
+        border-radius: 2px;
+        color: color('brand-secondary');
+        display: block;
+        height: 22px;
+        transition: inherit;
+        width: 24px;
+        position: absolute;
+        top: $spacing-unit-tiny;
+        right: $spacing-unit-tiny;
+        z-index: 30;
+
+        &:hover {
+            background-color: color('brand-secondary');
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .o-icon {
+            font-size: 14px;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }
