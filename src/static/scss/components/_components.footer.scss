@@ -12,11 +12,9 @@ $footer-logo-height:                    34px;
 
 
 .c-footer {
-    background-color: darken(#eef1f2, 1%);
-    border-top: 1px solid #dbdcdd;
+    background-color: #eceff1;
     margin-top: $spacing-unit-large;
     padding-top: $spacing-unit-large;
-    padding-bottom: $spacing-unit-large;
 
     a {
         &:hover {
@@ -179,3 +177,43 @@ $footer-logo-height:                    34px;
                 }
             }
 
+    /**
+     * Footer bottom bar
+     */
+    .c-footer__bottom-bar {
+        background-color: darken(#eceff1, 5%);
+        color: #6e7279;
+        padding-top: $spacing-unit-small;
+        padding-bottom: $spacing-unit-small;
+
+        a {
+            display: block;
+            opacity: .8;
+            transition: $global-transition;
+
+            &:hover {
+                opacity: 1;
+                text-decoration: none;
+            }
+        }
+
+        @include mq($until: $tweakpoint-footer) {
+            padding-top: $spacing-unit;
+            padding-bottom: $spacing-unit;
+        }
+    }
+
+        .c-footer__bottom-bar__cell {
+            flex: 0 0 auto;
+            justify-content: space-between;
+            width: auto;
+
+            @include mq($until: $tweakpoint-footer) {
+                text-align: center;
+                width: 100%;
+
+                &:not(:last-child) {
+                    margin-bottom: $spacing-unit;
+                }
+            }
+        }
