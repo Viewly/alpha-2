@@ -27,7 +27,7 @@ from .methods import (
     guess_avatar_cdn_url,
     guess_timeline_cdn_url,
 )
-from .models import Video, Channel, TranscoderJob
+from .models import Video, Channel, TranscoderJob, Follow
 
 
 # router
@@ -69,10 +69,13 @@ def view_channel(channel_id):
     if not is_owner(channel.user_id):
         videos = videos.filter(Video.published_at != None)
 
+    follower_count = Follow.query.filter_by(channel_id=channel.id).count()
+
     return render_template(
         'channel.html',
         channel=channel,
         videos=videos.limit(10).all(),
+        follower_count=follower_count,
         s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADS_REGION'],
         s3_user_access_key=app.config['S3_UPLOADER_PUBLIC_KEY'],
@@ -245,6 +248,13 @@ def utility_processor():
         get_auth_token_cached=get_auth_token_cached,
         can_vote=can_vote,
     )
+
+
+@app.template_filter('readableNumber')
+def readable_number(number):
+    if type(number) != int:
+        return number
+    return format(number, ',d')
 
 
 @app.template_filter('humanDate')

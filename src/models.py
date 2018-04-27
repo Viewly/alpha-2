@@ -75,6 +75,7 @@ class Channel(db.Model):
     # todo: add expression based index (lowercase, stripped, unique)
     slug = db.Column(db.String(32), unique=True)
     display_name = db.Column(db.String(32))
+    description = db.Column(db.String(70))
 
     profile = db.Column(JSONB)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False)

@@ -103,7 +103,9 @@
                     </div>
                     <div class="o-flag__body">
                         <h2 class="c-channel-header__name">{{ channel.display_name }}</h2>
-                        {# <p class="c-channel-header__description">is creating Internet videos and podcasts</p> #}
+                        {% if channel.description %}
+                            <p class="c-channel-header__description">{{ channel.description }}</p>
+                        {% endif %}
                         {% if not current_user.is_active %}
                             <div class="c-channel-header__inline-details">
                                 {% include 'partials/channel-details.html' %}
@@ -127,7 +129,8 @@
                                style="display: none;"
                                class="ui button large c-channel-header__btn">Unfollow</a>
                         {% else %}
-                            <a href="" class="ui button large c-channel-header__btn c-btn--primary">Edit info</a>
+                            <a href="{{ url_for('channel.edit', channel_id=channel.id) }}"
+                               class="ui button large c-channel-header__btn c-btn--primary">Edit info</a>
                         {% endif %}
                     </div>
                 </div>
