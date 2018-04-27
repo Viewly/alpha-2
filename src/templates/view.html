@@ -67,14 +67,16 @@
                            style="display: none;"
                            class="ui button">Unfollow</a>
                     {% endif %}
-                    <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
-                    <i class="circular question icon"
-                       data-title="Support this creator and earn rewards"
-                       data-content="If you enjoyed this video and would like to support the creator, please consider voting.
-                       Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
-                       data-variation="large wide"
-                       data-position="bottom right">
-                    </i>
+                    {% if can_vote(video.published_at) %}
+                        <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
+                        <i class="circular question icon"
+                           data-title="Support this creator and earn rewards"
+                           data-content="If you enjoyed this video and would like to support the creator, please consider voting.
+                           Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
+                           data-variation="large wide"
+                           data-position="bottom right">
+                        </i>
+                    {% endif %}
                 </div>
             </header>
 
@@ -155,252 +157,258 @@
         });
     </script>
 
-    <script type="application/javascript">
-        let networks = {
-            "mainnet": '1',
-            "kovan": '42',
-        };
-        let w3;
-        let networkId;
-        let account;
-        let balance;
+    {% if can_vote(video.published_at) %}
+        <script type="application/javascript">
+            let networks = {
+                "mainnet": '1',
+                "kovan": '42',
+            };
+            let w3;
+            let networkId;
+            let account;
+            let balance;
 
-        let ethChain = "{{ eth_chain() }}";
-        let viewTokenAddress = "{{ view_token_address() }}";
-        let viewTokenABI = {{ view_token_abi() | safe }};
-        let viewToken;
+            let ethChain = "{{ eth_chain() }}";
+            let viewTokenAddress = "{{ view_token_address() }}";
+            let viewTokenABI = {{ view_token_abi() | safe }};
+            let viewToken;
 
-        let videoId = "{{ video.id }}";
+            let videoId = "{{ video.id }}";
 
-        let signButton = `<a id="sign-button" class="ui button blue large">Vote with Metamask</a>`;
-        let spinner = `<div class="ui active inline loader"></div> Loading...`;
+            let signButton = `<a id="sign-button" class="ui button blue large">Vote with Metamask</a>`;
+            let spinner = `<div class="ui active inline loader"></div> Loading...`;
 
-        let isInitialized = false;
+            let isInitialized = false;
 
-        function initMetamask() {
-            if (typeof web3 !== 'undefined') {
-                $('#no-metamask').hide();
-                $('#metamask').show();
+            function initMetamask() {
+                if (typeof web3 !== 'undefined') {
+                    $('#no-metamask').hide();
+                    $('#metamask').show();
 
-                // metamask is our web3 provider
-                w3 = new Web3(web3.currentProvider);
+                    // metamask is our web3 provider
+                    w3 = new Web3(web3.currentProvider);
 
-                // update metamask selected account and network
-                setInterval(function () {
-                    if (w3.eth.accounts[0] !== account) {
-                        account = w3.eth.accounts[0];
+                    // update metamask selected account and network
+                    setInterval(function () {
+                        if (w3.eth.accounts[0] !== account) {
+                            account = w3.eth.accounts[0];
+                        }
+                        w3.version.getNetwork((err, netId) => {
+                            networkId = netId
+                        });
+                    }, 100);
+                } else {
+                    $('#no-metamask').show();
+                    $('#metamask').hide();
+                }
+            }
+
+            function initContracts() {
+                if (typeof w3 === 'undefined')
+                    return;
+                viewToken = w3.eth.contract(viewTokenABI).at(viewTokenAddress);
+            }
+
+            function refreshBalance() {
+                if (typeof account === 'undefined')
+                    return;
+                if (typeof viewToken === 'undefined')
+                    initContracts();
+
+                viewToken.balanceOf(account, (e, r) => {
+                    balance = Number(r)
+                });
+            }
+
+            function localStorageKeyFor(voteOrVideoId) {
+                if (typeof(voteOrVideoId) === 'object') {
+                    if (voteOrVideoId.video_id !== 'undefined')
+                        return `Vote-${voteOrVideoId.video_id}`;
+                }
+                return `Vote-${voteOrVideoId}`;
+            }
+
+            // METAMASK only!
+            function signVote(account, videoId, weight = 100) {
+                let params = [
+                    [
+                        {type: 'string', name: 'Video ID', value: videoId},
+                        {type: 'uint8', name: 'Vote Weight (%)', value: weight},
+                        {
+                            type: 'uint32',
+                            name: 'Timestamp',
+                            value: Math.floor(Date.now() / 1000)
+                        }
+                    ],
+                    account,
+                ];
+                w3.currentProvider.sendAsync({
+                    method: 'eth_signTypedData',
+                    params: params,
+                    from: account,
+                }, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        tryAgainButton();
+                        return;
                     }
-                    w3.version.getNetwork((err, netId) => {
-                        networkId = netId
+                    let signature = result.result;
+                    if (!signature) {
+                        console.log('Missing signature');
+                        tryAgainButton();
+                        return;
+                    }
+                    fetch("{{ url_for('api.voteapi') }}", {
+                        method: 'put',
+                        body: JSON.stringify({
+                            video_id: videoId,
+                            weight: weight,
+                            eth_address: account,
+                            ecc_message: JSON.stringify(params),
+                            ecc_signature: signature
+                        }),
+                        headers: new Headers({'Content-Type': 'application/json'})
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            console.log(response);
+                            tryAgainButton();
+                            return;
+                        }
+                        response.json().then(vote => successfulyVoted(vote))
+                    }).catch(function (err) {
+                        console.log(err);
+                        tryAgainButton();
                     });
-                }, 100);
-            } else {
-                $('#no-metamask').show();
-                $('#metamask').hide();
+                });
             }
-        }
 
-        function initContracts() {
-            if (typeof w3 === 'undefined')
-                return;
-            viewToken = w3.eth.contract(viewTokenABI).at(viewTokenAddress);
-        }
-
-        function refreshBalance() {
-            if (typeof account === 'undefined')
-                return;
-            if (typeof viewToken === 'undefined')
-                initContracts();
-
-            viewToken.balanceOf(account, (e, r) => {
-                balance = Number(r)
-            });
-        }
-
-        function localStorageKeyFor(voteOrVideoId) {
-            if (typeof(voteOrVideoId) === 'object') {
-                if (voteOrVideoId.video_id !== 'undefined')
-                    return `Vote-${voteOrVideoId.video_id}`;
-            }
-            return `Vote-${voteOrVideoId}`;
-        }
-
-        // METAMASK only!
-        function signVote(account, videoId, weight = 100) {
-            let params = [
-                [
-                    {type: 'string', name: 'Video ID', value: videoId},
-                    {type: 'uint8', name: 'Vote Weight (%)', value: weight},
-                    {type: 'uint32', name: 'Timestamp', value: Math.floor(Date.now()/1000)}
-                ],
-                account,
-            ];
-            w3.currentProvider.sendAsync({
-                method: 'eth_signTypedData',
-                params: params,
-                from: account,
-            }, function (err, result) {
-                if (err) {
-                    console.log(err);
-                    tryAgainButton();
+            function checkIfVoted(account, videoId) {
+                if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true')
+                    return;
+                if (account === 'undefined') {
                     return;
                 }
-                let signature = result.result;
-                if (!signature) {
-                    console.log('Missing signature');
-                    tryAgainButton();
-                    return;
-                }
-                fetch("{{ url_for('api.voteapi') }}", {
-                    method: 'put',
-                    body: JSON.stringify({
-                        video_id: videoId,
-                        weight: weight,
-                        eth_address: account,
-                        ecc_message: JSON.stringify(params),
-                        ecc_signature: signature
-                    }),
+
+                let url = `{{ url_for('api.voteapi') }}?video_id=${videoId}&eth_address=${account}`;
+                fetch(url, {
+                    method: 'get',
                     headers: new Headers({'Content-Type': 'application/json'})
                 }).then(function (response) {
                     if (!response.ok) {
                         console.log(response);
-                        tryAgainButton();
                         return;
                     }
-                    response.json().then(vote => successfulyVoted(vote))
+                    response.json().then(vote => {
+                        localStorage.setItem(localStorageKeyFor(vote), 'true');
+                    })
                 }).catch(function (err) {
-                    console.log(err);
-                    tryAgainButton();
+                    console.log(err)
                 });
-            });
-        }
-
-        function checkIfVoted(account, videoId) {
-            if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true')
-                return;
-            if (account === 'undefined') {
-                return;
             }
 
-            let url = `{{ url_for('api.voteapi') }}?video_id=${videoId}&eth_address=${account}`;
-            fetch(url, {
-                method: 'get',
-                headers: new Headers({'Content-Type': 'application/json'})
-            }).then(function (response) {
-                if (!response.ok) {
-                    console.log(response);
-                    return;
+            function successfulyVoted(vote) {
+                // set local storage
+                localStorage.setItem(localStorageKeyFor(vote), 'true');
+
+                // hide metamask dialog
+                $('#metamask-modal').modal('hide');
+            }
+
+            function disableVoteButton() {
+                if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true') {
+                    $('#vote-button, #sign-button')
+                        .addClass('disabled')
+                        .html('<i class="check icon"></i> Voted');
                 }
-                response.json().then(vote => {
-                    localStorage.setItem(localStorageKeyFor(vote), 'true');
-                })
-            }).catch(function (err) {
-                console.log(err)
-            });
-        }
+            }
 
-        function successfulyVoted(vote) {
-            // set local storage
-            localStorage.setItem(localStorageKeyFor(vote), 'true');
-
-            // hide metamask dialog
-            $('#metamask-modal').modal('hide');
-        }
-
-        function disableVoteButton() {
-            if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true') {
+            function tryAgainButton() {
                 $('#vote-button, #sign-button')
-                    .addClass('disabled')
-                    .html('<i class="check icon"></i> Voted');
+                    .html('Vote failed. Try again.')
             }
-        }
 
-        function tryAgainButton() {
-            $('#vote-button, #sign-button')
-                .html('Vote failed. Try again.')
-        }
-
-        function resetVoteButton() {
-            if (localStorage.getItem(localStorageKeyFor(videoId)) !== 'true') {
-                $('#vote-button').html('Vote');
+            function resetVoteButton() {
+                if (localStorage.getItem(localStorageKeyFor(videoId)) !== 'true') {
+                    $('#vote-button').html('Vote');
+                }
             }
-        }
 
-        function getCurrentUI() {
-            // connected to wrong network
-            if (networkId !== networks[ethChain])
-                return `Connected to the unknown network (${networkId}).
+            function getCurrentUI() {
+                // connected to wrong network
+                if (networkId !== networks[ethChain])
+                    return `Connected to the unknown network (${networkId}).
                 <br>Please select ${ethChain.toUpperCase()} as the Ethereum network in Metamask.`;
 
-            // account not selected or wallet locked
-            if (typeof account === 'undefined')
-                return 'Metamask wallet appears to be <b>locked</b>! Please <i>unlock it</i> to proceed.';
+                // account not selected or wallet locked
+                if (typeof account === 'undefined')
+                    return 'Metamask wallet appears to be <b>locked</b>! Please <i>unlock it</i> to proceed.';
 
-            // account has already voted
-            if (localStorage.getItem(videoId) === 'true') {
-                return `Selected account <b>${account}</b> has already voted for this video.`;
-            }
-
-            // account has no VIEW Tokens
-            if (balance === 0)
-                return `Selected account <b>${account}</b> has no VIEW Tokens, and thus cannot vote.`;
-            else if (balance > 0)
-                return `${signButton}`;
-
-            return `${spinner}`;
-        }
-
-        // start here
-        $(function () {
-            // check local storage and db first
-            checkIfVoted(account, videoId);
-            disableVoteButton();
-
-            // start metamask only when button is clicked
-            $('#vote-button').click(function () {
-                $('#vote-button')
-                    .html('Loading Metamask...');
-
-                // only call this code once
-                if (!isInitialized) {
-                    isInitialized = true;
-                    initMetamask();
-                    initContracts();
-
-                    setInterval(() => {
-                        disableVoteButton();
-                        refreshBalance();
-                    }, 250);
-
-                    setInterval(() => {
-                        $('#metamask').html(getCurrentUI());
-                    }, 1000);
+                // account has already voted
+                if (localStorage.getItem(videoId) === 'true') {
+                    return `Selected account <b>${account}</b> has already voted for this video.`;
                 }
 
-                setTimeout(() => {
-                    checkIfVoted(account, videoId);
-                }, 250);
+                // account has no VIEW Tokens
+                if (balance === 0)
+                    return `Selected account <b>${account}</b> has no VIEW Tokens, and thus cannot vote.`;
+                else if (balance > 0)
+                    return `${signButton}`;
 
-                setTimeout(() => {
-                    if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true') {
-                        // do nothing, already voted
-                    } else if (networkId === networks[ethChain]
-                        && typeof balance !== 'undefined'
-                        && balance > 0) {
-                        // shortcut
-                        signVote(account, videoId);
-                    } else {
-                        // help the user out with a modal
-                        $('#metamask-modal')
-                            .modal({
-                                onHide: () => resetVoteButton()
-                            })
-                            .modal('show');
+                return `${spinner}`;
+            }
+
+            // start here
+            $(function () {
+                // check local storage and db first
+                checkIfVoted(account, videoId);
+                disableVoteButton();
+
+                // start metamask only when button is clicked
+                $('#vote-button').click(function () {
+                    $('#vote-button')
+                        .html('Loading Metamask...');
+
+                    // only call this code once
+                    if (!isInitialized) {
+                        isInitialized = true;
+                        initMetamask();
+                        initContracts();
+
+                        setInterval(() => {
+                            disableVoteButton();
+                            refreshBalance();
+                        }, 250);
+
+                        setInterval(() => {
+                            $('#metamask').html(getCurrentUI());
+                        }, 1000);
                     }
-                }, 500);
 
+                    setTimeout(() => {
+                        checkIfVoted(account, videoId);
+                    }, 250);
+
+                    setTimeout(() => {
+                        if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true') {
+                            // do nothing, already voted
+                        } else if (networkId === networks[ethChain]
+                            && typeof balance !== 'undefined'
+                            && balance > 0) {
+                            // shortcut
+                            signVote(account, videoId);
+                        } else {
+                            // help the user out with a modal
+                            $('#metamask-modal')
+                                .modal({
+                                    onHide: () => resetVoteButton()
+                                })
+                                .modal('show');
+                        }
+                    }, 500);
+
+                });
             });
-        });
-    </script>
+        </script>
+    {% endif %}
 
 {% endblock %}

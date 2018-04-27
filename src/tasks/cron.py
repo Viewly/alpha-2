@@ -11,6 +11,7 @@ from . import (
 )
 from .shared import generate_manifest_file
 from .transcoder import transcoder_post_processing
+from ..config import DISTRIBUTION_GAME_DAYS
 from ..core.et import get_job_status
 from ..core.eth import (
     is_video_published,
@@ -44,6 +45,11 @@ cron.conf.beat_schedule = {
     'refresh-unpublished-videos': {
         'task': 'src.tasks.cron.refresh_unpublished_videos',
         'schedule': crontab(minute='*/1'),
+        'args': ()
+    },
+    'evaluate-votes': {
+        'task': 'src.tasks.cron.evaluate_votes',
+        'schedule': crontab(minute='*/2'),
         'args': ()
     },
 }
@@ -104,6 +110,8 @@ def evaluate_votes():
     block per hour, and acknowledge the minimum balance during
     this period as the voting power.
     """
+    days = DISTRIBUTION_GAME_DAYS
+
     session = db_session()
     pending_votes = session.query(Vote).filter(Vote.token_amount == None)
 
@@ -111,23 +119,25 @@ def evaluate_votes():
 
     for vote in pending_votes:
         review_period_end = int(vote.created_at.timestamp())
-        review_period_start = int((vote.created_at - dt.timedelta(days=7)).timestamp())
+        review_period_start = int((vote.created_at - dt.timedelta(days=days)).timestamp())
 
         find_block = partial(find_block_from_timestamp, w3)
-        review_block_range = [find_block(x).number for x in (review_period_start, review_period_end)]
+        review_block_range = [find_block(x).number for x in
+                              (review_period_start, review_period_end)]
 
         # get random VIEW balances on the voter's address for the last 7 days
         # split search range into chunks that contain ~ 1 hour worth of blocks
-        chunk_size = (review_block_range[1] - review_block_range[0]) // (7 * 24)
+        chunk_size = (review_block_range[1] - review_block_range[0]) // (days * 24)
         balances = map(
             lambda block_num: view_token_balance(vote.eth_address, block_num=block_num),
-            (random.randrange(*chunk_range) for chunk_range in chunks(chunk_size, review_block_range))
+            (random.randrange(*chunk_range) for chunk_range in
+             chunks(chunk_size, review_block_range))
         )
 
         to_eth = compose(int, rpartial(from_wei, 'ether'))
         min_balance = min(to_eth(x) for x in balances)
 
         vote.token_amount = min_balance
+        vote.delegated_amount = 0  # todo: implement delegation contract
         session.add(vote)
-
-    session.commit()
+        session.commit()
