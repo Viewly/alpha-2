@@ -1,17 +1,17 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-        <title>{% block title %}{% endblock %}</title>
-        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
-        <link href="{{ url_for('static', filename='css/compiled/http-status.scss.css') }}" rel="stylesheet" type="text/css">
-    </head>
-    <body>
-        <div class="c-http-status">
-            <div class="c-http-status__content">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-    </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+  <link href="{{ url_for('static', filename='css/compiled/http-status.scss.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="c-http-status">
+    <div class="c-http-status__content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
 </html>
