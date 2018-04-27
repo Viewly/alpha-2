@@ -1,5 +1,6 @@
 import json
 from os import getenv, environ, getcwd, path
+from dotenv import load_dotenv, find_dotenv
 
 from funcy import rpartial
 from toolz import pipe
@@ -20,7 +21,10 @@ def load_json_config(name):
     return load_json_file(f'{config_folder_prefix()}/{name}.{env}.json')
 
 
+# load default config
 IS_PRODUCTION = bool(getenv('PRODUCTION', False))
+if not IS_PRODUCTION:
+    load_dotenv(find_dotenv())
 
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')

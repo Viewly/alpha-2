@@ -25,6 +25,7 @@ raven
 lxml
 beautifulsoup4
 moviepy
+python-dotenv
 pytest
 web3==4.2.0
 eth-abi==1.0.0
