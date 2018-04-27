@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% set active_menu = "channel" %}
 {% from "_formhelpers.html" import render_field %}
-{% block title %}Viewly &bull; Create Channel{% endblock %}
+{% block title %}Viewly &bull; Edit Channel{% endblock %}
 
 {% block content %}
     <br>
@@ -12,11 +12,12 @@
         {% endif %}
     </div>
     <div class="ui text container">
-        <h3 class="ui dividing header">New Channel</h3>
+        <h3 class="ui dividing header">Edit Channel</h3>
         <form method="post" class="ui form">
             {{ form.csrf_token }}
             {{ render_field(form.name) }}
-            <button class="ui button blue">Create a channel</button>
+            {{ render_field(form.description) }}
+            <button class="ui button blue">Save Changes</button>
             <br>
         </form>
     </div>
