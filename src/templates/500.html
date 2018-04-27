@@ -1,0 +1,12 @@
+{% extends 'base_http_status.html' %}
+
+{% block title %}500 - Internal Server Error{% endblock %}
+
+{% block content %}
+  <img class="c-http-status__img" src="{{ url_for('static', filename='img/http-status-500.svg') }}" alt="error 404">
+  <h1 class="c-http-status__title">Whoops!</h1>
+  <p>
+    Something went wrong at our end. Don’t worry, it’s not you - it’s us.
+    <br>Sorry about that. Go to <a href="/">homepage</a>.
+  </p>
+{% endblock %}

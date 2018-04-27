@@ -1,24 +1,44 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>{% block title %}404 - Not Found{% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
-</head>
-<body>
+{% extends 'base_http_status.html' %}
 
-<center>
-    <br>
-    <br>
-    <img src="{{ url_for('static', filename='img/404.png') }}" alt="">
-    <br>
-    <br>
-    <a href="/" class="ui button blue">Go Home</a>
-</center>
+{% block title %}404 - Not Found{% endblock %}
 
-<script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
-</body>
-</html>
+{% block content %}
+  <img class="c-http-status__img" src="{{ url_for('static', filename='img/http-status-404.svg') }}" alt="error 404">
+  <h1 class="c-http-status__title">Oops!</h1>
+  <p>
+    This page isn’t available, sorry. Try searching for something else.
+    <br>Or go to <a href="/">homepage</a>.
+  </p>
+  <form action="" class="c-http-status__search js-search-form">
+    <input class="js-search-form__input" type="text" placeholder="Search...">
+    <button class="js-search-form__btn" type="submit">
+      {% include 'partials/icon-search.html' %}
+    </button>
+  </form>
+
+  <script type="application/javascript">
+    const searchForm = document.querySelector('.js-search-form');
+    const searchFormInput = document.querySelector('.js-search-form__input');
+    const searchFormBtn = document.querySelector('.js-search-form__btn');
+
+    const performSearch = function () {
+      const query = searchFormInput.value;
+
+      if (query.length > 0) {
+        window.location = "/search?q=" + query;
+      }
+    };
+
+    searchFormBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      performSearch()
+    });
+
+    searchFormInput.addEventListener('keypress', function(e) {
+      if (e.which == 13) {
+        performSearch();
+        return false;
+      }
+    });
+  </script>
+{% endblock %}

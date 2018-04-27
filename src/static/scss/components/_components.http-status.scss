@@ -1,0 +1,149 @@
+/*------------------------------------*\
+    #HTTP STATUS
+\*------------------------------------*/
+
+.c-http-status {
+    align-items: center;
+    color: #5f5f5f;
+    display: flex;
+    font-size: 14px;
+    height: 100vh;
+    justify-content: center;
+    text-align: center;
+}
+
+    .c-http-status__content {
+        flex: 0 0 auto;
+        max-width: 100%;
+        padding: $spacing-unit-small;
+
+        @include mq($until: medium) {
+            width: 30em;
+
+            br {
+                display: none;
+            }
+        }
+
+        @include mq(medium) {
+            padding: $spacing-unit;
+        }
+
+        @include mq(large) {
+            padding: $spacing-unit-large;
+        }
+    }
+
+    .c-http-status__title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: $spacing-unit-tiny;
+    }
+
+    .c-http-status__img {
+        display: block;
+        margin-bottom: 30px;
+        margin-left: auto;
+        margin-right: auto;
+
+        @include mq($until: medium) {
+            max-width: 260px;
+            width: 60%;
+        }
+    }
+
+    /**
+     * 1. Removing inner shadow on iOS inputs.
+     * 2. Remove IE clear icon.
+     * 2. Reset browser defaults.
+     * 3. Force all button-styled elements to indicate they are clickable.
+     */
+    .c-http-status__search {
+        $buton-width: 46px;
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: $spacing-unit;
+        max-width: 380px;
+        width: 100%;
+        position: relative;
+
+        input {
+            -webkit-appearance: none; /* [1] */
+            background: #fff;
+            border: 1px solid #dadada;
+            border-radius: 2px;
+            box-sizing: border-box;
+            display: block;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.2;
+            padding: .85em $spacing-unit;
+            padding-right: $buton-width;
+            transition: $global-transition;
+            vertical-align: middle;
+            width: 100%;
+
+            &[readonly] {
+                cursor: text;
+            }
+
+            &::-ms-clear {
+                display: none; /* [2] */
+            }
+
+            &:disabled {
+                cursor: default;
+            }
+
+            &:hover {
+                border-color: darken(#dadada, 8%);
+            }
+
+            &:focus {
+                border-color: color('brand-secondary');
+            }
+        }
+
+        button {
+            background: none;
+            border: none;
+            color: currentColor;
+            display: inline-block;
+            line-height: 1;
+            margin: 0; /* [3] */
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+            text-shadow: none;
+            transition: $global-transition;
+            user-select: none;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: $buton-width;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            &:hover {
+                cursor: pointer; /* [4] */
+                text-decoration: none;
+            }
+
+            &:not(:disabled) {
+                &:hover {
+                    color: color('brand-secondary');
+                }
+            }
+
+            &:disabled {
+                cursor: default;
+                opacity: .6;
+            }
+
+            svg {
+                fill: currentColor;
+            }
+        }
+    }
