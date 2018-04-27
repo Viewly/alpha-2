@@ -5,10 +5,8 @@
 This is the second iteration of the Viewly Alpha (https://alpha.view.ly).
 
 ## Staging
-![Cloud66](https://app.cloud66.com/stacks/badge/dfc317287d0b0e00efe13a00cfecd90d.svg)
-![CircleCI](https://circleci.com/gh/Viewly/alpha-2/tree/master.svg?style=svg)
-
-[Try Staging](https://alpha-staging.view.ly)
+[![Cloud66](https://app.cloud66.com/stacks/badge/dfc317287d0b0e00efe13a00cfecd90d.svg)](https://alpha-staging.view.ly)
+[![CircleCI](https://circleci.com/gh/Viewly/alpha-2/tree/master.svg?style=svg&circle-token=37b640cdc89dd1bd31f7a35e7be2ec8a47eb712a)](https://circleci.com/gh/Viewly/alpha-2/tree/master)
 
 # Running in Docker
 To run in Docker, make sure you have latest `docker` and `docker-compose` installed.
