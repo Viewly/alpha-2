@@ -176,6 +176,17 @@ class TranscoderJob(db.Model):
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
 
 
+class VideoFrameAnalysis(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    frame_id = db.Column(db.String(10))
+    video_id = db.Column(db.String(12))
+
+    labels = db.Column(JSONB)
+    nsfw_labels = db.Column(JSONB)
+
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
