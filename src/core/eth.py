@@ -5,6 +5,7 @@ from eth_utils import (
     keccak,
     is_0x_prefixed,
     to_checksum_address,
+    from_wei,
 )
 from eth_utils import (
     is_address,
@@ -56,6 +57,12 @@ def view_token_balance(address: str, block_num: int = 'latest'):
     instance = view_token()
     address = to_checksum_address(address)
     return instance.functions.balanceOf(address).call(block_identifier=block_num)
+
+
+def view_token_supply():
+    instance = view_token()
+    supply = instance.functions.totalSupply().call()
+    return from_wei(supply, 'ether')
 
 
 def is_video_published(video_id: str):
