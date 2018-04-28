@@ -31,7 +31,6 @@ class Rekognition:
                     'Name': key,
                 }
             },
-            MaxLabels=kwargs.get('max_labels', 100),
             MinConfidence=kwargs.get('min_confidence', 80),
         )
         return response.get('ModerationLabels')

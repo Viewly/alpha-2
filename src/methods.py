@@ -6,6 +6,7 @@ def generate_manifest(video):
         'formats': video.file_mapper.video_formats,
         'cover': get_thumbnail(video, 'large'),
         'timeline': video.file_mapper.timeline_file,
+        'is_nsfw': video.is_nsfw,
         'info': {
             'duration': video.video_metadata.get('duration', 0),
         }

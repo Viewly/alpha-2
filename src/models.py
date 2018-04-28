@@ -117,6 +117,7 @@ class Video(db.Model):
 
     # inferred properties
     # -------------------
+    analyzed_at = db.Column(db.DateTime(timezone=True))
     language = db.Column(db.String(2))
     is_nsfw = db.Column(db.Boolean)  # or integer for confidence
 
