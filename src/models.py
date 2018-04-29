@@ -117,6 +117,7 @@ class Video(db.Model):
 
     # inferred properties
     # -------------------
+    analyzed_at = db.Column(db.DateTime(timezone=True))
     language = db.Column(db.String(2))
     is_nsfw = db.Column(db.Boolean)  # or integer for confidence
 
@@ -174,6 +175,17 @@ class TranscoderJob(db.Model):
     status = db.Column(db.Enum(TranscoderStatus), nullable=False)
     preset_type = db.Column(db.String(20), nullable=False)
     video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
+
+
+class VideoFrameAnalysis(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    frame_id = db.Column(db.String(10))
+    video_id = db.Column(db.String(12))
+
+    labels = db.Column(JSONB)
+    nsfw_labels = db.Column(JSONB)
+
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
 
 
 class Vote(db.Model):

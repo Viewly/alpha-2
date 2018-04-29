@@ -123,7 +123,9 @@ def new(page_num=0, items_per_page=18):
     page_num = page_num or int(request.args.get('page', 0))
 
     videos = (db.session.query(Video)
-              .filter(Video.published_at != None, Video.channel_id != None)
+              .filter(Video.published_at != None,
+                      Video.analyzed_at != None,
+                      Video.is_nsfw == False)
               .order_by(desc(Video.published_at))
               .limit(limit).offset(limit * page_num).all())
 
