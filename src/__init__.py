@@ -85,12 +85,6 @@ def reset_db():
     print(f'Database "{db_name}" has been reset.')
 
 
-# workaround flask issue #1907
-if not IS_PRODUCTION:
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.jinja_env.auto_reload = True
-    app.jinja_env.cache = {}
-
 # Initialize scss compilation in development
 if not IS_PRODUCTION:
     app.wsgi_app = SassMiddleware(app.wsgi_app, {

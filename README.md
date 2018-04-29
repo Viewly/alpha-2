@@ -67,9 +67,10 @@ pip install -r requirements.txt
 ```
 
 ## Environment Variables
-To run flask commands, you need `FLASK_APP` environment variable set.
+To run Flask in development, you need these environment variables set:
 ```
 export FLASK_APP=src/views.py
+export FLASK_ENV=development
 ```
 
 Here is the default environment (you may want to set these yourself):
@@ -89,7 +90,7 @@ of the readme_.
 ## Web App
 Run the Flask server:
 ```
-flask run --reload --debugger --port 5000
+flask run --port 5000
 ```
 
 ## Database Management
