@@ -97,7 +97,7 @@
                                 class="o-avatar o-avatar--huge"
                                 id="avatar-img">
                             {% if current_user.id == channel.user_id %}
-                                <a class="c-widget__action" href="javascript:" id="avatar-button">{% include 'partials/icon-edit.html' %}</a>
+                                <a class="c-widget__action" href="javascript:" id="avatar-button">{% include 'atoms/icon-edit.html' %}</a>
                             {% endif %}
                         </div>
                     </div>
@@ -147,11 +147,11 @@
                     <div class="c-thumbnail">
                         <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
                         <img class="c-thumbnail__img js-thumbnail-img" src="{{ guess_thumbnail_cdn_url(video.id) }}">
-                        {% include 'partials/icon-play.html' %}
+                        {% include 'atoms/icon-play.html' %}
                         <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
                         {% if current_user.id == channel.user_id %}
                             <a href="{{ url_for('upload.publish_add_details', video_id=video.id) }}" class="c-thumbnail__edit">
-                                {% include 'partials/icon-edit.html' %}
+                                {% include 'atoms/icon-edit.html' %}
                             </a>
                         {% endif %}
                     </div>
