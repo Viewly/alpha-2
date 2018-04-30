@@ -64,6 +64,11 @@ cron.conf.beat_schedule = {
         'schedule': crontab(minute='*/2'),
         'args': ()
     },
+    'analyze-new-videos': {
+        'task': 'src.tasks.cron.analyze_published_videos',
+        'schedule': crontab(minute='*/5'),
+        'args': ()
+    },
 }
 
 
@@ -161,6 +166,8 @@ def analyze_published_videos():
         - break analysis and determination of outcome into 2 steps
         - break the snapshot processing into a small reusable function
         - parallelize the Rekognition calls
+        - ensure 2 of the same videos arent being analyzed twice (if current task
+          takes longer than the beat schedule). Perhaps can use TTL redis key as a lock.
     """
     session = db_session()
     videos = session.query(Video).filter(
