@@ -10,6 +10,7 @@ from funcy import (
     compose,
     chunks,
 )
+from sqlalchemy import asc
 
 from . import (
     new_celery,
@@ -56,7 +57,7 @@ cron.conf.beat_schedule = {
     },
     'refresh-unpublished-videos': {
         'task': 'src.tasks.cron.refresh_unpublished_videos',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/2'),
         'args': ()
     },
     'evaluate-votes': {
@@ -102,7 +103,7 @@ def refresh_unpublished_videos():
     session = db_session()
     unpublished_videos = \
         session.query(Video).filter(
-            Video.channel_id is not None,
+            Video.channel_id.isnot(None),
             Video.published_at == None
         )
 
@@ -170,10 +171,12 @@ def analyze_published_videos():
           takes longer than the beat schedule). Perhaps can use TTL redis key as a lock.
     """
     session = db_session()
-    videos = session.query(Video).filter(
-        Video.analyzed_at == None,
-        Video.published_at is not None
-    ).limit(3)
+    videos = \
+        (session.query(Video).filter(
+            Video.analyzed_at == None,
+            Video.published_at != None)
+         .order_by(asc(Video.published_at))
+         .limit(2))
 
     rkg = Rekognition()
 
