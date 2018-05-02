@@ -27,22 +27,15 @@
                 </a>
             {% endif %}
             <div class="ui dropdown item">
-                <i class="list icon"></i>
-                <span class="c-header__btn__text">Channels</span>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <a class="item" href="{{ url_for('edit_profile') }}"><i
-                            class="browser icon"></i> My Channels</a>
-                    <a class="item" href="{{ url_for('channel.create') }}"><i
-                            class="plus icon"></i> Create a Channel</a>
-                </div>
-            </div>
-            <div class="ui dropdown item">
                 <img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="item" href="{{ url_for('edit_profile') }}"><i
-                            class="edit icon"></i> Edit Profile</a>
+                            class="list icon"></i> My Channels</a>
+                    <a class="item" href="{{ url_for('channel.create') }}"><i
+                            class="plus icon"></i> New Channel</a>
+                    <a class="item" href="{{ url_for('security.change_password') }}"><i
+                            class="key icon"></i> Change Password</a>
                     <a class="item" href="{{ url_for('security.logout') }}"><i
                             class="settings icon"></i> Log Out</a>
                 </div>
