@@ -1,6 +1,5 @@
 import datetime as dt
 import random
-from collections import Counter
 
 from celery.schedules import crontab
 from eth_utils import from_wei
@@ -10,7 +9,6 @@ from funcy import (
     compose,
     chunks,
 )
-from sqlalchemy import asc
 
 from . import (
     new_celery,
@@ -20,7 +18,6 @@ from .shared import generate_manifest_file
 from .transcoder import transcoder_post_processing
 from ..config import (
     DISTRIBUTION_GAME_DAYS,
-    S3_VIDEOS_BUCKET,
 )
 from ..core.et import get_job_status
 from ..core.eth import (
@@ -29,14 +26,11 @@ from ..core.eth import (
     get_infura_web3,
     find_block_from_timestamp,
 )
-from ..core.rkg import Rekognition
-from ..core.s3 import S3Transfer
 from ..models import (
     Video,
     Vote,
     TranscoderStatus,
     TranscoderJob,
-    VideoFrameAnalysis,
 )
 
 cron = new_celery(
@@ -63,11 +57,6 @@ cron.conf.beat_schedule = {
     'evaluate-votes': {
         'task': 'src.tasks.cron.evaluate_votes',
         'schedule': crontab(minute='*/2'),
-        'args': ()
-    },
-    'analyze-new-videos': {
-        'task': 'src.tasks.cron.analyze_published_videos',
-        'schedule': crontab(minute='*/5'),
         'args': ()
     },
 }
@@ -104,7 +93,7 @@ def refresh_unpublished_videos():
     unpublished_videos = \
         session.query(Video).filter(
             Video.channel_id.isnot(None),
-            Video.published_at == None
+            Video.published_at.is_(None)
         )
 
     for video in unpublished_videos:
@@ -131,7 +120,7 @@ def evaluate_votes():
     days = DISTRIBUTION_GAME_DAYS
 
     session = db_session()
-    pending_votes = session.query(Vote).filter(Vote.token_amount == None)
+    pending_votes = session.query(Vote).filter(Vote.token_amount.is_(None))
 
     w3 = get_infura_web3()
 
@@ -159,78 +148,3 @@ def evaluate_votes():
         vote.delegated_amount = 0  # todo: implement delegation contract
         session.add(vote)
         session.commit()
-
-
-@cron.task(ignore_result=True)
-def analyze_published_videos():
-    """ Refactoring todo:
-        - break analysis and determination of outcome into 2 steps
-        - break the snapshot processing into a small reusable function
-        - parallelize the Rekognition calls
-        - ensure 2 of the same videos arent being analyzed twice (if current task
-          takes longer than the beat schedule). Perhaps can use TTL redis key as a lock.
-    """
-    session = db_session()
-    videos = \
-        (session.query(Video).filter(
-            Video.analyzed_at == None,
-            Video.published_at != None)
-         .order_by(asc(Video.published_at))
-         .limit(2))
-
-    rkg = Rekognition()
-
-    for video in videos:
-        nsfw = []
-        for snapshot in list_video_snapshots(video.id):
-            nsfw_labels = rkg.nsfw(snapshot['Key'])
-            labels = rkg.labels(snapshot['Key'])
-
-            if labels or nsfw_labels:
-                vfa = VideoFrameAnalysis(
-                    frame_id=snapshot['Key'].split('/')[-1],
-                    video_id=video.id,
-                    labels=labels,
-                    nsfw_labels=nsfw_labels,
-                    created_at=dt.datetime.utcnow(),
-                )
-                session.add(vfa)
-                nsfw.extend(nsfw_labels)
-
-        # Needs to contain X (2) offending labels
-        video.is_nsfw = bool(is_nsfw(nsfw) >= 2)
-        video.analyzed_at = dt.datetime.utcnow()
-
-        session.add(video)
-        session.commit()
-
-        # regen video manifest file to contain nsfw status
-        generate_manifest_file.delay(video.id)
-
-
-def list_video_snapshots(video_id, **kwargs):
-    s3 = S3Transfer(bucket_name=S3_VIDEOS_BUCKET)
-    result = s3.client.list_objects_v2(
-        Bucket=S3_VIDEOS_BUCKET,
-        MaxKeys=kwargs.get('max_keys', 100),
-        Prefix=f'snapshots/{video_id}/random/')
-
-    return result.get('Contents', [])
-
-
-def is_nsfw(labels, filter_list=None, min_confidence=95, min_occurrence=2):
-    """
-    Return a number of high confidence, re-occurring labels
-    that intersect the filtering list.
-    """
-    filter_list = filter_list or (
-        'Explicit Nudity',
-        'Graphic Nudity',
-        'Graphic Female Nudity',
-        'Graphic Male Nudity',
-        'Sexual Activity',
-    )
-
-    labels = (x['Name'] for x in labels if x['Confidence'] > min_confidence)
-    common_labels = {k: v for k, v in Counter(labels).items() if v >= min_occurrence}
-    return len(set(common_labels) & set(filter_list))

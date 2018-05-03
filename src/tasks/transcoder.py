@@ -2,6 +2,8 @@ from . import (
     db_session,
     new_celery,
 )
+from .analyze import extract_labels_from_video
+from .shared import generate_manifest_file
 from ..core.et import (
     create_dash_job,
     create_fallback_job,
@@ -22,7 +24,6 @@ from ..models import (
     TranscoderStatus,
     TranscoderJob,
 )
-from .shared import generate_manifest_file
 
 transcoder = new_celery(
     'transcoder',
@@ -135,4 +136,5 @@ def transcoder_post_processing(video_id: str, transcoder_job_id: str):
     session.add(video)
     session.commit()
 
+    extract_labels_from_video(video_id)
     generate_manifest_file.delay(video_id)
