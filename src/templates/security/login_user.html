@@ -17,13 +17,12 @@
         {{ render_field_with_errors(login_user_form.email) }}
         {{ render_field_with_errors(login_user_form.password) }}
 
-        <div class="c-field--forgot-password  o-grid o-grid--auto">
+        <div class="c-field--forgot-password o-grid o-grid--auto o-grid--between">
             <div class="o-grid__cell">
                 {{ render_checkbox_field(login_user_form.remember) }}
             </div>
-            <div class="o-grid__cell u-text-right">
+            <div class="o-grid__cell">
                 <a href="{{ url_for_security('forgot_password') }}">Forgot password?</a>
-                <br>
             </div>
         </div>
         <button class="c-btn--primary ui blue button large">Log In</button>

@@ -17,6 +17,13 @@ body {
     }
 }
 
+.o-grid--auto {
+    & > .o-grid__cell {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
 .button {
     border-radius: 2px !important;
     white-space: nowrap;
