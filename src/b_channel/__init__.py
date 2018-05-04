@@ -93,7 +93,7 @@ def edit(channel_id):
     chan = db.session.query(Channel).filter_by(id=channel_id).one()
 
     form.name.data = form.name.data or chan.display_name
-    form.description.data = form.description.data or chan.description
+    form.description.data = form.description.data or chan.description or ''
 
     if form.validate_on_submit():
         display_name = form.name.data.strip()
