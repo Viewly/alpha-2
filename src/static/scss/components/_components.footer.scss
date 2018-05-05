@@ -3,6 +3,7 @@
 \*------------------------------------*/
 
 $tweakpoint-footer:                     680px;
+$tweakpoint-footer-medium:              750px;
 $tweakpoint-footer-large:               880px;
 
 $footer-logo-height:                    34px;
@@ -28,7 +29,7 @@ $footer-logo-height:                    34px;
      * Footer logo
      */
     .c-footer__logo {
-        display: block;
+        display: inline-block;
 
         img {
             display: block;
@@ -50,7 +51,7 @@ $footer-logo-height:                    34px;
         margin-bottom: $spacing-unit;
         text-transform: uppercase;
 
-        @include mq($until: $tweakpoint-footer) {
+        @include mq($until: $tweakpoint-footer-medium) {
             margin-bottom: $spacing-unit-tiny;
         }
     }
@@ -67,29 +68,24 @@ $footer-logo-height:                    34px;
      */
     .c-footer__content {
         margin-bottom: $spacing-unit-large;
+
+        @include mq($until: $tweakpoint-footer) {
+            text-align: center;
+        }
     }
 
         .c-footer__content__cell {
-            @include mq($from: $tweakpoint-footer, $until: large) {
-                width: 50%;
+            width: 100%;
 
+            @include mq($tweakpoint-footer) {
+                flex: 0 0 auto;
+                width: auto;
+            }
+
+            @include mq($from: $tweakpoint-footer-medium, $until: extralarge) {
                 &:last-child {
                     margin-top: $footer-logo-height + $spacing-unit; /* [1] */
                 }
-            }
-
-            @include mq($from: large, $until: $tweakpoint-footer-large) {
-                &:first-child {
-                    width: 56%;
-                }
-
-                &:last-child {
-                    width: 44%;
-                }
-            }
-
-            @include mq($tweakpoint-footer-large) {
-                width: 50%;
             }
         }
 
@@ -97,7 +93,7 @@ $footer-logo-height:                    34px;
          * Footer main section
          */
         .c-footer__main {
-            @include mq(large) {
+            @include mq(extralarge) {
                 display: flex;
             }
         }
@@ -106,16 +102,10 @@ $footer-logo-height:                    34px;
                 flex: 0 0 auto;
 
                 &:not(:last-child) {
-                    @include mq($until: large) {
-                        margin-bottom: $spacing-unit;
-                    }
-
-                    @include mq(large) {
-                        margin-right: 50px;
-                    }
+                    margin-bottom: $spacing-unit;
 
                     @include mq(extralarge) {
-                        margin-right: 80px;
+                        margin-right: 60px;
                     }
                 }
             }
@@ -128,10 +118,19 @@ $footer-logo-height:                    34px;
 
             @include mq($tweakpoint-footer) {
                 border-left: 1px solid #dbdcdd;
-                display: flex;
                 height: 100%;
-                padding-left: $spacing-unit-huge;
+                margin-left: $spacing-unit-large;
+                padding-left: $spacing-unit-large;
                 margin-top: 0;
+            }
+
+            @include mq($tweakpoint-footer-medium) {
+                display: flex;
+            }
+
+            @include mq($tweakpoint-footer-large) {
+                margin-left: $spacing-unit-huge;
+                padding-left: $spacing-unit-huge;
             }
 
             ul {
@@ -141,7 +140,7 @@ $footer-logo-height:                    34px;
             }
 
             li {
-                @include mq($until: $tweakpoint-footer) {
+                @include mq($until: $tweakpoint-footer-medium) {
                     display: inline-block;
                     vertical-align: middle;
 
@@ -164,16 +163,16 @@ $footer-logo-height:                    34px;
                 flex: 0 0 auto;
 
                 &:not(:last-child) {
-                    @include mq($until: $tweakpoint-footer) {
+                    @include mq($until: $tweakpoint-footer-medium) {
                         margin-bottom: $spacing-unit + 10;
                     }
 
-                    @include mq($tweakpoint-footer) {
-                        margin-right: 50px;
+                    @include mq($tweakpoint-footer-medium) {
+                        margin-right: 40px;
                     }
 
                     @include mq($tweakpoint-footer-large) {
-                        margin-right: 80px;
+                        margin-right: 60px;
                     }
                 }
             }
@@ -190,21 +189,6 @@ $footer-logo-height:                    34px;
         @include mq($until: $tweakpoint-footer) {
             padding-top: $spacing-unit;
             padding-bottom: $spacing-unit;
-        }
-
-        li {
-            list-style-type: none;
-
-            a {
-                display: block;
-                opacity: .8;
-                transition: $global-transition;
-
-                &:hover {
-                    opacity: 1;
-                    text-decoration: none;
-                }
-            }
         }
     }
 
@@ -223,22 +207,69 @@ $footer-logo-height:                    34px;
             }
         }
 
-        .c-footer__bottom-bar__token-address {
-            @include mq($until: medium) {
-                font-size: 12px;
-            }
+            .c-footer__bottom-bar__url-list {
+                ul {
+                    list-style-type: none;
+                    margin: 0;
+                    padding: 0;
 
-            @include mq($until: $tweakpoint-footer-large) {
-                display: block;
-            }
+                    li {
+                        display: inline-block;
+                        vertical-align: middle;
 
-            a {
-                color: inherit;
+                        &:not(:first-child) {
+                            &:before {
+                                background-color: color('light-grey');
+                                border-radius: 50%;
+                                content: '';
+                                display: inline-block;
+                                height: 3px;
+                                width: 3px;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
 
-                &:hover {
-                    color: color('brand-secondary');
+                    @include mq(medium) {
+                        display: inline-block;
+                        margin-left: $spacing-unit-tiny;
+                        vertical-align: top;
+                    }
+                }
+
+                span {
+                    @include mq(medium) {
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                }
+
+                a {
+                    color: inherit;
+                    display: inline-block;
+                    vertical-align: top;
+
+                    &:hover {
+                        color: color('brand-secondary');
+                    }
                 }
             }
-        }
+
+            .c-footer__bottom-bar__social-media {
+                li {
+                    list-style-type: none;
+
+                    a {
+                        display: block;
+                        opacity: .8;
+                        transition: $global-transition;
+
+                        &:hover {
+                            opacity: 1;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
 
 

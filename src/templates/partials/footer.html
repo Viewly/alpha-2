@@ -5,14 +5,18 @@
       <div class="c-footer__content__cell o-grid__cell">
 
         <div class="c-footer__main">
-          <a class="c-footer__logo c-footer__main__item" href="/">
-            <img src="{{ url_for('static', filename='img/logo.svg') }}" class="logo" alt="">
-          </a>
+          <div class="c-footer__main__item">
+            <a class="c-footer__logo" href="/">
+              <img src="{{ url_for('static', filename='img/logo.svg') }}"
+              class="logo" alt="">
+            </a>
+          </div>
           <div class="c-footer__main__item">
             <h4 class="c-footer__heading">Viewly Alpha</h4>
             <p>
               Alpha is an experimental video platform with
-              <br>tokenized incentives. <a href="{{ url_for('.about') }}">Learn more.</a>
+              <br>tokenized incentives. <a href="{{ url_for('.about') }}">Learn
+              more.</a>
             </p>
             <a href="https://viewly.typeform.com/to/MXeBzl"
               target="_blank"
@@ -29,16 +33,14 @@
             <h4 class="c-footer__heading">About</h4>
             <ul>
               <li>
-                <a href="https://view.ly">Viewly</a>
-              </li>
-              <li>
                 <a href="https://blog.view.ly">Blog</a>
               </li>
               <li>
-                <a href="https://creator.view.ly">Creators</a>
+                <a href="https://github.com/Viewly">Github</a>
               </li>
               <li>
-                <a href="https://github.com/Viewly">Github</a>
+                <a href="https://viewly.typeform.com/to/eGUK0a"
+                target="_blank">Contact</a>
               </li>
             </ul>
           </div>
@@ -47,16 +49,26 @@
             <h4 class="c-footer__heading">Legal</h4>
             <ul>
               <li>
-                <a href="https://viewly.typeform.com/to/cqwcMb" target="_blank">DMCA</a>
-              </li>
-              <li>
-                <a href="https://viewly.typeform.com/to/eGUK0a" target="_blank">Contact Us</a>
+                <a href="https://viewly.typeform.com/to/cqwcMb"
+                target="_blank">DMCA</a>
               </li>
               <li>
                 <a href="#">Terms of Use</a>
               </li>
               <li>
                 <a href="#">Privacy</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="c-footer__sidebar__item">
+            <h4 class="c-footer__heading">Community</h4>
+            <ul>
+              <li>
+                <a href="https://t.me/viewly">Telegram</a>
+              </li>
+              <li>
+                <a href="#">Discord</a>
               </li>
             </ul>
           </div>
@@ -71,11 +83,23 @@
     <div class="o-wrapper">
       <div class="o-grid o-grid--middle o-grid--between">
         <div class="c-footer__bottom-bar__cell o-grid__cell">
-          VIEW Token:
-          <span class="c-footer__bottom-bar__token-address"><a href="https://etherscan.io/address/0xF03f8D65BaFA598611C3495124093c56e8F638f0" target="_blank">0xF03f8D65BaFA598611C3495124093c56e8F638f0</a></span>
+          <div class="c-footer__bottom-bar__url-list">
+            <span>VIEW Token on:</span>
+            <ul>
+              <li>
+                <a href="https://etherscan.io/token/0xF03f8D65BaFA598611C3495124093c56e8F638f0" target="_blank">Etherscan</a>
+              </li>
+              <li>
+                <a href="https://coinlib.io/coin/VIEW/Viewly" target="_blank">Coinlib</a>
+              </li>
+              <li>
+                <a href="https://idex.market/eth/view" target="_blank">IDEX</a>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="c-footer__bottom-bar__cell o-grid__cell">
-          <ul class="o-layout o-layout--auto o-layout--small o-layout--middle">
+          <ul class="c-footer__bottom-bar__social-media o-layout o-layout--auto o-layout--small o-layout--middle">
             <li class="o-layout__item">
               <a href="https://medium.com/view-ly" target="_blank">
                 {% include 'atoms/icon-medium.html' %}
