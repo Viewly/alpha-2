@@ -1,11 +1,15 @@
 import hashlib
 import os
 import shutil
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
 from functools import wraps
+from typing import List, Any, Union
 
 from funcy import contextmanager
 from toolz import keyfilter
+
+logger = None
 
 
 def sha1sum(filename):
@@ -86,6 +90,33 @@ def allowed_extension(filename, whitelist):
     return '.' in filename and filename.rsplit('.', 1)[-1] in whitelist
 
 
+# logging
+# -------
+def log_exception():
+    """ Log to sentry.io. Alternatively,
+    fallback to stdout stacktrace dump."""
+    global logger
+
+    dsn = os.getenv('SENTRY_DSN')
+    if dsn:
+        import raven
+        logger = raven.Client(dsn)
+
+    if logger:
+        logger.captureException()
+    else:
+        import traceback
+        print(traceback.format_exc())
+
+
+@contextmanager
+def log_exceptions():
+    try:
+        yield
+    except:
+        log_exception()
+
+
 # toolz
 # -----
 def keep(d, whitelist):
@@ -94,3 +125,62 @@ def keep(d, whitelist):
 
 def omit(d, blacklist):
     return keyfilter(lambda k: k not in blacklist, d)
+
+
+# ---------------
+# Multi-Threading
+# ---------------
+def ensure_list(parameter):
+    return parameter if type(parameter) in (list, tuple, set) else [parameter]
+
+
+def dependency_injection(fn_args, dep_args):
+    """
+    >>> dependency_injection([1, None, None], [2,3])
+    [1, 2, 3]
+    """
+    fn_args = ensure_list(fn_args)
+    dep_args = ensure_list(dep_args)[::-1]
+
+    args = []
+    for fn_arg in fn_args:
+        next_arg = fn_arg if fn_arg is not None else dep_args.pop()
+        args.append(next_arg)
+
+    return args
+
+
+def thread_multi(
+        fn,
+        fn_args: List[Any],
+        dep_args: List[Union[Any, List[Any]]],
+        fn_kwargs=None,
+        max_workers=100,
+        re_raise_errors=True):
+    """ Run a function /w variable inputs concurrently.
+
+    Args:
+        fn: A pointer to the function that will be executed in parallel.
+        fn_args: A list of arguments the function takes. None arguments will be
+        displaced trough `dep_args`.
+        dep_args: A list of lists of arguments to displace in `fn_args`.
+        fn_kwargs: Keyword arguments that `fn` takes.
+        max_workers: A cap of threads to run in parallel.
+        re_raise_errors: Throw exceptions that happen in the worker pool.
+    """
+    if not fn_kwargs:
+        fn_kwargs = dict()
+
+    fn_args = ensure_list(fn_args)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = (executor.submit(fn, *dependency_injection(fn_args, args), **fn_kwargs)
+                   for args in dep_args)
+
+        for future in as_completed(futures):
+            try:
+                yield future.result()
+            except Exception as e:
+                log_exception()
+                if re_raise_errors:
+                    raise e

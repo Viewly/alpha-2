@@ -8,6 +8,7 @@ from funcy import (
     rpartial,
     compose,
     chunks,
+    lkeep,
 )
 
 from . import (
@@ -26,6 +27,7 @@ from ..core.eth import (
     get_infura_web3,
     find_block_from_timestamp,
 )
+from ..core.utils import thread_multi
 from ..models import (
     Video,
     Vote,
@@ -96,8 +98,20 @@ def refresh_unpublished_videos():
             Video.published_at.is_(None)
         )
 
-    for video in unpublished_videos:
-        if is_video_published(video.id):
+    def is_published(video_id):
+        return is_video_published(video_id), video_id
+
+    publish_results = lkeep(thread_multi(
+        fn=is_published,
+        fn_args=[None],
+        dep_args=[video.id for video in unpublished_videos],
+        max_workers=10,
+        re_raise_errors=False,
+    ))
+
+    for status, video_id in publish_results:
+        if status:
+            video = session.query(Video).filter_by(id=video_id).one()
             video.published_at = dt.datetime.utcnow()
             session.add(video)
 
