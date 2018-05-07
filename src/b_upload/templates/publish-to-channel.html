@@ -105,7 +105,10 @@
     <script>
         var publishForm = function () {
             $('#publish-video').click(function () {
-                var channel_id = $(".dropdown").dropdown('get value')[4];
+                var channel_id = $(".ui.selection.dropdown").dropdown('get value');
+                if (typeof(channel_id) === "object") {
+                    channel_id = channel_id[4];
+                }
                 if (!channel_id) {
                     $('.mini.modal').modal('show');
                     return;
