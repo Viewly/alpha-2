@@ -19,21 +19,27 @@
             </a>
         </div>
         {% if current_user.is_active %}
-            {% if current_user.can_upload %}
-                <a class="item c-header__btn c-header__btn--upload ui primary basic button"
-                   href="{{ url_for('upload.upload_videos') }}">
-                    <i class="icon upload"></i>
-                    <span class="c-header__btn__text">Upload</span>
-                </a>
-            {% endif %}
+            <div class="ui dropdown item">
+                <i class="plus icon"></i>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    {% if current_user.can_upload %}
+                        <a class="item"
+                           href="{{ url_for('upload.upload_videos') }}">
+                            <i class="icon upload"></i>
+                            <span class="c-header__btn__text">Upload</span>
+                        </a>
+                    {% endif %}
+                    <a class="item" href="{{ url_for('channel.create') }}"><i
+                            class="user plus icon"></i> New Channel</a>
+                </div>
+            </div>
             <div class="ui dropdown item">
                 <img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="item" href="{{ url_for('edit_profile') }}"><i
                             class="list icon"></i> My Channels</a>
-                    <a class="item" href="{{ url_for('channel.create') }}"><i
-                            class="plus icon"></i> New Channel</a>
                     <a class="item" href="{{ url_for('security.change_password') }}"><i
                             class="key icon"></i> Change Password</a>
                     <a class="item" href="{{ url_for('security.logout') }}"><i
