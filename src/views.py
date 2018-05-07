@@ -92,11 +92,13 @@ def search(page_num=0, items_per_page=20):
            v.description,
            v.video_metadata,
            v.published_at,
+           v.is_nsfw,
            c.display_name AS channel_name, c.id AS channel_id
     FROM video v LEFT JOIN channel c
     ON v.channel_id = c.id
     WHERE to_tsvector(v.title || ' ' || v.description) @@ plainto_tsquery(:search)
      AND v.published_at IS NOT NULL
+     AND v.analyzed_at IS NOT NULL
     ORDER BY v.published_at DESC
     LIMIT :limit OFFSET :offset;
     """
@@ -271,6 +273,7 @@ def utility_processor():
         video_publisher_address=lambda: app.config['VIDEO_PUBLISHER_ADDRESS'],
         get_auth_token_cached=get_auth_token_cached,
         can_vote=can_vote,
+        nsfw_cover_img='https://i.imgur.com/kXBgFBy.png'
     )
 
 

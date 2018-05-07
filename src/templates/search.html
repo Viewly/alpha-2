@@ -11,7 +11,7 @@
                 <div class="c-video">
                     <div class="c-thumbnail">
                         <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
-                        <img class="c-thumbnail__img js-thumbnail-img" src="{{ guess_thumbnail_cdn_url(video.id) }}">
+                        <img class="c-thumbnail__img js-thumbnail-img" src="{% if video.is_nsfw %}{{ nsfw_cover_img }}{% else %}{{ guess_thumbnail_cdn_url(video.id) }}{% endif %}">
                         {% include 'atoms/icon-play.html' %}
                         <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
                     </div>
