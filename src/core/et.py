@@ -22,6 +22,16 @@ def get_job_status(transcoder_job_id: str):
     return get_job(transcoder_job_id)['Job']['Status']
 
 
+def cancel_job(transcoder_job_id: str):
+    et = boto3.client(
+        'elastictranscoder',
+        region_name=config['region_name'],
+        aws_access_key_id=AWS_MANAGER_PUBLIC_KEY,
+        aws_secret_access_key=AWS_MANAGER_PRIVATE_KEY,
+    )
+    return et.cancel_job(Id=transcoder_job_id).get('Job')
+
+
 def extract_errors(transcoder_job: dict):
     from funcy import merge, where, lpluck
     job = transcoder_job['Job']
