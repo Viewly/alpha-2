@@ -45,7 +45,7 @@ security = Security(app, user_datastore)
 # Register Blueprints
 from .b_upload import upload as upload_blueprint
 
-app.register_blueprint(upload_blueprint, url_prefix='/upload/')
+app.register_blueprint(upload_blueprint, url_prefix='/upload')
 
 from .b_channel import channel as channel_blueprint
 

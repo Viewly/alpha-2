@@ -71,7 +71,7 @@ def upload_videos():
     )
 
 
-@upload.route('s3/sign', methods=['POST'])
+@upload.route('/s3/sign', methods=['POST'])
 @can_upload
 @login_required
 def s3_signature():
@@ -130,7 +130,7 @@ def s3_signature():
     return resp
 
 
-@upload.route("s3/success", methods=['GET', 'POST'])
+@upload.route("/s3/success", methods=['GET', 'POST'])
 @can_upload
 @login_required
 def s3_success():
@@ -167,7 +167,7 @@ def s3_success():
     )
 
 
-@upload.route("s3/thumb_success", methods=['GET', 'POST'])
+@upload.route("/s3/thumb_success", methods=['GET', 'POST'])
 @can_upload
 @login_required
 def s3_thumb_success():
@@ -194,7 +194,7 @@ def s3_thumb_success():
     )
 
 
-@upload.route("s3/avatar_success", methods=['GET', 'POST'])
+@upload.route("/s3/avatar_success", methods=['GET', 'POST'])
 @login_required
 def s3_avatar_success():
     channel = Channel.query.filter_by(
@@ -221,7 +221,7 @@ def s3_avatar_success():
     )
 
 
-@upload.route("s3/delete/<string:key>", methods=['POST', 'DELETE'])
+@upload.route("/s3/delete/<string:key>", methods=['POST', 'DELETE'])
 @login_required
 def s3_delete(key):
     """ Route for deleting files off S3. Uses the SDK. """
@@ -243,7 +243,7 @@ def s3_delete(key):
 
 # Delete
 # ------
-@upload.route("delete/<string:video_id>", methods=['POST', 'DELETE'])
+@upload.route("/delete/<string:video_id>", methods=['POST', 'DELETE'])
 @login_required
 def delete_video(video_id):
     """ Delete unpublished video from S3 and database. """
@@ -265,7 +265,7 @@ class AddDetailsForm(FlaskForm):
     description = TextAreaField('Short description')
 
 
-@upload.route("publish/add_details/<string:video_id>", methods=['GET', 'POST'])
+@upload.route("/publish/add_details/<string:video_id>", methods=['GET', 'POST'])
 @login_required
 def publish_add_details(video_id):
     """ Publish the last uploaded video """
@@ -304,7 +304,7 @@ def publish_add_details(video_id):
     )
 
 
-@upload.route("publish/add_thumbnails/<string:video_id>", methods=['GET', 'POST'])
+@upload.route("/publish/add_thumbnails/<string:video_id>", methods=['GET', 'POST'])
 @login_required
 def publish_add_thumbnails(video_id):
     """ Handle Thumbnail Uploads """
@@ -330,7 +330,7 @@ def publish_add_thumbnails(video_id):
     )
 
 
-@upload.route("publish/to_channel/<string:video_id>", methods=['GET', 'POST'])
+@upload.route("/publish/to_channel/<string:video_id>", methods=['GET', 'POST'])
 @login_required
 def publish_to_channel(video_id):
     """ Publish the last uploaded video """
@@ -368,7 +368,7 @@ def publish_to_channel(video_id):
     )
 
 
-@upload.route("publish/to_ethereum/<string:video_id>", methods=['GET'])
+@upload.route("/publish/to_ethereum/<string:video_id>", methods=['GET'])
 @login_required
 def publish_to_ethereum(video_id):
     """ Publish the last uploaded video """
@@ -387,7 +387,7 @@ def publish_to_ethereum(video_id):
     )
 
 
-@upload.route("publish")
+@upload.route("/publish")
 @login_required
 def publish_list_uploads():
     to_publish = db.session.query(Video).filter_by(
