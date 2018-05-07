@@ -94,3 +94,12 @@ class S3Transfer:
             self._bucket_name,
             key,
         )
+
+    def ls(self, prefix: str):
+        """ Limited to 1000 entries. """
+        result = self.client.list_objects_v2(
+            Bucket=self._bucket_name,
+            MaxKeys=1000,
+            Prefix=prefix)
+
+        return result.get('Contents', [])

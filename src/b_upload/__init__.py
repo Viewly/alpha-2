@@ -4,7 +4,6 @@ import hashlib
 import hmac
 
 import boto3
-from botocore.exceptions import ClientError
 from flask import (
     Blueprint,
     render_template,
@@ -26,12 +25,16 @@ from wtforms import (
 )
 
 from .. import app, db
+from ..core.et import cancel_job
+from ..core.s3 import S3Transfer
 from ..methods import get_thumbnail_cdn_url
 from ..models import (
     Video,
     FileMapper,
     Channel,
     TranscoderJob,
+    VideoFrameAnalysis,
+    TranscoderStatus,
 )
 from ..tasks.thumbnails import process_thumbnails, process_avatar
 from ..tasks.transcoder import start_transcoder_job
@@ -407,28 +410,72 @@ def publish_list_uploads():
 # Helpers
 # -------
 def delete_unpublished_video(video: Video):
-    s3 = boto3.resource(
+    file_mapper_obj = dict(
+        s3_upload_bucket=video.file_mapper.s3_upload_bucket,
+        s3_upload_video_key=video.file_mapper.s3_upload_video_key,
+        s3_upload_thumbnail_key=video.file_mapper.s3_upload_thumbnail_key,
+    )
+    delete_video_sql(video.id)
+    delete_video_files(video.id, file_mapper_obj)
+    return make_response('', 200)
+
+
+def delete_video_sql(video_id):
+    video = db.session.query(Video).filter_by(id=video_id).one()
+    assert video.published_at is None, 'Cannot delete a published video'
+
+    # cancel transcoding jobs
+    for job in db.session.query(TranscoderJob).filter_by(video_id=video.id):
+        if job.status == TranscoderStatus.processing:
+            cancel_job(job.id)
+
+    # delete orphaned (non-cascading entries)
+    db.session.query(TranscoderJob).filter_by(video_id=video_id).delete()
+    db.session.query(VideoFrameAnalysis).filter_by(video_id=video_id).delete()
+
+    db.session.delete(video)
+    db.session.commit()
+
+
+def delete_video_files(video_id: str, file_mapper_obj: dict):
+    # delete upload files
+    s3 = boto3.client(
         's3',
         region_name=app.config['S3_UPLOADS_REGION'],
         aws_access_key_id=app.config['AWS_MANAGER_PUBLIC_KEY'],
         aws_secret_access_key=app.config['AWS_MANAGER_PRIVATE_KEY'],
     )
-    try:
-        obj = s3.Object(
-            video.file_mapper.s3_upload_bucket,
-            video.file_mapper.s3_upload_video_key,
+    s3.delete_objects(
+        Bucket=file_mapper_obj['s3_upload_bucket'],
+        Delete={
+            'Objects': [
+                {
+                    'Key': file_mapper_obj['s3_upload_video_key'],
+                },
+                {
+                    'Key': file_mapper_obj['s3_upload_thumbnail_key'],
+                },
+            ],
+        },
+    )
+
+    # delete video files
+    s3t = S3Transfer(
+        region_name=app.config['S3_VIDEOS_REGION'],
+        bucket_name=app.config['S3_VIDEOS_BUCKET'],
+    )
+    keys_to_delete = [
+        *s3t.ls(f'snapshots/{video_id}'),
+        *s3t.ls(f'thumbnails/{video_id}'),
+        *s3t.ls(f'v1/{video_id}'),
+    ]
+    if keys_to_delete:
+        s3t.client.delete_objects(
+            Bucket=app.config['S3_VIDEOS_BUCKET'],
+            Delete={
+                'Objects': [{'Key': x['Key']} for x in keys_to_delete],
+            },
         )
-        obj.load()
-        obj.delete()
-    except ClientError:
-        # todo: log error
-        pass
-    else:
-        for job in db.session.query(TranscoderJob).filter_by(video_id=video.id):
-            db.session.delete(job)
-        db.session.delete(video)
-        db.session.commit()
-    return make_response('', 200)
 
 
 def s3_make_public(bucket_name: str, key: str):
