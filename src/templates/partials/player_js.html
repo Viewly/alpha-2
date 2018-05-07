@@ -19,7 +19,9 @@
     };
 
     let thumbnailsSprite = function (manifest) {
-        if (manifest['timeline'] === 'undefined' || manifest['timeline'] === '') {
+        if (manifest['timeline'] === 'undefined'
+            || manifest['timeline'] === ''
+            || manifest['timeline'] === null) {
             return []
         }
 
