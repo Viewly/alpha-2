@@ -3,7 +3,9 @@
 {% block title %}Results for ...{% endblock %}
 
 {% block content %}
-    <h3>Search Results</h3>
+    {% if results %}
+        <h3>Search Results</h3>
+    {% endif %}
 
     <ul class="c-videos-list">
         {% for video in results %}
