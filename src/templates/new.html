@@ -4,7 +4,7 @@
 {% block meta_title %}New Videos on Viewly{% endblock %}
 
 {% block content %}
-    <h3>New Videos</h3>
+    <h3>{{ section_title }}</h3>
     <div class="o-grid c-videos-grid">
 
         {% for video in videos %}
@@ -47,14 +47,14 @@
     <div class="c-direction-buttons">
 
     {% if page_num > 0 %}
-        <a href="/new?page={{ page_num - 1 }}"
+        <a href="{{ request.path }}?page={{ page_num - 1 }}"
            class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
             <i class="left angle icon"></i>
             Previous
         </a>
     {% endif %}
     {% if videos and videos|length == items_per_page %}
-        <a href="/new?page={{ page_num + 1 }}"
+        <a href="{{ request.path }}?page={{ page_num + 1 }}"
            class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
             <i class="right angle icon"></i>
             Next</a>
