@@ -43,9 +43,10 @@
                 <div class="c-video-description__header__item">
                     <div class="o-flag o-flag--small">
                         <div class="o-flag__img">
+                            <a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
                             <img class="o-avatar o-avatar--large"
                                  id="avatar-img"
-                                 src="{{ guess_avatar_cdn_url(video.channel_id, 'small') }}">
+                                 src="{{ guess_avatar_cdn_url(video.channel_id, 'small') }}"></a>
                         </div>
                         <div class="o-flag__body">
                             <p>
