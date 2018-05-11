@@ -62,11 +62,11 @@ SQLALCHEMY_POOL_SIZE = 50
 SQLALCHEMY_MAX_OVERFLOW = 200
 
 # Email
-MAIL_USERNAME = getenv('MAIL_USERNAME', 'postmaster@mg.view.ly')
-MAIL_PASSWORD = getenv('MAIL_PASSWORD', '18e7f9181eeb08de7de059ae659e07c0')
-MAIL_SERVER = getenv('MAIL_SERVER', 'smtp.mailgun.org')
-MAIL_PORT = int(getenv('MAIL_PORT', 2525))
-MAIL_DEFAULT_SENDER = ('Viewly Alpha', 'alpha@view.ly')
+MAIL_SERVER = getenv('MAIL_SERVER', 'smtp.mandrillapp.com')
+MAIL_USERNAME = getenv('MAIL_USERNAME', 'viewly')
+MAIL_PASSWORD = getenv('MAIL_PASSWORD', '')
+MAIL_PORT = int(getenv('MAIL_PORT', 587))
+MAIL_DEFAULT_SENDER = ('Viewly Alpha', 'support@view.ly')
 
 # Flask-Security
 SECURITY_TOKEN_MAX_AGE = 3600
