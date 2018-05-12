@@ -234,3 +234,12 @@ class Follow(db.Model):
                 name='_follow_id',
             ),
         )
+
+
+class VideoPublisherEvents(db.Model):
+    tx_id = db.Column(db.String(66), primary_key=True)
+    video_id = db.Column(db.String(12), unique=True, nullable=False)
+
+    eth_address = db.Column(db.String(42), nullable=False)
+    price = db.Column(db.Integer)
+    block_num = db.Column(db.Integer, nullable=False)
