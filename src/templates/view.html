@@ -297,10 +297,7 @@
                 }
 
                 let url = `{{ url_for('api.voteapi') }}?video_id=${videoId}&eth_address=${account}`;
-                fetch(url, {
-                    method: 'get',
-                    headers: new Headers({'Content-Type': 'application/json'})
-                }).then(function (response) {
+                fetch(url).then(function (response) {
                     if (!response.ok) {
                         console.log(response);
                         return;
