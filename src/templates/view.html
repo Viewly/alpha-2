@@ -293,7 +293,7 @@
             function checkIfVoted(account, videoId) {
                 if (localStorage.getItem(localStorageKeyFor(videoId)) === 'true')
                     return;
-                if (account === 'undefined') {
+                if (account === undefined) {
                     return;
                 }
 
@@ -424,7 +424,9 @@
                         return;
                     }
                     response.json().then(voteStats => {
-                        $('.statistic .value').text(voteStats.count)
+                        $('.statistic .value').text(voteStats.count);
+                        $('.statistic .label')
+                          .text(voteStats.count === 1 ? 'Vote' : 'Votes' )
                     })
                 }).catch(function (err) {
                     console.log(err)
