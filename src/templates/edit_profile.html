@@ -25,7 +25,7 @@
                                     <b>
                                         <img src="{{ guess_avatar_cdn_url(channel.id, 'tiny') }}"
                                              class="ui circular avatar image"
-                                             id="avatar-img">
+                                             onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
                                         <a href="{{ url_for('view_channel', channel_id=channel.id) }}">
                                             {{ channel.display_name }}</a>
                                     </b>

@@ -45,8 +45,9 @@
                         <div class="o-flag__img">
                             <a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
                             <img class="o-avatar o-avatar--large"
-                                 id="avatar-img"
-                                 src="{{ guess_avatar_cdn_url(video.channel_id, 'small') }}"></a>
+                                 src="{{ guess_avatar_cdn_url(video.channel_id, 'small') }}"
+                                 onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
+                            </a>
                         </div>
                         <div class="o-flag__body">
                             <p>
