@@ -52,31 +52,37 @@
                             <p>
                                 <a href="{{ url_for('view_channel', channel_id=video.channel.id) }}">
                                     {{ video.channel.display_name }}</a>
+                                {% if current_user and current_user.id != video.channel.user_id %}
+                                    <a href="javascript:"
+                                       id="follow-button"
+                                       style="display: none;"
+                                       class="ui button mini basic">+ Follow</a>
+                                    <a href="javascript:"
+                                       id="un-follow-button"
+                                       style="display: none;"
+                                       class="ui button mini basic">Unfollow</a>
+                                {% endif %}
                             </p>
                             <p>Published on {{ video.published_at | humanDate }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="c-video-description__header__item">
-                    {% if current_user and current_user.id != video.channel.user_id %}
-                        <a href="javascript:"
-                           id="follow-button"
-                           style="display: none;"
-                           class="ui button c-btn--primary">+ Follow</a>
-                        <a href="javascript:"
-                           id="un-follow-button"
-                           style="display: none;"
-                           class="ui button">Unfollow</a>
-                    {% endif %}
                     {% if can_vote(video.published_at) %}
                         <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
-                        <i class="circular question icon"
-                           data-title="Support this creator and earn rewards"
-                           data-content="If you enjoyed this video and would like to support the creator, please consider voting.
+                        <div class="ui mini horizontal statistic"
+                             data-title="Support this creator and earn rewards"
+                             data-content="If you enjoyed this video and would like to support the creator, please consider voting.
                            Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
-                           data-variation="large wide"
-                           data-position="bottom right">
-                        </i>
+                             data-variation="large wide"
+                             data-position="bottom right">
+                            <div class="value">
+                                7
+                            </div>
+                            <div class="label">
+                                Votes
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </header>
@@ -134,7 +140,7 @@
     <script type="application/javascript">
         // SEMANTIC.UI
         $(function () {
-            $('.circular.question').popup();
+            $('.statistic').popup();
         });
     </script>
 
