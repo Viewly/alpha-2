@@ -14,7 +14,6 @@
             fetch("{{ url_for('api.followapi') }}?channel_id=" + channelId, {
                 method: 'get',
                 headers: new Headers({
-                    'Content-Type': 'application/json',
                     'Authentication-Token': authToken
                 })
             }).then(function (response) {
