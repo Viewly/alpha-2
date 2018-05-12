@@ -93,9 +93,9 @@
                 <div class="o-flag o-flag--small">
                     <div class="o-flag__img u-align-top">
                         <div class="c-widget">
-                            <img src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
-                                class="o-avatar o-avatar--huge"
-                                id="avatar-img">
+                            <img class="o-avatar o-avatar--huge"
+                                src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
+                                onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
                             {% if current_user.id == channel.user_id %}
                                 <a class="c-widget__action" href="javascript:" id="avatar-button">{% include 'atoms/icon-edit.html' %}</a>
                             {% endif %}

@@ -297,7 +297,9 @@ def utility_processor():
         video_publisher_address=lambda: app.config['VIDEO_PUBLISHER_ADDRESS'],
         get_auth_token_cached=get_auth_token_cached,
         can_vote=can_vote,
-        nsfw_cover_img='https://i.imgur.com/kXBgFBy.png'
+        nsfw_cover_img='https://i.imgur.com/kXBgFBy.png',
+        avatar_fallback='https://i.imgur.com/32AwiVw.jpg',
+        cover_fallback='https://i.imgur.com/04kFE8B.png',
     )
 
 
