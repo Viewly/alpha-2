@@ -274,9 +274,9 @@
         }
 
         function approveAccount() {
-            // create allowance that is 10x the publishing price
+            // create allowance that for 100 videos at current price
             viewToken.approve(
-                videoPublisherAddress, w3.toWei(w3.fromWei(price) * 10, 'ether'),
+                videoPublisherAddress, w3.toWei(w3.fromWei(price) * 100, 'ether'),
                 {from: account},
                 (error, response) => {
                     if (!error)
