@@ -1,5 +1,6 @@
 <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
-<script src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
+<script
+        src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
 <script src="//cdn.jsdelivr.net/clappr.thumbnails-plugin/latest/clappr-thumbnails-plugin.js"></script>
 <script src="//cdn.rawgit.com/Viewly/clappr-playback-speed/5f8d3a30/dist/main.min.js"></script>
 <script type="application/javascript">
@@ -18,10 +19,15 @@
         });
     };
 
+    let isValidObj = function (obj) {
+        return !(
+            obj === undefined
+            || obj === ''
+            || obj === null);
+    };
+
     let thumbnailsSprite = function (manifest) {
-        if (manifest['timeline'] === 'undefined'
-            || manifest['timeline'] === ''
-            || manifest['timeline'] === null) {
+        if (!isValidObj(manifest['timeline'])) {
             return []
         }
 
@@ -47,11 +53,13 @@
         let sources = [];
 
         // todo, check if on safari
-        if (manifest.formats['mpeg-dash'] !== 'undefined') {
+        // todo: remove this nasty hack when autoplay bug is fixed
+        if (isValidObj(manifest.formats['mpeg-dash'])
+            && {{ autoPlay | int }} !== 0) {
             sources.push(`${cdnUrl}/${manifest.formats['mpeg-dash']}`)
         }
 
-        if (manifest.formats['fallback'] !== 'undefined') {
+        if (isValidObj(manifest.formats['fallback'])) {
             sources.push(`${cdnUrl}/${manifest.formats['fallback']}`)
         }
 
