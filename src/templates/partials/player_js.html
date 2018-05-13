@@ -53,7 +53,9 @@
         let sources = [];
 
         // todo, check if on safari
-        if (isValidObj(manifest.formats['mpeg-dash'])) {
+        // todo: remove this nasty hack when autoplay bug is fixed
+        if (isValidObj(manifest.formats['mpeg-dash'])
+            && {{ autoPlay | int }} !== 0) {
             sources.push(`${cdnUrl}/${manifest.formats['mpeg-dash']}`)
         }
 
