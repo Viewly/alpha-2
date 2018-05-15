@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% set active_menu = "dgame" %}
+{% set active_submenu = "votes" %}
+{% block title %}Viewly &bull; Votes for {{ video.id }}{% endblock %}
+
+{% block content %}
+    <div class="ui container">
+        <h2 class="ui dividing header">
+            <a href="{{ url_for('view_video', video_id=video.id) }}">'{{ video.title }}'</a>
+            by <a
+                href="{{ url_for('view_channel', channel_id=video.channel_id) }}">{{ video.channel.display_name }}</a>
+        </h2>
+
+        {% if summary %}
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Period ID</th>
+                    <th>Creator Rewards</th>
+                    <th>Voter Rewards</th>
+                    <th>Rewards</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <a href="{{ url_for('.period_rewards', period_id=period.id) }}">{{ period.id }}</a>
+                    </td>
+                    <td>{{ summary.creator_rewards | readableNumber }} VIEW</td>
+                    <td>{{ summary.voter_rewards | readableNumber }} VIEW</td>
+                    <td>{{ summary.rewards_count }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if votes %}
+            <h4 class="ui dividing header">
+                Votes
+            </h4>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Voter</th>
+                    <th>Token Amount</th>
+                    <th>Delegated Amount</th>
+                    <th>Weight</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for vote in votes %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('.voter_activity', eth_address=vote.eth_address) }}">
+                                {{ vote.eth_address }}</a></td>
+                        <td class="{% if vote.token_amount == 0 or vote.weight == 0 %}disabled{% endif %}">
+                            {{ vote.token_amount | readableNumber }} VIEW
+                        </td>
+                        <td class="{% if vote.delegated_amount == 0 or vote.weight == 0 %}disabled{% endif %}">
+                            {{ vote.delegated_amount | readableNumber }} VIEW
+                        </td>
+                        <td class="{% if vote.weight == 0 %}disabled{% endif %}">
+                            {{ vote.weight }}%
+                        </td>
+                        <td>{{ vote.created_at | humanDate }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Video has no votes.</p>
+        {% endif %}
+
+        {% if rewards %}
+            <h4 class="ui dividing header">
+                Rewards
+            </h4>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Voter</th>
+                    <th>Vote Stake</th>
+                    <th>Creator Reward</th>
+                    <th>Voter Reward</th>
+                    <th>Payouts</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reward, vote in rewards %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('.voter_activity', eth_address=vote.eth_address) }}">
+                                {{ vote.eth_address }}</a></td>
+                        <td>
+                            {{ ((vote.token_amount + vote.delegated_amount) * vote.weight / 100) | readableNumber }}
+                            VIEW
+                        </td>
+                        <td class="{% if not reward.creator_payable %}disabled{% endif %}">
+                            {{ reward.creator_reward | readableNumber }} VIEW
+                        </td>
+                        <td class="{% if not reward.voter_payable %}disabled{% endif %}">
+                            {{ reward.voter_reward  | readableNumber }} VIEW
+                        </td>
+                        <td>
+                            {% if reward.creator_txid %}
+                                <a href="">Creator</a>
+                            {% endif %}
+                            {% if reward.voter_txid %}
+                                <a href="">Voter</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    <br>
+    <br>
+    <br>
+{% endblock %}

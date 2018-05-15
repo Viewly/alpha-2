@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% set active_menu = "dgame" %}
+{% set active_submenu = "periods" %}
+{% block title %}Viewly Distribution Game Periods{% endblock %}
+
+{% include '_menu.html' %}
+
+{% block content %}
+    <div class="ui container">
+        <h3 class="ui dividing header">
+            Distribution Game Periods
+        </h3>
+
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Creator Rewards Pool</th>
+                <th>Voter Rewards Pool</th>
+                <th>Payout Minimum</th>
+                <th>Votes Max</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for period in periods %}
+                <tr>
+                    {% if period.has_ended %}
+                        <td>
+                            <a href="{{ url_for('.period_rewards', period_id=period.id) }}">{{ period.id }}</a>
+                        </td>
+                    {% else %}
+                        <td class="disabled">
+                            {{ period.id }}
+                        </td>
+                    {% endif %}
+                    <td>{{ period.start | humanDate }}</td>
+                    <td>{{ period.end | humanDate }}</td>
+                    <td>{{ period.creator_rewards_pool | readableNumber }} VIEW</td>
+                    <td>{{ period.voter_rewards_pool | readableNumber }} VIEW</td>
+                    <td>{{ period.min_reward }} VIEW</td>
+                    <td>{{ period.votes_per_user }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <br>
+    <br>
+    <br>
+{% endblock %}
