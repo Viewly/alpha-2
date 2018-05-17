@@ -29,7 +29,7 @@ analyze.conf.update(
 @analyze.task(
     ignore_result=True,
     autoretry_for=(Exception,),
-    retry_kwargs={'max_retries': 3},
+    retry_kwargs={'max_retries': 5},
 )
 def extract_labels_from_video(video_id):
     """
