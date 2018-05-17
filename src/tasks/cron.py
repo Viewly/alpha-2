@@ -15,6 +15,7 @@ from . import (
     new_celery,
     db_session,
 )
+from .analyze import extract_labels_from_video
 from .shared import generate_manifest_file
 from .transcoder import transcoder_post_processing
 from ..config import (
@@ -59,6 +60,11 @@ cron.conf.beat_schedule = {
     'evaluate-votes': {
         'task': 'src.tasks.cron.evaluate_votes',
         'schedule': crontab(minute='*/2'),
+        'args': ()
+    },
+    'retry-label-extraction': {
+        'task': 'src.tasks.cron.retry_label_extraction',
+        'schedule': crontab(hour='*/2'),  # every 2 hours
         'args': ()
     },
 }
@@ -162,3 +168,13 @@ def evaluate_votes():
         vote.delegated_amount = 0  # todo: implement delegation contract
         session.add(vote)
         session.commit()
+
+
+@cron.task(ignore_result=True)
+def retry_label_extraction():
+    videos = db_session().query(Video).filter(
+        Video.published_at.isnot(None),
+        Video.analyzed_at.is_(None))
+
+    for video in videos:
+        extract_labels_from_video.delay(video.id)
