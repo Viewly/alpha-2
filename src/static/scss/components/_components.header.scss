@@ -15,6 +15,7 @@ $tweakpoint-header:         820px;
     height: $header-height;
     padding-left: $spacing-unit-small;
     padding-right: $spacing-unit-small;
+    justify-content: space-between;
     position: fixed;
     top: 0;
     left: 0;
@@ -26,27 +27,23 @@ $tweakpoint-header:         820px;
         padding-right: $spacing-unit;
     }
 
-    &::before {
-        background: linear-gradient(to right, color('brand-secondary') 0%, color('brand-primary') 100%);
-        content: '';
-        height: 3px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-    }
-
-    &::after {/* [2] */
+    &::after {/* [1] */
         box-shadow: 0 6px 3px -3px rgba(#333, .05);
         content: '';
         position: absolute;
         top: 0;
         bottom: 0;
-        left: -$spacing-unit-small; /* [3] */
+        left: -$spacing-unit-small; /* [2] */
         right: -$spacing-unit-small; /* [3] */
-        z-index: -1; /* [4] */
+        z-index: -1; /* [3] */
     }
 }
+
+    .c-header__item {
+        align-items: center;
+        display: flex;
+        flex: 0 0 auto;
+    }
 
     .c-header__search {
         $buton-width: 46px;

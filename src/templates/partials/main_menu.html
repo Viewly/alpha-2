@@ -1,97 +1,99 @@
 <header class="c-header">
+  <div class="c-header__item">
     <a class="c-logo" href="/">
-        <img src="{{ url_for('static', filename='img/logo-lg2.png') }}">
-        Viewly <span>&alpha;</span>
+      <img src="{{ url_for('static', filename='img/logo-lg2.png') }}">
+      Viewly <span>&alpha;</span>
     </a>
+
     <div class="c-header__search c-header__search--hidden-on-mobile js-search">
-        <a href="" class="c-header__search__close js-close-search">
-            <i class="arrow left icon" style="margin-right: 0"></i>
-        </a>
-        <div id="search-box" class="ui action icon input">
-            <button class="ui button"><i class="search icon" style="margin-right: 0"></i></button>
-            <input placeholder="Search" value="{{ query }}">
-        </div>
+      <a href="" class="c-header__search__close js-close-search">
+        <i class="arrow left icon u-margin-right-none"></i>
+      </a>
+      <div id="search-box" class="ui action icon input">
+        <button class="ui button"><i class="search icon u-margin-right-none"></i></button>
+        <input placeholder="Search" value="{{ query }}">
+      </div>
     </div>
+  </div>
+
+  <div class="c-header__item">
     <div class="c-header__options">
-        <div class="item c-header__options__mobile-search">
-            <a href="" class="js-show-search">
-                <i class="search icon" style="margin-right: 0"></i>
-            </a>
+      <div class="item c-header__options__mobile-search">
+        <a href="" class="js-show-search">
+          <i class="search icon u-margin-right-none"></i>
+        </a>
+      </div>
+      {% if current_user.is_active %}
+        <div class="ui dropdown item">
+          <i class="plus icon"></i>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            {% if current_user.can_upload %}
+              <a class="item" href="{{ url_for('upload.upload_videos') }}">
+                <i class="icon upload"></i>
+                <span class="c-header__btn__text">Upload</span>
+              </a>
+            {% endif %}
+            <a class="item" href="{{ url_for('channel.create') }}"><i
+            class="user plus icon"></i> New Channel</a>
+          </div>
         </div>
-        {% if current_user.is_active %}
-            <div class="ui dropdown item">
-                <i class="plus icon"></i>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    {% if current_user.can_upload %}
-                        <a class="item"
-                           href="{{ url_for('upload.upload_videos') }}">
-                            <i class="icon upload"></i>
-                            <span class="c-header__btn__text">Upload</span>
-                        </a>
-                    {% endif %}
-                    <a class="item" href="{{ url_for('channel.create') }}"><i
-                            class="user plus icon"></i> New Channel</a>
-                </div>
-            </div>
-            <div class="ui dropdown item">
-                <img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <a class="item" href="{{ url_for('edit_profile') }}"><i
-                            class="list icon"></i> My Channels</a>
-                    <a class="item" href="{{ url_for('security.change_password') }}"><i
-                            class="key icon"></i> Change Password</a>
-                    <a class="item" href="{{ url_for('security.logout') }}"><i
-                            class="settings icon"></i> Log Out</a>
-                </div>
-            </div>
-        {% else %}
-            <div class="item">
-                <a href="{{ url_for('security.login') }}"
-                   class="">Login</a>
-            </div>
-            <div class="item">
-                <a href="{{ url_for('security.register') }}"
-                   class="c-header__btn ui primary basic button">Sign Up</a>
-            </div>
-        {% endif %}
+        <div class="ui dropdown item">
+          <img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item" href="{{ url_for('edit_profile') }}"><i class="list icon"></i> My Channels</a>
+            <a class="item" href="{{ url_for('security.change_password') }}"><i class="key icon"></i> Change Password</a>
+            <a class="item" href="{{ url_for('security.logout') }}"><i class="settings icon"></i> Log Out</a>
+          </div>
+        </div>
+      {% else %}
+        <div class="item">
+          <a href="{{ url_for('security.login') }}" class="">Login</a>
+        </div>
+        <div class="item">
+          <a href="{{ url_for('security.register') }}" class="c-header__btn ui primary basic button">Sign Up</a>
+        </div>
+      {% endif %}
     </div>
+  </div>
 </header>
 
 
 <script type="application/javascript">
-    // SEARCH BOX
-    $(function () {
-        var showMobileSearch = $('.js-show-search');
-        var closeMobileSearch = $('.js-close-search');
-        var searchForm = $('.js-search');
+  // SEARCH BOX
+  $(function () {
+    var showMobileSearch = $('.js-show-search');
+    var closeMobileSearch = $('.js-close-search');
+    var searchForm = $('.js-search');
 
-        showMobileSearch.on('click', function(e) {
-            e.preventDefault();
-            searchForm.removeClass('c-header__search--hidden-on-mobile');
-        });
-
-        closeMobileSearch.on('click', function(e) {
-            e.preventDefault();
-            searchForm.addClass('c-header__search--hidden-on-mobile');
-        });
-
-        var performSearch = function () {
-            var query = $("#search-box input").val();
-            if (query.length > 0) {
-                $("#search-box").addClass('disabled');
-                window.location = "/search?q=" + query;
-            }
-        };
-        $("#search-box .button").click(function () {
-            performSearch()
-        });
-        $("#search-box input").keypress(function (e) {
-            if (e.which == 13) {
-                performSearch();
-                return false;
-            }
-        });
+    showMobileSearch.on('click', function(e) {
+      e.preventDefault();
+      searchForm.removeClass('c-header__search--hidden-on-mobile');
     });
+
+    closeMobileSearch.on('click', function(e) {
+      e.preventDefault();
+      searchForm.addClass('c-header__search--hidden-on-mobile');
+    });
+
+    var performSearch = function () {
+      var query = $("#search-box input").val();
+      if (query.length > 0) {
+        $("#search-box").addClass('disabled');
+        window.location = "/search?q=" + query;
+      }
+    };
+
+    $("#search-box .button").click(function () {
+      performSearch()
+    });
+
+    $("#search-box input").keypress(function (e) {
+      if (e.which == 13) {
+        performSearch();
+        return false;
+      }
+    });
+  });
 </script>
