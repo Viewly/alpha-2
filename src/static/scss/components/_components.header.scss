@@ -183,14 +183,9 @@ $tweakpoint-header:         820px;
         align-items: center;
         color: #5d5d5d;
         display: flex;
-        margin-left: auto;
 
         > .item {
             margin-left: $spacing-unit;
-        }
-
-        .avatar {
-            margin-right: 0 !important;
         }
 
         .list.icon {
@@ -200,11 +195,6 @@ $tweakpoint-header:         820px;
 
         .dropdown.icon {
             margin-left: $spacing-unit-tiny !important;
-        }
-
-        .dropdown.item {
-            align-items: center;
-            display: inline-flex;
         }
 
         @include mq($until: medium) {
