@@ -130,7 +130,7 @@ $tweakpoint-header:         820px;
                 background: none;
             }
 
-            .icon {
+            .o-icon {
                 display: block !important;
                 width: 100%;
 
@@ -244,22 +244,12 @@ $tweakpoint-header:         820px;
         }
     }
 
-        .c-header__btn__text {
-            @include mq($until: $tweakpoint-header) {
-                display: none;
-            }
-        }
-
-    .c-header__btn--upload[class][class][class][class] {
-        margin-right: 0;
-        padding-left: 1em;
-        padding-right: 1em;
-
-        .icon {
-            margin-left: 0 !important;
-
-            @include mq($until: $tweakpoint-header) {
-                margin-right: 0 !important;
-            }
-        }
+    .c-header__avatar {
+        border-radius: $global-border-radius;
+        display: inline-block;
+        font-size: $header-height - (2 * $spacing-unit-small);
+        height: 1em;
+        max-width: none;
+        vertical-align: middle;
+        width: 1em;
     }

@@ -10,7 +10,7 @@
         <i class="arrow left icon u-margin-right-none"></i>
       </a>
       <div id="search-box" class="ui action icon input">
-        <button class="ui button"><i class="search icon u-margin-right-none"></i></button>
+        <button class="ui button">{% include 'atoms/icon-search.html' %}</button>
         <input placeholder="Search" value="{{ query }}">
       </div>
     </div>
@@ -20,26 +20,24 @@
     <div class="c-header__options">
       <div class="item c-header__options__mobile-search">
         <a href="" class="js-show-search">
-          <i class="search icon u-margin-right-none"></i>
+          {% include 'atoms/icon-search.html' %}
         </a>
       </div>
       {% if current_user.is_active %}
         <div class="ui dropdown item">
-          <i class="plus icon"></i>
-          <i class="dropdown icon"></i>
+          {% include 'atoms/icon-plus.html' %}
           <div class="menu">
             {% if current_user.can_upload %}
               <a class="item" href="{{ url_for('upload.upload_videos') }}">
-                <i class="icon upload"></i>
-                <span class="c-header__btn__text">Upload</span>
+                {% include 'atoms/icon-upload.html' %}
+                Upload
               </a>
             {% endif %}
-            <a class="item" href="{{ url_for('channel.create') }}"><i
-            class="user plus icon"></i> New Channel</a>
+            <a class="item" href="{{ url_for('channel.create') }}">{% include 'atoms/icon-new-channel.html' %} New Channel</a>
           </div>
         </div>
         <div class="ui dropdown item">
-          <img src="https://i.imgur.com/32AwiVw.jpg" class="ui circular avatar image">
+          <img class="c-header__avatar" src="https://i.imgur.com/32AwiVw.jpg">
           <i class="dropdown icon"></i>
           <div class="menu">
             <a class="item" href="{{ url_for('edit_profile') }}"><i class="list icon"></i> My Channels</a>
