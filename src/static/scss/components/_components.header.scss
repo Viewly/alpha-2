@@ -140,10 +140,6 @@ $tweakpoint-header:         820px;
             .o-icon {
                 display: block !important;
                 width: 100%;
-
-                &::before {
-                    display: inline-block !important;
-                }
             }
         }
 
@@ -202,10 +198,8 @@ $tweakpoint-header:         820px;
 
         .dropdown.icon {
             margin-left: $spacing-unit-tiny !important;
-        }
 
-        @include mq($until: medium) {
-            .dropdown.icon {
+            @include mq($until: medium) {
                 display: none;
             }
         }
