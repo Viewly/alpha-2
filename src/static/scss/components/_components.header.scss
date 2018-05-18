@@ -8,6 +8,13 @@ $tweakpoint-header:         820px;
 
 
 
+/**
+ * 1. Use pseudo-element to simulate the one-sided shadow effect.
+ * 2. Widen the pseudo-element so that blurry edges on the left and right of the
+ *    shadow are not shown. This provides the effect of shadow being the same
+ *    along its entire width.
+ * 3. Put the box in the back so that everything is still clickable.
+ */
 .c-header {
     background-color: #fff;
     align-items: center;
@@ -34,7 +41,7 @@ $tweakpoint-header:         820px;
         top: 0;
         bottom: 0;
         left: -$spacing-unit-small; /* [2] */
-        right: -$spacing-unit-small; /* [3] */
+        right: -$spacing-unit-small; /* [2] */
         z-index: -1; /* [3] */
     }
 }
