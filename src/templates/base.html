@@ -52,6 +52,19 @@
         });
     });
 
+    // Dropdown show/hide
+    $(function () {
+        $('body').on('click', function(e) {
+            $('.c-dropdown').removeClass('is-active')
+        });
+
+        $('.c-dropdown').on('click', function(e){
+            e.stopPropagation();
+            $('.c-dropdown').not(this).removeClass('is-active')
+            $(this).toggleClass('is-active');
+        });
+    });
+
     // global missing image replacement
     $(function () {
         $(".js-thumbnail-img").on("error", function () {

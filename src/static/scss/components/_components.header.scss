@@ -8,6 +8,13 @@ $tweakpoint-header:         820px;
 
 
 
+/**
+ * 1. Use pseudo-element to simulate the one-sided shadow effect.
+ * 2. Widen the pseudo-element so that blurry edges on the left and right of the
+ *    shadow are not shown. This provides the effect of shadow being the same
+ *    along its entire width.
+ * 3. Put the box in the back so that everything is still clickable.
+ */
 .c-header {
     background-color: #fff;
     align-items: center;
@@ -15,6 +22,7 @@ $tweakpoint-header:         820px;
     height: $header-height;
     padding-left: $spacing-unit-small;
     padding-right: $spacing-unit-small;
+    justify-content: space-between;
     position: fixed;
     top: 0;
     left: 0;
@@ -26,27 +34,23 @@ $tweakpoint-header:         820px;
         padding-right: $spacing-unit;
     }
 
-    &::before {
-        background: linear-gradient(to right, color('brand-secondary') 0%, color('brand-primary') 100%);
-        content: '';
-        height: 3px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-    }
-
-    &::after {/* [2] */
+    &::after {/* [1] */
         box-shadow: 0 6px 3px -3px rgba(#333, .05);
         content: '';
         position: absolute;
         top: 0;
         bottom: 0;
-        left: -$spacing-unit-small; /* [3] */
-        right: -$spacing-unit-small; /* [3] */
-        z-index: -1; /* [4] */
+        left: -$spacing-unit-small; /* [2] */
+        right: -$spacing-unit-small; /* [2] */
+        z-index: -1; /* [3] */
     }
 }
+
+    .c-header__item {
+        align-items: center;
+        display: flex;
+        flex: 0 0 auto;
+    }
 
     .c-header__search {
         $buton-width: 46px;
@@ -133,13 +137,9 @@ $tweakpoint-header:         820px;
                 background: none;
             }
 
-            .icon {
+            .o-icon {
                 display: block !important;
                 width: 100%;
-
-                &::before {
-                    display: inline-block !important;
-                }
             }
         }
 
@@ -186,14 +186,9 @@ $tweakpoint-header:         820px;
         align-items: center;
         color: #5d5d5d;
         display: flex;
-        margin-left: auto;
 
         > .item {
             margin-left: $spacing-unit;
-        }
-
-        .avatar {
-            margin-right: 0 !important;
         }
 
         .list.icon {
@@ -203,15 +198,8 @@ $tweakpoint-header:         820px;
 
         .dropdown.icon {
             margin-left: $spacing-unit-tiny !important;
-        }
 
-        .dropdown.item {
-            align-items: center;
-            display: inline-flex;
-        }
-
-        @include mq($until: medium) {
-            .dropdown.icon {
+            @include mq($until: medium) {
                 display: none;
             }
         }
@@ -247,22 +235,12 @@ $tweakpoint-header:         820px;
         }
     }
 
-        .c-header__btn__text {
-            @include mq($until: $tweakpoint-header) {
-                display: none;
-            }
-        }
-
-    .c-header__btn--upload[class][class][class][class] {
-        margin-right: 0;
-        padding-left: 1em;
-        padding-right: 1em;
-
-        .icon {
-            margin-left: 0 !important;
-
-            @include mq($until: $tweakpoint-header) {
-                margin-right: 0 !important;
-            }
-        }
+    .c-header__avatar {
+        border-radius: $global-border-radius;
+        display: inline-block;
+        font-size: $header-height - (2 * $spacing-unit-small);
+        height: 1em;
+        max-width: none;
+        vertical-align: middle;
+        width: 1em;
     }

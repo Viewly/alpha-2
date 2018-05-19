@@ -1,0 +1,282 @@
+linters:
+
+  # Include one space before any ! and no spaces after it, with `!important` and
+  # `!default` declarations
+  BangFormat:
+    enabled: true
+    space_before_bang: true
+    space_after_bang: false
+
+  # Prefer simple BEM modifiers
+  BemDepth:
+    enabled: true
+    max_elements: 1
+
+  # 'border: none' is ok
+  BorderZero:
+    enabled: true
+    convention: none
+
+  # Prefer hexadecimal color codes over color keywords
+  ColorKeyword:
+    enabled: true
+
+  # Don't prefer color literals (keywords or hexadecimal codes) to be used only
+  # in variable declarations
+  ColorVariable:
+    enabled: false
+
+  # Allow both // and /**/ comments types
+  Comment:
+    enabled: false
+
+  # Report if "@debug" is left by accident
+  DebugStatement:
+    enabled: true
+
+  # @extend must come first, then properties, then nested rulesets
+  DeclarationOrder:
+    enabled: true
+
+  # Add a comment explaining why these linters are being disabled
+  DisableLinterReason:
+    enabled: true
+
+  # Disallow use of the same property more than once in the same ruleset
+  DuplicateProperty:
+    enabled: true
+
+  # Place @else statements on the same line as the preceding curly brace
+  ElsePlacement:
+    enabled: true
+    style: same_line
+
+  # Require an empty line between rulesets
+  EmptyLineBetweenBlocks:
+    enabled: true
+    ignore_single_line_blocks: false
+
+  # Disallow empty rulesets
+  EmptyRule:
+    enabled: true
+
+  # Extending is a bad practice so let's disallow it
+  ExtendDirective:
+    enabled: true
+
+  # Require a newline at the end of the file
+  FinalNewline:
+    enabled: true
+    present: true
+
+  # Use the shortest possible hex value. #fff instead of #ffffff, #0099aa = #09a
+  HexLength:
+    enabled: true
+    style: short
+
+  # Require hex colors to be lowercase (if they include any of the letters a-f)
+  HexNotation:
+    enabled: true
+    style: lowercase
+
+  # Ensure hexadecimal colors are valid (either three or six digits).
+  HexValidation:
+    enabled: true
+
+  # Never use ID selectors
+  IdSelector:
+    enabled: true
+
+  # Allow `!important` (we need this for itcss utilities layer)
+  ImportantRule:
+    enabled: false
+
+  # Do not include leading underscores or filename extensions in the basenames
+  # of SCSS files that you import
+  ImportPath:
+    enabled: true
+    leading_underscore: false
+    filename_extension: false
+
+  # Use spaces for indentation
+  Indentation:
+    enabled: true
+    allow_non_nested_indentation: true
+    character: space
+    width: 4
+
+  # Do not include leading zero before decimal values > 1
+  LeadingZero:
+    enabled: true
+    style: exclude_zero
+
+  # Disallow more than one ruleset with the same selector in the same file
+  MergeableSelector:
+    enabled: enable
+    force_nesting: true
+
+  # Functions, mixins, and variables should be declared with all lowercase
+  # letters and hyphens instead of underscores
+  NameFormat:
+    enabled: true
+    convention: hyphenated_lowercase
+
+  # Limit nesting depth
+  NestingDepth:
+    enabled: true
+    max_depth: 4
+
+  # @extend %placeholders, don't @extend .a-class
+  PlaceholderInExtend:
+    enabled: true
+
+  # Limit the number of properties in a rule set
+  PropertyCount:
+    enabled: false
+
+  # Don't require properties to be in alphabetical order (also possible to
+  # specify a specific order)
+  PropertySortOrder:
+    enabled: false
+
+  # Disallow unknown CSS property names
+  PropertySpelling:
+    enabled: true
+
+  # Configure which units are allowed for property values
+  PropertyUnits:
+    enabled: true
+    global: ['px', '%', 'em', 'rem', 'vh', 'vw', 'vmin', 's']
+
+  # Pseudo-elements, like `::before`, and `::first-letter`, should be declared
+  # with two colons. Pseudo-classes, like `:hover` and `:first-child`, should be
+  # declared with one colon.
+  PseudoElement:
+    enabled: true
+
+  # Do not qualify type selectors
+  QualifyingElement:
+    enabled: true
+    allow_element_with_attribute: false
+    allow_element_with_class: false
+    allow_element_with_id: false
+
+  # Limit selector depth
+  SelectorDepth:
+    enabled: true
+    max_depth: 3
+
+  # Class convention as per Csswizardry flavour of BEM
+  # http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax
+  #
+  # More Transparent UI Code with Namespaces
+  # http://csswizardry.com/2015/03/more-transparent-ui-code-with-namespaces/
+  SelectorFormat:
+    enabled: true
+    convention: hyphenated_lowercase
+    class_convention: '^(o|c|u|t|s|is|has|_|js|qa)\-[a-z]([a-z0-9](_{2}[a-z0-9])?(\-{0,2})?)*[a-z0-9]$'
+    placeholder_convention: '^[a-z]([a-z0-9](_{2}[a-z0-9])?(\-{0,2})?)*[a-z0-9]$'
+    convention_explanation: should be written in lowercase with hyphens
+    class_convention_explanation: should be written in hyphenated BEM (Block Element Modifier) format
+    placehloder_convention_explanation: should be written in hyphenated BEM (Block Element Modifier) format
+
+  # margin: 1px not margin: 1px 1px 1px 1px;
+  Shorthand:
+    enabled: true
+
+  # Only one property per line
+  SingleLinePerProperty:
+    enabled: true
+    allow_single_line_rule_sets: false
+
+  # Rulesets with multiple (comma delimited) selectors must have each selector
+  # on a separate line
+  SingleLinePerSelector:
+    enabled: true
+
+  # rgba(0, 0, 0, .2) not rgba(0,0,0,.2)
+  SpaceAfterComma:
+    enabled: true
+
+  # We can't get this to work to our specific style of block comments so let's
+  # not lint this
+  SpaceAfterComment:
+    enabled: false
+
+  # margin: 0px not margin:0px
+  SpaceAfterPropertyColon:
+    enabled: true
+
+  # margin: 0px not margin : 0px
+  SpaceAfterPropertyName:
+    enabled: true
+
+  # $my-color: #fff; not $my-color:#fff;
+  SpaceAfterVariableColon:
+    enabled: true
+    style: at_least_one_space
+
+  # $my-color: #fff; not $my-color :#fff;
+  SpaceAfterVariableName:
+    enabled: true
+
+  # margin: 5px + 5px; not margin: 5px+5px; (nor margin: 5px  +  5px;)
+  SpaceAroundOperator:
+    enabled: true
+
+  # Opening braces should be preceded by a single space
+  SpaceBeforeBrace:
+    enabled: true
+    allow_single_line_padding: true
+
+  # rgb(0,0,0) not rgb( 0,0,0 )
+  SpaceBetweenParens:
+    enabled: true
+    spaces: 0
+
+  # Use single quotes, not double quotes
+  StringQuotes:
+    enabled: true
+    style: single_quotes
+
+  # Every property value must end with a semicolon
+  TrailingSemicolon:
+    enabled: true
+
+  # Every property value must end with a semicolon
+  TrailingWhitespace:
+    enabled: true
+
+  # Do not include unnecessary trailing zeros after a decimal point. .2em instead
+  # of .200em
+  TrailingZero:
+    enabled: true
+
+  # No unnecessary fractions: 1 not 1.0
+  UnnecessaryMantissa:
+    enabled: true
+
+  # Do not use parent selector references (&) when they would otherwise be
+  # unnecessary
+  UnnecessaryParentReference:
+    enabled: true
+
+  # URLs should not contain protocols or domain names
+  UrlFormat:
+    enabled: true
+
+  # url('example.com') not url(example.com)
+  UrlQuotes:
+    enabled: true
+
+  # Don't prefer literals to be used only in variable declarations
+  VariableForProperty:
+    enabled: false
+
+  # We're using autoprefixr so no need for this
+  VendorPrefix:
+    enabled: true
+
+  # No units on zero values: 0 not 0px
+  ZeroUnit:
+    enabled: true

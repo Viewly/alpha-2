@@ -161,3 +161,56 @@ body {
 .c-checkbox {
     vertical-align: baseline !important;
 }
+
+.c-dropdown {
+    position: relative;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+    .c-dropdown__menu {
+        @include invisible;
+        background-color: #fff;
+        border-radius: $global-border-radius;
+        box-shadow: 0 2px 8px 0 rgba(#000, .1);
+        margin-top: $spacing-unit-tiny;
+        min-width: 160px;
+        padding: $spacing-unit-small;
+        transition: all .05s ease;
+        transform: translateY(-$spacing-unit-small);
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 1000;
+
+        .c-dropdown.is-active & {
+            @include visible;
+            transition-duration: .15s;
+            transform: translateY(0);
+        }
+
+        a {
+            align-items: center;
+            color: inherit;
+            display: flex;
+            padding-bottom: $spacing-unit-tiny;
+            padding-top: $spacing-unit-tiny;
+            white-space: nowrap;
+
+            .icon,
+            .o-icon {
+                margin-right: $spacing-unit-tiny;
+            }
+
+            &:hover {
+                color: color('brand-secondary');
+                text-decoration: none;
+            }
+        }
+    }
