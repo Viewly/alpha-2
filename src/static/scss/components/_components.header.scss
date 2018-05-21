@@ -103,7 +103,8 @@ $tweakpoint-header:         1000px;
         }
 
         /**
-         * 1. Make sure children (like button) inherit border radius.
+         * 1. Make sure children (like button for example) inherit border
+         *    radius.
          */
         .action {
             border-radius: 2px;
@@ -196,6 +197,7 @@ $tweakpoint-header:         1000px;
         }
 
         .dropdown.icon {
+            color: #aab0b8;
             margin-left: $spacing-unit-tiny !important;
 
             @include mq($until: medium) {

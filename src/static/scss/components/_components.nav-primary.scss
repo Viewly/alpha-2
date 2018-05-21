@@ -24,6 +24,10 @@
         @include mq($until: $tweakpoint-nav-primary) {
             display: none;
         }
+
+        @include mq($from: $tweakpoint-nav-primary, $until: $tweakpoint-nav-primary-large) {
+            margin-left: $spacing-unit-large;
+        }
     }
 }
 
@@ -33,6 +37,10 @@
         .c-nav-primary__item {
             &:not(:last-child) {
                 margin-right: $spacing-unit;
+
+                @include mq($from: $tweakpoint-nav-primary, $until: $tweakpoint-nav-primary-large) {
+                    margin-right: $spacing-unit-small;
+                }
             }
 
             &:focus {
@@ -52,7 +60,6 @@
             padding-right: $spacing-unit-tiny;
 
             .o-icon {
-                margin-right: $spacing-unit-tiny;
                 opacity: .7;
             }
 
@@ -70,3 +77,11 @@
                 }
             }
         }
+
+            .c-nav-primary__label {
+                margin-left: $spacing-unit-tiny;
+
+                @include mq($from: $tweakpoint-nav-primary, $until: $tweakpoint-nav-primary-large) {
+                    display: none;
+                }
+            }
