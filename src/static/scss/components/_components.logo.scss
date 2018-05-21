@@ -7,16 +7,7 @@
     color: #333;
     display: flex;
     font-size: 18px;
-    margin-right: $spacing-unit;
     transition: $global-transition;
-
-    @include mq(medium) {
-        margin-right: $spacing-unit-large;
-    }
-
-    @include mq(large) {
-        margin-right: $spacing-unit-huge;
-    }
 
     img {
         animation: scale .35s alternate infinite ease-in;

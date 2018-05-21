@@ -1,0 +1,72 @@
+/*------------------------------------*\
+    #PRIMARY NAVIGATION
+\*------------------------------------*/
+
+/**
+ * 1. Reset semantic ui styles.
+ */
+.c-nav-primary {
+    background-color: #fff;
+    color: $global-text-color;
+
+    ul {
+        display: flex;
+        justify-content: center;
+        list-style-type: none;
+        margin: 0; /* [1] */
+        padding: 0; /* [1] */
+    }
+
+    .c-header & {
+        background-color: transparent;
+        margin-left: $spacing-unit-huge;
+
+        @include mq($until: $tweakpoint-nav-primary) {
+            display: none;
+        }
+    }
+}
+
+        /**
+         * 1. Remove outline for webkit browsers.
+         */
+        .c-nav-primary__item {
+            &:not(:last-child) {
+                margin-right: $spacing-unit;
+            }
+
+            &:focus {
+                outline: none; /* [1] */
+            }
+        }
+
+        .c-nav-primary__link {
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            color: #5e6169;
+            display: flex;
+            font-size: 14px;
+            font-weight: 500;
+            height: $header-height;
+            padding-left: $spacing-unit-tiny;
+            padding-right: $spacing-unit-tiny;
+
+            .o-icon {
+                margin-right: $spacing-unit-tiny;
+                opacity: .7;
+            }
+
+            &:hover {
+                color: darken(#5e6169, 20%);
+                text-decoration: none;
+            }
+
+            .c-nav-primary__item.is-current & {
+                border-bottom-color: $global-link-color;
+                color: $global-link-color;
+
+                .o-icon {
+                    opacity: 1;
+                }
+            }
+        }

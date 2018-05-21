@@ -2,7 +2,7 @@
     #HEADER
 \*------------------------------------*/
 
-$tweakpoint-header:         820px;
+$tweakpoint-header:         1000px;
 
 
 
@@ -57,17 +57,18 @@ $tweakpoint-header:         820px;
 
         align-items: center;
         display: flex;
-        width: 350px;
+        margin-right: $spacing-unit;
+        width: 240px;
         position: relative;
 
         @include mq($until: $tweakpoint-header) {
             background-color: #fff;
-            padding-left: $spacing-unit-small;
-            padding-right: $spacing-unit-small;
+            margin-right: 0;
+            padding: $spacing-unit-small;
             width: 100%;
             position: absolute;
-            top: $spacing-unit-small;
-            bottom: $spacing-unit-small;
+            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
             z-index: 10;
@@ -99,10 +100,6 @@ $tweakpoint-header:         820px;
                     transform: translateX(-3px);
                 }
             }
-        }
-
-        @include mq($tweakpoint-header, 960px) {
-            width: 280px;
         }
 
         /**
@@ -143,12 +140,14 @@ $tweakpoint-header:         820px;
             }
         }
 
-        input {
-            background-color: rgba(#eef1f2, 0) !important;
+        .c-header__search__input[class][class][class][class] {
+            background-color: rgba(#eef1f2, .5) !important;
             border: none !important;
             border-radius: inherit !important;
-            font-size: 16px !important;
+            font-size: 15px !important;
+            font-weight: 400 !important;
             padding-left: $buton-width !important;
+            padding-right: $spacing-unit-small !important;
             transition: $global-transition !important;
 
             &::placeholder {
@@ -157,7 +156,7 @@ $tweakpoint-header:         820px;
             }
 
             &:hover {
-                background-color: rgba(#eef1f2, .3) !important;
+                background-color: rgba(#eef1f2, .7) !important;
             }
 
             &:focus {
@@ -167,8 +166,8 @@ $tweakpoint-header:         820px;
 
             @include mq($until: $tweakpoint-header) {
                 background-color: rgba(#eef1f2, .7) !important;
-                padding-right: $buton-width !important;
                 padding-left: $spacing-unit !important;
+                padding-right: $buton-width !important;
 
                 &:hover {
                     background-color: rgba(#eef1f2, .8) !important;
