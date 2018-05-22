@@ -1,0 +1,114 @@
+/*------------------------------------*\
+    #PRIMARY NAVIGATION
+\*------------------------------------*/
+/**
+ * 1. Use pseudo-element to simulate the one-sided shadow effect.
+ * 2. Widen the pseudo-element so that blurry edges on the left and right of the
+ *    shadow are not shown. This provides the effect of shadow being the same
+ *    along its entire width.
+ * 3. Put the box in the back so that everything is still clickable.
+ * 4. Reset semantic ui styles.
+ */
+.c-nav-primary {
+    background-color: #fff;
+    color: $global-text-color;
+
+    @include mq($until: $tweakpoint-nav-primary) {
+        background-color: #fff;
+        padding-left: $spacing-unit-small;
+        padding-right: $spacing-unit-small;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+
+        &::after {/* [1] */
+            box-shadow: 0 -6px 3px -3px rgba(#333, .1);
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -$spacing-unit-small; /* [2] */
+            right: -$spacing-unit-small; /* [2] */
+            z-index: -1; /* [3] */
+        }
+    }
+
+    @include mq($from: $tweakpoint-nav-primary, $until: $tweakpoint-nav-primary-large) {
+        background-color: transparent;
+        margin-left: $spacing-unit-large;
+    }
+
+    @include mq($from: $tweakpoint-nav-primary-large) {
+        margin-left: $spacing-unit-huge;
+    }
+
+    ul {
+        display: flex;
+        justify-content: center;
+        list-style-type: none;
+        margin: 0; /* [4] */
+        padding: 0; /* [4] */
+    }
+}
+
+        /**
+         * 1. Remove outline for webkit browsers.
+         */
+        .c-nav-primary__item {
+            &:not(:last-child) {
+                margin-right: $spacing-unit;
+
+                @include mq($from: $tweakpoint-nav-primary, $until: $tweakpoint-nav-primary-large) {
+                    margin-right: $spacing-unit-small;
+                }
+            }
+
+            &:focus {
+                outline: none; /* [1] */
+            }
+        }
+
+        .c-nav-primary__link {
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            color: #5e6169;
+            display: flex;
+            font-size: 14px;
+            font-weight: 500;
+            height: $header-height;
+            padding-left: $spacing-unit-tiny;
+            padding-right: $spacing-unit-tiny;
+
+            @include mq($until: $tweakpoint-nav-primary) {
+                border-top: 2px solid transparent;
+                border-bottom: none;
+            }
+
+            .o-icon {
+                opacity: .7;
+            }
+
+            &:hover {
+                color: darken(#5e6169, 20%);
+                text-decoration: none;
+            }
+
+            .c-nav-primary__item.is-current & {
+                border-color: $global-link-color;
+                color: $global-link-color;
+
+                .o-icon {
+                    opacity: 1;
+                }
+            }
+        }
+
+            .c-nav-primary__label {
+                margin-left: $spacing-unit-tiny;
+
+                @include mq($from: $tweakpoint-nav-primary, $until: $tweakpoint-nav-primary-large) {
+                    display: none;
+                }
+            }

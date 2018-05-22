@@ -62,8 +62,13 @@ $colors: (
 
 
 // Header
-$header-height:                 60px;
+$header-height:                         60px;
+
+
+// Primary navigation
+$tweakpoint-nav-primary:                600px;
+$tweakpoint-nav-primary-large:          800px;
 
 
 // Videos list
-$tweakpoint-videos-list:        720px;
+$tweakpoint-videos-list:                720px;
