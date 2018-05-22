@@ -28,7 +28,7 @@ from .methods import (
     guess_avatar_cdn_url,
     guess_timeline_cdn_url,
 )
-from .models import Video, Channel, TranscoderJob, Follow
+from .models import Video, Channel, TranscoderJob, Follow, Vote
 
 
 # router
@@ -146,15 +146,43 @@ def new(page_num=0, items_per_page=18):
 
 @app.route('/trending', methods=['GET'])
 def trending(page_num=0, items_per_page=18):
+    """
+    select * from video
+    join lateral (
+        select sum((token_amount + delegated_amount) * weight) as score
+        from vote
+        where created_at > (now() - interval '7 days')
+          and vote.video_id = video.id
+        group by video_id) vote_sum on (true)
+    where score > 0
+      and analyzed_at is not null
+      and is_nsfw = false
+    order by score desc
+    limit 10;
+    """
     limit = items_per_page
     page_num = page_num or int(request.args.get('page', 0))
 
-    videos = (db.session.query(Video)
-              .filter(Video.published_at.isnot(None),
-                      Video.analyzed_at.isnot(None),
-                      Video.is_nsfw.is_(False))
-              .order_by(desc(Video.published_at))
-              .limit(limit).offset(limit * page_num).all())
+    most_voted = \
+        (db.session.query(
+            Vote.video_id,
+            func.sum((Vote.token_amount + Vote.delegated_amount) * Vote.weight)
+                .label('weight'))
+         .filter("created_at > (now() - interval '7 days')")
+         .group_by(Vote.video_id)
+         .subquery())
+
+    videos = \
+        (db.session.query(Video)
+         .join(most_voted)
+         .filter(Video.published_at.isnot(None),
+                 Video.analyzed_at.isnot(None),
+                 Video.is_nsfw.is_(False),
+                 'weight > 0')
+         .order_by(desc('weight'))
+         .limit(limit)
+         .offset(limit * page_num)
+         .all())
 
     return render_template(
         'videos.html',
@@ -198,11 +226,14 @@ def edit_profile():
      group by channel.id
      having channel.user_id = :user_id;
     """
-    channels = db.session.query(Channel, func.count(Video.id).label('video_count')) \
-        .outerjoin(Video) \
-        .group_by(Channel) \
-        .having(Channel.user_id == current_user.id) \
-        .order_by(desc('video_count'))
+    channels = \
+        (db.session.query(
+            Channel,
+            func.count(Video.id).label('video_count'))
+         .outerjoin(Video)
+         .group_by(Channel)
+         .having(Channel.user_id == current_user.id)
+         .order_by(desc('video_count')))
     return render_template(
         'edit_profile.html',
         channels=channels,
