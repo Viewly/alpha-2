@@ -8,6 +8,8 @@ from flask import (
     request,
     jsonify,
     abort,
+    redirect,
+    url_for,
 )
 from flask_security import (
     current_user,
@@ -26,14 +28,16 @@ from .methods import (
     guess_avatar_cdn_url,
     guess_timeline_cdn_url,
 )
-from .models import Video, Channel, TranscoderJob, Follow
+from .models import Video, Channel, TranscoderJob, Follow, Vote
 
 
 # router
 # ------
 @app.route('/')
 def index():
-    return new()
+    if current_user.is_authenticated:
+        return redirect(url_for('feed'))
+    return redirect(url_for('trending'))
 
 
 @app.route('/about')
@@ -132,8 +136,57 @@ def new(page_num=0, items_per_page=18):
               .limit(limit).offset(limit * page_num).all())
 
     return render_template(
-        'new.html',
+        'videos.html',
         section_title='New Videos',
+        videos=videos,
+        page_num=page_num,
+        items_per_page=items_per_page,
+    )
+
+
+@app.route('/trending', methods=['GET'])
+def trending(page_num=0, items_per_page=18):
+    """
+    select * from video
+    join lateral (
+        select sum((token_amount + delegated_amount) * weight) as score
+        from vote
+        where created_at > (now() - interval '7 days')
+          and vote.video_id = video.id
+        group by video_id) vote_sum on (true)
+    where score > 0
+      and analyzed_at is not null
+      and is_nsfw = false
+    order by score desc
+    limit 10;
+    """
+    limit = items_per_page
+    page_num = page_num or int(request.args.get('page', 0))
+
+    most_voted = \
+        (db.session.query(
+            Vote.video_id,
+            func.sum((Vote.token_amount + Vote.delegated_amount) * Vote.weight)
+                .label('weight'))
+         .filter("created_at > (now() - interval '7 days')")
+         .group_by(Vote.video_id)
+         .subquery())
+
+    videos = \
+        (db.session.query(Video)
+         .join(most_voted)
+         .filter(Video.published_at.isnot(None),
+                 Video.analyzed_at.isnot(None),
+                 Video.is_nsfw.is_(False),
+                 'weight > 0')
+         .order_by(desc('weight'))
+         .limit(limit)
+         .offset(limit * page_num)
+         .all())
+
+    return render_template(
+        'videos.html',
+        section_title='Trending Videos',
         videos=videos,
         page_num=page_num,
         items_per_page=items_per_page,
@@ -146,7 +199,7 @@ def feed(page_num=0, items_per_page=18):
     limit = items_per_page
     page_num = page_num or int(request.args.get('page', 0))
 
-    following = db.session.query(Follow.channel_id).\
+    following = db.session.query(Follow.channel_id). \
         filter_by(user_id=current_user.id).subquery()
     videos = (db.session.query(Video)
               .filter(Video.published_at.isnot(None),
@@ -155,7 +208,7 @@ def feed(page_num=0, items_per_page=18):
               .limit(limit).offset(limit * page_num).all())
 
     return render_template(
-        'new.html',
+        'videos.html',
         section_title='Your Feed',
         videos=videos,
         page_num=page_num,
@@ -173,11 +226,14 @@ def edit_profile():
      group by channel.id
      having channel.user_id = :user_id;
     """
-    channels = db.session.query(Channel, func.count(Video.id).label('video_count')) \
-        .outerjoin(Video) \
-        .group_by(Channel) \
-        .having(Channel.user_id == current_user.id) \
-        .order_by(desc('video_count'))
+    channels = \
+        (db.session.query(
+            Channel,
+            func.count(Video.id).label('video_count'))
+         .outerjoin(Video)
+         .group_by(Channel)
+         .having(Channel.user_id == current_user.id)
+         .order_by(desc('video_count')))
     return render_template(
         'edit_profile.html',
         channels=channels,
