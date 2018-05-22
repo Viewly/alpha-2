@@ -8,6 +8,8 @@ from flask import (
     request,
     jsonify,
     abort,
+    redirect,
+    url_for,
 )
 from flask_security import (
     current_user,
@@ -33,7 +35,9 @@ from .models import Video, Channel, TranscoderJob, Follow
 # ------
 @app.route('/')
 def index():
-    return new()
+    if current_user.is_authenticated:
+        return redirect(url_for('feed'))
+    return redirect(url_for('trending'))
 
 
 @app.route('/about')
@@ -132,8 +136,29 @@ def new(page_num=0, items_per_page=18):
               .limit(limit).offset(limit * page_num).all())
 
     return render_template(
-        'new.html',
+        'videos.html',
         section_title='New Videos',
+        videos=videos,
+        page_num=page_num,
+        items_per_page=items_per_page,
+    )
+
+
+@app.route('/trending', methods=['GET'])
+def trending(page_num=0, items_per_page=18):
+    limit = items_per_page
+    page_num = page_num or int(request.args.get('page', 0))
+
+    videos = (db.session.query(Video)
+              .filter(Video.published_at.isnot(None),
+                      Video.analyzed_at.isnot(None),
+                      Video.is_nsfw.is_(False))
+              .order_by(desc(Video.published_at))
+              .limit(limit).offset(limit * page_num).all())
+
+    return render_template(
+        'videos.html',
+        section_title='Trending Videos',
         videos=videos,
         page_num=page_num,
         items_per_page=items_per_page,
@@ -146,7 +171,7 @@ def feed(page_num=0, items_per_page=18):
     limit = items_per_page
     page_num = page_num or int(request.args.get('page', 0))
 
-    following = db.session.query(Follow.channel_id).\
+    following = db.session.query(Follow.channel_id). \
         filter_by(user_id=current_user.id).subquery()
     videos = (db.session.query(Video)
               .filter(Video.published_at.isnot(None),
@@ -155,7 +180,7 @@ def feed(page_num=0, items_per_page=18):
               .limit(limit).offset(limit * page_num).all())
 
     return render_template(
-        'new.html',
+        'videos.html',
         section_title='Your Feed',
         videos=videos,
         page_num=page_num,
