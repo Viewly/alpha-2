@@ -124,10 +124,6 @@
     </div>
 {% endblock %}
 
-{% block footer %}
-    {% include 'partials/footer.html' %}
-{% endblock %}
-
 {% block scripts %}
     {% if current_user.is_authenticated %}
         {% include 'partials/follow_js.html' %}

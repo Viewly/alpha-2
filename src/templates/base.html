@@ -29,16 +29,19 @@
     {% include "partials/main_menu.html" %}
 {% endblock %}
 
-{% block player %}
-{% endblock %}
-
-<div class="o-wrapper">
-    {% include "partials/flash_messages.html" %}
-    {% block content %}
+<div class="c-content">
+    {% block player %}
     {% endblock %}
+
+    <div class="o-wrapper">
+        {% include "partials/flash_messages.html" %}
+        {% block content %}
+        {% endblock %}
+    </div>
 </div>
 
 {% block footer %}
+    {% include 'partials/footer.html' %}
 {% endblock %}
 
 <script type="application/javascript">

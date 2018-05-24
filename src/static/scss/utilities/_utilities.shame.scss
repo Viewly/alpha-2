@@ -8,6 +8,10 @@ body {
     overflow-x: hidden;
     padding-top: $header-height + $spacing-unit-large;
 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
     &.c-page-view {
         padding-top: $header-height;
     }
@@ -32,6 +36,10 @@ body {
     &.has-search-activated::before {
         @include visible;
     }
+}
+
+.c-content {
+    margin-bottom: $spacing-unit-huge;
 }
 
 .o-grid--auto {
