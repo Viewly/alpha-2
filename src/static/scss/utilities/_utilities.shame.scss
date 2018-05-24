@@ -2,15 +2,21 @@
     #SHAME
 \*------------------------------------*/
 
+/**
+ * 1. The footer on small(er) screens is pretty tall, so we do not need to
+ *    tweak the `body` for that. Best to leave it to default ;)
+ */
 body {
     background-color: $global-background-color;
     color: $global-text-color;
     overflow-x: hidden;
     padding-top: $header-height + $spacing-unit-large;
 
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    @include mq(medium) { /* [1] */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
 
     &.c-page-view {
         padding-top: $header-height;
