@@ -81,7 +81,8 @@ def img_resize_multi(
     """
     sizes = sizes or [
         {'name': 'large', 'size': (1280, 720)},
-        {'name': 'small', 'size': (640, 360)},
+        {'name': 'medium', 'size': (640, 360)},
+        {'name': 'small', 'size': (480, 270)},
         {'name': 'tiny', 'size': (320, 180)},
         {'name': 'nano', 'size': (160, 90)},
     ]
