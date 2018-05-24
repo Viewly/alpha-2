@@ -13,9 +13,9 @@
         <a href="" class="c-header__search__close js-close-search">
           <i class="arrow left icon u-margin-right-none"></i>
         </a>
-        <div id="search-box" class="ui action icon input">
-          <button class="ui button">{% include 'atoms/icon-search.html' %}</button>
-          <input class="c-header__search__input" placeholder="Search" value="{{ query }}">
+        <div id="search-box" class="ui action icon input js-search-box">
+          <button class="ui button js-search-button">{% include 'atoms/icon-search.html' %}</button>
+          <input class="c-header__search__input js-search-input" placeholder="Search" value="{{ query }}">
         </div>
       </div>
       <div class="item c-header__options__mobile-search">
@@ -61,33 +61,55 @@
 <script type="application/javascript">
   // SEARCH BOX
   $(function () {
-    var showMobileSearch = $('.js-show-search');
-    var closeMobileSearch = $('.js-close-search');
-    var searchForm = $('.js-search');
+    const viewport = $('body');
+    const showMobileSearch = $('.js-show-search');
+    const closeMobileSearch = $('.js-close-search');
+    const searchForm = $('.js-search');
+    const searchBox = $('.js-search-box');
+    const searchInput = $('.js-search-input');
+    const searchButton = $('.js-search-button');
 
     showMobileSearch.on('click', function(e) {
       e.preventDefault();
+      e.stopPropagation();
       searchForm.removeClass('c-header__search--hidden-on-mobile');
+      viewport.addClass('has-search-activated');
     });
 
     closeMobileSearch.on('click', function(e) {
       e.preventDefault();
+      e.stopPropagation();
       searchForm.addClass('c-header__search--hidden-on-mobile');
+      viewport.removeClass('has-search-activated');
     });
 
-    var performSearch = function () {
-      var query = $("#search-box input").val();
+    viewport.on('click', function(e) {
+      const target = $(e.target.closest(searchForm.selector));
+
+      if (target.length === 0) {
+        viewport.removeClass('has-search-activated');
+      }
+    });
+
+    const performSearch = function () {
+      let query = searchInput.val();
+
       if (query.length > 0) {
-        $("#search-box").addClass('disabled');
+        searchBox.addClass('disabled');
         window.location = "/search?q=" + query;
       }
     };
 
-    $("#search-box .button").click(function () {
-      performSearch()
+    searchButton.on('click', function () {
+      performSearch();
     });
 
-    $("#search-box input").keypress(function (e) {
+    searchInput.on('focus', function (e) {
+      viewport.addClass('has-search-activated');
+    });
+
+    searchInput.on('keypress', function (e) {
+
       if (e.which == 13) {
         performSearch();
         return false;

@@ -54,13 +54,19 @@
 
     // Dropdown show/hide
     $(function () {
-        $('body').on('click', function(e) {
-            $('.c-dropdown').removeClass('is-active')
+        const viewport = $('body');
+        const dropdown = $('.c-dropdown');
+
+        viewport.on('click', function(e) {
+            const target = $(e.target.closest(dropdown.selector));
+
+            if (target.length === 0) {
+                dropdown.removeClass('is-active');
+            }
         });
 
-        $('.c-dropdown').on('click', function(e){
-            e.stopPropagation();
-            $('.c-dropdown').not(this).removeClass('is-active')
+        dropdown.on('click', function(e){
+            dropdown.not(this).removeClass('is-active')
             $(this).toggleClass('is-active');
         });
     });

@@ -15,6 +15,23 @@ body {
     &.c-page-auth {
         padding-top: 0;
     }
+
+    &::before {
+        @include invisible;
+        background: rgba(mix(#000, color('brand-secondary'), 90%), .7);
+        content: '';
+        transition: $global-transition;
+        position: fixed;
+        top: $header-height;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+    }
+
+    &.has-search-activated::before {
+        @include visible;
+    }
 }
 
 .o-grid--auto {
