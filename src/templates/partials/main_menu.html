@@ -71,22 +71,21 @@
 
     showMobileSearch.on('click', function(e) {
       e.preventDefault();
-      e.stopPropagation();
       searchForm.removeClass('c-header__search--hidden@small');
       viewport.addClass('has-search-activated');
     });
 
     closeMobileSearch.on('click', function(e) {
       e.preventDefault();
-      e.stopPropagation();
       searchForm.addClass('c-header__search--hidden@small');
       viewport.removeClass('has-search-activated');
     });
 
     viewport.on('click', function(e) {
-      const target = $(e.target.closest(searchForm.selector));
+      const targetSearchForm = $(e.target.closest(searchForm.selector));
+      const targetShowMobileSearch = $(e.target.closest(showMobileSearch.selector));
 
-      if (target.length === 0) {
+      if (targetSearchForm.length === 0 && targetShowMobileSearch.length === 0) {
         viewport.removeClass('has-search-activated');
         searchForm.addClass('c-header__search--hidden@small');
       }
