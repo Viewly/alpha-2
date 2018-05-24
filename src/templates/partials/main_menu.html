@@ -9,7 +9,7 @@
 
   <div class="c-header__item">
     <div class="c-header__options">
-      <div class="c-header__search c-header__search--hidden-on-mobile js-search">
+      <div class="c-header__search c-header__search--hidden@small js-search">
         <a href="" class="c-header__search__close js-close-search">
           <i class="arrow left icon u-margin-right-none"></i>
         </a>
@@ -72,14 +72,14 @@
     showMobileSearch.on('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      searchForm.removeClass('c-header__search--hidden-on-mobile');
+      searchForm.removeClass('c-header__search--hidden@small');
       viewport.addClass('has-search-activated');
     });
 
     closeMobileSearch.on('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      searchForm.addClass('c-header__search--hidden-on-mobile');
+      searchForm.addClass('c-header__search--hidden@small');
       viewport.removeClass('has-search-activated');
     });
 
@@ -88,6 +88,7 @@
 
       if (target.length === 0) {
         viewport.removeClass('has-search-activated');
+        searchForm.addClass('c-header__search--hidden@small');
       }
     });
 
