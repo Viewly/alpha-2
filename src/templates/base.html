@@ -23,13 +23,13 @@
     {#<script src="{{ url_for('static', filename='bundle.js') }}"></script>#}
 
 </head>
-<body class="{{ pageClass }}">
+<body class="c-sticky-footer-layout {{ pageClass }}">
 
 {% block menu %}
     {% include "partials/main_menu.html" %}
 {% endblock %}
 
-<div class="c-content">
+<div class="c-sticky-footer-layout__content">
     {% block player %}
     {% endblock %}
 
