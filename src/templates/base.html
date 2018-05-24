@@ -40,9 +40,9 @@
     </div>
 </div>
 
-{% block footer %}
+{% if showFooter %}
     {% include 'partials/footer.html' %}
-{% endblock %}
+{% endif %}
 
 <script type="application/javascript">
     // SEMANTIC.UI
