@@ -1,19 +1,24 @@
 /*------------------------------------*\
     #PRIMARY NAVIGATION
 \*------------------------------------*/
+
 /**
- * 1. Use pseudo-element to simulate the one-sided shadow effect.
- * 2. Widen the pseudo-element so that blurry edges on the left and right of the
+ * 1. Since `$from:` is inclusive `min-width` boundary in sass-mq (as per
+ *    https://github.com/sass-mq/sass-mq#responsive-mode-on-default), and we are
+ *    using in a few breakpoints for the navigation, here we need to deduct
+ *    `1px` of buffer so that it all plays together correctly.
+ * 2. Use pseudo-element to simulate the one-sided shadow effect.
+ * 3. Widen the pseudo-element so that blurry edges on the left and right of the
  *    shadow are not shown. This provides the effect of shadow being the same
  *    along its entire width.
- * 3. Put the box in the back so that everything is still clickable.
- * 4. Reset semantic ui styles.
+ * 4. Put the box in the back so that everything is still clickable.
+ * 5. Reset semantic ui styles.
  */
 .c-nav-primary {
     background-color: #fff;
     color: $global-text-color;
 
-    @include mq($until: $tweakpoint-nav-primary) {
+    @include mq($until: ($tweakpoint-nav-primary - 1)) { /* [1] */
         background-color: #fff;
         padding-left: $spacing-unit-small;
         padding-right: $spacing-unit-small;
@@ -23,15 +28,15 @@
         right: 0;
         z-index: 1000;
 
-        &::after {/* [1] */
+        &::after { /* [2] */
             box-shadow: 0 -6px 3px -3px rgba(#333, .1);
             content: '';
             position: absolute;
             top: 0;
             bottom: 0;
-            left: -$spacing-unit-small; /* [2] */
-            right: -$spacing-unit-small; /* [2] */
-            z-index: -1; /* [3] */
+            left: -$spacing-unit-small; /* [3] */
+            right: -$spacing-unit-small; /* [3] */
+            z-index: -1; /* [4] */
         }
     }
 
@@ -48,8 +53,8 @@
         display: flex;
         justify-content: center;
         list-style-type: none;
-        margin: 0; /* [4] */
-        padding: 0; /* [4] */
+        margin: 0; /* [5] */
+        padding: 0; /* [5] */
     }
 }
 
@@ -70,6 +75,12 @@
             }
         }
 
+        /**
+         * 1. Since `$from:` is inclusive `min-width` boundary in sass-mq (as per
+         *    https://github.com/sass-mq/sass-mq#responsive-mode-on-default), and we are
+         *    using in a few breakpoints for the navigation, here we need to deduct
+         *    `1px` of buffer so that it all plays together correctly.
+         */
         .c-nav-primary__link {
             align-items: center;
             border-bottom: 2px solid transparent;
@@ -81,7 +92,7 @@
             padding-left: $spacing-unit-tiny;
             padding-right: $spacing-unit-tiny;
 
-            @include mq($until: $tweakpoint-nav-primary) {
+            @include mq($until: ($tweakpoint-nav-primary - 1)) {
                 border-top: 2px solid transparent;
                 border-bottom: none;
             }
