@@ -37,9 +37,9 @@ body {
 .c-modal {
     box-shadow: 0 5px 10px 0 rgba(#000, .05) !important;
     display: block !important;
+    padding-top: $spacing-unit-huge !important;
 
     p {
-        max-width: 35em;
         &:not(:last-child) {
             margin-bottom: $spacing-unit;
         }
@@ -49,6 +49,12 @@ body {
 .c-modal--narrow {
     max-width: 440px;
 }
+
+    .c-modal__close {
+        color: #aeafb3 !important;
+        top: $spacing-unit-tiny !important;
+        right: $spacing-unit-tiny !important;
+    }
 
     .c-modal__title {
         font-size: 17px;
