@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% set active_menu = "dgame" %}
+{% set active_submenu = "index" %}
+{% block title %}Viewly Distribution Game{% endblock %}
+
+
+{% block content %}
+    <div class="ui text container warning message">
+        <!-- <i class="close icon"></i> -->
+        <div class="header">
+            The distribution game is under active development!
+        </div>
+        <p>
+            The game is currently under development and subject to change.
+            The rewards on this page may not be accurate, and could change when new rules are applied.
+            The changes will be announced on our <a href="https://blog.view.ly" target="_blank">blog</a>.
+
+            <br><br>
+            To learn more about the <i>distribution game</i>, please check out the <a
+                href="javascript:">whitepaper</a>.
+        </p>
+    </div>
+{% endblock %}
