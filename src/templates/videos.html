@@ -2,6 +2,7 @@
 
 {% block title %}New Videos{% endblock %}
 {% block meta_title %}New Videos on Viewly{% endblock %}
+{% set showFooter = true %}
 
 {% block content %}
     {% if videos %}
@@ -69,12 +70,6 @@
     </div>
 {% endblock %}
 
-
-{% block footer %}
-    {% if videos %}
-        {% include 'partials/footer.html' %}
-    {% endif %}
-{% endblock %}
 
 
 {% block scripts %}

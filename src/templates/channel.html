@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+
 {% block title %}{{ channel.display_name }}{% endblock %}
 {% block meta_title %}{{ channel.display_name }}'s channel{% endblock %}
 {% block meta_description %}Follow {{ channel.display_name }} on Viewly.{% endblock %}
+{% set showFooter = true %}
 
 {% block styles %}
     <link rel="stylesheet" type="text/css"

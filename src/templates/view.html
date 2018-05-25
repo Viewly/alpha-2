@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% set pageClass = "c-page-view" %}
 {% block title %}{{ video.title }}{% endblock %}
 {% block meta_title %}{{ video.title }}{% endblock %}
@@ -7,6 +8,7 @@
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
 {% endblock %}
+{% set showFooter = true %}
 
 {#{% set autoPlay = 1 %}#}
 {#{% set video_id = video.id %}#}
@@ -122,10 +124,6 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block footer %}
-    {% include 'partials/footer.html' %}
 {% endblock %}
 
 {% block scripts %}

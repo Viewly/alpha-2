@@ -35,7 +35,7 @@ body {
 }
 
 .o-grid--auto {
-    & > .o-grid__cell {
+    > .o-grid__cell {
         flex: 0 0 auto;
         width: auto;
     }
@@ -108,8 +108,13 @@ body {
 }
 
 
+/**
+ * 1. For short screens the footer gets in the viewport and makes the page seem
+ *    busy. With this we're pushing it away enough that it's hidden.
+ */
 .c-no-results {
     margin-top: $spacing-unit-huge;
+    margin-bottom: $spacing-unit-huge * 3; /* [1] */
     text-align: center;
 
     @include mq(medium) {
