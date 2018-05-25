@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% set active_menu = "dgame" %}
+{% set active_submenu = "period-rewards" %}
+{% block title %}Viewly Distribution Game Rewards{% endblock %}
+
+
+{% block content %}
+    <div class="ui  container">
+        <h1 class="ui dividing header">
+{#            todo: make date smaller,ey ma and pull to the right#}
+            Period #{{ period.id }} {# <span class="right float">..... {{ period.end | humanDate}}</span> #}
+        </h1>
+        <div class="ui four statistics">
+            <div class="statistic">
+                <div class="value">
+                    {{ period.creator_rewards_pool | readableNumber }} VIEW
+                </div>
+                <div class="label">
+                    Creator rewards pool
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    {{ period.voter_rewards_pool | readableNumber}} VIEW
+                </div>
+                <div class="label">
+                    Voter rewards pool
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    {{ period.min_reward | readableNumber}} VIEW
+                </div>
+                <div class="label">
+                    Minimum payable reward
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    {{ period.votes_per_user}}
+                </div>
+                <div class="label">
+                    daily votes per user
+                </div>
+            </div>
+        </div>
+        <br>
+
+        {% if rewards_summary %}
+            <h4 class="ui dividing header">
+                Rewards by video
+            </h4>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Video ID</th>
+                    <th>Creator Rewards</th>
+                    <th>Voter Rewards</th>
+                    <th>Votes</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for video_id, votes, creator_rewards, voter_rewards in rewards_summary %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('.video_votes', video_id=video_id) }}">{{ video_id }}</a>
+                        </td>
+
+                        <td class="{% if creator_rewards < period.min_reward %}disabled{% endif %}">
+                            {{ creator_rewards | readableNumber }} VIEW
+                        </td>
+                        <td class="{% if creator_rewards < period.min_reward %}disabled{% endif %}">
+                            {{ voter_rewards  | readableNumber }} VIEW
+                        </td>
+                        <td>{{ votes }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if rewards %}
+            <h4 class="ui dividing header">
+                Rewards by vote
+            </h4>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Voter</th>
+                    <th>Video ID</th>
+                    <th>Vote Stake</th>
+                    <th>Creator Reward</th>
+                    <th>Voter Reward</th>
+                    <th>Payouts</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reward, vote in rewards %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('.voter_activity', eth_address=vote.eth_address) }}">
+                                {{ vote.eth_address }}</a></td>
+                        <td>
+                            <a href="{{ url_for('.video_votes', video_id=reward.video_id) }}">{{ reward.video_id }}</a>
+                        </td>
+                        <td>
+                            {{ ((vote.token_amount + vote.delegated_amount) * vote.weight / 100) | readableNumber }}
+                            VIEW
+                        </td>
+                        <td class="{% if not reward.creator_payable %}disabled{% endif %}">
+                            {{ reward.creator_reward | readableNumber }} VIEW
+                        </td>
+                        <td class="{% if not reward.voter_payable %}disabled{% endif %}">
+                            {{ reward.voter_reward  | readableNumber }} VIEW
+                        </td>
+                    <td>
+                        {% if reward.creator_txid %}
+                            <a href="{{ url_for('.explain_payment', txid=reward.creator_txid) }}">Creator</a>
+                        {% endif %}
+                        {% if reward.voter_txid %}
+                            <a href="{{ url_for('.explain_payment', txid=reward.voter_txid) }}">Voter</a>
+                        {% endif %}
+                    </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>This period has no rewards.</p>
+        {% endif %}
+
+    </div>
+
+    <br>
+    <br>
+    <br>
+{% endblock %}

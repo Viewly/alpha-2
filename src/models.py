@@ -16,13 +16,19 @@ from . import db
 
 CHARSET = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 
+LEN = dict(
+    video_id=12,
+    channel_id=16,
+    tx_id=66,
+)
+
 
 def gen_uid():
     import uuid
     return str(uuid.uuid4()).replace('-', '')[::2]
 
 
-def gen_video_id(length=12):
+def gen_video_id(length=LEN['video_id']):
     from random import sample
     return ''.join(sample(CHARSET, length))
 
@@ -41,7 +47,7 @@ class Role(db.Model, RoleMixin):
 
 
 class User(db.Model, UserMixin):
-    # id = db.Column(db.String(16), primary_key=True, default=generate_uid)
+    # id = db.Column(db.String(16), primary_key=True, default=gen_uid)
     id = db.Column(db.Integer, primary_key=True)
 
     # authentication
@@ -70,7 +76,8 @@ class User(db.Model, UserMixin):
 
 
 class Channel(db.Model):
-    id = db.Column(db.String(16), unique=True, primary_key=True, default=gen_uid)
+    id = db.Column(db.String(LEN['channel_id']),
+                   unique=True, primary_key=True, default=gen_uid)
 
     # todo: add expression based index (lowercase, stripped, unique)
     slug = db.Column(db.String(32), unique=True)
@@ -96,6 +103,28 @@ class Channel(db.Model):
         )
 
 
+class Follow(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    channel_id = db.Column(db.String(LEN['channel_id']),
+                           db.ForeignKey('channel.id'), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    @declared_attr
+    def __table_args__(self):
+        return (
+            db.UniqueConstraint(
+                'user_id',
+                'channel_id',
+                name='_follow_id',
+            ),
+        )
+
+
+# -----------------
+# VIDEOS
+# -----------------
+
 class TranscoderStatus(enum.Enum):
     pending = 0
     processing = 1
@@ -104,8 +133,8 @@ class TranscoderStatus(enum.Enum):
 
 
 class Video(db.Model):
-    id = db.Column(db.String(12), unique=True, primary_key=True, default=gen_video_id)
-
+    id = db.Column(db.String(LEN['video_id']),
+                   unique=True, primary_key=True, default=gen_video_id)
     # publish
     # -------
     title = db.Column(db.String(255))
@@ -138,7 +167,7 @@ class Video(db.Model):
         backref="video",
     )
 
-    channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'))
+    channel_id = db.Column(db.String(LEN['channel_id']), db.ForeignKey('channel.id'))
 
     @declared_attr
     def __table_args__(self):
@@ -167,20 +196,22 @@ class FileMapper(db.Model):
     thumbnail_files = db.Column(JSONB)  # thumbnail_formats
     timeline_file = db.Column(db.String(50))
 
-    video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
+    video_id = db.Column(db.String(LEN['video_id']),
+                         db.ForeignKey('video.id'), nullable=False)
 
 
 class TranscoderJob(db.Model):
     id = db.Column(db.String(20), unique=True, primary_key=True)
     status = db.Column(db.Enum(TranscoderStatus), nullable=False)
     preset_type = db.Column(db.String(20), nullable=False)
-    video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
+    video_id = db.Column(db.String(LEN['video_id']),
+                         db.ForeignKey('video.id'), nullable=False)
 
 
 class VideoFrameAnalysis(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     frame_id = db.Column(db.String(10))
-    video_id = db.Column(db.String(12))
+    video_id = db.Column(db.String(LEN['video_id']))
 
     labels = db.Column(JSONB)
     nsfw_labels = db.Column(JSONB)
@@ -188,11 +219,25 @@ class VideoFrameAnalysis(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), nullable=False)
 
 
+class VideoPublisherEvents(db.Model):
+    tx_id = db.Column(db.String(LEN['tx_id']), primary_key=True)
+    video_id = db.Column(db.String(LEN['video_id']), unique=True, nullable=False)
+
+    eth_address = db.Column(db.String(42), nullable=False)
+    price = db.Column(db.Integer)
+    block_num = db.Column(db.Integer, nullable=False)
+
+
+# -----------------
+# Distribution Game
+# -----------------
+
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # unique pairs
-    video_id = db.Column(db.String(12), db.ForeignKey('video.id'), nullable=False)
+    video_id = db.Column(db.String(LEN['video_id']),
+                         db.ForeignKey('video.id'), nullable=False)
     eth_address = db.Column(db.String(42), nullable=False)
 
     # vote properties
@@ -219,27 +264,45 @@ class Vote(db.Model):
         )
 
 
-class Follow(db.Model):
+class GamePeriod(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    channel_id = db.Column(db.String(16), db.ForeignKey('channel.id'), nullable=False)
-    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    start = db.Column(db.DateTime(timezone=True), nullable=False)
+    end = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    has_ended = db.Column(db.Boolean, nullable=False, default=False)
+
+    # governance
+    creator_rewards_pool = db.Column(db.Integer, nullable=False)
+    voter_rewards_pool = db.Column(db.Integer, nullable=False)
+    votes_per_user = db.Column(db.Integer, nullable=False)
+    min_reward = db.Column(db.Integer, nullable=False)
 
     @declared_attr
     def __table_args__(self):
         return (
             db.UniqueConstraint(
-                'user_id',
-                'channel_id',
-                name='_follow_id',
+                'start',
+                'end',
+                name='_period_id',
             ),
         )
 
 
-class VideoPublisherEvents(db.Model):
-    tx_id = db.Column(db.String(66), primary_key=True)
-    video_id = db.Column(db.String(12), unique=True, nullable=False)
+class Reward(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    vote_id = db.Column(db.Integer,
+                        db.ForeignKey('vote.id'), nullable=False, unique=True)
+    video_id = db.Column(db.String(LEN['video_id']),
+                         db.ForeignKey('video.id'), nullable=False)
+    period_id = db.Column(db.Integer,
+                          db.ForeignKey('game_period.id'), nullable=False)
 
-    eth_address = db.Column(db.String(42), nullable=False)
-    price = db.Column(db.Integer)
-    block_num = db.Column(db.Integer, nullable=False)
+    creator_reward = db.Column(db.DECIMAL(8, 3), nullable=False)  # 99,999.999 max
+    voter_reward = db.Column(db.DECIMAL(8, 3), nullable=False)
+
+    creator_payable = db.Column(db.Boolean, nullable=False)
+    voter_payable = db.Column(db.Boolean, nullable=False)
+
+    creator_txid = db.Column(db.String(LEN['tx_id']))
+    voter_txid = db.Column(db.String(LEN['tx_id']))
