@@ -49,3 +49,12 @@ INSERT INTO file_mapper (id,
   'v1', NULL,
   '{"nano": "us-west-2:viewly-videos-us1:/thumbnails/0Ji59cI7oF3a/nano.png", "tiny": "us-west-2:viewly-videos-us1:/thumbnails/0Ji59cI7oF3a/tiny.png", "large": "us-west-2:viewly-videos-us1:/thumbnails/0Ji59cI7oF3a/large.png", "small": "us-west-2:viewly-videos-us1:/thumbnails/0Ji59cI7oF3a/small.png"}',
   '0Ji59cI7oF3a');
+
+
+insert into game_period ("start", "end", rewards_pool, votes_per_user, min_reward)
+       values ('2018-04-19 00:00:00.000000', '2018-04-20 00:00:00.000000', 300, 10, 10);
+
+insert into game_period ("start", "end", rewards_pool, votes_per_user, min_reward) values
+  ('2018-04-19 00:00:00'::TIMESTAMP AT TIME ZONE 'UTC',
+   '2018-04-20 00:00:00'::TIMESTAMP AT TIME ZONE 'UTC',
+   300, 10, 10);

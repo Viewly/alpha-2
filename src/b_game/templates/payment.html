@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% set active_menu = "dgame" %}
+{% set active_submenu = "voter" %}
+{% block title %}Payment {{ txid }}{% endblock %}
+
+{% block content %}
+  <div class="ui text container">
+    <h3 class="ui dividing header">
+      Tx: <a
+      href="https://kovan.etherscan.io/tx/{{ txid }}"
+      target="_blank">{{ txid }}</a>
+    </h3>
+
+
+    <table class="ui celled table">
+      <thead>
+      <tr>
+        <th>Period ID</th>
+        <th>Video ID</th>
+        <th>
+          {% if rewards[0].creator_txid == txid %}
+            Creator reward
+          {% else %}
+            Voter reward
+          {% endif %}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for reward in rewards %}
+        <tr>
+          <td>
+            <a href="{{ url_for('.period_rewards', period_id=reward.period_id) }}">
+              {{ reward.period_id }}</a>
+          </td>
+          <td>
+            <a href="{{ url_for('.video_votes', video_id=reward.video_id) }}">
+              {{ reward.video_id }}</a>
+          </td>
+          <td>
+            {% if reward.creator_txid == txid %}
+              {{ reward.creator_reward | readableNumber }} VIEW
+            {% endif %}
+            {% if reward.voter_txid == txid %}
+              {{ reward.voter_reward | readableNumber }} VIEW
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+  <br>
+  <br>
+  <br>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% set active_menu = "dgame" %}
+{% set active_submenu = "voter" %}
+{% block title %}Viewly &bull; Votes by {{ eth_address }}{% endblock %}
+
+{% block content %}
+    <div class="ui text container">
+        <h3 class="ui dividing header">
+            Last {{ votes | length }} votes by <a href="https://etherscan.io/address/{{ eth_address }}" target="_blank">{{ eth_address }}</a>
+        </h3>
+
+        {% if votes %}
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Video ID</th>
+                    <th>Token Amount</th>
+                    <th>Delegated Amount</th>
+                    <th>Weight</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for vote in votes %}
+                    <tr class="{% if vote.token_amount == 0 and vote.delegated_amount == 0 %}disabled{% endif %}">
+                        <td><a href="{{ url_for('.video_votes', video_id=vote.video_id) }}">
+                        {{ vote.video_id }}</a></td>
+                        <td>{{ vote.token_amount | readableNumber }} VIEW</td>
+                        <td>{{ vote.delegated_amount | readableNumber }} VIEW</td>
+                        <td>{{ vote.weight }}%</td>
+                        <td>{{ vote.created_at | humanDate }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            No votes.
+        {% endif %}
+    </div>
+
+    <br>
+    <br>
+    <br>
+{% endblock %}

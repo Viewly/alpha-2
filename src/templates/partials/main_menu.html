@@ -4,7 +4,11 @@
       <img src="{{ url_for('static', filename='img/logo-lg2.png') }}">
       Viewly <span>&alpha;</span>
     </a>
-    {% include 'partials/nav-primary.html' %}
+    {% if active_menu == 'dgame' %}
+      {% include 'nav-dgame.html' %}
+    {% else %}
+      {% include 'partials/nav-primary.html' %}
+    {% endif %}
   </div>
 
   <div class="c-header__item">
