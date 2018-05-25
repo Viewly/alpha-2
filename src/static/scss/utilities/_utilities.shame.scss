@@ -80,6 +80,7 @@ body {
         background-color: #181818;
         border-radius: 50%;
         color: #fff;
+        display: none;
         font-size: 44px;
         height: 1em;
         transform: translate(25%, 25%);
@@ -95,6 +96,10 @@ body {
             position: absolute;
             top: 50%;
             left: 50%;
+        }
+
+        .c-metamask-logo.is-locked & {
+            display: block;
         }
     }
 

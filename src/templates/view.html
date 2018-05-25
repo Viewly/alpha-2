@@ -119,6 +119,9 @@
                 <div class="u-text-center">
                     <div class="c-metamask-logo">
                         <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
+                        <span class="c-metamask-logo__icon-locked">
+                            {% include 'atoms/icon-lock.html' %}
+                        </span>
                     </div>
                     <h3 class="c-modal__title">Get MetaMask for your browser</h3>
                     <p>To authorize your vote we utilize MetaMask. It is a bridge that allows you to visit the distributed web of tomorrow in your browser today.</p>
@@ -128,7 +131,7 @@
                     </a>
                 </div>
                 <div class="u-text-center">
-                    <div class="c-metamask-logo">
+                    <div class="c-metamask-logo is-locked">
                         <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
                         <span class="c-metamask-logo__icon-locked">
                             {% include 'atoms/icon-lock.html' %}
