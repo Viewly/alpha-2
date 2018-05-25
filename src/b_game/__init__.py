@@ -2,7 +2,7 @@ from flask import (
     Blueprint,
     render_template,
 )
-from sqlalchemy import desc, func
+from sqlalchemy import desc, func, or_
 
 from .. import db
 from ..models import (
@@ -81,6 +81,21 @@ def period_rewards(period_id):
         period=period,
         rewards=rewards,
         rewards_summary=rewards_summary,
+    )
+
+
+@game.route('/payment/<string:txid>')
+def explain_payment(txid):
+    rewards = \
+        (db.session.query(Reward)
+         .filter(or_(Reward.creator_txid == txid, Reward.voter_txid == txid))
+         .order_by(desc(Reward.period_id))
+         .all())
+
+    return render_template(
+        'payment.html',
+        txid=txid,
+        rewards=rewards,
     )
 
 

@@ -103,12 +103,14 @@
                             {{ reward.voter_reward  | readableNumber }} VIEW
                         </td>
                         <td>
-                            {% if reward.creator_txid %}
-                                <a href="">Creator</a>
-                            {% endif %}
-                            {% if reward.voter_txid %}
-                                <a href="">Voter</a>
-                            {% endif %}
+                    <td>
+                        {% if reward.creator_txid %}
+                            <a href="{{ url_for('.explain_payment', txid=reward.creator_txid) }}">Creator</a>
+                        {% endif %}
+                        {% if reward.voter_txid %}
+                            <a href="{{ url_for('.explain_payment', txid=reward.voter_txid) }}">Voter</a>
+                        {% endif %}
+                    </td>
                         </td>
                     </tr>
                 {% endfor %}

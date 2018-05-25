@@ -16,7 +16,7 @@
                 <th>Video ID</th>
                 <th>Creator Reward</th>
                 <th>Voter Reward</th>
-                <th>Transactions</th>
+                <th>Payouts</th>
             </tr>
             </thead>
             <tbody>
@@ -30,10 +30,10 @@
                         {{ reward.voter_reward  | readableNumber }} VIEW</td>
                     <td>
                         {% if reward.creator_txid %}
-                            <a href="">Creator</a>
+                            <a href="{{ url_for('.explain_payment', txid=reward.creator_txid) }}">Creator</a>
                         {% endif %}
                         {% if reward.voter_txid %}
-                            <a href="">Voter</a>
+                            <a href="{{ url_for('.explain_payment', txid=reward.voter_txid) }}">Voter</a>
                         {% endif %}
                     </td>
                 </tr>
