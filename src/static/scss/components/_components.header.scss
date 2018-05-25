@@ -62,9 +62,12 @@ $tweakpoint-header:         1000px;
         position: relative;
 
         @include mq($until: $tweakpoint-header) {
+            @include visible;
             background-color: #fff;
             margin-right: 0;
             padding: $spacing-unit-small;
+            transform: translateY(0);
+            transition: all .1s ease;
             width: 100%;
             position: absolute;
             top: 0;
@@ -73,8 +76,9 @@ $tweakpoint-header:         1000px;
             right: 0;
             z-index: 10;
 
-            &.c-header__search--hidden-on-mobile {
-                display: none;
+            &.c-header__search--hidden\@small {
+                @include invisible;
+                transform: translateY(-(round($header-height / 2)));
             }
         }
 
