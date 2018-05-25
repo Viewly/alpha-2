@@ -34,6 +34,57 @@ body {
     }
 }
 
+.c-modal {
+    box-shadow: 0 5px 10px 0 rgba(#000, .05) !important;
+    display: block !important;
+
+    p {
+        max-width: 35em;
+        &:not(:last-child) {
+            margin-bottom: $spacing-unit;
+        }
+    }
+}
+
+.c-modal--narrow {
+    max-width: 440px;
+}
+
+    .c-modal__title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-top: 0;
+    }
+
+.c-metamask-logo {
+    display: inline-block;
+    margin-bottom: $spacing-unit-large;
+    vertical-align: middle;
+    position: relative;
+}
+
+    .c-metamask-logo__icon-locked {
+        background-color: #181818;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 44px;
+        height: 1em;
+        transform: translate(25%, 25%);
+        width: 1em;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 10;
+
+        .o-icon {
+            font-size: 24px;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }
+
 .o-grid--auto {
     > .o-grid__cell {
         flex: 0 0 auto;
@@ -56,14 +107,12 @@ body {
     }
 }
 
-.c-btn--secondary {
-    background-color: color('brand-primary') !important;
-    color: #fff !important;
-    font-weight: 400 !important;
-
-    &:hover {
-        background-color: darken(color('brand-primary'), 2%) !important;
-    }
+/**
+ * Button with download icon.
+ */
+.c-btn--with-icon {
+    align-items: center !important;
+    display: inline-flex !important;
 }
 
 .c-field {

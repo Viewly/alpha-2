@@ -19,10 +19,10 @@
 
 {% block player %}
     <div class="c-video-player o-ratio o-ratio--16:9">
-        <iframe id="embedded-player"
+        {# <iframe id="embedded-player"
             src="/embed/{{ video.id }}?autoPlay=1"
             frameborder="0" scrolling="0" allowfullscreen>
-        </iframe>
+        </iframe> #}
     </div>
 {% endblock %}
 
@@ -106,21 +106,28 @@
 
     {% include 'partials/disqus.html' %}
 
-    <div class="ui modal" id="metamask-modal">
-        <div class="header">Authorize the vote trough Metamask</div>
+    <div class="ui modal c-modal c-modal--narrow" id="metamask-modal">
         <div class="scrolling content">
-            <div id="metamask">
+            {# <div id="metamask">
                 <div class="ui active inline loader"></div>
                 Loading...
-            </div>
+            </div> #}
 
             <div id="no-metamask">
-                You don't seem to have <a href="https://metamask.io/"
-                                          target="_blank">Metamask</a> installed.
-                <br>
-                <a href="https://metamask.io/" target="_blank">
-                    <img src="https://github.com/MetaMask/faq/raw/master/images/download-metamask-dark.png"
-                         width="330"></a>
+                <div class="u-text-center">
+                    <div class="c-metamask-logo">
+                        <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
+                        <span class="c-metamask-logo__icon-locked">
+                            {% include 'atoms/icon-lock.html' %}
+                        </span>
+                    </div>
+                    <h3 class="c-modal__title">Get MetaMask for your browser</h3>
+                    <p>MetaMask is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your browser without running a full Ethereum node.</p>
+                    <a class="ui button c-btn--primary c-btn--with-icon u-type-uppercase" href="https://metamask.io/" target="_blank">
+                        {% include 'atoms/icon-download.html' %}
+                        Get MetaMask
+                </a>
+                </div>
             </div>
         </div>
     </div>
