@@ -37,9 +37,15 @@ body {
 .c-modal {
     box-shadow: 0 5px 10px 0 rgba(#000, .05) !important;
     display: block !important;
-    padding-top: $spacing-unit-large !important;
+    padding-top: $spacing-unit !important;
+    padding-bottom: $spacing-unit !important;
 
     p {
+        color: lighten($global-text-color, 28%);
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 25em;
+
         &:not(:last-child) {
             margin-bottom: $spacing-unit;
         }
@@ -47,7 +53,7 @@ body {
 }
 
 .c-modal--narrow {
-    max-width: 440px;
+    max-width: 420px;
 }
 
     .c-modal__close {
@@ -60,6 +66,7 @@ body {
         font-size: 17px;
         font-weight: 700;
         margin-top: 0;
+        margin-bottom: $spacing-unit-tiny;
     }
 
 .c-metamask-logo {

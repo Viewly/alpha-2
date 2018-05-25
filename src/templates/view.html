@@ -28,6 +28,7 @@
 
 {% block content %}
 
+
     <div class="ui c-video-description u-clearfix">
         {% if not video.published_at %}
             <div class="ui warning message">
@@ -120,8 +121,8 @@
                         <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
                     </div>
                     <h3 class="c-modal__title">Get MetaMask for your browser</h3>
-                    <p>MetaMask is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your browser without running a full Ethereum node.</p>
-                    <a class="ui button c-btn--primary c-btn--with-icon u-type-uppercase" href="https://metamask.io/" target="_blank">
+                    <p>To authorize your vote we utilize MetaMask. It is a bridge that allows you to visit the distributed web of tomorrow in your browser today.</p>
+                    <a class="ui button c-btn--primary c-btn--with-icon u-type-uppercase u-margin-top-small" href="https://metamask.io/" target="_blank">
                         {% include 'atoms/icon-download.html' %}
                         Get MetaMask
                     </a>
@@ -138,13 +139,13 @@
                 </div>
                 <div class="u-text-center">
                     <img class="u-margin-bottom-small" src="{{ url_for('static', filename='img/alert-triangle.svg') }}" alt="" height="124px" width="124px">
-                    <h3 class="c-modal__title u-margin-bottom-tiny">No tokens</h3>
+                    <h3 class="c-modal__title">No tokens</h3>
                     <p>Sorry, seleted account has no VIEW Tokens, <br>and thus can’t vote.</p>
                 </div>
                 <div class="u-text-center">
                     <img class="u-margin-bottom-small" src="{{ url_for('static', filename='img/alert-triangle.svg') }}" alt="" height="124px" width="124px">
-                    <h3 class="c-modal__title u-margin-bottom-tiny">Wrong network</h3>
-                    <p>You are connected to the unknow network. <br> Please select MAINNET as the Ethereum network in Metamask.</p>
+                    <h3 class="c-modal__title">Wrong network</h3>
+                    <p>You are connected to an unknow network. <br> Please select MAINNET as the Ethereum network in Metamask.</p>
                     <img src="{{ url_for('static', filename='img/metamas-screenshot.png') }}" alt="">
                 </div>
             </div>
