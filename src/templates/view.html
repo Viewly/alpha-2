@@ -154,9 +154,8 @@
         <div id='network' class="u-text-center u-hidden">
           <img class="u-margin-bottom-small" src="{{ url_for('static', filename='img/alert-triangle.svg') }}" alt="" height="124px" width="124px">
           <h3 class="c-modal__title">Wrong network</h3>
-          <p>You are connected to the wrong network. <br> Please
-            select {{ eth_chain() | upper }} as the Ethereum network in Metamask.</p>
-          <img src="{{ url_for('static', filename='img/metamas-screenshot.png') }}" alt="">
+          <p>Please select {{ eth_chain() | title }} Ethereum network in Metamask.</p>
+          <img src="https://i.imgur.com/1XBQ7Tl.png" alt="">
         </div>
       </div>
 
@@ -168,9 +167,8 @@
                             {% include 'atoms/icon-lock.html' %}
                         </span>
           </div>
-          <h3 class="c-modal__title">Get MetaMask for your browser</h3>
-          <p>To authorize your vote we utilize MetaMask. It is a bridge that allows you to
-            visit the distributed web of tomorrow in your browser today.</p>
+          <h3 class="c-modal__title">Get Metamask for your browser</h3>
+          <p>Metamask wallet is the bridge between Viewly and Ethereum blockchain.</p>
           <a class="ui button c-btn--primary c-btn--with-icon u-type-uppercase u-margin-top-small" href="https://metamask.io/" target="_blank">
             {% include 'atoms/icon-download.html' %}
             Get MetaMask
