@@ -4,53 +4,53 @@
 {% from "_formhelpers.html" import render_field %}
 {% block title %}Set title and description{% endblock %}
 {% block styles %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
 {% endblock %}
 
 {% block content %}
-    {% include '_breadcrumbs.html' %}
-    <br>
-    <div class="ui text container text-center">
-        {% if error %}
-            <p class="ui red message close">{{ error }}</p>
-            <br>
-        {% endif %}
-    </div>
-    <div class="ui text container">
-    <h3 class="ui dividing header">About</h3>
-    <form method="post" class="ui form">
-        {{ form.csrf_token }}
-        {{ render_field(form.title) }}
-        {{ render_field(form.description) }}
-
-        <button class="ui button blue">Save</button>
-        <br>
-    </form>
-
-    <h3 class="ui dividing header">Preview</h3>
-
-    {% if form.description.data %}
-        <div class="ui segment">
-            <h2 class="ui left floated header">{{ form.title.data }}</h2>
-            <div class="ui relaxed divided items">
-                <div class="item">
-                    <div class="content">
-                        <div class="description Post">
-                            {% if form.description.data %}
-                                {{ form.description.data | markdown }}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  {% include '_breadcrumbs.html' %}
+  <br>
+  <div class="ui text container text-center">
+    {% if error %}
+      <p class="ui red message close">{{ error }}</p>
+      <br>
     {% endif %}
+  </div>
+  <div class="ui text container">
+  <h3 class="ui dividing header">About</h3>
+  <form method="post" class="ui form">
+    {{ form.csrf_token }}
+    {{ render_field(form.title) }}
+    {{ render_field(form.description) }}
 
-    <br><br>
-    <div class="ui text container text-center">
-        <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}"
-           class="ui button blue huge">Next: Add Cover Image</a>
+    <button class="ui button blue">Save</button>
+    <br>
+  </form>
+
+  <h3 class="ui dividing header">Preview</h3>
+
+  {% if form.description.data %}
+    <div class="ui segment">
+      <h2 class="ui left floated header">{{ form.title.data }}</h2>
+      <div class="ui relaxed divided items">
+        <div class="item">
+          <div class="content">
+            <div class="description Post">
+              {% if form.description.data %}
+                {{ form.description.data | markdown }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  {% endif %}
+
+  <br><br>
+  <div class="ui text container text-center">
+    <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}"
+       class="ui button blue huge">Next: Add Cover Image</a>
+  </div>
 
 {% endblock %}
 

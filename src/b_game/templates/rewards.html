@@ -4,46 +4,52 @@
 {% block title %}Viewly Distribution Game Rewards{% endblock %}
 
 {% block content %}
-    <div class="ui  container">
-        <h3 class="ui dividing header">
-            Distribution Game Rewards
-        </h3>
+  <div class="ui  container">
+    <h3 class="ui dividing header">
+      Distribution Game Rewards
+    </h3>
 
-        <table class="ui celled table">
-            <thead>
-            <tr>
-                <th>Period ID</th>
-                <th>Video ID</th>
-                <th>Creator Reward</th>
-                <th>Voter Reward</th>
-                <th>Payouts</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for reward in rewards %}
-                <tr>
-                    <td><a href="{{ url_for('.period_rewards', period_id=reward.period_id) }}">{{ reward.period_id}}</a></td>
-                    <td><a href="{{ url_for('.video_votes', video_id=reward.video_id) }}">{{ reward.video_id}}</a></td>
-                    <td class="{% if not reward.creator_payable %}disabled{% endif %}">
-                        {{ reward.creator_reward | readableNumber }} VIEW</td>
-                    <td class="{% if not reward.voter_payable %}disabled{% endif %}">
-                        {{ reward.voter_reward  | readableNumber }} VIEW</td>
-                    <td>
-                        {% if reward.creator_txid %}
-                            <a href="{{ url_for('.explain_payment', txid=reward.creator_txid) }}">Creator</a>
-                        {% endif %}
-                        {% if reward.voter_txid %}
-                            <a href="{{ url_for('.explain_payment', txid=reward.voter_txid) }}">Voter</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <table class="ui celled table">
+      <thead>
+      <tr>
+        <th>Period ID</th>
+        <th>Video ID</th>
+        <th>Creator Reward</th>
+        <th>Voter Reward</th>
+        <th>Payouts</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for reward in rewards %}
+        <tr>
+          <td>
+            <a href="{{ url_for('.period_rewards', period_id=reward.period_id) }}">{{ reward.period_id }}</a>
+          </td>
+          <td>
+            <a href="{{ url_for('.video_votes', video_id=reward.video_id) }}">{{ reward.video_id }}</a>
+          </td>
+          <td class="{% if not reward.creator_payable %}disabled{% endif %}">
+            {{ reward.creator_reward | readableNumber }} VIEW
+          </td>
+          <td class="{% if not reward.voter_payable %}disabled{% endif %}">
+            {{ reward.voter_reward  | readableNumber }} VIEW
+          </td>
+          <td>
+            {% if reward.creator_txid %}
+              <a href="{{ url_for('.explain_payment', txid=reward.creator_txid) }}">Creator</a>
+            {% endif %}
+            {% if reward.voter_txid %}
+              <a href="{{ url_for('.explain_payment', txid=reward.voter_txid) }}">Voter</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
 
-    </div>
+  </div>
 
-    <br>
-    <br>
-    <br>
+  <br>
+  <br>
+  <br>
 {% endblock %}

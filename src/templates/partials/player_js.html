@@ -1,93 +1,93 @@
 <script src="{{ url_for('static', filename='node_modules/clappr/dist/clappr.min.js') }}"></script>
 <script
-        src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
+  src="{{ url_for('static', filename='node_modules/dash-shaka-playback/dist/dash-shaka-playback.min.js') }}"></script>
 <script src="//cdn.jsdelivr.net/clappr.thumbnails-plugin/latest/clappr-thumbnails-plugin.js"></script>
 <script src="//cdn.rawgit.com/Viewly/clappr-playback-speed/5f8d3a30/dist/main.min.js"></script>
 <script type="application/javascript">
-    let cdnUrl = "{{ cdn_url() }}";
-    let manifestUrl = `${cdnUrl}/v1/{{ video_id }}/manifest.json`;
+  let cdnUrl = "{{ cdn_url() }}";
+  let manifestUrl = `${cdnUrl}/v1/{{ video_id }}/manifest.json`;
 
-    let player;
+  let player;
 
-    let loadManifest = function () {
-        fetch(manifestUrl, {
-            method: 'get'
-        }).then(function (response) {
-            response.json().then(manifest => loadPlayer(manifest))
-        }).catch(function (err) {
-            console.log(err)
-        });
-    };
-
-    let isValidObj = function (obj) {
-        return !(
-            obj === undefined
-            || obj === ''
-            || obj === null);
-    };
-
-    let thumbnailsSprite = function (manifest) {
-        if (!isValidObj(manifest['timeline'])) {
-            return []
-        }
-
-        let properties = manifest['timeline'].split('.')[0].split('_');
-        // skip properties[0] which is tilesheet_
-        let numThumbnails = properties[1];
-        let timeInterval = properties[2];
-        let tileWidth = properties[3];
-        let tileHeight = properties[4];
-
-        return ClapprThumbnailsPlugin.buildSpriteConfig(
-            `${cdnUrl}/v1/{{ video_id }}/${manifest.timeline}`,
-            numThumbnails,  // number of thumbnails
-            tileWidth, // thumbnail width
-            tileHeight, // thumbnail height
-            10, // number of tiles (columns) per row
-            timeInterval // time interval
-        );
-    };
-
-
-    let loadPlayer = function (manifest) {
-        let sources = [];
-
-        // todo, check if on safari
-        if (isValidObj(manifest.formats['mpeg-dash'])) {
-            sources.push(`${cdnUrl}/${manifest.formats['mpeg-dash']}`)
-        }
-
-        if (isValidObj(manifest.formats['fallback'])) {
-            sources.push(`${cdnUrl}/${manifest.formats['fallback']}`)
-        }
-
-        player = new Clappr.Player({
-            sources: sources,
-            poster: `${cdnUrl}/${manifest.cover}`,
-            mute: false,
-            height: window.innerHeight - 1,
-            width: '100%',
-            autoPlay: {{ autoPlay | int }},
-            scrubThumbnails: {
-                backdropHeight: 0,  // 100 gives a nice effect
-                spotlightHeight: 135,  // original is 135
-                thumbs: thumbnailsSprite(manifest)
-            },
-            plugins: [
-                DashShakaPlayback,
-                ClapprThumbnailsPlugin,
-                PlaybackSpeedPlugin
-            ]
-        });
-        player.attachTo(document.getElementById("player-full"));
-    };
-
-    // start here
-    document.addEventListener("DOMContentLoaded", function () {
-        loadManifest();
+  let loadManifest = function () {
+    fetch(manifestUrl, {
+      method: 'get'
+    }).then(function (response) {
+      response.json().then(manifest => loadPlayer(manifest))
+    }).catch(function (err) {
+      console.log(err)
     });
+  };
 
-    window.onresize = function () {
-        player.resize({width: '100%', height: window.innerHeight - 1});
+  let isValidObj = function (obj) {
+    return !(
+      obj === undefined
+      || obj === ''
+      || obj === null);
+  };
+
+  let thumbnailsSprite = function (manifest) {
+    if (!isValidObj(manifest['timeline'])) {
+      return []
     }
+
+    let properties = manifest['timeline'].split('.')[0].split('_');
+    // skip properties[0] which is tilesheet_
+    let numThumbnails = properties[1];
+    let timeInterval = properties[2];
+    let tileWidth = properties[3];
+    let tileHeight = properties[4];
+
+    return ClapprThumbnailsPlugin.buildSpriteConfig(
+      `${cdnUrl}/v1/{{ video_id }}/${manifest.timeline}`,
+      numThumbnails,  // number of thumbnails
+      tileWidth, // thumbnail width
+      tileHeight, // thumbnail height
+      10, // number of tiles (columns) per row
+      timeInterval // time interval
+    );
+  };
+
+
+  let loadPlayer = function (manifest) {
+    let sources = [];
+
+    // todo, check if on safari
+    if (isValidObj(manifest.formats['mpeg-dash'])) {
+      sources.push(`${cdnUrl}/${manifest.formats['mpeg-dash']}`)
+    }
+
+    if (isValidObj(manifest.formats['fallback'])) {
+      sources.push(`${cdnUrl}/${manifest.formats['fallback']}`)
+    }
+
+    player = new Clappr.Player({
+      sources: sources,
+      poster: `${cdnUrl}/${manifest.cover}`,
+      mute: false,
+      height: window.innerHeight - 1,
+      width: '100%',
+      autoPlay: {{ autoPlay | int }},
+      scrubThumbnails: {
+        backdropHeight: 0,  // 100 gives a nice effect
+        spotlightHeight: 135,  // original is 135
+        thumbs: thumbnailsSprite(manifest)
+      },
+      plugins: [
+        DashShakaPlayback,
+        ClapprThumbnailsPlugin,
+        PlaybackSpeedPlugin
+      ]
+    });
+    player.attachTo(document.getElementById("player-full"));
+  };
+
+  // start here
+  document.addEventListener("DOMContentLoaded", function () {
+    loadManifest();
+  });
+
+  window.onresize = function () {
+    player.resize({width: '100%', height: window.innerHeight - 1});
+  }
 </script>

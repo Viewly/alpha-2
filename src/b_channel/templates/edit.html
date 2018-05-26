@@ -4,21 +4,21 @@
 {% block title %}Viewly &bull; Edit Channel{% endblock %}
 
 {% block content %}
-    <br>
-    <div class="ui text container text-center">
-        {% if error %}
-            <p class="ui red message close">{{ error }}</p>
-            <br>
-        {% endif %}
-    </div>
-    <div class="ui text container">
-        <h3 class="ui dividing header">Edit Channel</h3>
-        <form method="post" class="ui form">
-            {{ form.csrf_token }}
-            {{ render_field(form.name) }}
-            {{ render_field(form.description) }}
-            <button class="ui button blue">Save Changes</button>
-            <br>
-        </form>
-    </div>
+  <br>
+  <div class="ui text container text-center">
+    {% if error %}
+      <p class="ui red message close">{{ error }}</p>
+      <br>
+    {% endif %}
+  </div>
+  <div class="ui text container">
+    <h3 class="ui dividing header">Edit Channel</h3>
+    <form method="post" class="ui form">
+      {{ form.csrf_token }}
+      {{ render_field(form.name) }}
+      {{ render_field(form.description) }}
+      <button class="ui button blue">Save Changes</button>
+      <br>
+    </form>
+  </div>
 {% endblock %}

@@ -5,316 +5,319 @@
 {% block title %}Publish on Ethereum{% endblock %}
 
 {% block content %}
-    {% include '_breadcrumbs.html' %}
-    <br>
-    <div class="ui text container">
-        <h3 class="ui dividing header">Publish</h3>
-        <p>Congratulations. You've made it to the <b>last step</b>, which involves
-            <b>publishing your video on Ethereum</b>.</p>
+  {% include '_breadcrumbs.html' %}
+  <br>
+  <div class="ui text container">
+    <h3 class="ui dividing header">Publish</h3>
+    <p>Congratulations. You've made it to the <b>last step</b>, which involves
+      <b>publishing your video on Ethereum</b>.</p>
 
-        <h4>Published videos receive the following perks:</h4>
-        <ul>
-            <li>
-                Backup, storage and retrieval of original video files on IPFS network
-            </li>
-            <li>
-                Future re-transcoding for higher visual fidelity (VP9, AV1)
-            </li>
-            <li>
-                Unlimited streaming from Viewly's CDN
-            </li>
-        </ul>
+    <h4>Published videos receive the following perks:</h4>
+    <ul>
+      <li>
+        Backup, storage and retrieval of original video files on IPFS network
+      </li>
+      <li>
+        Future re-transcoding for higher visual fidelity (VP9, AV1)
+      </li>
+      <li>
+        Unlimited streaming from Viewly's CDN
+      </li>
+    </ul>
 
-        <h4>Publishing works in 2 steps:</h4>
-        <ul>
-            <li>
-                Pre-Authorize VideoPublisher to spend your VIEW Tokens
-            </li>
-            <li>
-                Call VideoPublisher contract and pay <b>10 VIEW</b> to publish a video
-            </li>
-        </ul>
+    <h4>Publishing works in 2 steps:</h4>
+    <ul>
+      <li>
+        Pre-Authorize VideoPublisher to spend your VIEW Tokens
+      </li>
+      <li>
+        Call VideoPublisher contract and pay <b>10 VIEW</b> to publish a video
+      </li>
+    </ul>
 
-        <h3 class="ui dividing header">Publish through Metamask</h3>
-        <div id="metamask">
-            <a href="#" class="ui button blue large">Loading...</a>
-        </div>
-
-        <div id="no-metamask">
-            You don't seem to have <a href="https://metamask.io/"
-                                      target="_blank">Metamask</a> installed.
-            <br>
-            <a href="https://metamask.io/" target="_blank">
-                <img src="https://github.com/MetaMask/faq/raw/master/images/download-metamask-dark.png"
-                     width="280"></a>
-            <br> <br>
-            <i>Alternatively, you can also publish <a href="#" id="manual-publish">manually</a> (for advanced users only).</i>
-        </div>
-
-        <h3 class="ui dividing header">Need VIEW Tokens?</h3>
-        We are looking for <i>honest feedback</i> from established content creators. <br>
-        We are giving away $20 worth of VIEW tokens to <i>new creators</i> who sign up through the <b><a
-            href="https://viewly.typeform.com/to/cl6OJP" target="_blank">faucet</a></b>.
-{#        <br>#}
-{#        The tokens can also be <a href="">purchased</a> on exchanges.#}
-
-        <div class="ui modal">
-            <div class="header">Manual Publishing</div>
-            <div class="scrolling content">
-                <p>If you wish to perform the publishing transactions using a client such
-                    as
-                    MyEtherWallet or Parity, you will need to do the following follow two
-                    steps.
-                </p>
-
-                <h4>Step 1: Call ViewToken.approve()</h4>
-                <div class="ui form">
-                    <div class="field">
-                        <label>guy (VideoPublisher address)</label>
-                        <div class="ui fluid action input">
-                            <input type="text" value="{{ video_publisher_address() }}">
-                            <button class="ui blue right labeled icon button">
-                                <i class="copy icon"></i>
-                                Copy
-                            </button>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>wad (100 VIEW)</label>
-                        <div class="ui fluid action input">
-                            <input type="text" value="{{ 100 | toWei }}">
-                            <button class="ui blue right labeled icon button">
-                                <i class="copy icon"></i>
-                                Copy
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <p>To avoid having to authorize VideoPublisher for each video, you can pre-authorize it
-                for larger amount, such as 100 VIEW.</p>
-
-                <h4>Step 2: Call VideoPublisher.publish()</h4>
-                <div class="ui form">
-                    <div class="field">
-                        <label>VideoID</label>
-                        <div class="ui fluid action input">
-                            <input type="text" value="{{ video.id | toHex }}">
-                            <button class="ui blue right labeled icon button">
-                                <i class="copy icon"></i>
-                                Copy
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <p>If the transaction completes successfully, the video will be published
-                    automatically.</p>
-
-
-                <h3 class="ui dividing header">Contract Details</h3>
-                <div class="ui form">
-
-                    <div class="field">
-                        <label>VIEW Token Address</label>
-                        <div class="ui fluid action input">
-                            <input type="text" value="{{ view_token_address() }}">
-                            <button class="ui blue right labeled icon button">
-                                <i class="copy icon"></i>
-                                Copy
-                            </button>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>VIEW Token ABI</label>
-                        <textarea rows="4">{{ video_publisher_abi() }}</textarea>
-                    </div>
-
-                    <div class="field">
-                        <label>VideoPublisher Address</label>
-                        <div class="ui fluid action input">
-                            <input type="text" value="{{ video_publisher_address() }}">
-                            <button class="ui blue right labeled icon button">
-                                <i class="copy icon"></i>
-                                Copy
-                            </button>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>VideoPublisher ABI</label>
-                        <textarea rows="4">{{ video_publisher_abi() }}</textarea>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
+    <h3 class="ui dividing header">Publish through Metamask</h3>
+    <div id="metamask">
+      <a href="#" class="ui button blue large">Loading...</a>
     </div>
+
+    <div id="no-metamask">
+      You don't seem to have <a href="https://metamask.io/"
+                                target="_blank">Metamask</a> installed.
+      <br>
+      <a href="https://metamask.io/" target="_blank">
+        <img src="https://github.com/MetaMask/faq/raw/master/images/download-metamask-dark.png"
+             width="280"></a>
+      <br> <br>
+      <i>Alternatively, you can also publish <a href="#" id="manual-publish">manually</a>
+        (for advanced users only).</i>
+    </div>
+
+    <h3 class="ui dividing header">Need VIEW Tokens?</h3>
+    We are looking for <i>honest feedback</i> from established content creators. <br>
+    We are giving away $20 worth of VIEW tokens to <i>new creators</i> who sign up through
+    the <b><a
+    href="https://viewly.typeform.com/to/cl6OJP" target="_blank">faucet</a></b>.
+    {#        <br>#}
+    {#        The tokens can also be <a href="">purchased</a> on exchanges.#}
+
+    <div class="ui modal">
+      <div class="header">Manual Publishing</div>
+      <div class="scrolling content">
+        <p>If you wish to perform the publishing transactions using a client such
+          as
+          MyEtherWallet or Parity, you will need to do the following follow two
+          steps.
+        </p>
+
+        <h4>Step 1: Call ViewToken.approve()</h4>
+        <div class="ui form">
+          <div class="field">
+            <label>guy (VideoPublisher address)</label>
+            <div class="ui fluid action input">
+              <input type="text" value="{{ video_publisher_address() }}">
+              <button class="ui blue right labeled icon button">
+                <i class="copy icon"></i>
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label>wad (100 VIEW)</label>
+            <div class="ui fluid action input">
+              <input type="text" value="{{ 100 | toWei }}">
+              <button class="ui blue right labeled icon button">
+                <i class="copy icon"></i>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+        <p>To avoid having to authorize VideoPublisher for each video, you can
+          pre-authorize it
+          for larger amount, such as 100 VIEW.</p>
+
+        <h4>Step 2: Call VideoPublisher.publish()</h4>
+        <div class="ui form">
+          <div class="field">
+            <label>VideoID</label>
+            <div class="ui fluid action input">
+              <input type="text" value="{{ video.id | toHex }}">
+              <button class="ui blue right labeled icon button">
+                <i class="copy icon"></i>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p>If the transaction completes successfully, the video will be published
+          automatically.</p>
+
+
+        <h3 class="ui dividing header">Contract Details</h3>
+        <div class="ui form">
+
+          <div class="field">
+            <label>VIEW Token Address</label>
+            <div class="ui fluid action input">
+              <input type="text" value="{{ view_token_address() }}">
+              <button class="ui blue right labeled icon button">
+                <i class="copy icon"></i>
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label>VIEW Token ABI</label>
+            <textarea rows="4">{{ video_publisher_abi() }}</textarea>
+          </div>
+
+          <div class="field">
+            <label>VideoPublisher Address</label>
+            <div class="ui fluid action input">
+              <input type="text" value="{{ video_publisher_address() }}">
+              <button class="ui blue right labeled icon button">
+                <i class="copy icon"></i>
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label>VideoPublisher ABI</label>
+            <textarea rows="4">{{ video_publisher_abi() }}</textarea>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
 {% endblock %}
 
 {% block scripts %}
-    <script type="application/javascript">
-        let networks = {
-            "mainnet": '1',
-            "kovan": '42',
-        };
-        let w3;
-        let networkId;
-        let account;
-        let balance;
-        let allowance;
-        let price;
+  <script type="application/javascript">
+    let networks = {
+      "mainnet": '1',
+      "kovan": '42',
+    };
+    let w3;
+    let networkId;
+    let account;
+    let balance;
+    let allowance;
+    let price;
 
-        let videoIdHex = "{{ video.id | toHex }}";
-        let isPublished = false;
+    let videoIdHex = "{{ video.id | toHex }}";
+    let isPublished = false;
 
-        let videoPublisherAddress = "{{ video_publisher_address() }}";
-        let videoPublisherABI = {{ video_publisher_abi() | safe }};
-        let viewTokenAddress = "{{ view_token_address() }}";
-        let viewTokenABI = {{ view_token_abi() | safe }};
-        let ethChain = "{{ eth_chain() }}";
+    let videoPublisherAddress = "{{ video_publisher_address() }}";
+    let videoPublisherABI = {{ video_publisher_abi() | safe }};
+    let viewTokenAddress = "{{ view_token_address() }}";
+    let viewTokenABI = {{ view_token_abi() | safe }};
+    let ethChain = "{{ eth_chain() }}";
 
-        let videoPublisher;
-        let viewToken;
+    let videoPublisher;
+    let viewToken;
 
-        let authorizeButton = `<a id="approve-account" class="ui button blue large">Authorize VideoPublisher</a>`;
-        let publishButton = `<a id="publish-video" class="ui button blue large">Publish the video</a>`;
-        let spinner = `<div class="ui active inline loader"></div> Waiting for transaction to confirm...`;
+    let authorizeButton = `<a id="approve-account" class="ui button blue large">Authorize VideoPublisher</a>`;
+    let publishButton = `<a id="publish-video" class="ui button blue large">Publish the video</a>`;
+    let spinner = `<div class="ui active inline loader"></div> Waiting for transaction to confirm...`;
 
-        function initMetamask() {
-            if (typeof web3 !== 'undefined') {
-                $('#no-metamask').hide();
-                $('#metamask').show();
+    function initMetamask() {
+      if (typeof web3 !== 'undefined') {
+        $('#no-metamask').hide();
+        $('#metamask').show();
 
-                // metamask is our web3 provider
-                w3 = new Web3(web3.currentProvider);
+        // metamask is our web3 provider
+        w3 = new Web3(web3.currentProvider);
 
-                // update metamask selected account and network
-                setInterval(function () {
-                    if (w3.eth.accounts[0] !== account) {
-                        account = w3.eth.accounts[0];
-                    }
-                    w3.version.getNetwork((err, netId) => {
-                        networkId = netId
-                    });
-                }, 100);
-            } else {
-                $('#no-metamask').show();
-                $('#metamask').hide();
-            }
-        }
+        // update metamask selected account and network
+        setInterval(function () {
+          if (w3.eth.accounts[0] !== account) {
+            account = w3.eth.accounts[0];
+          }
+          w3.version.getNetwork((err, netId) => {
+            networkId = netId
+          });
+        }, 100);
+      } else {
+        $('#no-metamask').show();
+        $('#metamask').hide();
+      }
+    }
 
-        function initContracts() {
-            if (typeof w3 === 'undefined')
-                return;
-            viewToken = w3.eth.contract(viewTokenABI).at(viewTokenAddress);
-            videoPublisher = w3.eth.contract(videoPublisherABI).at(videoPublisherAddress);
-        }
+    function initContracts() {
+      if (typeof w3 === 'undefined')
+        return;
+      viewToken = w3.eth.contract(viewTokenABI).at(viewTokenAddress);
+      videoPublisher = w3.eth.contract(videoPublisherABI).at(videoPublisherAddress);
+    }
 
-        function refreshBalance() {
-            if (typeof account === 'undefined')
-                return;
-            if (typeof viewToken === 'undefined')
-                initContracts();
+    function refreshBalance() {
+      if (typeof account === 'undefined')
+        return;
+      if (typeof viewToken === 'undefined')
+        initContracts();
 
-            viewToken.balanceOf(account, (e, r) => {
-                balance = Number(r)
-            });
-            viewToken.allowance(account, videoPublisherAddress, (e, r) => {
-                allowance = Number(r)
-            });
-        }
+      viewToken.balanceOf(account, (e, r) => {
+        balance = Number(r)
+      });
+      viewToken.allowance(account, videoPublisherAddress, (e, r) => {
+        allowance = Number(r)
+      });
+    }
 
-        function refreshPublisher() {
-            if (typeof videoPublisher === 'undefined')
-                initContracts();
-            videoPublisher.price((e, r) => {
-                price = r
-            });
-            videoPublisher.videos(videoIdHex, (e, r) => {
-                isPublished = r
-            });
-        }
+    function refreshPublisher() {
+      if (typeof videoPublisher === 'undefined')
+        initContracts();
+      videoPublisher.price((e, r) => {
+        price = r
+      });
+      videoPublisher.videos(videoIdHex, (e, r) => {
+        isPublished = r
+      });
+    }
 
-        function getCurrentUI() {
-            // connected to wrong network
-            if (networkId !== networks[ethChain])
-                return `Connected to the unknown network (${networkId}).
+    function getCurrentUI() {
+      // connected to wrong network
+      if (networkId !== networks[ethChain])
+        return `Connected to the unknown network (${networkId}).
                 <br>Please select ${ethChain.toUpperCase()} as the Ethereum network in Metamask.`;
 
-            // account not selected or wallet locked
-            if (typeof account === 'undefined')
-                return 'Metamask wallet appears to be <b>locked</b>! Please <i>unlock it</i> to proceed.';
+      // account not selected or wallet locked
+      if (typeof account === 'undefined')
+        return 'Metamask wallet appears to be <b>locked</b>! Please <i>unlock it</i> to proceed.';
 
-            // already published
-            if (isPublished)
-                return `Video has been published, and will be live in a few minutes. <i class="checkmark icon green"></i>`;
+      // already published
+      if (isPublished)
+        return `Video has been published, and will be live in a few minutes. <i class="checkmark icon green"></i>`;
 
-            // insufficient funds
-            if (balance < price)
-                return `Your account <i>${account}</i> has insufficient VIEW Token balance
+      // insufficient funds
+      if (balance < price)
+        return `Your account <i>${account}</i> has insufficient VIEW Token balance
                  <i>(${Number(w3.fromWei(balance))} VIEW)</i>.
                  Minimum balance required to publish a video is <b>${Number(w3.fromWei(price))} VIEW</b>.`;
 
-            // not allowed
-            if (allowance < price)
-                return `${authorizeButton}`;
+      // not allowed
+      if (allowance < price)
+        return `${authorizeButton}`;
 
-            return `${publishButton}`;
+      return `${publishButton}`;
 
+    }
+
+    function initButtons() {
+      $('#approve-account').click(() => {
+        approveAccount();
+      });
+      $('#publish-video').click(() => {
+        publishVideo();
+      })
+    }
+
+    function approveAccount() {
+      // create allowance that for 100 videos at current price
+      viewToken.approve(
+        videoPublisherAddress, w3.toWei(w3.fromWei(price) * 100, 'ether'),
+        {from: account},
+        (error, response) => {
+          if (!error)
+            authorizeButton = spinner;
         }
+      );
+    }
 
-        function initButtons() {
-            $('#approve-account').click(() => {
-                approveAccount();
-            });
-            $('#publish-video').click(() => {
-                publishVideo();
-            })
+    function publishVideo() {
+      videoPublisher.publish(
+        videoIdHex,
+        {from: account},
+        (error, response) => {
+          if (!error) {
+            publishButton = spinner;
+            setInterval(function () {
+              window.location.reload();
+            }, 60 * 1000);
+          }
         }
+      );
+    }
 
-        function approveAccount() {
-            // create allowance that for 100 videos at current price
-            viewToken.approve(
-                videoPublisherAddress, w3.toWei(w3.fromWei(price) * 100, 'ether'),
-                {from: account},
-                (error, response) => {
-                    if (!error)
-                        authorizeButton = spinner;
-                }
-            );
-        }
+    // start here
+    $(function () {
+      $('#manual-publish').click(function () {
+        $('.ui.modal').modal('show');
+      });
 
-        function publishVideo() {
-            videoPublisher.publish(
-                videoIdHex,
-                {from: account},
-                (error, response) => {
-                    if (!error) {
-                        publishButton = spinner;
-                        setInterval(function () {
-                            window.location.reload();
-                        }, 60 * 1000);
-                    }
-                }
-            );
-        }
+      initMetamask();
+      initContracts();
 
-        // start here
-        $(function () {
-            $('#manual-publish').click(function () {
-                $('.ui.modal').modal('show');
-            });
-
-            initMetamask();
-            initContracts();
-
-            setInterval(() => {
-                refreshBalance();
-                refreshPublisher();
-                $('#metamask').html(getCurrentUI());
-                initButtons();
-            }, 500);
-        });
-    </script>
+      setInterval(() => {
+        refreshBalance();
+        refreshPublisher();
+        $('#metamask').html(getCurrentUI());
+        initButtons();
+      }, 500);
+    });
+  </script>
 {% endblock %}

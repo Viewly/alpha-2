@@ -5,133 +5,134 @@
 {% block title %}Add to Channel{% endblock %}
 
 {% block content %}
-    {% include '_breadcrumbs.html' %}
-    <div class="ui text container text-center">
-        {% if not video.file_mapper.thumbnail_files
+  {% include '_breadcrumbs.html' %}
+  <div class="ui text container text-center">
+    {% if not video.file_mapper.thumbnail_files
           or 'small' not in video.file_mapper.thumbnail_files
           or get_transcoding_status(video.id) != 'complete' %}
-            <div class="ui horizontal divider">Pending</div>
-            <table class="ui celled table">
-                <thead>
-                <tr>
-                    <th>Transcoding</th>
-                    <th>Cover Image</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>{{ get_transcoding_status(video.id).upper() }}</td>
-                    <td>
-                        {% if video.file_mapper.s3_upload_thumbnail_key
+      <div class="ui horizontal divider">Pending</div>
+      <table class="ui celled table">
+        <thead>
+        <tr>
+          <th>Transcoding</th>
+          <th>Cover Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{ get_transcoding_status(video.id).upper() }}</td>
+          <td>
+            {% if video.file_mapper.s3_upload_thumbnail_key
                             and video.file_mapper.thumbnail_files
                             and 'small' in video.file_mapper.thumbnail_files %}
-                            <i class="checkmark icon green"></i>
-                        {% elif video.file_mapper.s3_upload_thumbnail_key %}
-                            PROCESSING
-                        {% else %}
-                            <i class="cross file excel icon red"></i> Cover image is too
-                            small or missing.
-                            <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}">Upload</a> new one.
-                        {% endif %}
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <p><i>You will be able to publish the video after transcoding completes.</i>
-            </p>
-        {% else %}
-            <div class="ui horizontal divider">Video Preview</div>
-            <iframe
-                width="100%" height="360"
-                src="/embed/{{ video.id }}?autoPlay=0"
-                frameborder="0" allowfullscreen>
-            </iframe>
-            <div class="ui horizontal divider">Choose a channel</div>
-            {% if channels %}
-                <div class="ui form text text-left">
-                    <div class="field">
-                        <div class="ui selection dropdown">
-                            <input type="hidden" name="gender">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Channel</div>
-                            <div class="menu">
-                                {% for channel in channels %}
-                                    <div class="item"
-                                         data-value="{{ channel.id }}">{{ channel.display_name }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="field">
-                            <br>
-                            <a href="javascript:"
-                               id="publish-video"
-                               class="ui button blue huge">Publish</a>
-                        </div>
-                    </div>
-                </div>
+              <i class="checkmark icon green"></i>
+            {% elif video.file_mapper.s3_upload_thumbnail_key %}
+              PROCESSING
             {% else %}
-                <p>You don't have any channels yet.
-                    <a href="{{ url_for('channel.create') }}">Create one</a> first.</p>
+              <i class="cross file excel icon red"></i> Cover image is too
+              small or missing.
+              <a href="{{ url_for('.publish_add_thumbnails', video_id=video.id) }}">Upload</a>
+              new one.
             {% endif %}
-
-        {% endif %}
-    </div>
-
-    <div class="ui mini modal">
-        <div class="header">Channel needed</div>
-        <div class="content">
-            <p>Please <b>select a channel</b> to publish your video to.</p>
-        </div>
-        <div class="actions">
-            <div class="ui blue ok button">
-                <i class="checkmark icon"></i>
-                OK
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <p><i>You will be able to publish the video after transcoding completes.</i>
+      </p>
+    {% else %}
+      <div class="ui horizontal divider">Video Preview</div>
+      <iframe
+        width="100%" height="360"
+        src="/embed/{{ video.id }}?autoPlay=0"
+        frameborder="0" allowfullscreen>
+      </iframe>
+      <div class="ui horizontal divider">Choose a channel</div>
+      {% if channels %}
+        <div class="ui form text text-left">
+          <div class="field">
+            <div class="ui selection dropdown">
+              <input type="hidden" name="gender">
+              <i class="dropdown icon"></i>
+              <div class="default text">Channel</div>
+              <div class="menu">
+                {% for channel in channels %}
+                  <div class="item"
+                       data-value="{{ channel.id }}">{{ channel.display_name }}
+                  </div>
+                {% endfor %}
+              </div>
             </div>
+            <div class="field">
+              <br>
+              <a href="javascript:"
+                 id="publish-video"
+                 class="ui button blue huge">Publish</a>
+            </div>
+          </div>
         </div>
+      {% else %}
+        <p>You don't have any channels yet.
+          <a href="{{ url_for('channel.create') }}">Create one</a> first.</p>
+      {% endif %}
+
+    {% endif %}
+  </div>
+
+  <div class="ui mini modal">
+    <div class="header">Channel needed</div>
+    <div class="content">
+      <p>Please <b>select a channel</b> to publish your video to.</p>
     </div>
+    <div class="actions">
+      <div class="ui blue ok button">
+        <i class="checkmark icon"></i>
+        OK
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
 
 {% block scripts %}
-    {% if get_transcoding_status(video.id) in ['pending', 'processing'] %}
-        <script>
-            setInterval(function () {
-                window.location.reload();
-            }, 15 * 1000);
-        </script>
-    {% endif %}
-
+  {% if get_transcoding_status(video.id) in ['pending', 'processing'] %}
     <script>
-        var publishForm = function () {
-            $('#publish-video').click(function () {
-                var channel_id = $(".ui.selection.dropdown").dropdown('get value');
-                if (typeof(channel_id) === "object") {
-                    channel_id = channel_id[4];
-                }
-                if (!channel_id) {
-                    $('.mini.modal').modal('show');
-                    return;
-                }
-                $.post(
-                    window.location.href,
-                    {channel_id: channel_id},
-                    function () {
-                    }, 'json')
-                    .done(function (data) {
-                        window.location.replace(
-                            "{{ url_for('.publish_to_ethereum', video_id=video.id) }}")
-                    })
-                    .fail(function () {
-                            window.alert('Error occurred while publishing')
-                        }
-                    );
-            })
-        };
-
-        // start here
-        $(function () {
-            publishForm();
-        });
+      setInterval(function () {
+        window.location.reload();
+      }, 15 * 1000);
     </script>
+  {% endif %}
+
+  <script>
+    var publishForm = function () {
+      $('#publish-video').click(function () {
+        var channel_id = $(".ui.selection.dropdown").dropdown('get value');
+        if (typeof(channel_id) === "object") {
+          channel_id = channel_id[4];
+        }
+        if (!channel_id) {
+          $('.mini.modal').modal('show');
+          return;
+        }
+        $.post(
+          window.location.href,
+          {channel_id: channel_id},
+          function () {
+          }, 'json')
+          .done(function (data) {
+            window.location.replace(
+              "{{ url_for('.publish_to_ethereum', video_id=video.id) }}")
+          })
+          .fail(function () {
+              window.alert('Error occurred while publishing')
+            }
+          );
+      })
+    };
+
+    // start here
+    $(function () {
+      publishForm();
+    });
+  </script>
 {% endblock %}
