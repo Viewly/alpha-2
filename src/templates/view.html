@@ -28,6 +28,7 @@
 
 {% block content %}
 
+
     <div class="ui c-video-description u-clearfix">
         {% if not video.published_at %}
             <div class="ui warning message">
@@ -72,7 +73,7 @@
                 </div>
                 <div class="c-video-description__header__item">
                     {% if can_vote(video.published_at) %}
-                        <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
+                        <a href="javascript:;" id="vote-button" class="ui button blue">Vote</a>
                         <div class="ui mini horizontal statistic"
                              data-title="Support this creator and earn rewards"
                              data-content="If you enjoyed this video and would like to support the creator, please consider voting.
@@ -106,21 +107,68 @@
 
     {% include 'partials/disqus.html' %}
 
-    <div class="ui modal" id="metamask-modal">
-        <div class="header">Authorize the vote trough Metamask</div>
-        <div class="scrolling content">
+    <div class="ui modal c-modal c-modal--narrow" id="metamask-modal">
+        <i class="close icon small c-modal__close"></i>
+        <div class="content">
+
             <div id="metamask">
+              <div id='loading' class="u-text-center">
                 <div class="ui active inline loader"></div>
                 Loading...
+              </div>
+
+                 <div id='voted' class="u-text-center u-hidden">
+                    <h3 class="c-modal__title">Already voted</h3>
+                    <p>Looks like you've already voted for this video <i class="smile outline icon"></i></p>
+                 </div>
+
+                <div id='vote' class="u-text-center u-hidden">
+                    <a class="ui button c-btn--primary" href="">
+                        Vote via MetaMask
+                    </a>
+                </div>
+
+              <div id='locked' class="u-text-center u-hidden">
+                    <div class="c-metamask-logo is-locked">
+                        <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
+                        <span class="c-metamask-logo__icon-locked">
+                            {% include 'atoms/icon-lock.html' %}
+                        </span>
+                    </div>
+                    <h3 class="c-modal__title">MetaMask locked</h3>
+                    <p>Metamask wallet appears to be <b>locked</b>! <br>Please unlock it to proceed.</p>
+                </div>
+                <div id='funds' class="u-text-center u-hidden">
+                    <img class="u-margin-bottom-small" src="{{ url_for('static', filename='img/alert-triangle.svg') }}" alt="" height="124px" width="124px">
+                    <h3 class="c-modal__title">Insufficient VIEW Tokens</h3>
+                    <p>
+                      Voting is free, however it does require at least 100 VIEW Tokens in your Ethereum wallet <i>(for a minimum of 7 days)</i>.
+                    </p>
+                </div>
+
+                <div id='network' class="u-text-center u-hidden">
+                    <img class="u-margin-bottom-small" src="{{ url_for('static', filename='img/alert-triangle.svg') }}" alt="" height="124px" width="124px">
+                    <h3 class="c-modal__title">Wrong network</h3>
+                    <p>You are connected to the wrong network. <br> Please select {{ eth_chain() | upper }} as the Ethereum network in Metamask.</p>
+                    <img src="{{ url_for('static', filename='img/metamas-screenshot.png') }}" alt="">
+                </div>
             </div>
 
             <div id="no-metamask">
-                You don't seem to have <a href="https://metamask.io/"
-                                          target="_blank">Metamask</a> installed.
-                <br>
-                <a href="https://metamask.io/" target="_blank">
-                    <img src="https://github.com/MetaMask/faq/raw/master/images/download-metamask-dark.png"
-                         width="330"></a>
+                <div class="u-text-center">
+                    <div class="c-metamask-logo">
+                        <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
+                        <span class="c-metamask-logo__icon-locked">
+                            {% include 'atoms/icon-lock.html' %}
+                        </span>
+                    </div>
+                    <h3 class="c-modal__title">Get MetaMask for your browser</h3>
+                    <p>To authorize your vote we utilize MetaMask. It is a bridge that allows you to visit the distributed web of tomorrow in your browser today.</p>
+                    <a class="ui button c-btn--primary c-btn--with-icon u-type-uppercase u-margin-top-small" href="https://metamask.io/" target="_blank">
+                        {% include 'atoms/icon-download.html' %}
+                        Get MetaMask
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -180,9 +228,6 @@
             let viewToken;
 
             let videoId = "{{ video.id }}";
-
-            let signButton = `<a id="sign-button" class="ui button blue large">Vote with Metamask</a>`;
-            let spinner = `<div class="ui active inline loader"></div> Loading...`;
 
             let isInitialized = false;
 
@@ -336,28 +381,39 @@
                 }
             }
 
+            function clearMetamaskUI() {
+              $('#metamask .u-text-center').addClass('u-hidden');
+            }
+
             function getCurrentUI() {
                 // connected to wrong network
-                if (networkId !== networks[ethChain])
-                    return `Connected to the unknown network (${networkId}).
-                <br>Please select ${ethChain.toUpperCase()} as the Ethereum network in Metamask.`;
+                if (networkId !== networks[ethChain]) {
+                  clearMetamaskUI();
+                  $('#metamask #network').removeClass('u-hidden');
+                }
 
-                // account not selected or wallet locked
-                if (typeof account === 'undefined')
-                    return 'Metamask wallet appears to be <b>locked</b>! Please <i>unlock it</i> to proceed.';
+              // account not selected or wallet locked
+              if (typeof account === 'undefined') {
+                clearMetamaskUI();
+                $('#metamask #locked').removeClass('u-hidden');
+              }
 
                 // account has already voted
                 if (localStorage.getItem(videoId) === 'true') {
-                    return `Selected account <b>${account}</b> has already voted for this video.`;
+                  clearMetamaskUI();
+                  $('#metamask #voted').removeClass('u-hidden');
                 }
 
                 // account has no VIEW Tokens
-                if (balance === 0)
-                    return `Selected account <b>${account}</b> has no VIEW Tokens, and thus cannot vote.`;
-                else if (balance > 0)
-                    return `${signButton}`;
+                if (balance === 0) {
+                  clearMetamaskUI();
+                  $('#metamask #funds').removeClass('u-hidden');
+                }
 
-                return `${spinner}`;
+                if (balance > 0) {
+                  clearMetamaskUI();
+                  $('#metamask #vote').removeClass('u-hidden');
+                }
             }
 
             // start here
@@ -383,7 +439,7 @@
                         }, 250);
 
                         setInterval(() => {
-                            $('#metamask').html(getCurrentUI());
+                            getCurrentUI();
                         }, 1000);
                     }
 

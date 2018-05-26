@@ -11,6 +11,7 @@
 
 // Tools
 @import '../node_modules/inuitcss/tools/tools.clearfix';
+@import '../node_modules/inuitcss/tools/tools.hidden';
 @import 'tools/tools.functions';
 @import 'tools/tools.mixins';
 @import '../node_modules/sass-mq/mq';
@@ -52,6 +53,7 @@
 
 // Utilities
 @import '../node_modules/inuitcss/utilities/utilities.clearfix';
+@import '../node_modules/inuitcss/utilities/utilities.hide';
 @import '../node_modules/inuitcss/utilities/utilities.widths';
 @import '../node_modules/inuitcss/utilities/utilities.spacings';
 @import '../node_modules/inuitcss/utilities/utilities.responsive-spacings';
