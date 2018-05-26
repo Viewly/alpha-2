@@ -36,7 +36,6 @@ body {
 
 .c-modal {
     box-shadow: 0 5px 10px 0 rgba(#000, .05) !important;
-    display: block !important;
     padding-top: $spacing-unit !important;
     padding-bottom: $spacing-unit !important;
 
@@ -72,7 +71,6 @@ body {
 .c-metamask-logo {
     display: inline-block;
     margin-bottom: $spacing-unit-large;
-    vertical-align: middle;
     position: relative;
 }
 

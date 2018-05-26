@@ -19,10 +19,10 @@
 
 {% block player %}
     <div class="c-video-player o-ratio o-ratio--16:9">
-        {# <iframe id="embedded-player"
+        <iframe id="embedded-player"
             src="/embed/{{ video.id }}?autoPlay=1"
             frameborder="0" scrolling="0" allowfullscreen>
-        </iframe> #}
+        </iframe>
     </div>
 {% endblock %}
 
@@ -110,13 +110,22 @@
     <div class="ui modal c-modal c-modal--narrow" id="metamask-modal">
         <i class="close icon small c-modal__close"></i>
         <div class="content">
-            {# <div id="metamask">
+            <div id="metamask">
                 <div class="ui active inline loader"></div>
                 Loading...
-            </div> #}
+            </div>
 
             <div id="no-metamask">
                 <div class="u-text-center">
+                    <h3 class="c-modal__title">Already voted</h3>
+                    <p>Looks like you've already voted for this video <i class="smile outline icon"></i></p>
+                </div>
+                <div class="u-text-center u-hidden">
+                    <a class="ui button c-btn--primary" href="">
+                        Vote via MetaMask
+                    </a>
+                </div>
+                <div class="u-text-center u-hidden">
                     <div class="c-metamask-logo">
                         <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
                         <span class="c-metamask-logo__icon-locked">
@@ -130,7 +139,7 @@
                         Get MetaMask
                     </a>
                 </div>
-                <div class="u-text-center">
+                <div class="u-text-center u-hidden">
                     <div class="c-metamask-logo is-locked">
                         <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="">
                         <span class="c-metamask-logo__icon-locked">
@@ -140,12 +149,12 @@
                     <h3 class="c-modal__title">MetaMask locked</h3>
                     <p>Metamask wallet appears to be <b>locked</b>! <br>Please unlock it to proceed.</p>
                 </div>
-                <div class="u-text-center">
+                <div class="u-text-center u-hidden">
                     <img class="u-margin-bottom-small" src="{{ url_for('static', filename='img/alert-triangle.svg') }}" alt="" height="124px" width="124px">
                     <h3 class="c-modal__title">No tokens</h3>
                     <p>Sorry, seleted account has no VIEW Tokens, <br>and thus can’t vote.</p>
                 </div>
-                <div class="u-text-center">
+                <div class="u-text-center u-hidden">
                     <img class="u-margin-bottom-small" src="{{ url_for('static', filename='img/alert-triangle.svg') }}" alt="" height="124px" width="124px">
                     <h3 class="c-modal__title">Wrong network</h3>
                     <p>You are connected to an unknow network. <br> Please select MAINNET as the Ethereum network in Metamask.</p>
