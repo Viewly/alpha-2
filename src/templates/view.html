@@ -397,29 +397,34 @@
         if (networkId !== networks[ethChain]) {
           clearMetamaskUI();
           $('#metamask #network').removeClass('u-hidden');
+          return;
         }
 
         // account not selected or wallet locked
         if (typeof account === 'undefined') {
           clearMetamaskUI();
           $('#metamask #locked').removeClass('u-hidden');
+          return;
         }
 
         // account has already voted
         if (localStorage.getItem(videoId) === 'true') {
           clearMetamaskUI();
           $('#metamask #voted').removeClass('u-hidden');
+          return;
         }
 
         // account has no VIEW Tokens
         if (balance === 0) {
           clearMetamaskUI();
           $('#metamask #funds').removeClass('u-hidden');
+          return;
         }
 
         if (balance > 0) {
           clearMetamaskUI();
           $('#metamask #vote').removeClass('u-hidden');
+          return;
         }
       }
 
