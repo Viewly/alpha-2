@@ -3,46 +3,47 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>{% block title %}Viewly Auth{% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>{% block title %}Viewly Auth{% endblock %}</title>
+  <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <link href="{{ url_for('static', filename='css/compiled/base.scss.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='css/compiled/base.scss.css') }}" rel="stylesheet" type="text/css">
 
 </head>
 <body class="c-page-auth">
 
-    <div class="c-auth">
-        <a class="c-auth__logo" href="/">
-            <img src="{{ url_for('static', filename='img/logo.svg') }}" class="logo" alt="">
-        </a>
-        <div class="c-auth__switch">
-            {% block switch %}
-            {% endblock %}
-        </div>
-        <div class="c-auth__main">
-            <div class="c-auth__main__content">
-                {% include "partials/flash_messages.html" %}
+<div class="c-auth">
+  <a class="c-auth__logo" href="/">
+    <img src="{{ url_for('static', filename='img/logo.svg') }}" class="logo" alt="">
+  </a>
+  <div class="c-auth__switch">
+    {% block switch %}
+    {% endblock %}
+  </div>
+  <div class="c-auth__main">
+    <div class="c-auth__main__content">
+      {% include "partials/flash_messages.html" %}
 
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
-        <div class="c-auth__sidebar">
-            <div class="c-auth__sidebar__content">
-                <h1 class="c-auth__sidebar__title">The video platform we hope you'll love.</h1>
-                <p>Enjoy videos without ads. Engage with your favourite creators. Support awesome work.</p>
-                <a href="/" class="ui button inverted u-margin-top">Go Home</a>
-            </div>
-        </div>
+      {% block content %}
+      {% endblock %}
     </div>
+  </div>
+  <div class="c-auth__sidebar">
+    <div class="c-auth__sidebar__content">
+      <h1 class="c-auth__sidebar__title">The video platform we hope you'll love.</h1>
+      <p>Enjoy videos without ads. Engage with your favourite creators. Support awesome
+        work.</p>
+      <a href="/" class="ui button inverted u-margin-top">Go Home</a>
+    </div>
+  </div>
+</div>
 
 
-    <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
 
 </body>
 </html>

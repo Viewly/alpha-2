@@ -1,102 +1,102 @@
 {% if current_user.is_authenticated %}
-    <script type="text/javascript">
-        let userId = '{{ current_user.id }}';
-        const authToken = "{{ get_auth_token_cached(current_user) }}";
+  <script type="text/javascript">
+    let userId = '{{ current_user.id }}';
+    const authToken = "{{ get_auth_token_cached(current_user) }}";
 
-        function checkIfFollowing(channelId) {
-            if (channelId === 'undefined') {
-                return;
-            }
-            let key = `Follow-${userId}-${channelId}`;
-            if (localStorage.getItem(key) === 'true')
-                return;
+    function checkIfFollowing(channelId) {
+      if (channelId === 'undefined') {
+        return;
+      }
+      let key = `Follow-${userId}-${channelId}`;
+      if (localStorage.getItem(key) === 'true')
+        return;
 
-            fetch("{{ url_for('api.followapi') }}?channel_id=" + channelId, {
-                method: 'get',
-                headers: new Headers({
-                    'Authentication-Token': authToken
-                })
-            }).then(function (response) {
-                if (!response.ok) {
-                    console.log(response);
-                    return;
-                }
-                response.json().then(follow => {
-                    localStorage.setItem(followToKey(follow), 'true');
-                    refreshFollowButton(channelId);
-                })
-            }).catch(function (err) {
-                console.log(err)
-            });
+      fetch("{{ url_for('api.followapi') }}?channel_id=" + channelId, {
+        method: 'get',
+        headers: new Headers({
+          'Authentication-Token': authToken
+        })
+      }).then(function (response) {
+        if (!response.ok) {
+          console.log(response);
+          return;
         }
+        response.json().then(follow => {
+          localStorage.setItem(followToKey(follow), 'true');
+          refreshFollowButton(channelId);
+        })
+      }).catch(function (err) {
+        console.log(err)
+      });
+    }
 
-        function followToKey(follow) {
-            return `Follow-${follow.user_id}-${follow.channel_id}`;
+    function followToKey(follow) {
+      return `Follow-${follow.user_id}-${follow.channel_id}`;
+    }
+
+    function follow(channelId) {
+      fetch("{{ url_for('api.followapi') }}", {
+        method: 'put',
+        body: JSON.stringify({
+          channel_id: channelId,
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authentication-Token': authToken
+        })
+      }).then(function (response) {
+        if (!response.ok) {
+          console.log(response);
+          return;
         }
+        response.json().then(follow => {
+          localStorage.setItem(followToKey(follow), 'true');
+          refreshFollowButton(channelId);
+        })
+      }).catch(function (err) {
+        console.log(err)
+      });
+    }
 
-        function follow(channelId) {
-            fetch("{{ url_for('api.followapi') }}", {
-                method: 'put',
-                body: JSON.stringify({
-                    channel_id: channelId,
-                }),
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Authentication-Token': authToken
-                })
-            }).then(function (response) {
-                if (!response.ok) {
-                    console.log(response);
-                    return;
-                }
-                response.json().then(follow => {
-                    localStorage.setItem(followToKey(follow), 'true');
-                    refreshFollowButton(channelId);
-                })
-            }).catch(function (err) {
-                console.log(err)
-            });
-        }
+    function unFollow(channelId) {
+      fetch("{{ url_for('api.followapi') }}", {
+        method: 'delete',
+        body: JSON.stringify({
+          channel_id: channelId,
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authentication-Token': authToken
+        })
+      }).then(function (response) {
+        response.json().then(() => {
+          localStorage.removeItem(`Follow-${userId}-${channelId}`);
+          refreshFollowButton(channelId);
+        })
+      }).catch(function (err) {
+        console.log(err)
+      });
+    }
 
-        function unFollow(channelId) {
-            fetch("{{ url_for('api.followapi') }}", {
-                method: 'delete',
-                body: JSON.stringify({
-                    channel_id: channelId,
-                }),
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Authentication-Token': authToken
-                })
-            }).then(function (response) {
-                response.json().then(() => {
-                    localStorage.removeItem(`Follow-${userId}-${channelId}`);
-                    refreshFollowButton(channelId);
-                })
-            }).catch(function (err) {
-                console.log(err)
-            });
-        }
+    function refreshFollowButton(channelId) {
+      checkIfFollowing(channelId);
 
-        function refreshFollowButton(channelId) {
-            checkIfFollowing(channelId);
-
-            let key = `Follow-${userId}-${channelId}`;
-            if (localStorage.getItem(key) === 'true') {
-                $('#follow-button').hide();
-                $('#un-follow-button').show().one('click', function () {
-                    $('#follow-button').removeClass('disabled');
-                    $('#un-follow-button').addClass('disabled');
-                    unFollow(channelId);
-                });
-            } else {
-                $('#un-follow-button').hide();
-                $('#follow-button').show().one('click', function () {
-                    $('#follow-button').addClass('disabled');
-                    $('#un-follow-button').removeClass('disabled');
-                    follow(channelId);
-                });
-            }
-        }
-    </script>
+      let key = `Follow-${userId}-${channelId}`;
+      if (localStorage.getItem(key) === 'true') {
+        $('#follow-button').hide();
+        $('#un-follow-button').show().one('click', function () {
+          $('#follow-button').removeClass('disabled');
+          $('#un-follow-button').addClass('disabled');
+          unFollow(channelId);
+        });
+      } else {
+        $('#un-follow-button').hide();
+        $('#follow-button').show().one('click', function () {
+          $('#follow-button').addClass('disabled');
+          $('#un-follow-button').removeClass('disabled');
+          follow(channelId);
+        });
+      }
+    }
+  </script>
 {% endif %}

@@ -1,32 +1,32 @@
 <div class="ui">
-    <h2 class="ui left floated header">Comments</h2>
-    <div class="uis clearing divider"></div>
-    <div class="ui relaxed divided items">
+  <h2 class="ui left floated header">Comments</h2>
+  <div class="uis clearing divider"></div>
+  <div class="ui relaxed divided items">
 
-        <div class="item">
-            <div class="content">
-                <div id="disqus_thread"></div>
-            </div>
-        </div>
+    <div class="item">
+      <div class="content">
+        <div id="disqus_thread"></div>
+      </div>
     </div>
+  </div>
 </div>
 
 
 <script type="application/javascript">
-    /**
-     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    var disqus_config = function () {
-        this.page.url = "{{ url_for('view_video', video_id=video.id, _external=True) }}";
-        this.page.identifier = '{{ video.id }}';
-        {% if current_user and video %}
-            {{ get_disqus_sso(get_disqus_user(video.channel.id)) | safe }}
-        {% endif %}
-    };
-    (function () { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = 'https://viewly.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  var disqus_config = function () {
+    this.page.url = "{{ url_for('view_video', video_id=video.id, _external=True) }}";
+    this.page.identifier = '{{ video.id }}';
+    {% if current_user and video %}
+      {{ get_disqus_sso(get_disqus_user(video.channel.id)) | safe }}
+    {% endif %}
+  };
+  (function () { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://viewly.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
 </script>

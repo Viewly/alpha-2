@@ -4,61 +4,61 @@
 
 {% block content %}
 
-    <div class="ui centered divided grid">
-        <div class="row">
+  <div class="ui centered divided grid">
+    <div class="row">
 
-            <div class="ten wide column">
-                <h2>Channels</h2>
-                {% if channels %}
-                    <table class="ui single line compact celled table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Uploads</th>
-                            <th>Created On</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for channel, video_count in channels %}
-                            <tr>
-                                <td>
-                                    <b>
-                                        <img src="{{ guess_avatar_cdn_url(channel.id, 'tiny') }}"
-                                             class="ui circular avatar image"
-                                             onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
-                                        <a href="{{ url_for('view_channel', channel_id=channel.id) }}">
-                                            {{ channel.display_name }}</a>
-                                    </b>
-                                </td>
-                                <td>{{ video_count }}</td>
-                                <td>{{ channel.created_at | humanDate }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <br>
-                {% else %}
-                    You don't have any channels yet.
-                {% endif %}
+      <div class="ten wide column">
+        <h2>Channels</h2>
+        {% if channels %}
+          <table class="ui single line compact celled table">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Uploads</th>
+              <th>Created On</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for channel, video_count in channels %}
+              <tr>
+                <td>
+                  <b>
+                    <img src="{{ guess_avatar_cdn_url(channel.id, 'tiny') }}"
+                         class="ui circular avatar image"
+                         onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
+                    <a href="{{ url_for('view_channel', channel_id=channel.id) }}">
+                      {{ channel.display_name }}</a>
+                  </b>
+                </td>
+                <td>{{ video_count }}</td>
+                <td>{{ channel.created_at | humanDate }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <br>
+        {% else %}
+          You don't have any channels yet.
+        {% endif %}
 
-                <div class="ui text container">
-                    <a href="{{ url_for('channel.create') }}"
-                       class="ui labeled icon button blue">
-                        New Channel
-                        <i class="add icon"></i>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="four wide column">
-                <h2>Settings</h2>
-                <a href="{{ url_for('security.change_password') }}">Change Password</a>
-                <br>
-            </div>
-
+        <div class="ui text container">
+          <a href="{{ url_for('channel.create') }}"
+             class="ui labeled icon button blue">
+            New Channel
+            <i class="add icon"></i>
+          </a>
         </div>
+      </div>
+
+
+      <div class="four wide column">
+        <h2>Settings</h2>
+        <a href="{{ url_for('security.change_password') }}">Change Password</a>
+        <br>
+      </div>
+
     </div>
+  </div>
 
 {% endblock %}
 

@@ -37,7 +37,8 @@
                 Upload
               </a>
             {% endif %}
-            <a href="{{ url_for('channel.create') }}">{% include 'atoms/icon-new-channel.html' %} New Channel</a>
+            <a href="{{ url_for('channel.create') }}">{% include 'atoms/icon-new-channel.html' %}
+              New Channel</a>
           </div>
         </div>
         <div class="c-dropdown ui item">
@@ -45,8 +46,10 @@
           <i class="dropdown icon"></i>
           <div class="c-dropdown__menu">
             <a href="{{ url_for('edit_profile') }}"><i class="list icon"></i> My Channels</a>
-            <a href="{{ url_for('security.change_password') }}"><i class="key icon"></i> Change Password</a>
-            <a href="{{ url_for('security.logout') }}"><i class="settings icon"></i> Log Out</a>
+            <a href="{{ url_for('security.change_password') }}"><i class="key icon"></i>
+              Change Password</a>
+            <a href="{{ url_for('security.logout') }}"><i class="settings icon"></i> Log
+              Out</a>
           </div>
         </div>
       {% else %}
@@ -54,7 +57,8 @@
           <a href="{{ url_for('security.login') }}" class="">Login</a>
         </div>
         <div class="item">
-          <a href="{{ url_for('security.register') }}" class="c-header__btn ui primary basic button">Sign Up</a>
+          <a href="{{ url_for('security.register') }}" class="c-header__btn ui primary basic button">Sign
+            Up</a>
         </div>
       {% endif %}
     </div>
@@ -73,19 +77,19 @@
     const searchInput = $('.js-search-input');
     const searchButton = $('.js-search-button');
 
-    showMobileSearch.on('click', function(e) {
+    showMobileSearch.on('click', function (e) {
       e.preventDefault();
       searchForm.removeClass('c-header__search--hidden@small');
       viewport.addClass('has-search-activated');
     });
 
-    closeMobileSearch.on('click', function(e) {
+    closeMobileSearch.on('click', function (e) {
       e.preventDefault();
       searchForm.addClass('c-header__search--hidden@small');
       viewport.removeClass('has-search-activated');
     });
 
-    viewport.on('click', function(e) {
+    viewport.on('click', function (e) {
       const targetSearchForm = $(e.target.closest(searchForm.selector));
       const targetShowMobileSearch = $(e.target.closest(showMobileSearch.selector));
 

@@ -29,12 +29,12 @@
       }
     };
 
-    searchFormBtn.addEventListener('click', function(e) {
+    searchFormBtn.addEventListener('click', function (e) {
       e.preventDefault();
       performSearch()
     });
 
-    searchFormInput.addEventListener('keypress', function(e) {
+    searchFormInput.addEventListener('keypress', function (e) {
       if (e.which == 13) {
         performSearch();
         return false;

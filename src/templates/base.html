@@ -1,85 +1,85 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>{% block title %}Viewly{% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
+  <title>{% block title %}Viewly{% endblock %}</title>
+  <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <link href="{{ url_for('static', filename='css/compiled/base.scss.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='css/compiled/base.scss.css') }}" rel="stylesheet" type="text/css">
 
-    {% block styles %}
-    {% endblock %}
+  {% block styles %}
+  {% endblock %}
 
-    <meta property="og:title" content="{% block meta_title %}Viewly–A tokenized video platform{% endblock %}">
-    <meta property="og:description" content="{% block meta_description %}Viewly is a tokenized video platform, aiming to provide a more fair and efficient means of content delivery and monetization."{% endblock %}>
-    <meta property="og:image" content="{% block meta_image %}https://view.ly/img/logo-viewly-square.png{% endblock %}">
+  <meta property="og:title" content="{% block meta_title %}Viewly–A tokenized video platform{% endblock %}">
+  <meta property="og:description" content="{% block meta_description %}Viewly is a tokenized video platform, aiming to provide a more fair and efficient means of content delivery and monetization."{% endblock %}>
+  <meta property="og:image" content="{% block meta_image %}https://view.ly/img/logo-viewly-square.png{% endblock %}">
 
-    <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='node_modules/lodash/lodash.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
-    {#<script src="{{ url_for('static', filename='bundle.js') }}"></script>#}
+  <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='node_modules/lodash/lodash.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
+  {#<script src="{{ url_for('static', filename='bundle.js') }}"></script>#}
 
 </head>
 <body class="c-sticky-footer-layout {{ pageClass }}">
 
 {% block menu %}
-    {% include "partials/main_menu.html" %}
+  {% include "partials/main_menu.html" %}
 {% endblock %}
 
 <div class="c-sticky-footer-layout__content">
-    {% block player %}
-    {% endblock %}
+  {% block player %}
+  {% endblock %}
 
-    <div class="o-wrapper">
-        {% include "partials/flash_messages.html" %}
-        {% block content %}
-        {% endblock %}
-    </div>
+  <div class="o-wrapper">
+    {% include "partials/flash_messages.html" %}
+    {% block content %}
+    {% endblock %}
+  </div>
 </div>
 
 {% if showFooter %}
-    {% include 'partials/footer.html' %}
+  {% include 'partials/footer.html' %}
 {% endif %}
 
 <script type="application/javascript">
-    // SEMANTIC.UI
-    $(function () {
-        // Enable dropdown
-        $('.ui.dropdown').dropdown();
-        // Enable close button on messages
-        $('.message .close').on('click', function () {
-            $(this).closest('.message').transition('fade');
-        });
+  // SEMANTIC.UI
+  $(function () {
+    // Enable dropdown
+    $('.ui.dropdown').dropdown();
+    // Enable close button on messages
+    $('.message .close').on('click', function () {
+      $(this).closest('.message').transition('fade');
+    });
+  });
+
+  // Dropdown show/hide
+  $(function () {
+    const viewport = $('body');
+    const dropdown = $('.c-dropdown');
+
+    viewport.on('click', function (e) {
+      const target = $(e.target.closest(dropdown.selector));
+
+      if (target.length === 0) {
+        dropdown.removeClass('is-active');
+      }
     });
 
-    // Dropdown show/hide
-    $(function () {
-        const viewport = $('body');
-        const dropdown = $('.c-dropdown');
-
-        viewport.on('click', function(e) {
-            const target = $(e.target.closest(dropdown.selector));
-
-            if (target.length === 0) {
-                dropdown.removeClass('is-active');
-            }
-        });
-
-        dropdown.on('click', function(e){
-            dropdown.not(this).removeClass('is-active')
-            $(this).toggleClass('is-active');
-        });
+    dropdown.on('click', function (e) {
+      dropdown.not(this).removeClass('is-active')
+      $(this).toggleClass('is-active');
     });
+  });
 
-    // global missing image replacement
-    $(function () {
-        $(".js-thumbnail-img").on("error", function () {
-            $(this).attr('src', 'https://i.imgur.com/04kFE8B.png');
-        });
+  // global missing image replacement
+  $(function () {
+    $(".js-thumbnail-img").on("error", function () {
+      $(this).attr('src', 'https://i.imgur.com/04kFE8B.png');
     });
+  });
 </script>
 
 {% block scripts %}

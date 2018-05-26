@@ -6,268 +6,269 @@
 {% set showFooter = true %}
 
 {% block styles %}
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/fine-uploader-new.css') }}">
-    <script src="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/s3.fine-uploader.min.js') }}"></script>
-    <script type="text/template" id="qq-template">
-        <div class="qq-uploader-selector qq-uploader"
-             qq-drop-area-text="Drop an image here">
-            <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
-                <div role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                     aria-valuemax="100"
-                     class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
-            </div>
-            <div class="qq-upload-drop-area-selector qq-upload-drop-area"
-                 qq-hide-dropzone>
-                <span class="qq-upload-drop-area-text-selector"></span>
-            </div>
-            <div class="qq-upload-button-selector qq-upload-button">
-                <div>Select image</div>
-            </div>
-            <span class="qq-drop-processing-selector qq-drop-processing">
+  <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/fine-uploader-new.css') }}">
+  <script src="{{ url_for('static', filename='node_modules/fine-uploader/s3.fine-uploader/s3.fine-uploader.min.js') }}"></script>
+  <script type="text/template" id="qq-template">
+    <div class="qq-uploader-selector qq-uploader"
+         qq-drop-area-text="Drop an image here">
+      <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+        <div role="progressbar" aria-valuenow="0" aria-valuemin="0"
+             aria-valuemax="100"
+             class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+      </div>
+      <div class="qq-upload-drop-area-selector qq-upload-drop-area"
+           qq-hide-dropzone>
+        <span class="qq-upload-drop-area-text-selector"></span>
+      </div>
+      <div class="qq-upload-button-selector qq-upload-button">
+        <div>Select image</div>
+      </div>
+      <span class="qq-drop-processing-selector qq-drop-processing">
                 <span>Processing dropped files...</span>
                 <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
             </span>
-            <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite"
-                aria-relevant="additions removals">
-                <li>
-                    <div class="qq-progress-bar-container-selector">
-                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                             aria-valuemax="100"
-                             class="qq-progress-bar-selector qq-progress-bar"></div>
-                    </div>
-                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-                    <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
-                    <span class="qq-upload-file-selector qq-upload-file"></span>
-                    <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"
-                          aria-label="Edit filename"></span>
-                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0"
-                           type="text">
-                    <span class="qq-upload-size-selector qq-upload-size"></span>
-                    <button type="button"
-                            class="qq-btn qq-upload-cancel-selector qq-upload-cancel">
-                        Cancel
-                    </button>
-                    <button type="button"
-                            class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry
-                    </button>
-                    <button type="button"
-                            class="qq-btn qq-upload-delete-selector qq-upload-delete">
-                        Delete
-                    </button>
-                    <span role="status"
-                          class="qq-upload-status-text-selector qq-upload-status-text"></span>
-                </li>
-            </ul>
+      <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite"
+          aria-relevant="additions removals">
+        <li>
+          <div class="qq-progress-bar-container-selector">
+            <div role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                 aria-valuemax="100"
+                 class="qq-progress-bar-selector qq-progress-bar"></div>
+          </div>
+          <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+          <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+          <span class="qq-upload-file-selector qq-upload-file"></span>
+          <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"
+                aria-label="Edit filename"></span>
+          <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0"
+                 type="text">
+          <span class="qq-upload-size-selector qq-upload-size"></span>
+          <button type="button"
+                  class="qq-btn qq-upload-cancel-selector qq-upload-cancel">
+            Cancel
+          </button>
+          <button type="button"
+                  class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry
+          </button>
+          <button type="button"
+                  class="qq-btn qq-upload-delete-selector qq-upload-delete">
+            Delete
+          </button>
+          <span role="status"
+                class="qq-upload-status-text-selector qq-upload-status-text"></span>
+        </li>
+      </ul>
 
-            <dialog class="qq-alert-dialog-selector">
-                <div class="qq-dialog-message-selector"></div>
-                <div class="qq-dialog-buttons">
-                    <button type="button" class="qq-cancel-button-selector">Close</button>
-                </div>
-            </dialog>
-
-            <dialog class="qq-confirm-dialog-selector">
-                <div class="qq-dialog-message-selector"></div>
-                <div class="qq-dialog-buttons">
-                    <button type="button" class="qq-cancel-button-selector">No</button>
-                    <button type="button" class="qq-ok-button-selector">Yes</button>
-                </div>
-            </dialog>
-
-            <dialog class="qq-prompt-dialog-selector">
-                <div class="qq-dialog-message-selector"></div>
-                <input type="text">
-                <div class="qq-dialog-buttons">
-                    <button type="button" class="qq-cancel-button-selector">Cancel
-                    </button>
-                    <button type="button" class="qq-ok-button-selector">Ok</button>
-                </div>
-            </dialog>
+      <dialog class="qq-alert-dialog-selector">
+        <div class="qq-dialog-message-selector"></div>
+        <div class="qq-dialog-buttons">
+          <button type="button" class="qq-cancel-button-selector">Close</button>
         </div>
-    </script>
+      </dialog>
+
+      <dialog class="qq-confirm-dialog-selector">
+        <div class="qq-dialog-message-selector"></div>
+        <div class="qq-dialog-buttons">
+          <button type="button" class="qq-cancel-button-selector">No</button>
+          <button type="button" class="qq-ok-button-selector">Yes</button>
+        </div>
+      </dialog>
+
+      <dialog class="qq-prompt-dialog-selector">
+        <div class="qq-dialog-message-selector"></div>
+        <input type="text">
+        <div class="qq-dialog-buttons">
+          <button type="button" class="qq-cancel-button-selector">Cancel
+          </button>
+          <button type="button" class="qq-ok-button-selector">Ok</button>
+        </div>
+      </dialog>
+    </div>
+  </script>
 {% endblock %}
 
 {% block content %}
-    <div class="c-channel-header">
-        <div class="o-grid o-grid--middle o-grid--between">
-            <div class="c-channel-header__cell o-grid__cell">
-                <div class="o-flag o-flag--small">
-                    <div class="o-flag__img u-align-top">
-                        <div class="c-widget">
-                            <img class="o-avatar o-avatar--huge"
-                                src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
-                                onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
-                            {% if current_user.id == channel.user_id %}
-                                <a class="c-widget__action" href="javascript:" id="avatar-button">{% include 'atoms/icon-edit.html' %}</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="o-flag__body">
-                        <h2 class="c-channel-header__name">{{ channel.display_name }}</h2>
-                        {% if channel.description %}
-                            <p class="c-channel-header__description">{{ channel.description }}</p>
-                        {% endif %}
-                        {% if not current_user.is_active %}
-                            <div class="c-channel-header__inline-details">
-                                {% include 'partials/channel-details.html' %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+  <div class="c-channel-header">
+    <div class="o-grid o-grid--middle o-grid--between">
+      <div class="c-channel-header__cell o-grid__cell">
+        <div class="o-flag o-flag--small">
+          <div class="o-flag__img u-align-top">
+            <div class="c-widget">
+              <img class="o-avatar o-avatar--huge"
+                   src="{{ guess_avatar_cdn_url(channel.id, 'small') }}"
+                   onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
+              {% if current_user.id == channel.user_id %}
+                <a class="c-widget__action" href="javascript:" id="avatar-button">{% include 'atoms/icon-edit.html' %}</a>
+              {% endif %}
             </div>
-            {% if current_user.is_active %}
-                <div class="c-channel-header__cell o-grid__cell">
-                    <div class="c-channel-header__sidebar">
-                        {% include 'partials/channel-details.html' %}
-
-                        {% if current_user.id != channel.user_id %}
-                            <a href="javascript:"
-                               id="follow-button"
-                               style="display: none;"
-                               class="ui button large c-channel-header__btn c-btn--primary">+ Follow</a>
-                            <a href="javascript:"
-                               id="un-follow-button"
-                               style="display: none;"
-                               class="ui button large basic blue c-channel-header__btn">Unfollow</a>
-                        {% else %}
-                            <a href="{{ url_for('channel.edit', channel_id=channel.id) }}"
-                               class="ui button large c-channel-header__btn c-btn--primary">Edit info</a>
-                        {% endif %}
-                    </div>
-                </div>
+          </div>
+          <div class="o-flag__body">
+            <h2 class="c-channel-header__name">{{ channel.display_name }}</h2>
+            {% if channel.description %}
+              <p class="c-channel-header__description">{{ channel.description }}</p>
             {% endif %}
+            {% if not current_user.is_active %}
+              <div class="c-channel-header__inline-details">
+                {% include 'partials/channel-details.html' %}
+              </div>
+            {% endif %}
+          </div>
         </div>
-    </div>
+      </div>
+      {% if current_user.is_active %}
+        <div class="c-channel-header__cell o-grid__cell">
+          <div class="c-channel-header__sidebar">
+            {% include 'partials/channel-details.html' %}
 
-
-    <ul class="o-grid c-videos-grid">
-
-        {% for video in videos %}
-            <li class="o-grid__cell c-videos-grid__cell">
-                <div class="c-video">
-                    <div class="c-thumbnail">
-                        <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
-                        <img class="c-thumbnail__img js-thumbnail-img" src="{{ guess_thumbnail_cdn_url(video.id) }}">
-                        {% include 'atoms/icon-play.html' %}
-                        <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
-                        {% if current_user.id == channel.user_id %}
-                            <a href="{{ url_for('upload.publish_add_details', video_id=video.id) }}" class="c-thumbnail__edit">
-                                {% include 'atoms/icon-edit.html' %}
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="c-video__content">
-                        <a class="c-video__title"
-                           href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
-
-                        <div class="c-video__footer">
-                            {{ video.published_at | humanDate }}
-                            {% if not video.published_at %}
-                                <a href="{{ url_for('upload.publish_to_ethereum', video_id=video.id) }}"
-                                   class="ui red label">Unpublished</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-
-
-
-    <div class="ui modal" id="avatar-modal">
-        <div class="header">Channel profile picture</div>
-        <div class="content">
-
-            <div id="fine-uploader"></div>
-            <div class="text text-center">
-                <i>A minimum image size of 128 x 128px is required.</i>
-            </div>
-
-            <br>
-            <div id="next_steps" class="text-center"
-                 style="{% if not current_thumbnail %}display: none;{% endif %}">
-                <p>
-                    <i>It might take a few minutes for image to update on site.</i>
-                </p>
-                <a href="javascript:"
-                   onclick="$('#avatar-modal').modal('hide')"
-                   class="ui button blue huge">Finish</a>
-                <br>
-            </div>
-
+            {% if current_user.id != channel.user_id %}
+              <a href="javascript:"
+                 id="follow-button"
+                 style="display: none;"
+                 class="ui button large c-channel-header__btn c-btn--primary">+ Follow</a>
+              <a href="javascript:"
+                 id="un-follow-button"
+                 style="display: none;"
+                 class="ui button large basic blue c-channel-header__btn">Unfollow</a>
+            {% else %}
+              <a href="{{ url_for('channel.edit', channel_id=channel.id) }}"
+                 class="ui button large c-channel-header__btn c-btn--primary">Edit
+                info</a>
+            {% endif %}
+          </div>
         </div>
+      {% endif %}
     </div>
+  </div>
+
+
+  <ul class="o-grid c-videos-grid">
+
+    {% for video in videos %}
+      <li class="o-grid__cell c-videos-grid__cell">
+        <div class="c-video">
+          <div class="c-thumbnail">
+            <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
+            <img class="c-thumbnail__img js-thumbnail-img" src="{{ guess_thumbnail_cdn_url(video.id) }}">
+            {% include 'atoms/icon-play.html' %}
+            <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
+            {% if current_user.id == channel.user_id %}
+              <a href="{{ url_for('upload.publish_add_details', video_id=video.id) }}" class="c-thumbnail__edit">
+                {% include 'atoms/icon-edit.html' %}
+              </a>
+            {% endif %}
+          </div>
+          <div class="c-video__content">
+            <a class="c-video__title"
+               href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
+
+            <div class="c-video__footer">
+              {{ video.published_at | humanDate }}
+              {% if not video.published_at %}
+                <a href="{{ url_for('upload.publish_to_ethereum', video_id=video.id) }}"
+                   class="ui red label">Unpublished</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+
+
+  <div class="ui modal" id="avatar-modal">
+    <div class="header">Channel profile picture</div>
+    <div class="content">
+
+      <div id="fine-uploader"></div>
+      <div class="text text-center">
+        <i>A minimum image size of 128 x 128px is required.</i>
+      </div>
+
+      <br>
+      <div id="next_steps" class="text-center"
+           style="{% if not current_thumbnail %}display: none;{% endif %}">
+        <p>
+          <i>It might take a few minutes for image to update on site.</i>
+        </p>
+        <a href="javascript:"
+           onclick="$('#avatar-modal').modal('hide')"
+           class="ui button blue huge">Finish</a>
+        <br>
+      </div>
+
+    </div>
+  </div>
 
 {% endblock %}
 
 {% block scripts %}
 
-    {% if current_user.is_authenticated %}
-        {% include 'partials/follow_js.html' %}
-        <script type="application/javascript">
-            $(function () {
-                refreshFollowButton('{{ channel.id }}');
-            });
-        </script>
-    {% endif %}
-
-    <script type="text/javascript">
-        $(function () {
-            $('#avatar-button').click(function () {
-                $('#avatar-modal').modal('show');
-            });
-        });
+  {% if current_user.is_authenticated %}
+    {% include 'partials/follow_js.html' %}
+    <script type="application/javascript">
+      $(function () {
+        refreshFollowButton('{{ channel.id }}');
+      });
     </script>
+  {% endif %}
 
-    <script type="text/javascript">
-        $(function () {
-            var uploader = new qq.s3.FineUploader({
-                debug: true,
-                multiple: false,
-                element: document.getElementById('fine-uploader'),
-                request: {
-                    endpoint: 'https://{{ s3_bucket_name }}.s3-accelerate.amazonaws.com',
-                    accessKey: '{{ s3_user_access_key }}'
-                },
-                objectProperties: {
-                    region: '{{ s3_bucket_region }}'
-                    //acl: 'public-read'
-                },
-                signature: {
-                    version: 4,
-                    endpoint: '{{ url_for('upload.s3_signature') }}'
-                },
-                uploadSuccess: {
-                    endpoint: '{{ url_for('upload.s3_avatar_success') }}',
-                    params: {'channel_id': '{{ channel.id }}'}
-                },
-                validation: {
-                    allowedExtensions: ["png", "jpg", "jpeg"],
-                    acceptFiles: "image/*",
-                    sizeLimit: 2 * 1000 * 1000, // 2 MB
-                    itemLimit: 1
-                },
-                image: {
-                    minWidth: 128,
-                    minHeight: 128
-                },
-                resume: {
-                    enabled: true
-                },
-                retry: {
-                    enableAuto: true,
-                    showButton: true
-                },
-                callbacks: {
-                    onComplete: function (id, name, responseJSON, xhr) {
-                        if (responseJSON.success) {
-                            $('#next_steps').show();
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+  <script type="text/javascript">
+    $(function () {
+      $('#avatar-button').click(function () {
+        $('#avatar-modal').modal('show');
+      });
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(function () {
+      var uploader = new qq.s3.FineUploader({
+        debug: true,
+        multiple: false,
+        element: document.getElementById('fine-uploader'),
+        request: {
+          endpoint: 'https://{{ s3_bucket_name }}.s3-accelerate.amazonaws.com',
+          accessKey: '{{ s3_user_access_key }}'
+        },
+        objectProperties: {
+          region: '{{ s3_bucket_region }}'
+          //acl: 'public-read'
+        },
+        signature: {
+          version: 4,
+          endpoint: '{{ url_for('upload.s3_signature') }}'
+        },
+        uploadSuccess: {
+          endpoint: '{{ url_for('upload.s3_avatar_success') }}',
+          params: {'channel_id': '{{ channel.id }}'}
+        },
+        validation: {
+          allowedExtensions: ["png", "jpg", "jpeg"],
+          acceptFiles: "image/*",
+          sizeLimit: 2 * 1000 * 1000, // 2 MB
+          itemLimit: 1
+        },
+        image: {
+          minWidth: 128,
+          minHeight: 128
+        },
+        resume: {
+          enabled: true
+        },
+        retry: {
+          enableAuto: true,
+          showButton: true
+        },
+        callbacks: {
+          onComplete: function (id, name, responseJSON, xhr) {
+            if (responseJSON.success) {
+              $('#next_steps').show();
+            }
+          }
+        }
+      });
+    });
+  </script>
 {% endblock %}
