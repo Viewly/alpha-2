@@ -414,14 +414,12 @@
           return;
         }
 
-        // account has no VIEW Tokens
-        if (balance === 0) {
+        // account has insufficient VIEW Tokens
+        if (balance < 100) {
           clearMetamaskUI();
           $('#metamask #funds').removeClass('u-hidden');
           return;
-        }
-
-        if (balance > 0) {
+        } else {
           clearMetamaskUI();
           $('#metamask #vote').removeClass('u-hidden');
           return;
