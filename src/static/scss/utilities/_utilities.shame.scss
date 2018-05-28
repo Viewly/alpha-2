@@ -123,6 +123,16 @@ body {
     }
 }
 
+.c-btn--secondary {
+    background-color: color('brand-primary') !important;
+    color: #fff !important;
+    font-weight: 400 !important;
+
+    &:hover {
+        background-color: darken(color('brand-primary'), 2%) !important;
+    }
+ }
+
 /**
  * Button with download icon.
  */
