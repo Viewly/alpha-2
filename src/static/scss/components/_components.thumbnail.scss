@@ -60,7 +60,7 @@
         width: 100%;
         top: 0;
         left: 0;
-        z-index: 10;
+        z-index: 20;
     }
 
     .c-thumbnail__img {
@@ -75,6 +75,7 @@
         top: 0;
         bottom: 0;
         left: 0;
+        z-index: 10;
     }
 
     .c-thumbnail__duration-indicator {
@@ -91,7 +92,7 @@
         position: absolute;
         bottom: $spacing-unit-tiny;
         right: $spacing-unit-tiny;
-        z-index: 20;
+        z-index: 30;
 
         .c-videos-list & {
             opacity: .8;
@@ -113,7 +114,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        z-index: 20;
+        z-index: 30;
 
         @include mq(medium) {
             font-size: 36px;
@@ -140,7 +141,7 @@
         position: absolute;
         top: $spacing-unit-tiny;
         right: $spacing-unit-tiny;
-        z-index: 30;
+        z-index: 40;
 
         &:hover {
             background-color: color('brand-secondary');
