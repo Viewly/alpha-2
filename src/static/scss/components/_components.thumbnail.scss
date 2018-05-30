@@ -3,7 +3,7 @@
 \*------------------------------------*/
 
 .c-thumbnail {
-    background-color: #fff;
+    background-color: darken($global-background-color, 10%);
     border-radius: 2px;
     display: block;
     margin-bottom: $spacing-unit-tiny;
@@ -18,6 +18,13 @@
             margin-right: $spacing-unit + 10;
             width: 304px;
         }
+    }
+
+    &::before {
+        content: '';
+        display: block;
+        padding-bottom: (9 / 16) * 100%;
+        width: 100%;
     }
 
     &:hover {
@@ -59,11 +66,15 @@
     .c-thumbnail__img {
         border-radius: inherit;
         display: block;
-        height: auto;
+        height: 100%;
         transform-origin: inherit;
         transition: inherit;
         width: 100%;
         will-change: inherit;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
     }
 
     .c-thumbnail__duration-indicator {
