@@ -3,7 +3,7 @@
 \*------------------------------------*/
 
 .c-thumbnail {
-    background-color: #fff;
+    background-color: darken($global-background-color, 10%);
     border-radius: 2px;
     display: block;
     margin-bottom: $spacing-unit-tiny;
@@ -18,6 +18,13 @@
             margin-right: $spacing-unit + 10;
             width: 304px;
         }
+    }
+
+    &::before {
+        content: '';
+        display: block;
+        padding-bottom: (9 / 16) * 100%;
+        width: 100%;
     }
 
     &:hover {
@@ -53,17 +60,22 @@
         width: 100%;
         top: 0;
         left: 0;
-        z-index: 10;
+        z-index: 20;
     }
 
     .c-thumbnail__img {
         border-radius: inherit;
         display: block;
-        height: auto;
+        height: 100%;
         transform-origin: inherit;
         transition: inherit;
         width: 100%;
         will-change: inherit;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 10;
     }
 
     .c-thumbnail__duration-indicator {
@@ -80,7 +92,7 @@
         position: absolute;
         bottom: $spacing-unit-tiny;
         right: $spacing-unit-tiny;
-        z-index: 20;
+        z-index: 30;
 
         .c-videos-list & {
             opacity: .8;
@@ -102,7 +114,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        z-index: 20;
+        z-index: 30;
 
         @include mq(medium) {
             font-size: 36px;
@@ -129,7 +141,7 @@
         position: absolute;
         top: $spacing-unit-tiny;
         right: $spacing-unit-tiny;
-        z-index: 30;
+        z-index: 40;
 
         &:hover {
             background-color: color('brand-secondary');
