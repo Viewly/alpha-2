@@ -20,10 +20,10 @@
 
 {% block player %}
   <div class="c-video-player o-ratio o-ratio--16:9">
-    <iframe id="embedded-player"
+    {# <iframe id="embedded-player"
             src="/embed/{{ video.id }}?autoPlay=1"
             frameborder="0" scrolling="0" allowfullscreen>
-    </iframe>
+    </iframe> #}
   </div>
 {% endblock %}
 
@@ -62,11 +62,11 @@
                   <a href="javascript:"
                      id="follow-button"
                      style="display: none;"
-                     class="ui button mini basic">+ Follow</a>
+                     class="ui button mini basic u-margin-left-tiny">+ Follow</a>
                   <a href="javascript:"
                      id="un-follow-button"
                      style="display: none;"
-                     class="ui button mini basic">Unfollow</a>
+                     class="ui button mini basic u-margin-left-tiny">Unfollow</a>
                 {% endif %}
               </p>
               <p>Published on {{ video.published_at | humanDate }}</p>
@@ -74,22 +74,31 @@
           </div>
         </div>
         <div class="c-video-description__header__item">
-          {% if can_vote(video.published_at) %}
-            <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
-            <div class="ui mini horizontal statistic"
-                 data-title="Support this creator and earn rewards"
-                 data-content="If you enjoyed this video and would like to support the creator, please consider voting.
-                           Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
-                 data-variation="large wide"
-                 data-position="bottom right">
-              <div class="value">
-                ···
+          <div class="o-grid o-grid--middle o-grid--auto o-grid--small">
+            {% if can_vote(video.published_at) %}
+              <div class="o-grid__cell">
+                <div class="ui mini horizontal statistic u-margin-right"
+                     data-title="Support this creator and earn rewards"
+                     data-content="If you enjoyed this video and would like to support the creator, please consider voting.
+                               Votes will be tallied up in the upcoming distribution game, which will reward quality content creators and curators with VIEW Tokens."
+                     data-variation="large wide"
+                     data-position="bottom right">
+                  <div class="value">
+                    ···
+                  </div>
+                  <div class="label">
+                    Votes
+                  </div>
+                </div>
+                <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
               </div>
-              <div class="label">
-                Votes
-              </div>
+            {% endif %}
+            <div class="o-grid__cell">
+              <a class="c-link-neutral js-trigger-report-video-modal" href="" title="Report this video">
+                {% include 'atoms/icon-flag.html' %}
+              </a>
             </div>
-          {% endif %}
+          </div>
         </div>
       </header>
 
@@ -177,6 +186,45 @@
       </div>
     </div>
   </div>
+
+  <div class="ui modal c-modal c-modal--medium" id="modal-report-video">
+    <i class="close icon small c-modal__close"></i>
+    <header class="c-modal__header">Report this video</header>
+    <form action="" class="content">
+      <ul class="c-report-list">
+        <li>
+          <div class="o-flag o-flag--top">
+            <div class="o-flag__img">
+              <input type="radio" name="reportVideo" id="xxx" checked>
+            </div>
+            <div class="o-flag__body">
+              <dl>
+                <dt>XXX-rated</dt>
+                <dd>This video contains pornography, advertises a product or service of an erotic nature, or seems primarily focused on sexual stimulation.</dd>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="o-flag o-flag--top">
+            <div class="o-flag__img">
+              <input type="radio" name="reportVideo" id="xxx">
+            </div>
+            <div class="o-flag__body">
+              <dl>
+                <dt>Not playing nice</dt>
+                <dd>This video contains harassment, incites hatred, or depicts extreme or real-life violence.</dd>
+              </dl>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="u-text-right u-margin-top-large">
+        <button class="ui button large u-margin-right-tiny" type="reset">Cancel</button>
+        <button class="ui button large c-btn--primary" type="submit">Report video</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}
 
 {% block scripts %}
@@ -193,6 +241,11 @@
     // SEMANTIC.UI
     $(function () {
       $('.statistic').popup();
+    });
+
+    $('.js-trigger-report-video-modal').on('click', function(e) {
+      e.preventDefault();
+      $('#modal-report-video').modal('show');
     });
   </script>
 
