@@ -6,59 +6,62 @@
 {% block content %}
   {% if results %}
     <h3>Search Results</h3>
-  {% endif %}
 
-  <ul class="c-videos-list">
-    {% for video in results %}
-      <li class="c-videos-list__item">
-        <div class="c-video">
-          <div class="c-thumbnail">
-            <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
-            <img class="c-thumbnail__img js-thumbnail-img" src="
-              {% if video.is_nsfw %}{{ nsfw_cover_img }}{% else %}{{ guess_thumbnail_cdn_url(video.id) }}{% endif %}">
-            {% include 'atoms/icon-play.html' %}
-            <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
-          </div>
-          <div class="c-video__content">
-            <a class="c-video__title"
-               href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
-            <div class="c-video__footer">
-              <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
-                {{ video.channel_name }}</a>
-              <span class="c-video__date">
-                                {{ video.published_at | ageDate }}
-                            </span>
-              {% if video.description %}
-                <br><br>
-                {{ description2text(video.description) | truncate(250) }}
-              {% endif %}
+    <ul class="c-videos-list">
+      {% for video in results %}
+        <li class="c-videos-list__item">
+          <div class="c-video">
+            <div class="c-thumbnail">
+              <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
+              <img class="c-thumbnail__img js-thumbnail-img" src="
+                {% if video.is_nsfw %}{{ nsfw_cover_img }}{% else %}{{ guess_thumbnail_cdn_url(video.id) }}{% endif %}">
+              {% include 'atoms/icon-play.html' %}
+              <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
+            </div>
+            <div class="c-video__content">
+              <a class="c-video__title"
+                 href="{{ url_for('view_video', video_id=video.id) }}">{{ video.title }}</a>
+              <div class="c-video__footer">
+                <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
+                  {{ video.channel_name }}</a>
+                <span class="c-video__date">
+                                  {{ video.published_at | ageDate }}
+                              </span>
+                {% if video.description %}
+                  <br><br>
+                  {{ description2text(video.description) | truncate(250) }}
+                {% endif %}
+              </div>
             </div>
           </div>
-        </div>
-      </li>
-    {% else %}
-      <li class="c-videos-list__item c-videos-list__item--no-results c-no-results">
-        <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-results.svg') }}" alt="">
-        <h3 class="c-no-results__title">No results found</h3>
-        <p>Try searching again using broader keywords.</p>
-      </li>
-    {% endfor %}
-  </ul>
+        </li>
 
-  <div class="c-direction-buttons">
-    {% if page_num > 0 %}
-      <a href="/new?page={{ page_num - 1 }}"
-         class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
-        <i class="left arrow icon"></i>
-      </a>
-    {% endif %}
-    {% if results and results|length == items_per_page %}
-      <a href="/new?page={{ page_num + 1 }}"
-         class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
-        <i class="right arrow icon"></i>
-        Next</a>
-    {% endif %}
-  </div>
+      {% endfor %}
+    </ul>
+
+    <div class="c-direction-buttons">
+      {% if page_num > 0 %}
+        <a href="{{ request.path }}?q={{query}}&page={{ page_num - 1 }}"
+           class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
+          <i class="left arrow icon"></i>
+          Previous
+        </a>
+      {% endif %}
+      {% if results|length == items_per_page %}
+        <a href="{{ request.path }}?q={{query}}&page={{ page_num + 1 }}"
+           class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
+          <i class="right arrow icon"></i>
+          Next</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="c-no-results">
+      <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-results.svg') }}" alt="">
+      <h3 class="c-no-results__title">No results found</h3>
+      <p>Try searching again using broader keywords.</p>
+    </div>
+  {% endif %}
+
 {% endblock %}
 
 {% block scripts %}

@@ -84,7 +84,7 @@ def view_channel(channel_id):
 
 
 @app.route('/search', methods=['GET'])
-def search(page_num=0, items_per_page=20):
+def search(page_num=0, items_per_page=18):
     limit = items_per_page
     page_num = page_num or int(request.args.get('page', 0))
 

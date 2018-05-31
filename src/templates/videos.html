@@ -7,70 +7,68 @@
 {% block content %}
   {% if videos %}
     <h3>{{ section_title }}</h3>
-  {% endif %}
-  <div class="o-grid c-videos-grid">
 
-    {% for video in videos %}
-      <div class="o-grid__cell c-videos-grid__cell">
-        <div class="c-video">
-          <div class="c-thumbnail">
-            <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
-            <img class="c-thumbnail__img js-thumbnail-img" src="{{ guess_thumbnail_cdn_url(video.id, 'small') }}">
-            {% include 'atoms/icon-play.html' %}
-            <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
-          </div>
-          <div class="c-video__content">
-            <a class="c-video__title"
-               href="{{ url_for('view_video', video_id=video.id) }}"
-               title="{{ video.title }}">
-              {{ video.title }}
-            </a>
-            <div class="c-video__footer">
-              {% if video.channel_id %}
-                <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
-                  <img src="{{ guess_avatar_cdn_url(video.channel_id, 'tiny') }}"
-                       class="ui circular avatar image"
-                       onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
-                  {{ video.channel.display_name }}
-                </a>
-              {% endif %}
-              <span class="c-video__date">
-                                {{ video.published_at | ageDate }}
-                            </span>
+    <div class="o-grid c-videos-grid">
+      {% for video in videos %}
+        <div class="o-grid__cell c-videos-grid__cell">
+          <div class="c-video">
+            <div class="c-thumbnail">
+              <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
+              <img class="c-thumbnail__img js-thumbnail-img" src="{{ guess_thumbnail_cdn_url(video.id, 'small') }}">
+              {% include 'atoms/icon-play.html' %}
+              <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
+            </div>
+            <div class="c-video__content">
+              <a class="c-video__title"
+                 href="{{ url_for('view_video', video_id=video.id) }}"
+                 title="{{ video.title }}">
+                {{ video.title }}
+              </a>
+              <div class="c-video__footer">
+                {% if video.channel_id %}
+                  <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
+                    <img src="{{ guess_avatar_cdn_url(video.channel_id, 'tiny') }}"
+                         class="ui circular avatar image"
+                         onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
+                    {{ video.channel.display_name }}
+                  </a>
+                {% endif %}
+                <span class="c-video__date">
+                  {{ video.published_at | ageDate }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    {% else %}
-      <li class="c-videos-list__item c-videos-list__item--no-results c-no-results">
-        <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-results.svg') }}" alt="">
-        <h3 class="c-no-results__title">They took our videos</h3>
-        <p>You may find some on <a href="{{ url_for('.new') }}">/new</a> and
-          <a href="{{ url_for('.trending') }}">/trending</a></p>
-      </li>
-    {% endfor %}
+      {% endfor %}
+    </div>
 
-  </div>
+    <div class="c-direction-buttons">
 
-  <div class="c-direction-buttons">
+      {% if page_num > 0 %}
+        <a href="{{ request.path }}?page={{ page_num - 1 }}"
+           class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
+          <i class="left angle icon"></i>
+          Previous
+        </a>
+      {% endif %}
+      {% if videos|length == items_per_page %}
+        <a href="{{ request.path }}?page={{ page_num + 1 }}"
+           class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
+          <i class="right angle icon"></i>
+          Next</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="c-no-results">
+      <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-results.svg') }}" alt="">
+      <h3 class="c-no-results__title">They took our videos</h3>
+      <p>You may find some on <a href="{{ url_for('.new') }}">/new</a> and
+        <a href="{{ url_for('.trending') }}">/trending</a></p>
+    </div>
+  {% endif %}
 
-    {% if videos and page_num > 0 %}
-      <a href="{{ request.path }}?page={{ page_num - 1 }}"
-         class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--previous ui primary left labeled icon button">
-        <i class="left angle icon"></i>
-        Previous
-      </a>
-    {% endif %}
-    {% if videos and videos|length == items_per_page %}
-      <a href="{{ request.path }}?page={{ page_num + 1 }}"
-         class="c-btn--primary c-direction-buttons__btn c-direction-buttons__btn--next ui primary right labeled icon button">
-        <i class="right angle icon"></i>
-        Next</a>
-    {% endif %}
-  </div>
 {% endblock %}
-
-
 
 {% block scripts %}
 {% endblock %}
