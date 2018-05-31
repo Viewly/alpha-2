@@ -340,6 +340,10 @@ body {
         }
     }
 
+    dl {
+        margin: 0; /* [1] */
+    }
+
     dt {
         font-weight: 700;
     }
