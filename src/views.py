@@ -35,9 +35,7 @@ from .models import Video, Channel, TranscoderJob, Follow, Vote
 # ------
 @app.route('/')
 def index():
-    if current_user.is_authenticated:
-        return redirect(url_for('feed'))
-    return redirect(url_for('trending'))
+    return redirect(url_for('new'))
 
 
 @app.route('/about')
