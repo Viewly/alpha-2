@@ -20,10 +20,10 @@
 
 {% block player %}
   <div class="c-video-player o-ratio o-ratio--16:9">
-    {# <iframe id="embedded-player"
+    <iframe id="embedded-player"
             src="/embed/{{ video.id }}?autoPlay=1"
             frameborder="0" scrolling="0" allowfullscreen>
-    </iframe> #}
+    </iframe>
   </div>
 {% endblock %}
 
@@ -94,7 +94,7 @@
               </div>
             {% endif %}
             <div class="o-grid__cell">
-              <a class="c-link-neutral js-trigger-report-video-modal" href="" title="Report this video">
+              <a class="c-link-neutral js-open-report-video-modal" href="" title="Report this video">
                 {% include 'atoms/icon-flag.html' %}
               </a>
             </div>
@@ -290,7 +290,7 @@
         </li>
       </ul>
       <div class="u-text-right u-margin-top-large">
-        <button class="ui button large u-margin-right-tiny" type="reset">Cancel</button>
+        <button class="ui button large u-margin-right-tiny js-close-report-video-modal" type="reset">Cancel</button>
         <button class="ui button large c-btn--primary" type="submit">Report video</button>
       </div>
     </form>
@@ -313,9 +313,13 @@
       $('.statistic').popup();
     });
 
-    $('.js-trigger-report-video-modal').on('click', function(e) {
+    $('.js-open-report-video-modal').on('click', function(e) {
       e.preventDefault();
       $('#modal-report-video').modal('show');
+    });
+
+    $('.js-close-report-video-modal').on('click', function(e) {
+      $('#modal-report-video').modal('hide');
     });
   </script>
 
