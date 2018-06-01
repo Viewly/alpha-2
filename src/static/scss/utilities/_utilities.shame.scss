@@ -153,6 +153,10 @@ body {
 .c-btn--with-icon {
     align-items: center !important;
     display: inline-flex !important;
+
+    .o-icon {
+        margin-right: $spacing-unit-tiny;
+    }
 }
 
 .c-field {
