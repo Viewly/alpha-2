@@ -1,0 +1,139 @@
+<svg width="126" height="152" viewBox="0 0 126 152" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="a">
+      <stop stop-color="#CC2C3A" offset="0%"/>
+      <stop stop-color="#6E0212" offset="100%"/>
+    </linearGradient>
+    <path d="M69.697 15.152C73.044 7.07 78.599 3.03 86.364 3.03c7.764 0 12.31 4.04 13.636 12.122L89.394 86.364H66.667l3.03-71.212z" id="b"/>
+    <pattern id="c" width="258" height="258" x="-191.333" y="-254.97" patternUnits="userSpaceOnUse">
+      <use xlink:href="#a"/>
+    </pattern>
+    <path d="M4.962 83.352a3.03 3.03 0 1 1 5.643-1.458 3.788 3.788 0 1 1-1.57 6.7 4.547 4.547 0 1 1-4.073-5.242z" id="d"/>
+    <pattern id="e" width="258" height="258" x="-258" y="-179.212" patternUnits="userSpaceOnUse">
+      <use xlink:href="#b"/>
+    </pattern>
+    <path d="M18.129 92.133a1.818 1.818 0 1 1 3.386-.875 2.273 2.273 0 1 1-.942 4.02 2.728 2.728 0 1 1-2.444-3.145z" id="f"/>
+    <pattern id="g" width="258" height="258" x="-242.848" y="-168.606" patternUnits="userSpaceOnUse">
+      <use xlink:href="#c"/>
+    </pattern>
+    <path d="M102.341 81.154a1.43 1.43 0 1 1 2.663-.688 1.787 1.787 0 1 1-.74 3.162 2.146 2.146 0 1 1-1.923-2.474z" id="h"/>
+    <pattern id="i" width="258" height="258" x="-158" y="-179" patternUnits="userSpaceOnUse">
+      <use xlink:href="#d"/>
+    </pattern>
+    <path d="M97.977 90.739a1.818 1.818 0 1 1 3.386-.875 2.273 2.273 0 1 1-.942 4.02 2.728 2.728 0 1 1-2.444-3.145z" id="j"/>
+    <pattern id="k" width="258" height="258" x="-163" y="-170" patternUnits="userSpaceOnUse">
+      <use xlink:href="#e"/>
+    </pattern>
+    <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="l">
+      <stop stop-color="#FFFCF0" offset="0%"/>
+      <stop stop-color="#FFD9C4" offset="100%"/>
+    </linearGradient>
+    <path id="m" d="M75.758 10.606l-4.546 75.758h3.03L81.818 6.06z"/>
+    <pattern id="n" width="258" height="258" x="-186.788" y="-251.939" patternUnits="userSpaceOnUse">
+      <use xlink:href="#f"/>
+    </pattern>
+    <path id="o" d="M80.303 86.364l9.09-78.788h6.062L83.333 86.364z"/>
+    <pattern id="p" width="258" height="258" x="-177.697" y="-250.424" patternUnits="userSpaceOnUse">
+      <use xlink:href="#g"/>
+    </pattern>
+    <path d="M99.849 16.167C97.548 11.45 93.35 9.09 87.259 9.09c-7.414 0-13.361 4.213-17.842 12.64l.28-6.58c3.347-8.08 8.902-12.12 16.667-12.12 7.764 0 12.31 4.04 13.636 12.12l-.151 1.016z" id="q"/>
+    <pattern id="r" width="258" height="258" x="-188.583" y="-254.97" patternUnits="userSpaceOnUse">
+      <use xlink:href="#h"/>
+    </pattern>
+    <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="s">
+      <stop stop-color="#F5515F" offset="0%"/>
+      <stop stop-color="#9F041B" offset="100%"/>
+    </linearGradient>
+    <path d="M15.43 19.969l10.328 66.395h40.909l3.03-69.697C67.49 6.566 58.558 1.515 42.902 1.515c-14.627 0-23.663 4.85-27.106 14.547a8 8 0 0 0-.367 3.907z" id="t"/>
+    <pattern id="u" width="258" height="258" x="-242.54" y="-256.485" patternUnits="userSpaceOnUse">
+      <use xlink:href="#i"/>
+    </pattern>
+    <path id="v" d="M31.818 86.364L21.212 9.09l9.091-4.546 6.06 81.819z"/>
+    <pattern id="w" width="258" height="258" x="-236.788" y="-253.455" patternUnits="userSpaceOnUse">
+      <use xlink:href="#j"/>
+    </pattern>
+    <path id="x" d="M37.879 3.03l4.545 83.334h6.06L50 4.545z"/>
+    <pattern id="y" width="258" height="258" x="-220.121" y="-254.97" patternUnits="userSpaceOnUse">
+      <use xlink:href="#k"/>
+    </pattern>
+    <path id="z" d="M57.576 6.06L56.06 86.365h4.545l4.546-75.758z"/>
+    <pattern id="A" width="258" height="258" x="-201.939" y="-251.939" patternUnits="userSpaceOnUse">
+      <use xlink:href="#l"/>
+    </pattern>
+    <path d="M70.528 19.426c-3.753-7.9-12.992-11.85-27.717-11.85-14.258 0-23.373 3.704-27.343 11.111l-.002.004-.425-2.858a8 8 0 0 1 .882-4.995C19.845 3.613 28.786 0 42.743 0c15.657 0 25 4.545 28.03 13.636l-.245 5.79z" id="B"/>
+    <pattern id="C" width="258" height="258" x="-242.848" y="-258" patternUnits="userSpaceOnUse">
+      <use xlink:href="#m"/>
+    </pattern>
+    <path id="D" d="M25.758 86.364h63.636l1.515-7.576H24.242z"/>
+    <pattern id="E" width="258" height="258" x="-233.758" y="-179.212" patternUnits="userSpaceOnUse">
+      <use xlink:href="#n"/>
+    </pattern>
+    <path id="F" d="M25.758 86.364h39.394l1.515-7.576H24.242z"/>
+    <pattern id="G" width="258" height="258" x="-233.758" y="-179.212" patternUnits="userSpaceOnUse">
+      <use xlink:href="#o"/>
+    </pattern>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <circle fill="#FFF" cx="63" cy="63" r="63"/>
+    <g transform="translate(9 54)">
+      <use fill="url(#a)" xlink:href="#b"/>
+      <use fill-opacity=".064" fill="url(#c)" xlink:href="#b"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="#FFE8C0" xlink:href="#d"/>
+      <use fill-opacity=".064" fill="url(#e)" xlink:href="#d"/>
+    </g>
+    <g transform="matrix(-1 0 0 1 48.394 54)">
+      <use fill="#FFE8C0" xlink:href="#f"/>
+      <use fill-opacity=".064" fill="url(#g)" xlink:href="#f"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="#FFE8C0" xlink:href="#h"/>
+      <use fill-opacity=".064" fill="url(#i)" xlink:href="#h"/>
+    </g>
+    <g transform="matrix(-1 0 0 1 208.09 54)">
+      <use fill="#FFE8C0" xlink:href="#j"/>
+      <use fill-opacity=".064" fill="url(#k)" xlink:href="#j"/>
+    </g>
+    <g opacity=".7" transform="translate(9 54)">
+      <use fill="url(#l)" xlink:href="#m"/>
+      <use fill-opacity=".064" fill="url(#n)" xlink:href="#m"/>
+    </g>
+    <g opacity=".7" transform="translate(9 54)">
+      <use fill="url(#l)" xlink:href="#o"/>
+      <use fill-opacity=".064" fill="url(#p)" xlink:href="#o"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="#BA2634" xlink:href="#q"/>
+      <use fill-opacity=".064" fill="url(#r)" xlink:href="#q"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="url(#s)" xlink:href="#t"/>
+      <use fill-opacity=".064" fill="url(#u)" xlink:href="#t"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="url(#l)" xlink:href="#v"/>
+      <use fill-opacity=".064" fill="url(#w)" xlink:href="#v"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="url(#l)" xlink:href="#x"/>
+      <use fill-opacity=".064" fill="url(#y)" xlink:href="#x"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="url(#l)" xlink:href="#z"/>
+      <use fill-opacity=".064" fill="url(#A)" xlink:href="#z"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="url(#s)" xlink:href="#B"/>
+      <use fill-opacity=".064" fill="url(#C)" xlink:href="#B"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="#760515" xlink:href="#D"/>
+      <use fill-opacity=".064" fill="url(#E)" xlink:href="#D"/>
+    </g>
+    <g transform="translate(9 54)">
+      <use fill="#A30A21" xlink:href="#F"/>
+      <use fill-opacity=".064" fill="url(#G)" xlink:href="#F"/>
+    </g>
+  </g>
+</svg>
