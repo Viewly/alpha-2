@@ -2,7 +2,7 @@
 
 {% block title %}{{ channel.display_name }}{% endblock %}
 {% block meta_title %}{{ channel.display_name }}'s channel{% endblock %}
-{% block meta_description %}Follow {{ channel.display_name }} on Viewly.{% endblock %}
+{% block meta_description %}{{ channel.display_name }} on Viewly.{% endblock %}
 {% set showFooter = true %}
 
 {% block styles %}
@@ -141,7 +141,7 @@
     </div>
   </div>
 
-
+  {% if videos %}
   <ul class="o-grid c-videos-grid">
 
     {% for video in videos %}
@@ -174,6 +174,24 @@
       </li>
     {% endfor %}
   </ul>
+
+  {% else %}
+    <div class="c-no-results">
+      {% if current_user.id == channel.user_id %}
+        <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-videos.svg') }}" alt="">
+        <h3 class="c-no-results__title">Ohh...</h3>
+        <p>Looks like your channel doesn't have any videos yet.</p>
+        <a class="ui button c-btn--primary c-btn--with-icon" href="{{ url_for('upload.upload_videos') }}">
+          {% include 'atoms/icon-upload.html' %}
+          Upload a video now
+        </a>
+      {% else %}
+          <img class="c-no-results__img" src="{{ url_for('static', filename='img/no-videos.svg') }}" alt="">
+          <h3 class="c-no-results__title">No videos...yet!</h3>
+          <p><b>{{ channel.display_name }}</b> hasn't uploaded anything.</p>
+      {% endif %}
+    </div>
+  {% endif %}
 
 
 
