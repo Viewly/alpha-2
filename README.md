@@ -307,19 +307,38 @@ The manager account has just the privileges necessary to:
             "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": [
-                "elastictranscoder:ListJobsByPipeline",
-                "cloudfront:GetInvalidation",
-                "elastictranscoder:ReadPreset",
+                "rekognition:ListCollections",
+                "rekognition:DetectFaces",
+                "rekognition:DetectText",
+                "rekognition:DescribeStreamProcessor",
                 "elastictranscoder:ListPipelines",
                 "elastictranscoder:ReadJob",
                 "cloudfront:CreateInvalidation",
                 "elastictranscoder:ListJobsByStatus",
                 "s3:ListObjects",
-                "elastictranscoder:ReadPipeline",
-                "cloudfront:ListInvalidations",
+                "rekognition:GetLabelDetection",
+                "rekognition:GetContentModeration",
+                "rekognition:SearchFaces",
+                "rekognition:ListStreamProcessors",
                 "elastictranscoder:CancelJob",
+                "rekognition:SearchFacesByImage",
                 "elastictranscoder:CreateJob",
                 "s3:HeadBucket",
+                "rekognition:DetectLabels",
+                "rekognition:GetCelebrityRecognition",
+                "elastictranscoder:ListJobsByPipeline",
+                "rekognition:GetPersonTracking",
+                "rekognition:DetectModerationLabels",
+                "rekognition:GetFaceDetection",
+                "rekognition:RecognizeCelebrities",
+                "cloudfront:GetInvalidation",
+                "elastictranscoder:ReadPreset",
+                "rekognition:CompareFaces",
+                "rekognition:GetCelebrityInfo",
+                "rekognition:ListFaces",
+                "elastictranscoder:ReadPipeline",
+                "rekognition:GetFaceSearch",
+                "cloudfront:ListInvalidations",
                 "elastictranscoder:ListPresets"
             ],
             "Resource": "*"
@@ -338,6 +357,14 @@ Create `viewly-alpha-manager` API account with the above policy.
 | AWS_MANAGER_PUBLIC_KEY  |         |
 | AWS_MANAGER_PRIVATE_KEY |         |
 
+
+## Refresh staging db from a local instance
+First, need to scale down staging kubernetes cluster to 0, since we are wiping the database.
+```
+pg_dump -Fc alpha > dump.db
+
+pg_restore -U alpha -h alpha-staging.cvnyb565p4lg.eu-central-1.rds.amazonaws.com -d alpha --clean dump.db
+```
 
 ## Testing
 Make sure the .env is loaded. Tests require 'Kovan' chain.
