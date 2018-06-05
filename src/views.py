@@ -241,18 +241,13 @@ def edit_profile():
 @app.route('/token/info', methods=['GET'])
 def token_info():
     from .core.eth import view_token_supply
-    disclaimer = \
-        "availableSupply is an estimation based on our best guess."
     token = dict(
         symbol='VIEW',
         name='view.ly',
         tokenAddress=app.config['VIEW_TOKEN_ADDRESS'],
         maxSupply=100_000_000,
         currentSupply=int(view_token_supply()),
-        disclaimer=disclaimer,
     )
-    # remove soft-locked tokens
-    token['availableSupply'] = token['currentSupply'] - 6_000_000
     return jsonify(**token)
 
 
