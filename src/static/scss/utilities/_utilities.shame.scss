@@ -16,7 +16,7 @@ body {
         padding-top: 0;
     }
 
-    &::before {
+    &::after {
         @include invisible;
         background: rgba(mix(#000, color('brand-secondary'), 90%), .7);
         content: '';
@@ -29,7 +29,7 @@ body {
         z-index: 900;
     }
 
-    &.has-search-activated::before {
+    &.has-search-activated::after {
         @include visible;
     }
 }
@@ -369,4 +369,86 @@ body {
     &:focus {
         outline: none;
     }
+}
+
+.c-statistics {
+    color: inherit !important;
+    margin-left: -($spacing-unit-large) !important;
+
+    .statistic {
+        flex: 0 0 auto;
+        min-width: 0 !important;
+        padding-left: $spacing-unit-large;
+        width: 100%;
+
+        @include mq(medium) {
+            width: 40%;
+        }
+
+        @include mq(large) {
+            width: 25%;
+        }
+    }
+
+    .label {
+        color: inherit !important;
+        opacity: .6;
+        text-align: left !important;
+        text-transform: none !important;
+        font-weight: 400 !important;
+    }
+
+    .value[class][class] {
+        color: inherit !important;
+        font-size: 2.5rem !important;
+        font-weight: 700 !important;
+        text-align: left !important;
+        opacity: .95;
+
+        @include mq(medium) {
+            font-size: 3rem !important;
+        }
+    }
+
+    small {
+        font-size: 40%;
+        line-height: 1.1;
+        opacity: .55;
+        font-weight: 400;
+    }
+}
+
+.ui.celled.table {
+    border: none !important;
+    box-shadow: 0 5px 10px 0 rgba(#000, .05) !important;
+
+    th {
+        background-color: mix(color('grey'), color('brand-secondary'), 80%) !important;
+        background-color: #fff !important;
+        color: #7e8186;
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    tr td,
+    tr th {
+        border-left: none;
+        border-top-color: rgba(#000, .05);
+
+    }
+}
+
+.c-box {
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 5px 10px 0 rgba(#000, .05) !important;
+    padding: $spacing-unit;
+}
+
+.c-box--dark {
+    background-color: mix(color('brand-secondary'), #333, 50%) !important;
+    box-shadow: 0 5px 10px 0 rgba(#000, .2) !important;
+    color: #fff;
 }
