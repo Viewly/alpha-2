@@ -6,49 +6,50 @@
 
 {% block content %}
   <div class="ui  container">
-    <h1 class="ui dividing header">
+    <h1 class="ui header u-margin-bottom-none">
       {#            todo: make date smaller,ey ma and pull to the right#}
       Period #{{ period.id }}
-      {# <span class="right float">..... {{ period.end | humanDate}}</span> #}
     </h1>
-    <div class="ui four statistics">
-      <div class="statistic">
-        <div class="value">
-          {{ period.creator_rewards_pool | readableNumber }} VIEW
+    <p class="u-margin-bottom-large">{{ period.end | humanDate}}</p>
+    <div class="c-box c-box--dark u-margin-bottom">
+      <div class="ui four statistics c-statistics">
+        <div class="statistic">
+          <div class="label">
+            Creator rewards pool
+          </div>
+          <div class="value">
+            {{ period.creator_rewards_pool | readableNumber }} <small>VIEW</small>
+          </div>
         </div>
-        <div class="label">
-          Creator rewards pool
+        <div class="statistic">
+          <div class="label">
+            Voter rewards pool
+          </div>
+          <div class="value">
+            {{ period.voter_rewards_pool | readableNumber }} <small>VIEW</small>
+          </div>
         </div>
-      </div>
-      <div class="statistic">
-        <div class="value">
-          {{ period.voter_rewards_pool | readableNumber }} VIEW
+        <div class="statistic">
+          <div class="label">
+            Min. payable reward
+          </div>
+          <div class="value">
+            {{ period.min_reward | readableNumber }} <small>VIEW</small>
+          </div>
         </div>
-        <div class="label">
-          Voter rewards pool
-        </div>
-      </div>
-      <div class="statistic">
-        <div class="value">
-          {{ period.min_reward | readableNumber }} VIEW
-        </div>
-        <div class="label">
-          Minimum payable reward
-        </div>
-      </div>
-      <div class="statistic">
-        <div class="value">
-          {{ period.votes_per_user }}
-        </div>
-        <div class="label">
-          daily votes per user
+        <div class="statistic">
+          <div class="label">
+            Daily votes per user
+          </div>
+          <div class="value">
+            {{ period.votes_per_user }}
+          </div>
         </div>
       </div>
     </div>
-    <br>
 
     {% if rewards_summary %}
-      <h4 class="ui dividing header">
+      <h4 class="ui header">
         Rewards by video
       </h4>
       <table class="ui celled table">
@@ -81,7 +82,7 @@
     {% endif %}
 
     {% if rewards %}
-      <h4 class="ui dividing header">
+      <h4 class="ui header">
         Rewards by vote
       </h4>
       <table class="ui celled table">

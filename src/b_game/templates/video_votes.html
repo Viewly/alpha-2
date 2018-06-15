@@ -5,7 +5,7 @@
 
 {% block content %}
   <div class="ui container">
-    <h2 class="ui dividing header">
+    <h2 class="ui header">
       <a href="{{ url_for('view_video', video_id=video.id) }}">'{{ video.title }}'</a>
       by <a
       href="{{ url_for('view_channel', channel_id=video.channel_id) }}">{{ video.channel.display_name }}</a>
@@ -35,7 +35,7 @@
     {% endif %}
 
     {% if votes %}
-      <h4 class="ui dividing header">
+      <h4 class="ui header">
         Votes
       </h4>
       <table class="ui celled table">
@@ -73,7 +73,7 @@
     {% endif %}
 
     {% if rewards %}
-      <h4 class="ui dividing header">
+      <h4 class="ui header">
         Rewards
       </h4>
       <table class="ui celled table">
@@ -103,14 +103,12 @@
               {{ reward.voter_reward  | readableNumber }} VIEW
             </td>
             <td>
-            <td>
               {% if reward.creator_txid %}
                 <a href="{{ url_for('.explain_payment', txid=reward.creator_txid) }}">Creator</a>
               {% endif %}
               {% if reward.voter_txid %}
                 <a href="{{ url_for('.explain_payment', txid=reward.voter_txid) }}">Voter</a>
               {% endif %}
-            </td>
             </td>
           </tr>
         {% endfor %}
