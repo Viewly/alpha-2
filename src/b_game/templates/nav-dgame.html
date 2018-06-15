@@ -3,16 +3,19 @@
     <li
       class="c-nav-primary__item {% if active_submenu == 'index' %}is-current{% endif %}">
       <a href="{{ url_for('.index') }}" class="c-nav-primary__link">
+        {% include 'atoms/icon-game.html' %}
         <span class="c-nav-primary__label">Game</span>
       </a>
     </li>
     <li class="c-nav-primary__item {% if active_submenu == 'periods' %}is-current{% endif %}">
       <a href="{{ url_for('.list_periods') }}" class="c-nav-primary__link">
+        {% include 'atoms/icon-periods.html' %}
         <span class="c-nav-primary__label">Periods</span>
       </a>
     </li>
     <li class="c-nav-primary__item {% if active_submenu == 'rewards' %}is-current{% endif %}">
       <a href="{{ url_for('.list_rewards') }}" class="c-nav-primary__link">
+        {% include 'atoms/icon-rewards.html' %}
         <span class="c-nav-primary__label">Rewards</span>
       </a>
     </li>
