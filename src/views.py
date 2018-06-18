@@ -68,7 +68,7 @@ def view_channel(channel_id):
 
     # do not show unpublished videos to public
     if not is_owner(channel.user_id):
-        videos = videos.filter(Video.published_at != None)
+        videos = videos.filter(Video.published_at.isnot(None))
 
     follower_count = Follow.query.filter_by(channel_id=channel.id).count()
 

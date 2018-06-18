@@ -92,6 +92,17 @@
                 </div>
                 <a href="javascript:;" id="vote-button" class="ui button c-btn--secondary">Vote</a>
               </div>
+            {% else %}
+              <div class="o-grid__cell">
+                  <a class="ui mini horizontal statistic" href="{{ url_for('game.video_votes', video_id=video.id) }}">
+                    <div class="value">
+                      ...
+                    </div>
+                    <div class="label">
+                      Tokens Earned
+                    </div>
+                  </a>
+              </div>
             {% endif %}
             <div class="o-grid__cell">
               <a class="c-link-neutral js-open-report-video-modal" href="" title="Report this video">
@@ -624,6 +635,31 @@
 
       $(function () {
         refreshVotingStats();
+      });
+    </script>
+  {% else %}
+    <script type="application/javascript">
+      const numberWithCommas = (x) => {
+        return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      };
+
+      function refreshRewardStats() {
+        let url = `{{ url_for('api.rewardsapi') }}?video_id={{ video.id }}`;
+        fetch(url).then(function (response) {
+          if (!response.ok) {
+            console.log(response);
+            return;
+          }
+          response.json().then(rewardStats => {
+            $('.statistic .value').text(numberWithCommas(rewardStats['creator_rewards']));
+          })
+        }).catch(function (err) {
+          console.log(err)
+        });
+      }
+
+      $(function () {
+        refreshRewardStats();
       });
     </script>
   {% endif %}
