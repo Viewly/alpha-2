@@ -643,6 +643,13 @@
         return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       };
 
+      let isValidObj = function (obj) {
+        return !(
+          obj === undefined
+          || obj === ''
+          || obj === null);
+      };
+
       function refreshRewardStats() {
         let url = `{{ url_for('api.rewardsapi') }}?video_id={{ video.id }}`;
         fetch(url).then(function (response) {
@@ -651,7 +658,12 @@
             return;
           }
           response.json().then(rewardStats => {
-            $('.statistic .value').text(numberWithCommas(rewardStats['creator_rewards']));
+            if (isValidObj(rewardStats['creator_rewards'])) {
+              $('.statistic .value').text(numberWithCommas(rewardStats['creator_rewards']))
+            } else {
+              $('.statistic .value').text('');
+              $('.statistic .label').text('Pending Rewards');
+            }
           })
         }).catch(function (err) {
           console.log(err)
