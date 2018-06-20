@@ -112,8 +112,7 @@ def video_votes(video_id: str):
     rewards = \
         (db.session.query(Reward, Vote)
          .filter_by(video_id=video_id)
-         .from_self()
-         .join(Vote, Vote.video_id == Reward.video_id)
+         .join(Vote)
          .order_by(desc(Reward.creator_reward))
          .all())
 
