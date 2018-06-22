@@ -40,16 +40,27 @@ def list_periods():
 
 @game.route('/rewards')
 def list_rewards():
-    rewards = \
+    latest_rewards = \
         (db.session.query(Reward)
          .filter_by(creator_payable=True)
          .order_by(desc(Reward.period_id))
          .limit(1000)
          .all())
 
+    # top_video_rewards = \
+    #     (db.session.query(
+    #         Reward.video_id,
+    #         func.sum(Reward.creator_reward).label('creator_rewards'),
+    #         func.sum(Reward.voter_reward).label('voter_rewards'),)
+    #      .filter_by(creator_payable=True)
+    #      .order_by('creator_rewards desc')
+    #      .group_by(Reward.video_id)
+    #      .limit(1000)
+    #      .all())
+
     return render_template(
         'rewards.html',
-        rewards=rewards,
+        rewards=latest_rewards,
     )
 
 
