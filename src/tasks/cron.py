@@ -23,10 +23,12 @@ from ..config import (
 )
 from ..core.et import get_job_status
 from ..core.eth import (
-    is_video_published,
+    get_publisher_address,
     view_token_balance,
     get_infura_web3,
     find_block_from_timestamp,
+    null_address,
+    confirmed_block_num,
 )
 from ..core.utils import thread_multi
 from ..models import (
@@ -104,8 +106,11 @@ def refresh_unpublished_videos():
             Video.published_at.is_(None)
         )
 
+    trusted_block_num = confirmed_block_num(5)
+
     def is_published(video_id):
-        return is_video_published(video_id), video_id
+        addr = get_publisher_address(video_id, trusted_block_num)
+        return addr, video_id
 
     publish_results = lkeep(thread_multi(
         fn=is_published,
@@ -115,8 +120,8 @@ def refresh_unpublished_videos():
         re_raise_errors=False,
     ))
 
-    for status, video_id in publish_results:
-        if status:
+    for publisher_addr, video_id in publish_results:
+        if publisher_addr != null_address:
             video = session.query(Video).filter_by(id=video_id).one()
             video.published_at = dt.datetime.utcnow()
             session.add(video)
