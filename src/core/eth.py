@@ -6,14 +6,12 @@ from eth_utils import (
     is_0x_prefixed,
     to_checksum_address,
     from_wei,
-)
-from eth_utils import (
     is_address,
     is_same_address,
     to_hex,
     to_normalized_address,
 )
-from funcy import re_find
+from funcy import re_find, cache
 
 from ..config import (
     VIDEO_PUBLISHER_ADDRESS,
@@ -23,6 +21,8 @@ from ..config import (
     VIEW_TOKEN_ADDRESS,
     VIEW_TOKEN_ABI,
 )
+
+null_address = '0x0000000000000000000000000000000000000000'
 
 
 def get_web3(http_url: str) -> web3.Web3:
@@ -53,6 +53,12 @@ def view_token():
     )
 
 
+@cache(30)
+def confirmed_block_num(confirmations: int = 10):
+    w3 = get_infura_web3()
+    return w3.eth.blockNumber - confirmations
+
+
 def view_token_balance(address: str, block_num: int = 'latest'):
     instance = view_token()
     address = to_checksum_address(address)
@@ -65,9 +71,11 @@ def view_token_supply():
     return from_wei(supply, 'ether')
 
 
-def is_video_published(video_id: str):
+def get_publisher_address(video_id: str, block_num: int = 'latest'):
     instance = video_publisher()
-    return instance.functions.videos(to_hex(text=video_id)).call()
+    return (instance.functions
+            .videos(to_hex(text=video_id))
+            .call(block_identifier=block_num))
 
 
 def is_valid_address(address: str) -> bool:
@@ -82,7 +90,8 @@ def normalize_address(address: str) -> str:
 # -----------------------------
 def pack(*args) -> bytes:
     """
-    Simulates Solidity's keccak256 packing. Integers can be passed as tuples where the second tuple
+    Simulates Solidity's keccak256 packing.
+    Integers can be passed as tuples where the second tuple
     element specifies the variable's size in bits, e.g.:
     keccak256((5, 32))
     would be equivalent to Solidity's
@@ -170,12 +179,12 @@ def is_typed_signature_valid(message, signature, address) -> bool:
 
 
 def find_block_from_timestamp(
-        w3,
-        timestamp: int,
-        low: int = 0,
-        high: int = 0,
-        search_range: int = 150_000,
-        accuracy_range_seconds: int = 180):
+    w3,
+    timestamp: int,
+    low: int = 0,
+    high: int = 0,
+    search_range: int = 150_000,
+    accuracy_range_seconds: int = 180):
     """
     A basic algorithm to find a block number from a timestamp.
 

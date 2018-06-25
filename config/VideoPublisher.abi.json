@@ -1,8 +1,64 @@
 [
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "owner_",
+          "type": "address"
+        }
+      ],
+      "name": "setOwner",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
-      "name": "viewToken",
+      "name": "priceView",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "priceEth",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "authority_",
+          "type": "address"
+        }
+      ],
+      "name": "setAuthority",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
       "outputs": [
         {
           "name": "",
@@ -16,11 +72,11 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "price",
+      "name": "viewToken",
       "outputs": [
         {
           "name": "",
-          "type": "uint256"
+          "type": "address"
         }
       ],
       "payable": false,
@@ -39,7 +95,21 @@
       "outputs": [
         {
           "name": "",
-          "type": "bool"
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "authority",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -53,7 +123,11 @@
           "type": "address"
         },
         {
-          "name": "price_",
+          "name": "priceView_",
+          "type": "uint256"
+        },
+        {
+          "name": "priceEth_",
           "type": "uint256"
         }
       ],
@@ -73,11 +147,6 @@
           "indexed": false,
           "name": "videoID",
           "type": "bytes12"
-        },
-        {
-          "indexed": false,
-          "name": "price",
-          "type": "uint256"
         }
       ],
       "name": "Published",
@@ -117,8 +186,72 @@
       ],
       "name": "publish",
       "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "videoID",
+          "type": "bytes12"
+        },
+        {
+          "name": "beneficiary",
+          "type": "address"
+        }
+      ],
+      "name": "publishFor",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "priceView_",
+          "type": "uint256"
+        },
+        {
+          "name": "priceEth_",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPrices",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "destruct",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
       "type": "function"
     }
   ]
