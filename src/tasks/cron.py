@@ -124,6 +124,7 @@ def refresh_unpublished_videos():
         if publisher_addr != null_address:
             video = session.query(Video).filter_by(id=video_id).one()
             video.published_at = dt.datetime.utcnow()
+            video.eth_address = publisher_addr
             session.add(video)
 
     session.commit()

@@ -20,6 +20,7 @@ LEN = dict(
     video_id=12,
     channel_id=16,
     tx_id=66,
+    eth_address=42,
 )
 
 
@@ -143,6 +144,7 @@ class Video(db.Model):
     license = db.Column(db.String(10))
     uploaded_at = db.Column(db.DateTime(timezone=True), nullable=False)
     published_at = db.Column(db.DateTime(timezone=True))
+    eth_address = db.Column(db.String(LEN['eth_address']))
 
     # inferred properties
     # -------------------
@@ -223,7 +225,7 @@ class VideoPublisherEvents(db.Model):
     tx_id = db.Column(db.String(LEN['tx_id']), primary_key=True)
     video_id = db.Column(db.String(LEN['video_id']), unique=True, nullable=False)
 
-    eth_address = db.Column(db.String(42), nullable=False)
+    eth_address = db.Column(db.String(LEN['eth_address']), nullable=False)
     price = db.Column(db.Integer)
     block_num = db.Column(db.Integer, nullable=False)
 
@@ -238,7 +240,7 @@ class Vote(db.Model):
     # unique pairs
     video_id = db.Column(db.String(LEN['video_id']),
                          db.ForeignKey('video.id'), nullable=False)
-    eth_address = db.Column(db.String(42), nullable=False)
+    eth_address = db.Column(db.String(LEN['eth_address']), nullable=False)
 
     # vote properties
     weight = db.Column(db.Integer, nullable=False)
