@@ -24,19 +24,21 @@
         Unlimited streaming from Viewly's CDN
       </li>
       <li>
-        Participation in the <a href="{{ url_for('game.index') }}" target="_blank">Distribution Game</a>
+        Participation in the <a href="{{ url_for('game.index') }}" target="_blank">Distribution
+        Game</a>
       </li>
     </ul>
+    <i>Unpublished videos will be deleted after 7 days.</i>
 
-    <h4>Publishing works in 2 steps:</h4>
-    <ul>
-      <li>
-        Pre-Authorize VideoPublisher to spend your VIEW Tokens
-      </li>
-      <li>
-        Call VideoPublisher contract and pay <b>10 VIEW</b> to publish a video
-      </li>
-    </ul>
+{#    <h4>Publishing works in 2 steps:</h4>#}
+{#    <ul>#}
+{#      <li>#}
+{#        Pre-Authorize VideoPublisher to spend your VIEW Tokens#}
+{#      </li>#}
+{#      <li>#}
+{#        Call VideoPublisher contract and pay <b>20 VIEW</b> to publish a video#}
+{#      </li>#}
+{#    </ul>#}
 
     <h3 class="ui dividing header">Publish through Metamask</h3>
     <div id="metamask">
@@ -167,9 +169,10 @@
     let w3;
     let networkId;
     let account;
-    let balance;
+    let balanceView;
     let allowance;
     let priceView;
+    let priceEth;
 
     let videoIdHex = "{{ video.id | toHex }}";
     let isPublished = false;
@@ -185,6 +188,7 @@
 
     let authorizeButton = `<a id="approve-account" class="ui button blue large">Authorize VideoPublisher</a>`;
     let publishButton = `<a id="publish-video" class="ui button blue large">Publish the video</a>`;
+    let publishButtonEth = `<a id="publish-video-eth" class="ui button blue large">Publish the video</a>`;
     let spinner = `<div class="ui active inline loader"></div> Waiting for transaction to confirm...`;
 
     function initMetamask() {
@@ -224,7 +228,7 @@
         initContracts();
 
       viewToken.balanceOf(account, (e, r) => {
-        balance = Number(r)
+        balanceView = Number(r)
       });
       viewToken.allowance(account, videoPublisherAddress, (e, r) => {
         allowance = Number(r)
@@ -236,6 +240,9 @@
         initContracts();
       videoPublisher.priceView((e, r) => {
         priceView = r
+      });
+      videoPublisher.priceEth((e, r) => {
+        priceEth = r
       });
       videoPublisher.videos(videoIdHex, (e, r) => {
         isPublished = (r !== '0x0000000000000000000000000000000000000000')
@@ -257,17 +264,13 @@
         return `Video has been published, and will be live in a few minutes. <i class="checkmark icon green"></i>`;
 
       // insufficient funds
-      if (balance < priceView)
-        return `Your account <i>${account}</i> has insufficient VIEW Token balance
-                 <i>(${Number(w3.fromWei(balance))} VIEW)</i>.
-                 Minimum balance required to publish a video is <b>${Number(w3.fromWei(priceView))} VIEW</b>.`;
-
-      // not allowed
-      if (allowance < priceView)
-        return `${authorizeButton}`;
-
-      return `${publishButton}`;
-
+      if (balanceView >= priceView) {
+        if (allowance < priceView) {
+          return `${authorizeButton}`;
+        }
+        return `${publishButton}`;
+      }
+      return `${publishButtonEth}`;
     }
 
     function initButtons() {
@@ -275,7 +278,10 @@
         approveAccount();
       });
       $('#publish-video').click(() => {
-        publishVideo();
+        publishVideo(true);
+      });
+      $('#publish-video-eth').click(() => {
+        publishVideo(false);
       })
     }
 
@@ -291,16 +297,20 @@
       );
     }
 
-    function publishVideo() {
+    function publishVideo(payInView) {
       videoPublisher.publish(
         videoIdHex,
-        {from: account, gas: 200000, gasPrice: w3.toWei('20', 'gwei')},
+        {from: account,
+          gas: 200000,
+          gasPrice: w3.toWei('20', 'gwei'),
+          value: (payInView ? 0 : priceEth)},
         (error, response) => {
           if (!error) {
             publishButton = spinner;
+            publishButtonEth = spinner;
             setInterval(function () {
               window.location.reload();
-            }, 60 * 1000);
+            }, 10 * 60 * 1000);
           }
         }
       );
