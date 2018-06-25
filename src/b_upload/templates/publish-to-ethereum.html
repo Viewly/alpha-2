@@ -169,7 +169,7 @@
     let account;
     let balance;
     let allowance;
-    let price;
+    let priceView;
 
     let videoIdHex = "{{ video.id | toHex }}";
     let isPublished = false;
@@ -234,11 +234,11 @@
     function refreshPublisher() {
       if (typeof videoPublisher === 'undefined')
         initContracts();
-      videoPublisher.price((e, r) => {
-        price = r
+      videoPublisher.priceView((e, r) => {
+        priceView = r
       });
       videoPublisher.videos(videoIdHex, (e, r) => {
-        isPublished = r
+        isPublished = (r !== '0x0000000000000000000000000000000000000000')
       });
     }
 
@@ -257,13 +257,13 @@
         return `Video has been published, and will be live in a few minutes. <i class="checkmark icon green"></i>`;
 
       // insufficient funds
-      if (balance < price)
+      if (balance < priceView)
         return `Your account <i>${account}</i> has insufficient VIEW Token balance
                  <i>(${Number(w3.fromWei(balance))} VIEW)</i>.
-                 Minimum balance required to publish a video is <b>${Number(w3.fromWei(price))} VIEW</b>.`;
+                 Minimum balance required to publish a video is <b>${Number(w3.fromWei(priceView))} VIEW</b>.`;
 
       // not allowed
-      if (allowance < price)
+      if (allowance < priceView)
         return `${authorizeButton}`;
 
       return `${publishButton}`;
@@ -282,7 +282,7 @@
     function approveAccount() {
       // create allowance that for 100 videos at current price
       viewToken.approve(
-        videoPublisherAddress, w3.toWei(w3.fromWei(price) * 100, 'ether'),
+        videoPublisherAddress, w3.toWei(w3.fromWei(priceView) * 100, 'ether'),
         {from: account, gas: 200000, gasPrice: w3.toWei('20', 'gwei')},
         (error, response) => {
           if (!error)
