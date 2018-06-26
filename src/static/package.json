@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "accoutrement-color": "^2.3.1",
-    "clappr": "^0.2.92",
+    "clappr": "^0.2.97",
     "dash-shaka-playback": "^2.2.5",
     "fine-uploader": "^5.16.2",
     "inuit-flexgrid": "^0.4.0",
@@ -11,7 +11,7 @@
     "jquery": "^2.2.0",
     "lodash": "^4.17.10",
     "sass-mq": "^4.0.2",
-    "semantic-ui-css": "^2.3.1"
+    "semantic-ui-css": "^2.3.2"
   },
   "devDependencies": {}
 }
