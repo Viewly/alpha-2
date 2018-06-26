@@ -73,9 +73,12 @@ def view_token_supply():
 
 def get_publisher_address(video_id: str, block_num: int = 'latest'):
     instance = video_publisher()
-    return (instance.functions
+    addr = (instance.functions
             .videos(to_hex(text=video_id))
             .call(block_identifier=block_num))
+    if addr != null_address:
+        addr = to_checksum_address(addr)
+    return addr
 
 
 def is_valid_address(address: str) -> bool:
