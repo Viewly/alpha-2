@@ -26,7 +26,7 @@ def test_is_video_published():
     assert ETH_CHAIN == 'kovan', 'This test was designed for Kovan chain.'
 
     assert get_publisher_address('gibberish') == null_address
-    assert get_publisher_address('0x616263') == '0xaAF3FFEE9d4C976aA8d0CB1bb84c3C90ee6E9118'
+    assert get_publisher_address('abc') == '0xaAF3FFEE9d4C976aA8d0CB1bb84c3C90ee6E9118'
 
 
 def test_historic_view_token_balance():
