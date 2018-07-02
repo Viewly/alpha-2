@@ -289,7 +289,7 @@
       // create allowance that for 100 videos at current price
       viewToken.approve(
         videoPublisherAddress, w3.toWei(w3.fromWei(priceView) * 100, 'ether'),
-        {from: account, gas: 200000, gasPrice: w3.toWei('20', 'gwei')},
+        {from: account, gas: 200000, gasPrice: w3.toWei('50', 'gwei')},
         (error, response) => {
           if (!error)
             authorizeButton = spinner;
@@ -302,7 +302,7 @@
         videoIdHex,
         {from: account,
           gas: 200000,
-          gasPrice: w3.toWei('20', 'gwei'),
+          gasPrice: w3.toWei('50', 'gwei'),
           value: (payInView ? 0 : priceEth)},
         (error, response) => {
           if (!error) {
