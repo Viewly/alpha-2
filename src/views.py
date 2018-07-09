@@ -340,6 +340,7 @@ def utility_processor():
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
         eth_chain=lambda: app.config['ETH_CHAIN'],
+        gas_price=lambda: app.config['GAS_PRICE'],
         view_token_abi=lambda: json.dumps(app.config['VIEW_TOKEN_ABI']),
         video_publisher_abi=lambda: json.dumps(app.config['VIDEO_PUBLISHER_ABI']),
         view_token_address=lambda: app.config['VIEW_TOKEN_ADDRESS'],

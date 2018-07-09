@@ -103,6 +103,7 @@ VIDEO_PUBLISHER_ABI = load_json_file(f'{config_folder_prefix()}/VideoPublisher.a
 
 # Ethereum contract configuration / Governance
 DISTRIBUTION_GAME_DAYS = getenv('DISTRIBUTION_GAME_DAYS', 7)
+GAS_PRICE = getenv('GAS_PRICE', 20)  # in gwei
 
 # Elastic Transcoder
 elastic_transcoder = load_json_config('elastic_transcoder')
