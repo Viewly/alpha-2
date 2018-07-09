@@ -24,13 +24,48 @@
         window to its respective rewards pool.
       </li>
       <li>
-        <b>Min Reward</b> is a threshold an individual video must reach to be eligible for payout.
+        <b>Min Reward</b> is a threshold an individual video must reach to be eligible for
+        payout.
         Videos with threshold notwithstanding will have their reward nullified.
       </li>
     </ul>
 
+    <h3>Rewards Pool</h3>
     <iframe width="100%" height="700" frameborder="0" scrolling="no"
             src="//plot.ly/~furion/259.embed?link=false"></iframe>
+
+
+    <h2>Leaderboard</h2>
+    <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Channel</th>
+        <th>Rewards</th>
+        <th>Videos</th>
+        <th>Reward / video</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for result in leaderboard %}
+        <tr>
+          <td>
+            <b>
+              <img src="{{ guess_avatar_cdn_url(result.channel_id, 'tiny') }}"
+                   class="ui circular avatar image"
+                   onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
+              <a href="{{ url_for('view_channel', channel_id=result.channel_id) }}">
+                {{ result.display_name }}</a>
+            </b>
+          </td>
+                    <td>{{ result.rewards | int }} VIEW</td>
+          <td>{{ result.videos | int }}</td>
+          <td>{{ result.rpv | int }} VIEW</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <i>Displaying top 10 creators for the past month.</i>
+
   </div>
 
 {% endblock %}
