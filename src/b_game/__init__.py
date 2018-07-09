@@ -21,7 +21,16 @@ game = Blueprint(
 
 @game.route('/')
 def index():
-    return render_template('index.html')
+    q = "SELECT *, rewards/videos AS rpv FROM top_creators_30_days LIMIT :limit;"
+    rs = db.session.execute(q, {
+        "limit": 10,
+    })
+    leaderboard = [dict(zip(rs.keys(), item)) for item in rs.fetchall()]
+
+    return render_template(
+        'index.html',
+        leaderboard=leaderboard
+    )
 
 
 @game.route('/periods')
