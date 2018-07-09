@@ -21,7 +21,12 @@ game = Blueprint(
 
 @game.route('/')
 def index():
-    q = "SELECT *, rewards/videos AS rpv FROM top_creators_30_days LIMIT :limit;"
+    q = """
+    SELECT *, rewards/videos AS rpv
+     FROM top_creators_30_days
+     ORDER BY rewards DESC
+     LIMIT :limit;
+    """
     rs = db.session.execute(q, {
         "limit": 10,
     })
