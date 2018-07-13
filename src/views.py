@@ -304,6 +304,8 @@ def get_auth_token_cached(current_user):
 # ----------------
 @app.context_processor
 def utility_processor():
+    from .core.eth import gas_price
+
     def block_num():
         return 0
 
@@ -340,7 +342,7 @@ def utility_processor():
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
         eth_chain=lambda: app.config['ETH_CHAIN'],
-        gas_price=lambda: app.config['GAS_PRICE'],
+        gas_price=gas_price,
         view_token_abi=lambda: json.dumps(app.config['VIEW_TOKEN_ABI']),
         video_publisher_abi=lambda: json.dumps(app.config['VIDEO_PUBLISHER_ABI']),
         view_token_address=lambda: app.config['VIEW_TOKEN_ADDRESS'],

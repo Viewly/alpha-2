@@ -20,6 +20,7 @@ from ..config import (
     INFURA_KEY,
     VIEW_TOKEN_ADDRESS,
     VIEW_TOKEN_ABI,
+    GAS_PRICE,
 )
 
 null_address = '0x0000000000000000000000000000000000000000'
@@ -33,6 +34,19 @@ def get_infura_web3() -> web3.Web3:
     assert ETH_CHAIN, 'Ethereum chain not provided'
     infura_url = f'https://{ETH_CHAIN}.infura.io/{INFURA_KEY}'
     return get_web3(infura_url)
+
+
+@cache(60)
+def gas_price() -> int:
+    w3 = get_infura_web3()
+    try:
+        # 5% above infura
+        price = int(float(from_wei(w3.eth.gasPrice, 'gwei')) * 1.05)
+        assert price > 0
+    except:
+        price = GAS_PRICE
+
+    return price
 
 
 def video_publisher():
