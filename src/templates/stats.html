@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Global Stats{% endblock %}
+
+{% block content %}
+  <div class="ui text container">
+    <h2>ETH</h2>
+    Gas price: {{ gas_price() }} GWEI
+
+    <h2>Videos</h2>
+    <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Count</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Videos</td>
+        <td>{{ videos | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>Published Videos</td>
+        <td>{{ published_videos | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>Unpublished Videos</td>
+        <td>{{ (videos-published_videos) | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>NSFW Videos</td>
+        <td>{{ nsfw_videos | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>Pending Analysis</td>
+        <td>{{ pending_analysis | readableNumber }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h2>Users</h2>
+    <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Count</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Signups</td>
+        <td>{{ users | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>Unconfirmed</td>
+        <td>{{ unconfirmed_users | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>Logged in past 30 days</td>
+        <td>{{ active_users | readableNumber }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h2>Channels</h2>
+      <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Count</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Channels</td>
+        <td>{{ channels | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>Channels with videos</td>
+        <td>{{ channels_w_videos | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>Channels with published videos</td>
+        <td>{{ channels_w_published_videos | readableNumber }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <br>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
