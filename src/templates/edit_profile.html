@@ -15,11 +15,12 @@
             <tr>
               <th>Name</th>
               <th>Uploads</th>
+              <th>Rewards</th>
               <th>Created On</th>
             </tr>
             </thead>
             <tbody>
-            {% for channel, video_count in channels %}
+            {% for channel, video_count, creator_rewards in channels %}
               <tr>
                 <td>
                   <b>
@@ -31,6 +32,7 @@
                   </b>
                 </td>
                 <td>{{ video_count }}</td>
+                <td>{% if creator_rewards %}{{ creator_rewards | readableNumber }} VIEW{% endif %}</td>
                 <td>{{ channel.created_at | humanDate }}</td>
               </tr>
             {% endfor %}
