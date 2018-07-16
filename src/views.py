@@ -271,7 +271,7 @@ def stats():
     current_login_at is not null and current_login_at > (now() - interval '30 days')
     """
     active_users = User.query.filter(q_recent_login).count()
-    unconfirmed_users = User.query.filter(User.confirmed_at.isnot(None)).count()
+    unconfirmed_users = User.query.filter(User.confirmed_at.is_(None)).count()
 
     channels = Channel.query.count()
     channels_w_videos = Video.query.distinct(Video.channel_id).count()
