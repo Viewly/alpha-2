@@ -35,6 +35,7 @@ from .models import (
     Follow,
     Vote,
     User,
+    Reward,
 )
 
 
@@ -234,8 +235,10 @@ def edit_profile():
     channels = \
         (db.session.query(
             Channel,
-            func.count(Video.id).label('video_count'))
+            func.count(Video.id).label('video_count'),
+            func.sum(Reward.creator_reward).label('creator_rewards'))
          .outerjoin(Video)
+         .outerjoin(Reward)
          .group_by(Channel)
          .having(Channel.user_id == current_user.id)
          .order_by(desc('video_count')))
