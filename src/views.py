@@ -28,7 +28,14 @@ from .methods import (
     guess_avatar_cdn_url,
     guess_timeline_cdn_url,
 )
-from .models import Video, Channel, TranscoderJob, Follow, Vote
+from .models import (
+    Video,
+    Channel,
+    TranscoderJob,
+    Follow,
+    Vote,
+    User,
+)
 
 
 # router
@@ -249,6 +256,45 @@ def token_info():
         currentSupply=int(view_token_supply()),
     )
     return jsonify(**token)
+
+
+@app.route('/_/stats')
+@login_required
+def stats():
+    videos = Video.query.count()
+    published_videos = Video.query.filter(Video.published_at.isnot(None)).count()
+    nsfw_videos = Video.query.filter(Video.is_nsfw.is_(True)).count()
+    pending_analysis = Video.query.filter(Video.analyzed_at.is_(None)).count()
+
+    users = User.query.count()
+    q_recent_login = """
+    current_login_at is not null and current_login_at > (now() - interval '30 days')
+    """
+    active_users = User.query.filter(q_recent_login).count()
+    unconfirmed_users = User.query.filter(User.confirmed_at.isnot(None)).count()
+
+    channels = Channel.query.count()
+    channels_w_videos = Video.query.distinct(Video.channel_id).count()
+    channels_w_published_videos = (
+        Video.query
+            .filter(Video.published_at.isnot(None))
+            .distinct(Video.channel_id)
+            .count()
+    )
+
+    return render_template(
+        'stats.html',
+        videos=videos,
+        published_videos=published_videos,
+        nsfw_videos=nsfw_videos,
+        pending_analysis=pending_analysis,
+        users=users,
+        active_users=active_users,
+        unconfirmed_users=unconfirmed_users,
+        channels=channels,
+        channels_w_videos=channels_w_videos,
+        channels_w_published_videos=channels_w_published_videos,
+    )
 
 
 @app.route('/auth_token', methods=['GET'])
