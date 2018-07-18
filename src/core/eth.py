@@ -106,9 +106,9 @@ def normalize_address(address: str) -> str:
     return to_normalized_address(address)
 
 
-def min_stake_for_period(eth_address: str,
-                         created_at: dt.datetime,
-                         lookback_days: int = 7):
+def min_balance_for_period(eth_address: str,
+                           created_at: dt.datetime,
+                           lookback_days: int = 7):
     """
     For a given ETH address, look up their minimum stake for the past lookback_days.
     Returns the lowest balance as determined by a stochastic process.

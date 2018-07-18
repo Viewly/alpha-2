@@ -308,3 +308,9 @@ class Reward(db.Model):
 
     creator_txid = db.Column(db.String(LEN['tx_id']))
     voter_txid = db.Column(db.String(LEN['tx_id']))
+
+
+class BalanceCache(db.Model):
+    eth_address = db.Column(db.String(LEN['eth_address']), primary_key=True)
+    balance = db.Column(db.Integer, nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), nullable=False)

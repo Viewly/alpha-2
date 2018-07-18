@@ -20,7 +20,7 @@ from ..core.eth import (
     get_publisher_address,
     null_address,
     confirmed_block_num,
-    min_stake_for_period,
+    min_balance_for_period,
 )
 from ..core.utils import thread_multi
 from ..models import (
@@ -28,6 +28,7 @@ from ..models import (
     Vote,
     TranscoderStatus,
     TranscoderJob,
+    BalanceCache,
 )
 
 cron = new_celery(
@@ -132,16 +133,43 @@ def evaluate_votes():
     pending_votes = session.query(Vote).filter(Vote.token_amount.is_(None))
 
     for vote in pending_votes:
-        min_balance = min_stake_for_period(
+        # get voters balance
+        vote.token_amount = refresh_balance(
             vote.eth_address,
             vote.created_at,
-            lookback_days=DISTRIBUTION_GAME_DAYS,
-        )
+            lookback_days=DISTRIBUTION_GAME_DAYS
+        ).balance
 
-        vote.token_amount = min_balance
+        # get voters delegations
         vote.delegated_amount = 0  # todo: implement delegation contract
         session.add(vote)
         session.commit()
+
+
+def refresh_balance(eth_address: str,
+                    created_at: dt.datetime,
+                    lookback_days: int = 7):
+    session = db_session()
+    an_hour_ago = dt.datetime.utcnow() - dt.timedelta(hours=1)
+    balance = \
+        (session.query(BalanceCache)
+         .filter(BalanceCache.eth_address == eth_address,
+                 BalanceCache.updated_at > an_hour_ago)
+         .first())
+    if not balance:
+        min_balance = min_balance_for_period(
+            eth_address,
+            created_at,
+            lookback_days=lookback_days,
+        )
+        balance = BalanceCache(
+            eth_address=eth_address,
+            balance=min_balance,
+            updated_at=dt.datetime.utcnow()
+        )
+        session.merge(balance)
+        session.commit()
+    return balance
 
 
 @cron.task(ignore_result=True)
