@@ -1,13 +1,7 @@
 import datetime as dt
-import random
 
 from celery.schedules import crontab
-from eth_utils import from_wei
 from funcy import (
-    partial,
-    rpartial,
-    compose,
-    chunks,
     lkeep,
 )
 
@@ -24,11 +18,9 @@ from ..config import (
 from ..core.et import get_job_status
 from ..core.eth import (
     get_publisher_address,
-    view_token_balance,
-    get_infura_web3,
-    find_block_from_timestamp,
     null_address,
     confirmed_block_num,
+    min_balance_for_period,
 )
 from ..core.utils import thread_multi
 from ..models import (
@@ -36,6 +28,7 @@ from ..models import (
     Vote,
     TranscoderStatus,
     TranscoderJob,
+    BalanceCache,
 )
 
 cron = new_celery(
@@ -134,46 +127,49 @@ def refresh_unpublished_videos():
 def evaluate_votes():
     """
     Evaluate token balances of the voter for the past 7 days.
-
-    The purpose of this method is to prevent abuse caused by
-    people who are voting and moving their tokens in an attempt to
-    be able to vote again.
-
-    The evaluation will pick random blocks in the average of 1
-    block per hour, and acknowledge the minimum balance during
-    this period as the voting power.
+    Check for delegations, and delegation amounts.
     """
-    days = DISTRIBUTION_GAME_DAYS
-
     session = db_session()
     pending_votes = session.query(Vote).filter(Vote.token_amount.is_(None))
 
-    w3 = get_infura_web3()
-
     for vote in pending_votes:
-        review_period_end = int(vote.created_at.timestamp())
-        review_period_start = int((vote.created_at - dt.timedelta(days=days)).timestamp())
+        # get voters balance
+        vote.token_amount = refresh_balance(
+            vote.eth_address,
+            vote.created_at,
+            lookback_days=DISTRIBUTION_GAME_DAYS
+        ).balance
 
-        find_block = partial(find_block_from_timestamp, w3)
-        review_block_range = [find_block(x).number for x in
-                              (review_period_start, review_period_end)]
-
-        # get random VIEW balances on the voter's address for the last 7 days
-        # split search range into chunks that contain ~ 1 hour worth of blocks
-        chunk_size = (review_block_range[1] - review_block_range[0]) // (days * 24)
-        balances = map(
-            lambda block_num: view_token_balance(vote.eth_address, block_num=block_num),
-            (random.randrange(*chunk_range) for chunk_range in
-             chunks(chunk_size, review_block_range))
-        )
-
-        to_eth = compose(int, rpartial(from_wei, 'ether'))
-        min_balance = min(to_eth(x) for x in balances)
-
-        vote.token_amount = min_balance
+        # get voters delegations
         vote.delegated_amount = 0  # todo: implement delegation contract
         session.add(vote)
         session.commit()
+
+
+def refresh_balance(eth_address: str,
+                    created_at: dt.datetime,
+                    lookback_days: int = 7):
+    session = db_session()
+    an_hour_ago = dt.datetime.utcnow() - dt.timedelta(hours=1)
+    balance = \
+        (session.query(BalanceCache)
+         .filter(BalanceCache.eth_address == eth_address,
+                 BalanceCache.updated_at > an_hour_ago)
+         .first())
+    if not balance:
+        min_balance = min_balance_for_period(
+            eth_address,
+            created_at,
+            lookback_days=lookback_days,
+        )
+        balance = BalanceCache(
+            eth_address=eth_address,
+            balance=min_balance,
+            updated_at=dt.datetime.utcnow()
+        )
+        session.merge(balance)
+        session.commit()
+    return balance
 
 
 @cron.task(ignore_result=True)
