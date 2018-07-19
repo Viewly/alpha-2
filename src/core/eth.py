@@ -40,8 +40,8 @@ def get_infura_web3() -> web3.Web3:
 def gas_price() -> int:
     w3 = get_infura_web3()
     try:
-        # 5% above infura
-        price = int(float(from_wei(w3.eth.gasPrice, 'gwei')) * 1.05)
+        # 5% + 5 gwei above infura
+        price = int(float(from_wei(w3.eth.gasPrice, 'gwei')) * 1.05) + 5
         assert price > 0
     except:
         price = GAS_PRICE
