@@ -314,3 +314,20 @@ class BalanceCache(db.Model):
     eth_address = db.Column(db.String(LEN['eth_address']), primary_key=True)
     balance = db.Column(db.Integer, nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+
+class DelegationEvent(db.Model):
+    tx_id = db.Column(db.String(LEN['tx_id']), primary_key=True)
+    delegator = db.Column(db.String(LEN['eth_address']), nullable=False)
+    beneficiary = db.Column(db.String(LEN['eth_address']), nullable=False)
+    block_num = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+
+# class ActiveDelegation(db.Model):
+#     delegator = db.Column(db.String(LEN['video_id']), primary_key=True)
+#     beneficiary = db.Column(db.String(LEN['eth_address']), index=True, nullable=False)
+#
+#     created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+#     block_num = db.Column(db.Integer, nullable=False)
+#     is_valid = db.Column(db.Boolean, nullable=False)

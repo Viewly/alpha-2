@@ -1,5 +1,6 @@
 import datetime as dt
 import random
+from typing import Union
 
 import web3
 from eth_account import Account
@@ -14,7 +15,14 @@ from eth_utils import (
     to_hex,
     to_normalized_address,
 )
-from funcy import re_find, cache, partial, compose, rpartial, chunks
+from funcy import (
+    re_find,
+    cache,
+    partial,
+    compose,
+    rpartial,
+    chunks,
+)
 
 from ..config import (
     VIDEO_PUBLISHER_ADDRESS,
@@ -24,6 +32,8 @@ from ..config import (
     VIEW_TOKEN_ADDRESS,
     VIEW_TOKEN_ABI,
     GAS_PRICE,
+    VOTING_POWER_DELEGATOR_ADDRESS,
+    VOTING_POWER_DELEGATOR_ABI,
 )
 
 null_address = '0x0000000000000000000000000000000000000000'
@@ -52,6 +62,15 @@ def gas_price() -> int:
     return price
 
 
+def view_token():
+    w3 = get_infura_web3()
+
+    return w3.eth.contract(
+        address=VIEW_TOKEN_ADDRESS,
+        abi=VIEW_TOKEN_ABI,
+    )
+
+
 def video_publisher():
     w3 = get_infura_web3()
 
@@ -61,12 +80,12 @@ def video_publisher():
     )
 
 
-def view_token():
+def voting_power_delegator():
     w3 = get_infura_web3()
 
     return w3.eth.contract(
-        address=VIEW_TOKEN_ADDRESS,
-        abi=VIEW_TOKEN_ABI,
+        address=VOTING_POWER_DELEGATOR_ADDRESS,
+        abi=VOTING_POWER_DELEGATOR_ABI,
     )
 
 
@@ -98,6 +117,20 @@ def get_publisher_address(video_id: str, block_num: int = 'latest'):
     return addr
 
 
+def get_beneficiary_address(delegator_addr: str, block_num: int = 'latest'):
+    instance = voting_power_delegator()
+    beneficiary = (instance.functions
+                   .delegations(to_checksum_address(delegator_addr))
+                   .call(block_identifier=block_num))
+    if beneficiary != null_address:
+        return to_checksum_address(beneficiary)
+
+
+def validate_beneficiary(delegator_addr: str, beneficiary_addr: str) -> bool:
+    return get_beneficiary_address(delegator_addr) == \
+           to_checksum_address(beneficiary_addr)
+
+
 def is_valid_address(address: str) -> bool:
     return is_address(address)
 
@@ -106,6 +139,8 @@ def normalize_address(address: str) -> str:
     return to_normalized_address(address)
 
 
+# Distribution game stuff
+# -----------------------
 def min_balance_for_period(eth_address: str,
                            created_at: dt.datetime,
                            lookback_days: int = 7):
@@ -140,6 +175,71 @@ def min_balance_for_period(eth_address: str,
 
     to_eth = compose(int, rpartial(from_wei, 'ether'))
     return min(to_eth(x) for x in balances)
+
+
+def block_timestamp(w3, block_id_or_num: Union[str, int]):
+    return w3.eth.getBlock(block_id_or_num)['timestamp']
+
+
+def block_datetime(w3, block_id_or_num: Union[str, int]):
+    timestamp = block_timestamp(w3, block_id_or_num)
+    return dt.datetime.utcfromtimestamp(timestamp)
+
+
+def find_block_from_timestamp(
+    w3,
+    timestamp: int,
+    low: int = 0,
+    high: int = 0,
+    search_range: int = 150_000,
+    accuracy_range_seconds: int = 180):
+    """
+    A basic algorithm to find a block number from a timestamp.
+
+    Args:
+        w3: web3 instance
+        timestamp: Target block timestamp
+        low: A lower boundary to include in search.
+             If left empty, head block - search_range is used (approx 10 days).
+        high: Higher search boundary. If left empty, blockchain head is used.
+        search_range: How many blocks to look into the past if `low` is not provided.
+                      Defaults to approx 1 month on mainnet.
+        accuracy_range_seconds: How many seconds of precision does the resulting block need to fall into.
+                        Defaults to 3 minutes on mainnet.
+
+    Returns:
+        A block closest to the provided timestamp, or None if not found.
+    """
+    if not high:
+        high = w3.eth.blockNumber
+    if not low:
+        low = high - search_range
+
+    median = (high + low) // 2
+    median_block = w3.eth.getBlock(median)
+    # print(median_block.number, median_block.timestamp)
+
+    if abs(median_block.timestamp - timestamp) <= accuracy_range_seconds:
+        return median_block
+
+    # block not found in range provided
+    if abs(high - low) <= 1:
+        return
+
+    # binary search
+    if timestamp > median_block.timestamp:
+        low = median_block.number
+    else:
+        high = median_block.number
+
+    return find_block_from_timestamp(
+        w3,
+        timestamp,
+        low=low,
+        high=high,
+        search_range=search_range,
+        accuracy_range_seconds=accuracy_range_seconds
+    )
 
 
 # Metamask Signature Validation
@@ -232,59 +332,3 @@ def is_typed_signature_valid(message, signature, address) -> bool:
     msg_hash = eth_typed_data_message(infer_int_lengths(message))
     recovered_address = Account().recoverHash(msg_hash, signature=signature)
     return is_same_address(address, recovered_address)
-
-
-def find_block_from_timestamp(
-    w3,
-    timestamp: int,
-    low: int = 0,
-    high: int = 0,
-    search_range: int = 150_000,
-    accuracy_range_seconds: int = 180):
-    """
-    A basic algorithm to find a block number from a timestamp.
-
-    Args:
-        w3: web3 instance
-        timestamp: Target block timestamp
-        low: A lower boundary to include in search.
-             If left empty, head block - search_range is used (approx 10 days).
-        high: Higher search boundary. If left empty, blockchain head is used.
-        search_range: How many blocks to look into the past if `low` is not provided.
-                      Defaults to approx 1 month on mainnet.
-        accuracy_range_seconds: How many seconds of precision does the resulting block need to fall into.
-                        Defaults to 3 minutes on mainnet.
-
-    Returns:
-        A block closest to the provided timestamp, or None if not found.
-    """
-    if not high:
-        high = w3.eth.blockNumber
-    if not low:
-        low = high - search_range
-
-    median = (high + low) // 2
-    median_block = w3.eth.getBlock(median)
-    # print(median_block.number, median_block.timestamp)
-
-    if abs(median_block.timestamp - timestamp) <= accuracy_range_seconds:
-        return median_block
-
-    # block not found in range provided
-    if abs(high - low) <= 1:
-        return
-
-    # binary search
-    if timestamp > median_block.timestamp:
-        low = median_block.number
-    else:
-        high = median_block.number
-
-    return find_block_from_timestamp(
-        w3,
-        timestamp,
-        low=low,
-        high=high,
-        search_range=search_range,
-        accuracy_range_seconds=accuracy_range_seconds
-    )

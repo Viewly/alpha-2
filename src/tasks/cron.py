@@ -21,6 +21,9 @@ from ..core.eth import (
     null_address,
     confirmed_block_num,
     min_balance_for_period,
+    get_beneficiary_address,
+    validate_beneficiary,
+    to_checksum_address,
 )
 from ..core.utils import thread_multi
 from ..models import (
@@ -29,6 +32,7 @@ from ..models import (
     TranscoderStatus,
     TranscoderJob,
     BalanceCache,
+    DelegationEvent,
 )
 
 cron = new_celery(
@@ -132,16 +136,37 @@ def evaluate_votes():
     session = db_session()
     pending_votes = session.query(Vote).filter(Vote.token_amount.is_(None))
 
+    def active_delegations(beneficiary_addr: str):
+        beneficiary_addr = to_checksum_address(beneficiary_addr)
+        a_week_ago = dt.datetime.utcnow() - dt.timedelta(days=7)
+        delegations = \
+            (session.query(DelegationEvent)
+             .filter(DelegationEvent.beneficiary == beneficiary_addr,
+                     DelegationEvent.created_at < a_week_ago)
+             .all())
+
+        return [x for x in delegations
+                if validate_beneficiary(x.delegator, x.beneficiary)]
+
     for vote in pending_votes:
         # get voters balance
-        vote.token_amount = refresh_balance(
-            vote.eth_address,
-            vote.created_at,
-            lookback_days=DISTRIBUTION_GAME_DAYS
-        ).balance
+        if get_beneficiary_address(vote.eth_address):
+            vote.token_amount = 0
+        else:
+            vote.token_amount = refresh_balance(
+                vote.eth_address,
+                vote.created_at,
+                lookback_days=DISTRIBUTION_GAME_DAYS
+            ).balance
 
         # get voters delegations
-        vote.delegated_amount = 0  # todo: implement delegation contract
+        vote.delegated_amount = sum([
+            refresh_balance(
+                x.delegator,
+                vote.created_at,
+                lookback_days=DISTRIBUTION_GAME_DAYS
+            ).balance for x in active_delegations(vote.eth_address)
+        ])
         session.add(vote)
         session.commit()
 

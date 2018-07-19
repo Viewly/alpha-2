@@ -100,9 +100,12 @@ INFURA_KEY = environ['INFURA_KEY']
 # Ethereum Contracts
 VIEW_TOKEN_ADDRESS = environ['VIEW_TOKEN_ADDRESS']
 VIDEO_PUBLISHER_ADDRESS = environ['VIDEO_PUBLISHER_ADDRESS']
+VOTING_POWER_DELEGATOR_ADDRESS = environ['VOTING_POWER_DELEGATOR_ADDRESS']
 
 VIEW_TOKEN_ABI = load_json_file(f'{config_folder_prefix()}/ViewToken.abi.json')
 VIDEO_PUBLISHER_ABI = load_json_file(f'{config_folder_prefix()}/VideoPublisher.abi.json')
+VOTING_POWER_DELEGATOR_ABI = load_json_file(
+    f'{config_folder_prefix()}/VotingPowerDelegator.abi.json')
 
 # Ethereum contract configuration / Governance
 DISTRIBUTION_GAME_DAYS = getenv('DISTRIBUTION_GAME_DAYS', 7)
