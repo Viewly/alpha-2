@@ -27,7 +27,7 @@ If there are no errors, you should be able to open Alpha Web app at http://local
 
 _Note: To avoid conflicts with locally installed Postgres/Redis/Flask, the
 the Dockerized version of the app binds to ports that have `1` added at the end.
-For example, the PostgreSQL port binds to host on `54321` rather than `5432`. The latter 
+For example, the PostgreSQL port binds to host on `54321` rather than `5432`. The latter
 is available within the container only._
 
 _Note: To persist the data, PostgreSQL container will mount its data volume into
@@ -54,7 +54,7 @@ Package Dependencies:
  - PostgreSQL 9.6 or 10.x
  - Redis
  - npm
- 
+
 Install JS dependencies:
 ```
 cd src/static
@@ -107,7 +107,7 @@ flask db-reset
 ## Database Migrations (optional)
 To avoid having to delete and re-create the database in development, we can use migrations.
 
-First, change the schema in `models.py`. 
+First, change the schema in `models.py`.
 Then, create a migrations file.
 ```
 flask db migrate -m "example migration message"
@@ -181,9 +181,9 @@ on fresh deployment.
 Use Amazon S3 Console to:
  - Enable _Transfer Acceleration_ on the Upload bucket
  - Add a lifecycle rule to _Clean up incomplete multipart uploads_
- 
- 
-**IAM Policy**  
+
+
+**IAM Policy**
 Create a `s3-viewly-uploader` API user with the following S3 policy:
 ```json
 {
@@ -209,9 +209,9 @@ Use this users API credentials as `S3_UPLOADER_PUBLIC_KEY` and `S3_UPLOADER_SECR
 | S3_UPLOADER_PUBLIC_KEY |         |
 | S3_UPLOADER_SECRET_KEY |         |
 
- 
+
 ## Videos Bucket Configuration
-To be able to stream files from this bucket via CloudFormation, the following 
+To be able to stream files from this bucket via CloudFormation, the following
 bucket policy needs to be applied:
 ```json
 {
@@ -253,7 +253,7 @@ We also need the following CORS config:
 
 
 ## Elastic Transcoder
-Use `ElasticTranscoder.ipynb` to create and configure the ET pipeline. 
+Use `ElasticTranscoder.ipynb` to create and configure the ET pipeline.
 Output configuration saved [here](config/elastic_transcoder.prod.json).
 
 ## CloudFront
@@ -263,9 +263,10 @@ Create a CNAME (cdn.view.ly), and issue custom certificate trough ACM.
 
 **Environment Variables**
 
-| Variable | Default             |
-| -------- | ------------------- |
-| CDN_URL  | https://cdn.view.ly |
+| Variable    | Default                |
+| ----------- | ---------------------- |
+| CDN_URL     | https://cdn.view.ly    |
+| PLAYER_URL  | https://player.view.ly |
 
 
 ## IAM Manager Account
@@ -273,7 +274,7 @@ The manager account has just the privileges necessary to:
  - Read, Write, Delete files in the uploads and videos buckets
  - Create, Cancel and Read ElasticTranscoder Jobs
  - Invalidate CloudFormation Caches (ie. on thumbnail change)
- 
+
 **Manager Policy**
 ```json
 {
@@ -347,8 +348,8 @@ The manager account has just the privileges necessary to:
 }
 ```
 
-**Manager Account**  
-Create `viewly-alpha-manager` API account with the above policy. 
+**Manager Account**
+Create `viewly-alpha-manager` API account with the above policy.
 
 **Environment Variables**
 
@@ -369,5 +370,5 @@ pg_restore -U alpha -h alpha-staging.cvnyb565p4lg.eu-central-1.rds.amazonaws.com
 ## Testing
 Make sure the .env is loaded. Tests require 'Kovan' chain.
 ```
-PYTHONPATH=$(pwd) py.test 
+PYTHONPATH=$(pwd) py.test
 ```

@@ -54,6 +54,9 @@ CDN_DISTRIBUTION_ID = environ['CDN_DISTRIBUTION_ID']
 # videos and thumbnails CDN
 CDN_URL = getenv('CDN_URL', 'https://cdn.view.ly')
 
+# player url
+PLAYER_URL = getenv('PLAYER_URL', 'https://player.view.ly')
+
 # PostgreSQL
 SQLALCHEMY_DATABASE_URI = getenv('POSTGRES_URL', 'postgres://localhost/alpha')
 SQLALCHEMY_TRACK_MODIFICATIONS = False

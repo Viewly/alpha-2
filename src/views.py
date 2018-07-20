@@ -390,6 +390,7 @@ def utility_processor():
         guess_timeline_cdn_url=guess_timeline_cdn_url,
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
+        player_url=lambda: app.config['PLAYER_URL'],
         eth_chain=lambda: app.config['ETH_CHAIN'],
         gas_price=gas_price,
         view_token_abi=lambda: json.dumps(app.config['VIEW_TOKEN_ABI']),
