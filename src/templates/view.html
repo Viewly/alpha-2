@@ -21,7 +21,7 @@
 {% block player %}
   <div class="c-video-player o-ratio o-ratio--16:9">
     <iframe id="embedded-player"
-            src="/embed/{{ video.id }}?autoPlay=1"
+            src="{{ player_url() }}/?videoId={{ video.id }}&autoplay=true&hideLogo=true"
             frameborder="0" scrolling="0" allowfullscreen>
     </iframe>
   </div>
