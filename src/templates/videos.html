@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}New Videos{% endblock %}
+{% block title %}{% if section_title %}{{ section_title }}{% else %}Viewly{% endif %}{% endblock %}
 {% block meta_title %}New Videos on Viewly{% endblock %}
 {% set showFooter = true %}
 

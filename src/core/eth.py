@@ -1,3 +1,6 @@
+import datetime as dt
+import random
+
 import web3
 from eth_account import Account
 from eth_utils import (
@@ -11,7 +14,7 @@ from eth_utils import (
     to_hex,
     to_normalized_address,
 )
-from funcy import re_find, cache
+from funcy import re_find, cache, partial, compose, rpartial, chunks
 
 from ..config import (
     VIDEO_PUBLISHER_ADDRESS,
@@ -40,8 +43,8 @@ def get_infura_web3() -> web3.Web3:
 def gas_price() -> int:
     w3 = get_infura_web3()
     try:
-        # 5% above infura
-        price = int(float(from_wei(w3.eth.gasPrice, 'gwei')) * 1.05)
+        # 5% + 5 gwei above infura
+        price = int(float(from_wei(w3.eth.gasPrice, 'gwei')) * 1.05) + 5
         assert price > 0
     except:
         price = GAS_PRICE
@@ -101,6 +104,42 @@ def is_valid_address(address: str) -> bool:
 
 def normalize_address(address: str) -> str:
     return to_normalized_address(address)
+
+
+def min_balance_for_period(eth_address: str,
+                           created_at: dt.datetime,
+                           lookback_days: int = 7):
+    """
+    For a given ETH address, look up their minimum stake for the past lookback_days.
+    Returns the lowest balance as determined by a stochastic process.
+
+    The purpose of this method is to prevent abuse caused by
+    people who are voting and moving their tokens in an attempt to
+    be able to vote again.
+
+    The evaluation will pick random blocks in the average of 1
+    block per hour, and acknowledge the minimum balance during
+    this period as the voting power.
+    """
+    w3 = get_infura_web3()
+    review_period_end = int(created_at.timestamp())
+    review_period_start = int((created_at - dt.timedelta(days=lookback_days)).timestamp())
+
+    find_block = partial(find_block_from_timestamp, w3)
+    review_block_range = [find_block(x).number for x in
+                          (review_period_start, review_period_end)]
+
+    # get random VIEW balances on the voter's address for the last 7 days
+    # split search range into chunks that contain ~ 1 hour worth of blocks
+    chunk_size = (review_block_range[1] - review_block_range[0]) // (lookback_days * 24)
+    balances = map(
+        lambda block_num: view_token_balance(eth_address, block_num=block_num),
+        (random.randrange(*chunk_range) for chunk_range in
+         chunks(chunk_size, review_block_range))
+    )
+
+    to_eth = compose(int, rpartial(from_wei, 'ether'))
+    return min(to_eth(x) for x in balances)
 
 
 # Metamask Signature Validation

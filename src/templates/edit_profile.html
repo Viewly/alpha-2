@@ -32,7 +32,7 @@
                   </b>
                 </td>
                 <td>{{ video_count }}</td>
-                <td>{% if creator_rewards %}{{ creator_rewards | readableNumber }} VIEW{% endif %}</td>
+                <td>{% if creator_rewards %}{{ creator_rewards | int | readableNumber }} VIEW{% endif %}</td>
                 <td>{{ channel.created_at | humanDate }}</td>
               </tr>
             {% endfor %}
