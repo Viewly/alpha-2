@@ -397,6 +397,8 @@ def utility_processor():
         video_publisher_abi=lambda: json.dumps(app.config['VIDEO_PUBLISHER_ABI']),
         view_token_address=lambda: app.config['VIEW_TOKEN_ADDRESS'],
         video_publisher_address=lambda: app.config['VIDEO_PUBLISHER_ADDRESS'],
+        voting_power_delegator_address=lambda: app.config['VOTING_POWER_DELEGATOR_ADDRESS'],
+        voting_power_delegator_abi=lambda: json.dumps(app.config['VOTING_POWER_DELEGATOR_ABI']),
         get_auth_token_cached=get_auth_token_cached,
         can_vote=can_vote,
         nsfw_cover_img='https://i.imgur.com/kXBgFBy.png',
