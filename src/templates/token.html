@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Token info and stats{% endblock %}
+{% set showFooter = true %}
+
+{% block content %}
+  <div class="ui text container">
+
+    <h2>What is the Viewly token (VIEW)?</h2>
+    <p>VIEW token plays several roles on the Viewly platform:
+    <ul>
+      <li><b>Utility token:</b> Content creators can use the token to publish videos to
+        the Viewly network.
+      </li>
+      <li><b>Governance token:</b> Token holders can participate in voting that governs
+        the distribution of the tokens, token emissions, worker proposal, etc.
+      </li>
+      <li><b>Currency:</b> Viewers can support their favorite creators trough social
+        tipping, or purchase items.
+      </li>
+    </ul>
+    <i>VIEW token is an ERC-20 compliant token on the Ethereum blockchain.</i>
+    </p>
+
+    <h2>Price</h2>
+    <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
+    <div class="coinmarketcap-currency-widget" data-currencyid="2963" data-base="USD" data-secondary="" data-ticker="true" data-rank="false" data-marketcap="true" data-volume="true" data-stats="USD" data-statsticker="false"></div>
+
+    <h2>Token distribution</h2>
+    <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Category</th>
+        <th>Distributed</th>
+        <th>Limit</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Seed Token Sale</td>
+        <td>10,000,000 VIEW</td>
+        <td>10,000,000 VIEW</td>
+      </tr>
+      <tr>
+        <td>Main Token Sale</td>
+        <td>21,002,130 VIEW</td>
+        <td>40,000,000 VIEW</td>
+      </tr>
+      <tr>
+        <td>Content Creators</td>
+        <td>132,222 VIEW</td>
+        <td>20,000,000 VIEW</td>
+      </tr>
+      <tr>
+        <td>Bounties</td>
+        <td>{{ (475112 + 113528) | int | readableNumber }} VIEW</td>
+        <td>3,000,000 VIEW</td>
+      </tr>
+      <tr>
+        <td>Supporters</td>
+        <td>3,196,737 VIEW</td>
+        <td>9,000,000 VIEW</td>
+      </tr>
+      <tr>
+        <td>Team</td>
+        <td>6,764,555 VIEW</td>
+        <td>18,000,000 VIEW</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h2>Smart Contracts</h2>
+    <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>ENS</th>
+        <th>Address</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>ERC-20 VIEW Token</td>
+        <td></td>
+        <td>
+          <a href="https://etherscan.io/token/0xf03f8d65bafa598611c3495124093c56e8f638f0" target="_blank">
+            0xF03f8D65BaFA598611C3495124093c56e8F638f0</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Video Publisher 2.0</td>
+        <td>
+        </td>
+        <td>
+          <a href="https://etherscan.io/address/0x54df6e2D8f0E9a015Bf804b64ed8e9BAd6ccbaca" target="_blank">
+            0x54df6e2D8f0E9a015Bf804b64ed8e9BAd6ccbaca</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Voting Power Delegator</td>
+        <td></td>
+        <td>
+          <a href="https://etherscan.io/address/0x7fC7F71da6d2d9deFF5100C8F3D8e54C97697Ad2" target="_blank">
+            0x7fC7F71da6d2d9deFF5100C8F3D8e54C97697Ad2</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h2>3rd party</h2>
+    <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Exchanges</th>
+        <th>Token trackers</th>
+        <th>Dapp trackers</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><a href="https://idex.market/eth/view" target="_blank">IDEX</a></td>
+        <td><a href="https://coinmarketcap.com/currencies/view/" target="_blank">CoinMarketCap</a>
+        </td>
+        <td><a href="https://www.stateofthedapps.com/dapps/viewly" target="_blank">StateOfTheDapps</a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="https://www.livecoin.net/" target="_blank">Livecoin</a></td>
+        <td><a href="https://coinlib.io/coin/VIEW/Viewly" target="_blank">Coinlib</a></td>
+        <td><a href="https://dappradar.com/app/684/viewly" target="_blank">DappRadar</a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="https://tokenjar.io/VIEW" target="_blank">TokenJar</a></td>
+        <td><a href="https://coincodex.com/crypto/viewly/" target="_blank">Coincodex</a>
+        </td>
+        <td><a href="https://app.co/app/viewly" target="_blank">App.co</a></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <a href="https://bloxy.info/token_stat/0xf03f8d65bafa598611c3495124093c56e8f638f0" target="_blank">Bloxy</a>
+        </td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <br>
+{% endblock %}
