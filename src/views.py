@@ -46,11 +46,6 @@ def index():
     return redirect(url_for('new'))
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-
 @app.route('/v/<string:video_id>', methods=['GET'])
 def view_video(video_id):
     video = Video.query.filter_by(id=video_id).first_or_404()
@@ -246,6 +241,16 @@ def edit_profile():
         'edit_profile.html',
         channels=channels,
     )
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/token')
+def token_page():
+    return render_template('token.html')
 
 
 @app.route('/token/info', methods=['GET'])
