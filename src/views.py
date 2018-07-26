@@ -56,11 +56,8 @@ def view_video(video_id):
 
 @app.route('/embed/<string:video_id>', methods=['GET'])
 def embed(video_id):
-    return render_template(
-        'embed.html',
-        video_id=video_id,
-        autoPlay=request.args.get('autoPlay', True),
-    )
+    player_cdn = app.config['PLAYER_URL']
+    return redirect(f"{player_cdn}/?videoId={video_id}&autoPlay=true&hideLogo=true")
 
 
 @app.route('/c/<string:channel_id>', methods=['GET'])
