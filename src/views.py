@@ -245,6 +245,7 @@ def about():
     return render_template('about.html')
 
 @app.route('/wallet')
+@app.route('/wallet/generate')
 def wallet():
     return render_template('wallet.html')
 
