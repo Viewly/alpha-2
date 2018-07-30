@@ -244,6 +244,9 @@ def edit_profile():
 def about():
     return render_template('about.html')
 
+@app.route('/wallet')
+def wallet():
+    return render_template('wallet.html')
 
 @app.route('/token')
 def token_page():
