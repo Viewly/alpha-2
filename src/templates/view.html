@@ -4,7 +4,8 @@
 {% block title %}{{ video.title }}{% endblock %}
 {% block meta_title %}{{ video.title }}{% endblock %}
 {% block meta_description %}
-  {{ description2text(video.description) | truncate(250) }}{% endblock %}
+  {{ description2text(video.description) | truncate(250) }}
+{% endblock %}
 {% block meta_image %}{{ guess_thumbnail_cdn_url(video.id) }}{% endblock %}
 {% block styles %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
