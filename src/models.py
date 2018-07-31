@@ -247,6 +247,15 @@ class VideoPublisherEvents(db.Model):
 # Distribution Game
 # -----------------
 
+class DistributionSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    creator_rewards_pool = db.Column(db.Integer, nullable=False)
+    voter_rewards_pool = db.Column(db.Integer, nullable=False)
+    votes_per_user = db.Column(db.Integer, nullable=False)
+    min_reward = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -335,7 +344,6 @@ class DelegationEvent(db.Model):
     beneficiary = db.Column(db.String(LEN['eth_address']), nullable=False)
     block_num = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False)
-
 
 # class ActiveDelegation(db.Model):
 #     delegator = db.Column(db.String(LEN['video_id']), primary_key=True)
