@@ -2,8 +2,8 @@ import React, { Component} from "react";
 import { Switch, Route, IndexRoute } from 'react-router-dom';
 import { hot } from "react-hot-loader";
 
-import HeaderButton from './headerButton';
-import Wallet from './walletPage';
+import HeaderButton from './components/headerButton';
+import Wallet from './components/walletPage';
 
 
 class App extends Component {

@@ -30,6 +30,9 @@ module.exports = {
     port: 3000,
     publicPath: "http://localhost:3000/dist/",
     hotOnly: true,
+    historyApiFallback: {
+      index: 'index.html'
+    },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
