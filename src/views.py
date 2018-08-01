@@ -51,7 +51,10 @@ def view_video(video_id):
     video = Video.query.filter_by(id=video_id).first_or_404()
     if not video.published_at and not is_owner(video.user_id):
         return abort(404)
-    return render_template('view.html', video=video)
+
+    t = int(request.args.get('t', 0))
+    timer = f"&t={t}" if t else ''
+    return render_template('view.html', video=video, timer=timer)
 
 
 @app.route('/embed/<string:video_id>', methods=['GET'])

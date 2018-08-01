@@ -4,7 +4,7 @@
 {% set showFooter = true %}
 
 {% block content %}
-  <div class="ui text container">
+  <div class="ui container">
 
     <h2>What is the Viewly token (VIEW)?</h2>
     <p>VIEW token plays several roles on the Viewly platform:
@@ -33,6 +33,7 @@
         <th>Category</th>
         <th>Distributed</th>
         <th>Limit</th>
+        <th>%</th>
       </tr>
       </thead>
       <tbody>
@@ -40,36 +41,42 @@
         <td>Seed Token Sale</td>
         <td>10,000,000 VIEW</td>
         <td>10,000,000 VIEW</td>
+        <td>100%</td>
       </tr>
       <tr>
         <td>Main Token Sale</td>
         <td>21,002,130 VIEW</td>
         <td>40,000,000 VIEW</td>
+        <td>52%</td>
       </tr>
       <tr>
         <td>Content Creators</td>
         <td>132,222 VIEW</td>
         <td>20,000,000 VIEW</td>
+        <td>1%</td>
       </tr>
       <tr>
         <td>Bounties</td>
         <td>{{ (475112 + 113528) | int | readableNumber }} VIEW</td>
         <td>3,000,000 VIEW</td>
+        <td>20%</td>
       </tr>
       <tr>
         <td>Supporters</td>
         <td>3,196,737 VIEW</td>
         <td>9,000,000 VIEW</td>
+        <td>35%</td>
       </tr>
       <tr>
         <td>Team</td>
         <td>6,764,555 VIEW</td>
         <td>18,000,000 VIEW</td>
+        <td>37%</td>
       </tr>
       </tbody>
     </table>
 
-    <h2>Smart Contracts</h2>
+    <h2>Smart contracts</h2>
     <table class="ui single line compact celled table">
       <thead>
       <tr>
