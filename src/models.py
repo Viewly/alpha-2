@@ -73,6 +73,7 @@ class User(db.Model, UserMixin):
         backref=db.backref('users', lazy='dynamic'),
     )
     channels = db.relationship('Channel', back_populates='user')
+    wallets = db.relationship('Wallet', back_populates='user')
     videos = db.relationship('Video', back_populates='user', lazy='dynamic')
 
 
@@ -85,7 +86,7 @@ class Wallet(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', back_populates='wallets', lazy='dynamic')
+    user = db.relationship('User', back_populates='wallets')
 
 
 class Channel(db.Model):
