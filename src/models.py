@@ -76,6 +76,18 @@ class User(db.Model, UserMixin):
     videos = db.relationship('Video', back_populates='user', lazy='dynamic')
 
 
+class Wallet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    default_address = db.Column(db.String(LEN['eth_address']),
+                                unique=True, index=True, nullable=False)
+    data = db.Column(JSONB)
+
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', back_populates='wallets', lazy='dynamic')
+
+
 class Channel(db.Model):
     id = db.Column(db.String(LEN['channel_id']),
                    unique=True, primary_key=True, default=gen_uid)
