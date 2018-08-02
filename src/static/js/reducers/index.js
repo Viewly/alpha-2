@@ -21,6 +21,7 @@ const rootReducer = (state = initialState, action) => {
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
     case actions.WALLETS_FETCH_SUCCESS:
+    case actions.WALLET_SAVE_SUCCESS:
       let newWallets = {};
       const localWallets = getWallets();
 

@@ -24,8 +24,8 @@ class GeneratorStep4 extends Component {
     const { wallet, changeStep, walletSave, encryptedWallet } = this.props;
     const storage = { address: wallet.address, privateKey: wallet.privateKey };
 
-    await walletSave({ data: encryptedWallet });
     updateWallets(storage);
+    await walletSave({ data: encryptedWallet });
     changeStep(0);
   }
 

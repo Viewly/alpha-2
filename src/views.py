@@ -249,7 +249,8 @@ def about():
 
 @app.route('/wallet')
 @app.route('/wallet/generate')
-def wallet():
+@app.route('/wallet/<string:address>')
+def wallet(address = ''):
     return render_template('wallet.html')
 
 @app.route('/token')

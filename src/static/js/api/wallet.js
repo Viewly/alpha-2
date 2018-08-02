@@ -11,5 +11,5 @@ export async function walletSave (baseUrl, data) {
   const url = `${baseUrl}/wallet`;
   const { body } = await put(url, data);
 
-  return true;
+  return body.data;
 }
