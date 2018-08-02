@@ -1,8 +1,7 @@
 import { get } from './request';
 
 export async function fetchAuthToken (baseUrl) {
-  const url = baseUrl;
-  const { body } = await get(url);
+  const { body } = await get(baseUrl);
 
   return body.auth_token;
 }
