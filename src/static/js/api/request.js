@@ -11,11 +11,8 @@ export async function put(url, data) {
 }
 
 export function makeApiCall (_apiCall, startActionType, successActionType, errorActionType) {
-  console.log('ya');
   return function (params) {
-    console.log('ya2');
     return async (dispatch, getState) => {
-      console.log('ya3');
       const state = getState();
 
       const apiBaseUrl = state.config.apiUrl;
