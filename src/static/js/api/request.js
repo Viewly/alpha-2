@@ -5,13 +5,18 @@ export async function get(url) {
   return { body: response.data };
 }
 
+export async function put(url, data) {
+  const response = await axios.put(url, data);
+  return { body: response.data };
+}
+
 export function makeApi (_apiCall, startActionType, successActionType, errorActionType) {
   return function (params) {
     return async (dispatch, getState) => {
       const state = getState();
 
       const apiBaseUrl = state.config.apiUrl;
-      const authenticationToken = '123';
+      const authenticationToken = state.authToken;
 
       dispatch({ ...params, type: startActionType });
       try {

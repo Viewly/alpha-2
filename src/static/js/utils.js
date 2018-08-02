@@ -1,7 +1,8 @@
 const LOCALSTORAGE_WALLETS = 'viewly-wallets';
 
 export function updateWallets(wallet) {
-  const wallets = getWallets();
+  // const wallets = getWallets();  // uncomment this to support multiple wallets
+  const wallets = {};
 
   wallets[wallet.address] = { privateKey: wallet.privateKey, decrypted: true };
 

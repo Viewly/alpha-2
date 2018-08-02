@@ -1,12 +1,13 @@
 import React, { Component} from "react";
 import { Wallet } from 'ethers';
 import { connect } from "react-redux";
-import { saveEncryptedWallet } from '../../../../actions';
+import { saveEncryptedWallet, walletSave } from '../../../../actions';
 import { updateWallets } from '../../../../utils';
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveEncryptedWallet: wallet => dispatch(saveEncryptedWallet(wallet))
+    saveEncryptedWallet: wallet => dispatch(saveEncryptedWallet(wallet)),
+    walletSave: wallet => dispatch(walletSave(wallet))
   };
 };
 
@@ -19,11 +20,11 @@ class GeneratorStep4 extends Component {
     showPrivate: false
   }
 
-  finishGeneration = () => {
-    const { wallet, changeStep } = this.props;
-
+  finishGeneration = async () => {
+    const { wallet, changeStep, walletSave, encryptedWallet } = this.props;
     const storage = { address: wallet.address, privateKey: wallet.privateKey };
 
+    await walletSave({ data: encryptedWallet });
     updateWallets(storage);
     changeStep(0);
   }
