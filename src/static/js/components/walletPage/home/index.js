@@ -1,6 +1,11 @@
 import React, { Component} from "react";
+import { connect } from "react-redux";
+
 import { getWallets } from '../../../utils';
 
+@connect((state) => ({
+  wallets: state.wallets,
+}))
 export default class WalletHome extends Component {
   renderAddress = (address, wallet) => {
     const isLocked = !wallet.decrypted;
@@ -11,8 +16,8 @@ export default class WalletHome extends Component {
   }
 
   render() {
-    const { history } = this.props;
-    const wallets = getWallets();
+    const { history, wallets } = this.props;
+    // const wallets = getWallets();
 
     return (
       <div>

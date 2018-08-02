@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
 
 import { saveConfig, fetchAuthToken, walletsFetch, walletSave } from './actions';
+import { walletsToStorage } from './utils';
 
 import HeaderButton from './components/headerButton';
 import WalletPage from './components/walletPage';

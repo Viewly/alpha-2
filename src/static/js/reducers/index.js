@@ -1,11 +1,12 @@
 import * as actions from '../actions';
+import { getWallets } from '../utils';
 
 const initialState = {
   config: { apiUrl: '' },
   wallet: {},
   encryptedWallet: {},
   authToken: '',
-  wallets: [],
+  wallets: {},
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -20,7 +21,27 @@ const rootReducer = (state = initialState, action) => {
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
     case actions.WALLETS_FETCH_SUCCESS:
-      return { ...state, wallets: action.data };
+      let newWallets = {};
+      const localWallets = getWallets();
+
+      for (const item of [action.data]) {
+        const address = `0x${item.address}`;
+
+        // if wallet is unlocked in localstorage - save unlocked data
+        if (localWallets[address] && localWallets[address].decrypted) {
+          newWallets[address] = {
+            decrypted: true,
+            privateKey: localWallets[address].privateKey
+          }
+        } else {
+          newWallets[address] = {
+            decrypted: false,
+            encryptedWallet: item
+          }
+        }
+      }
+
+      return { ...state, wallets: newWallets };
     default:
       return state;
   }
