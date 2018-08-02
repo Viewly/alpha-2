@@ -1,5 +1,5 @@
 import React, { Component} from "react";
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
 
@@ -9,6 +9,7 @@ import { walletsToStorage } from './utils';
 import HeaderButton from './components/headerButton';
 import WalletPage from './components/walletPage';
 
+@withRouter
 @connect((state) => ({
   authToken: state.authToken,
 }), (dispatch) => ({
