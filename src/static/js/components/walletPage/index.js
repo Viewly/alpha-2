@@ -8,17 +8,9 @@ import WalletGenerator from './generate';
 @connect((state) => ({
   authToken: state.authToken,
 }), null)
-export default class Wallet extends Component {
+export default class WalletPage extends Component {
   render() {
     const { authToken } = this.props;
-
-    if (!authToken) {
-      return (
-        <WalletPortal>
-          <div>Loading ...</div>
-        </WalletPortal>
-      );
-    }
 
     return (
       <WalletPortal>

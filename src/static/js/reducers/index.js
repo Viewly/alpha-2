@@ -5,6 +5,7 @@ const initialState = {
   wallet: {},
   encryptedWallet: {},
   authToken: '',
+  wallets: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -18,6 +19,8 @@ const rootReducer = (state = initialState, action) => {
 
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
+    case actions.WALLETS_FETCH_SUCCESS:
+      return { ...state, wallets: action.data };
     default:
       return state;
   }

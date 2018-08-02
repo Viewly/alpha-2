@@ -5,7 +5,7 @@ export default class WalletHome extends Component {
   renderAddress = (address, wallet) => {
     const isLocked = !wallet.decrypted;
 
-    console.log('add', wallet);
+    // console.log('add', wallet);
 
     return <li key={`address-${address}`}>{address} {isLocked && "(LOCKED)"}</li>;
   }

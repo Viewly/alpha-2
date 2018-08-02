@@ -1,22 +1,41 @@
 import React, { Component} from "react";
-import { Switch, Route, IndexRoute } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { connect } from "react-redux";
-import { bindActionCreators } from 'redux';
-
-import { saveConfig, fetchAuthToken } from './actions';
 import { hot } from "react-hot-loader";
 
-import HeaderButton from './components/headerButton';
-import Wallet from './components/walletPage';
+import { saveConfig, fetchAuthToken, walletsFetch, walletSave } from './actions';
 
+import HeaderButton from './components/headerButton';
+import WalletPage from './components/walletPage';
+
+@connect((state) => ({
+  authToken: state.authToken,
+}), (dispatch) => ({
+  saveConfig: wallet => dispatch(saveConfig(wallet)),
+  fetchAuthToken: () => dispatch(fetchAuthToken()),
+  walletsFetch: () => dispatch(walletsFetch())
+}))
 class App extends Component {
+  // Load all initial data
+  async componentDidMount() {
+    const { saveConfig, fetchAuthToken, config, walletsFetch } = this.props;
+
+    saveConfig(config);
+    await fetchAuthToken();
+    walletsFetch();
+  }
+
   render() {
-    const { config } = this.props;
+    const { authToken } = this.props;
+
+    if (!authToken) {
+      return null;
+    }
 
     return(
       <React.Fragment>
-        <Route path='/' render={() => <HeaderButton config={config} />}/>
-        <Route path='/wallet' component={Wallet} />
+        <Route path='/' component={HeaderButton} />
+        <Route path='/wallet' component={WalletPage} />
       </React.Fragment>
     );
   }
