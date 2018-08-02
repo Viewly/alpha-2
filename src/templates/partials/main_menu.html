@@ -28,7 +28,7 @@
         </a>
       </div>
       {% if current_user.is_active %}
-        <div id="wallet_app_container"></div>
+        <div id="wallet_app_container" data-auth-url="http://localhost:50001/auth_token" data-api-url="http://localhost:50001/api"></div>
 
         <div class="c-dropdown ui item">
           {% include 'atoms/icon-plus.html' %}

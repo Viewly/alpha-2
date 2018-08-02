@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
-  entry: "./js/index.js",
+  entry: ['babel-polyfill', './js/index.js'],
   mode: "development",
   module: {
     rules: [
@@ -10,7 +10,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
-        options: { presets: ['env', 'stage-0'], plugins: ["transform-decorators-legacy"] }
+        options: { presets: ['env', 'es2015', 'stage-0'], plugins: ["transform-decorators-legacy"] }
       },
       {
         test: /\.css$/,
