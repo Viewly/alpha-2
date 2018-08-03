@@ -34,8 +34,9 @@ export default class WalletSingle extends Component {
 
   async componentDidMount() {
     const network = providers.networks.kovan;
-    this.provider = new providers.InfuraProvider(network, "eb728907377046c1bc20b92a6fe13e19");
+    this.provider = new providers.InfuraProvider(network, "eb728907377046c1bc20b92a6fe13e19"); // TODO - move to config
 
+    // TODO - move to config
     const contractAddress = '0xfbce7c17608ebd5640313ecf4d2ff09b6726bab9';
     const contract = new Contract(contractAddress, abi, this.provider);
 
@@ -48,14 +49,36 @@ export default class WalletSingle extends Component {
     });
   }
 
-  doWithdraw = async (sendData) => {
-    const { history, wallet } = this.props;
+  doWithdraw = (sendData) => {
+    switch (sendData.type) {
+      case 'ETH': this.doWithdrawEth(sendData); break;
+      case 'VIEW': this.doWithdrawView(sendData); break;
+    }
+  }
 
+  doWithdrawEth = async (sendData) => {
+    const { history, wallet } = this.props;
     const tmpWallet = new Wallet(wallet.privateKey);
     tmpWallet.provider = this.provider;
 
     const amount = utils.parseEther(sendData.amount);
     const { hash } = await tmpWallet.send(sendData.toAddress, amount);
+
+    this.setState({ notification: `Transaction successful! Hash: ${hash}`});
+    history.push(`/wallet/${this.state.address}`);
+  }
+
+  doWithdrawView = async (sendData) => {
+    const { wallet } = this.props;
+    const tmpWallet = new Wallet(wallet.privateKey);
+    tmpWallet.provider = this.provider;
+
+    // TODO - move to config
+    const contractAddress = '0xfbce7c17608ebd5640313ecf4d2ff09b6726bab9';
+    const contract = new Contract(contractAddress, abi, tmpWallet);
+
+    const amount = utils.parseEther(sendData.amount);
+    const { hash } = await contract.transfer(sendData.toAddress, amount);
 
     this.setState({ notification: `Transaction successful! Hash: ${hash}`});
     history.push(`/wallet/${this.state.address}`);
