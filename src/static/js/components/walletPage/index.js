@@ -13,7 +13,7 @@ export default class WalletPage extends Component {
         <Switch>
           <Route exact path='/wallet' component={WalletHome} />
           <Route exact path='/wallet/generate' component={WalletGenerator} />
-          <Route exact path='/wallet/:wallet' component={WalletSingle} />
+          <Route path='/wallet/:wallet' component={WalletSingle} />
         </Switch>
       </WalletPortal>
     )
