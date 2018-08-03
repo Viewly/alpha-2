@@ -45,6 +45,7 @@ const rootReducer = (state = initialState, action) => {
         if (localWallets[address] && localWallets[address].decrypted) {
           wallets[address] = {
             decrypted: true,
+            encryptedWallet: item,
             privateKey: localWallets[address].privateKey
           }
         } else {
