@@ -6,13 +6,14 @@ import { providers, utils, Contract, Wallet } from 'ethers';
 
 import WalletWithdraw from './withdraw';
 import abi from '../../../abi.json';
-import { unlockWallet } from '../../../actions';
+import { unlockWallet, lockWallet } from '../../../actions';
 import { getWalletByAddress, updateWallets } from '../../../utils';
 
 @connect((state, props) => ({
   wallet: state.wallets[props.match.params.wallet]
 }), (dispatch) => ({
-  unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey))
+  unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey)),
+  lockWallet: (address) => dispatch(lockWallet(address))
 }))
 export default class WalletSingle extends Component {
   constructor (props) {
@@ -83,6 +84,13 @@ export default class WalletSingle extends Component {
     }
   }
 
+  lockWallet = () => {
+    const { lockWallet } = this.props;
+
+    lockWallet(this.state.address);
+    updateWallets({ address: this.state.address });
+  }
+
   render() {
     const { wallet } = this.props;
 
@@ -116,6 +124,11 @@ export default class WalletSingle extends Component {
           <div>
             {this.state.unlockingProgress && <button>Unlocking {this.state.unlockingPercent}%</button>}
             {!this.state.unlockingProgress && <button onClick={this.unlockWallet}>CLICK TO UNLOCK WALLET</button>}
+          </div>
+        )}
+        {wallet.decrypted && (
+          <div>
+            {<button onClick={this.lockWallet}>LOCK WALLET</button>}
           </div>
         )}
 

@@ -10,6 +10,9 @@ const initialState = {
 };
 
 const rootReducer = (state = initialState, action) => {
+  let wallet = {};
+  let wallets = {};
+
   switch (action.type) {
     case actions.SET_CONFIG:
       return { ...state, config: action.payload };
@@ -20,14 +23,19 @@ const rootReducer = (state = initialState, action) => {
 
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
+    case actions.WALLET_LOCK:
+      wallet = { ...state.wallets[action.data.address], decrypted: false };
+      wallets = { ...state.wallets, [action.data.address]: wallet };
+
+      return { ...state, wallets };
     case actions.WALLET_UNLOCK:
-      const wallet = { ...state.wallets[action.data.address], decrypted: true, privateKey: action.data.privateKey };
-      const wallets = { ...state.wallets, [action.data.address]: wallet };
+      wallet = { ...state.wallets[action.data.address], decrypted: true, privateKey: action.data.privateKey };
+      wallets = { ...state.wallets, [action.data.address]: wallet };
 
       return { ...state, wallets };
     case actions.WALLETS_FETCH_SUCCESS:
     case actions.WALLET_SAVE_SUCCESS:
-      let newWallets = {};
+      wallets = {};
       const localWallets = getWallets();
 
       for (const item of [action.data]) {
@@ -35,19 +43,19 @@ const rootReducer = (state = initialState, action) => {
 
         // if wallet is unlocked in localstorage - save unlocked data
         if (localWallets[address] && localWallets[address].decrypted) {
-          newWallets[address] = {
+          wallets[address] = {
             decrypted: true,
             privateKey: localWallets[address].privateKey
           }
         } else {
-          newWallets[address] = {
+          wallets[address] = {
             decrypted: false,
             encryptedWallet: item
           }
         }
       }
 
-      return { ...state, wallets: newWallets };
+      return { ...state, wallets: wallets };
     default:
       return state;
   }

@@ -4,7 +4,11 @@ export function updateWallets(wallet) {
   // const wallets = getWallets();  // uncomment this to support multiple wallets
   const wallets = {};
 
-  wallets[wallet.address.toLowerCase()] = { privateKey: wallet.privateKey, decrypted: true };
+  if (wallet.privateKey) {
+    wallets[wallet.address.toLowerCase()] = { privateKey: wallet.privateKey, decrypted: true };
+  } else {
+    wallets[wallet.address.toLowerCase()] = { decrypted: false };
+  }
 
   localStorage.setItem(LOCALSTORAGE_WALLETS, JSON.stringify(wallets));
 }
