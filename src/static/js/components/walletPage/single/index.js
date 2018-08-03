@@ -6,6 +6,8 @@ import { providers, utils, Contract, Wallet } from 'ethers';
 import WalletWithdraw from './withdraw';
 import abi from '../../../abi.json';
 
+import { getWalletByAddress, updateWallets } from '../../../utils';
+
 @connect((state, props) => ({
   wallet: state.wallets[props.match.params.wallet]
 }))
@@ -13,9 +15,16 @@ export default class WalletSingle extends Component {
   constructor (props) {
     super(props);
 
+    const address = props.match.params.wallet;
+    const localWallet = getWalletByAddress(address);
+console.log('haz lokal', localWallet);
+
     this.state = {
-      address: props.match.params.wallet,
-      privateKey: '0x83104f2973af8930a58f127a0301a9177fb9e67a82a8c3357f74d4b0151c990b',
+      address: address,
+      unlocked: (localWallet && localWallet.decrypted) ? true : false,
+      privateKey: (localWallet && localWallet.decrypted) ? localWallet.privateKey : '',
+      unlockingPercent: 0,
+      unlockingProgress: false,
       balance: 'Loading ...',
       balanceToken: 'Loading ...',
       notification: '',
@@ -47,10 +56,30 @@ export default class WalletSingle extends Component {
     const amount = utils.parseEther(sendData.amount);
     const { hash } = await wallet.send(sendData.toAddress, amount);
 
-    console.log('sent hash', hash);
-
     this.setState({ notification: `Transaction successful! Hash: ${hash}`});
     history.push(`/wallet/${this.state.address}`);
+  }
+
+  unlockWallet = async () => {
+    const { wallet } = this.props;
+    const password = prompt("Please enter password to unlock");
+    if (!password) {
+      return;
+    }
+
+    this.setState({ unlockingProgress: true });
+
+    try {
+      const decrypted = await Wallet.fromEncryptedWallet(JSON.stringify(wallet.encryptedWallet), password, (percent) => {
+        this.setState({ unlockingPercent: Math.round(percent * 100) });
+      });
+
+      updateWallets(decrypted);
+      this.setState({ unlockingProgress: false, privateKey: decrypted.privateKey, unlocked: true });
+    } catch (e) {
+      this.setState({ unlockingProgress: false });
+      alert('Invalid wallet password');
+    }
   }
 
   render() {
@@ -60,15 +89,30 @@ export default class WalletSingle extends Component {
         <Link to='/wallet'>Back</Link>
         <h2>Address: {this.state.address}</h2>
 
+        {!this.state.unlocked && <span style={{color:'red'}}>WALLET LOCKED</span>}
         {this.state.notification && <div><strong>{this.state.notification}</strong></div>}
 
         <ul>
-          <li>Balance: {this.state.balance} ETH <Link to={`/wallet/${this.state.address}/withdraw/eth`}>(withdraw)</Link></li>
+          <li>
+            Balance: {this.state.balance} ETH
+            {this.state.unlocked && <Link to={`/wallet/${this.state.address}/withdraw/eth`}>(withdraw)</Link>}
+          </li>
           <Route exact path='/wallet/:wallet/withdraw/eth' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='ETH' address={this.state.address} />} />
 
-          <li>Balance: {this.state.balanceToken} VIEW <Link to={`/wallet/${this.state.address}/withdraw/view`}>(withdraw)</Link></li>
+          <li>
+            Balance: {this.state.balanceToken} VIEW
+            {this.state.unlocked && <Link to={`/wallet/${this.state.address}/withdraw/view`}>(withdraw)</Link>}
+          </li>
           <Route exact path='/wallet/:wallet/withdraw/view' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='VIEW' address={this.state.address} />} />
         </ul>
+
+        {!this.state.unlocked && (
+          <div>
+            {this.state.unlockingProgress && <button>Unlocking {this.state.unlockingPercent}%</button>}
+            {!this.state.unlockingProgress && <button onClick={this.unlockWallet}>CLICK TO UNLOCK WALLET</button>}
+          </div>
+        )}
+
       </div>
     )
   }
