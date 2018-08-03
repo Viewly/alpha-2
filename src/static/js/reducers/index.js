@@ -20,6 +20,11 @@ const rootReducer = (state = initialState, action) => {
 
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
+    case actions.WALLET_UNLOCK:
+      const wallet = { ...state.wallets[action.data.address], decrypted: true, privateKey: action.data.privateKey };
+      const wallets = { ...state.wallets, [action.data.address]: wallet };
+
+      return { ...state, wallets };
     case actions.WALLETS_FETCH_SUCCESS:
     case actions.WALLET_SAVE_SUCCESS:
       let newWallets = {};

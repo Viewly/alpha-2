@@ -3,13 +3,16 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import { providers, utils, Contract, Wallet } from 'ethers';
+
 import WalletWithdraw from './withdraw';
 import abi from '../../../abi.json';
-
+import { unlockWallet } from '../../../actions';
 import { getWalletByAddress, updateWallets } from '../../../utils';
 
 @connect((state, props) => ({
   wallet: state.wallets[props.match.params.wallet]
+}), (dispatch) => ({
+  unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey))
 }))
 export default class WalletSingle extends Component {
   constructor (props) {
@@ -17,12 +20,9 @@ export default class WalletSingle extends Component {
 
     const address = props.match.params.wallet;
     const localWallet = getWalletByAddress(address);
-console.log('haz lokal', localWallet);
 
     this.state = {
       address: address,
-      unlocked: (localWallet && localWallet.decrypted) ? true : false,
-      privateKey: (localWallet && localWallet.decrypted) ? localWallet.privateKey : '',
       unlockingPercent: 0,
       unlockingProgress: false,
       balance: 'Loading ...',
@@ -48,20 +48,20 @@ console.log('haz lokal', localWallet);
   }
 
   doWithdraw = async (sendData) => {
-    const { history } = this.props;
+    const { history, wallet } = this.props;
 
-    const wallet = new Wallet(this.state.privateKey);
-    wallet.provider = this.provider;
+    const tmpWallet = new Wallet(wallet.privateKey);
+    tmpWallet.provider = this.provider;
 
     const amount = utils.parseEther(sendData.amount);
-    const { hash } = await wallet.send(sendData.toAddress, amount);
+    const { hash } = await tmpWallet.send(sendData.toAddress, amount);
 
     this.setState({ notification: `Transaction successful! Hash: ${hash}`});
     history.push(`/wallet/${this.state.address}`);
   }
 
   unlockWallet = async () => {
-    const { wallet } = this.props;
+    const { wallet, unlockWallet } = this.props;
     const password = prompt("Please enter password to unlock");
     if (!password) {
       return;
@@ -75,7 +75,8 @@ console.log('haz lokal', localWallet);
       });
 
       updateWallets(decrypted);
-      this.setState({ unlockingProgress: false, privateKey: decrypted.privateKey, unlocked: true });
+      this.setState({ unlockingProgress: false });
+      unlockWallet(this.state.address, decrypted.privateKey);
     } catch (e) {
       this.setState({ unlockingProgress: false });
       alert('Invalid wallet password');
@@ -83,30 +84,35 @@ console.log('haz lokal', localWallet);
   }
 
   render() {
+    const { wallet } = this.props;
+
+    if (!wallet) {
+      return null;
+    }
 
     return (
       <div>
         <Link to='/wallet'>Back</Link>
         <h2>Address: {this.state.address}</h2>
 
-        {!this.state.unlocked && <span style={{color:'red'}}>WALLET LOCKED</span>}
+        {!wallet.decrypted && <span style={{color:'red'}}>WALLET LOCKED</span>}
         {this.state.notification && <div><strong>{this.state.notification}</strong></div>}
 
         <ul>
           <li>
             Balance: {this.state.balance} ETH
-            {this.state.unlocked && <Link to={`/wallet/${this.state.address}/withdraw/eth`}>(withdraw)</Link>}
+            {wallet.decrypted && <Link to={`/wallet/${this.state.address}/withdraw/eth`}>(withdraw)</Link>}
           </li>
           <Route exact path='/wallet/:wallet/withdraw/eth' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='ETH' address={this.state.address} />} />
 
           <li>
             Balance: {this.state.balanceToken} VIEW
-            {this.state.unlocked && <Link to={`/wallet/${this.state.address}/withdraw/view`}>(withdraw)</Link>}
+            {wallet.decrypted && <Link to={`/wallet/${this.state.address}/withdraw/view`}>(withdraw)</Link>}
           </li>
           <Route exact path='/wallet/:wallet/withdraw/view' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='VIEW' address={this.state.address} />} />
         </ul>
 
-        {!this.state.unlocked && (
+        {!wallet.decrypted && (
           <div>
             {this.state.unlockingProgress && <button>Unlocking {this.state.unlockingPercent}%</button>}
             {!this.state.unlockingProgress && <button onClick={this.unlockWallet}>CLICK TO UNLOCK WALLET</button>}

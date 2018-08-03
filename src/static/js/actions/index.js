@@ -17,6 +17,9 @@ export const WALLET_SAVE_SUCCESS = 'WALLET/WALLET_SAVE_SUCCESS';
 export const WALLET_SAVE_ERROR = 'WALLET/WALLET_SAVE_ERROR';
 export const walletSave = makeApiCall(walletApi.walletSave, WALLET_SAVE_START, WALLET_SAVE_SUCCESS, WALLET_SAVE_ERROR);
 
+export const WALLET_UNLOCK = 'WALLET/WALLET_UNLOCK';
+export const unlockWallet = (address, privateKey) => ({ type: WALLET_UNLOCK, data: { address, privateKey } });
+
 export const SET_CONFIG = 'SYSTEM/SET_CONFIG'
 export const ADD_WALLET = 'USER/ADD_WALLET';
 export const ADD_ENCRYPTED_WALLET = 'USER/ADD_ENCRYPTED_WALLET';
