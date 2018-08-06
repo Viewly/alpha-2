@@ -8,6 +8,7 @@ import { walletsToStorage } from './utils';
 
 import HeaderButton from './components/headerButton';
 import WalletPage from './components/walletPage';
+import VideoPage from './components/videoPage';
 
 @withRouter
 @connect((state) => ({
@@ -38,6 +39,7 @@ class App extends Component {
       <React.Fragment>
         <Route path='/' component={HeaderButton} />
         <Route path='/wallet' component={WalletPage} />
+        <Route path='/v/:videoId' component={VideoPage} />
       </React.Fragment>
     );
   }

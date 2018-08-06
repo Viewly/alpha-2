@@ -1,5 +1,6 @@
 import * as actions from '../actions';
 import { getWallets } from '../utils';
+import { STATUS_TYPE } from '../constants';
 
 const initialState = {
   config: { apiUrl: '' },
@@ -7,6 +8,7 @@ const initialState = {
   encryptedWallet: {},
   authToken: '',
   wallets: {},
+  votes: {},
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -20,6 +22,13 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, wallet: action.payload };
     case actions.ADD_ENCRYPTED_WALLET:
       return { ...state, encryptedWallet: action.payload };
+
+    case actions.VIDEO_VOTE_START:
+      return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.LOADING }};
+    case actions.VIDEO_VOTE_SUCCESS:
+      return { ...state, votes: { ...state.votes, [action.data.videoId]: true }};
+    case actions.VIDEO_VOTE_ERROR:
+      return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.ERROR }};
 
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };

@@ -1,0 +1,6 @@
+export const STATUS_TYPE = {
+  PENDING: 'PENDING',
+  LOADING: 'LOADING',
+  LOADED: 'LOADED',
+  ERROR: 'ERROR'
+}
