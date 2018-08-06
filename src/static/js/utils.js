@@ -1,5 +1,7 @@
 const LOCALSTORAGE_WALLETS = 'viewly-wallets';
 
+import storageCache from './cache';
+
 export function updateWallets(wallet) {
   // const wallets = getWallets();  // uncomment this to support multiple wallets
   const wallets = {};
@@ -23,17 +25,10 @@ export function getWalletByAddress(address) {
   return wallets && wallets[address] || {};
 }
 
-// export function walletsToStorage(wallets) {
-//   let newData = {};
-//
-//   for (const item of wallets) {
-//     const address = `0x${item.address}`;
-//
-//     newData[address] = {
-//       decrypted: false,
-//       encryptedWallet: item
-//     };
-//   }
-//
-//   localStorage.setItem(LOCALSTORAGE_WALLETS, JSON.stringify(newData));
-// }
+export function cacheSet (key, value, time = 3600) {
+  storageCache.setCache(key, value, time);
+}
+
+export function cacheGet (key) {
+  return storageCache.getCache(key);
+}
