@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { STATUS_TYPE } from '../../constants';
 import { videoVote } from '../../actions';
 import Portal from '../portal';
+import { saveVoteCache } from '../../utils';
 
 @connect((state, props) => ({
   wallet: state.wallets,
@@ -12,11 +13,15 @@ import Portal from '../portal';
   videoVote: (videoId) => dispatch(videoVote(videoId))
 }))
 export default class VideoPage extends Component {
-  voteClick = () => {
+  voteClick = async () => {
     const { videoVote, match: { params: { videoId } } } = this.props;
     const { address, privateKey } = this.getFirstWallet();
 
-    videoVote({ videoId, address, privateKey });
+    const response = await videoVote({ videoId, address, privateKey });
+
+    if (response) {
+      saveVoteCache(videoId);
+    }
   }
 
   getFirstWallet = () => {

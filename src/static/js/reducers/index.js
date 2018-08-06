@@ -1,5 +1,5 @@
 import * as actions from '../actions';
-import { getWallets } from '../utils';
+import { getWallets, getVotes } from '../utils';
 import { STATUS_TYPE } from '../constants';
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
   encryptedWallet: {},
   authToken: '',
   wallets: {},
-  votes: {},
+  votes: getVotes(),
 };
 
 const rootReducer = (state = initialState, action) => {
