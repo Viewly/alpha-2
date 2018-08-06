@@ -21,6 +21,11 @@ export default class VideoPage extends Component {
 
     if (response) {
       saveVoteCache(videoId);
+      // window && window.refreshVotingStats && window.refreshVotingStats();
+      // dirty hack to increment number of votes
+      document
+        && document.querySelector('.statistic .value')
+        && document.querySelector('.statistic .value').innerHTML++;
     }
   }
 
