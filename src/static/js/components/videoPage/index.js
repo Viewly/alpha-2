@@ -7,15 +7,15 @@ import Portal from '../portal';
 import { saveVoteCache } from '../../utils';
 
 @connect((state, props) => ({
-  wallet: state.wallets,
+  wallet: state.wallet,
   vote: state.votes[props.match.params.videoId]
 }), (dispatch) => ({
   videoVote: (videoId) => dispatch(videoVote(videoId))
 }))
 export default class VideoPage extends Component {
   voteClick = async () => {
-    const { videoVote, match: { params: { videoId } } } = this.props;
-    const { address, privateKey } = this.getFirstWallet();
+    const { wallet, videoVote, match: { params: { videoId } } } = this.props;
+    const { address, privateKey } = wallet;
 
     const response = await videoVote({ videoId, address, privateKey });
 
@@ -43,9 +43,8 @@ export default class VideoPage extends Component {
   }
 
   showVoteButton = () => {
-    const wallet = this.getFirstWallet();
-    const { vote } = this.props;
-    if (!wallet) {
+    const { vote, wallet } = this.props;
+    if (!wallet.address) {
       return <a href='javascript:;' className="ui button c-btn--secondary">Loading wallet</a>;
     }
 

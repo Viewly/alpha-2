@@ -4,16 +4,6 @@ import { connect } from "react-redux";
 import { walletSave } from '../../../../actions';
 import { updateWallets } from '../../../../utils';
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     saveEncryptedWallet: wallet => dispatch(saveEncryptedWallet(wallet)),
-//     walletSave: wallet => dispatch(walletSave(wallet))
-//   };
-// };
-//
-// const mapStateToProps = state => {
-//   return { wallet: state.wallet, encryptedWallet: state.encryptedWallet };
-// };
 @connect(null, (dispatch) => ({
   walletSave: wallet => dispatch(walletSave(wallet))
 }))

@@ -10,7 +10,7 @@ import { unlockWallet, lockWallet } from '../../../actions';
 import { getWalletByAddress, updateWallets } from '../../../utils';
 
 @connect((state, props) => ({
-  wallet: state.wallets[props.match.params.wallet]
+  wallet: state.wallet.address === props.match.params.wallet && state.wallet
 }), (dispatch) => ({
   unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey)),
   lockWallet: (address) => dispatch(lockWallet(address))
