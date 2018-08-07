@@ -10,8 +10,9 @@ export default class WalletWithdraw extends Component {
 
   sendConfirm = () => {
     const { type, doWithdraw } = this.props;
+    const { address, amount } = this.state;
 
-    doWithdraw({ toAddress: this.state.address, amount: this.state.amount, type });
+    doWithdraw({ address, amount, type });
   }
 
   render() {
@@ -21,7 +22,7 @@ export default class WalletWithdraw extends Component {
       <div>
         Amount: <input type="text" value={this.state.amount} onChange={(e) => this.setState({ amount: e.target.value })} /> {type}
         <br />
-        Send to: <input type="text" value={this.state.address} onChange={(e) => this.setState({ address: e.target.value })} placeholder="0x0000 ..." size={60} />
+        Send to: <input type="text" value={this.state.address} onChange={(e) => this.setState({ address: e.target.value })} placeholder="0x0000 ..." size={60}  />
         <br />
         <button onClick={this.sendConfirm}>Send</button>
         <Link to={`/wallet/${address}`}>Cancel</Link>

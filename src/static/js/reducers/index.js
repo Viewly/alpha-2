@@ -38,12 +38,19 @@ const rootReducer = (state = initialState, action) => {
       address = `0x${action.data.address}`;
 
       if (localWallets[address] && localWallets[address].decrypted) {
-        wallet = { address, decrypted: true, encryptedWallet: action.data, privateKey: localWallets[address].privateKey };
+        wallet = { ...state.wallet, address, decrypted: true, encryptedWallet: action.data, privateKey: localWallets[address].privateKey };
       } else {
-        wallet = { address, decrypted: false, encryptedWallet: action.data };
+        wallet = { ...state.wallet, address, decrypted: false, encryptedWallet: action.data };
       }
 
       return { ...state, wallet };
+
+    case actions.WALLET_FETCH_BALANCE_START:
+      return { ...state, wallet: { ...state.wallet, balanceEth: STATUS_TYPE.LOADING, balanceView: STATUS_TYPE.LOADING }};
+    case actions.WALLET_FETCH_BALANCE_SUCCESS:
+      const { balanceEth, balanceView } = action.data;
+
+      return { ...state, wallet: { ...state.wallet, balanceEth, balanceView }};
     default:
       return state;
   }

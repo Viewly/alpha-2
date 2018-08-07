@@ -6,14 +6,17 @@ import { providers, utils, Contract, Wallet } from 'ethers';
 
 import WalletWithdraw from './withdraw';
 import abi from '../../../abi.json';
-import { unlockWallet, lockWallet } from '../../../actions';
+import { unlockWallet, lockWallet, fetchBalance, sendEthereum, sendView } from '../../../actions';
 import { getWalletByAddress, updateWallets } from '../../../utils';
 
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet
 }), (dispatch) => ({
   unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey)),
-  lockWallet: (address) => dispatch(lockWallet(address))
+  lockWallet: (address) => dispatch(lockWallet(address)),
+  fetchBalance: (address) => dispatch(fetchBalance({ address })),
+  sendEthereum: ({ amount, address, privateKey }) => dispatch(sendEthereum({ amount, address, privateKey })),
+  sendView: ({ amount, address, privateKey }) => dispatch(sendView({ amount, address, privateKey }))
 }))
 export default class WalletSingle extends Component {
   constructor (props) {
@@ -33,52 +36,19 @@ export default class WalletSingle extends Component {
   }
 
   async componentDidMount() {
-    const network = providers.networks.kovan;
-    this.provider = new providers.InfuraProvider(network, "eb728907377046c1bc20b92a6fe13e19"); // TODO - move to config
+    const { fetchBalance } = this.props;
 
-    // TODO - move to config
-    const contractAddress = '0xfbce7c17608ebd5640313ecf4d2ff09b6726bab9';
-    const contract = new Contract(contractAddress, abi, this.provider);
-
-    const etherBN = await this.provider.getBalance(this.state.address);
-    const viewBN = await contract.balanceOf(this.state.address);
-
-    this.setState({
-      balance: utils.formatEther(etherBN),
-      balanceToken: utils.formatEther(viewBN)
-    });
+    fetchBalance(this.state.address);
   }
 
-  doWithdraw = (sendData) => {
-    switch (sendData.type) {
-      case 'ETH': this.doWithdrawEth(sendData); break;
-      case 'VIEW': this.doWithdrawView(sendData); break;
+  doWithdraw = async ({ type, address, amount }) => {
+    const { sendEthereum, sendView, history, wallet: { privateKey } } = this.props;
+    let hash;
+
+    switch (type) {
+      case 'ETH': hash = await sendEthereum({ address, amount, privateKey }); break;
+      case 'VIEW': hash = await sendView({ address, amount, privateKey }); break;
     }
-  }
-
-  doWithdrawEth = async (sendData) => {
-    const { history, wallet } = this.props;
-    const tmpWallet = new Wallet(wallet.privateKey);
-    tmpWallet.provider = this.provider;
-
-    const amount = utils.parseEther(sendData.amount);
-    const { hash } = await tmpWallet.send(sendData.toAddress, amount);
-
-    this.setState({ notification: `Transaction successful! Hash: ${hash}`});
-    history.push(`/wallet/${this.state.address}`);
-  }
-
-  doWithdrawView = async (sendData) => {
-    const { wallet } = this.props;
-    const tmpWallet = new Wallet(wallet.privateKey);
-    tmpWallet.provider = this.provider;
-
-    // TODO - move to config
-    const contractAddress = '0xfbce7c17608ebd5640313ecf4d2ff09b6726bab9';
-    const contract = new Contract(contractAddress, abi, tmpWallet);
-
-    const amount = utils.parseEther(sendData.amount);
-    const { hash } = await contract.transfer(sendData.toAddress, amount);
 
     this.setState({ notification: `Transaction successful! Hash: ${hash}`});
     history.push(`/wallet/${this.state.address}`);
@@ -130,13 +100,13 @@ export default class WalletSingle extends Component {
 
         <ul>
           <li>
-            Balance: {this.state.balance} ETH
+            Balance: {wallet.balanceEth} ETH
             {wallet.decrypted && <Link to={`/wallet/${this.state.address}/withdraw/eth`}>(withdraw)</Link>}
           </li>
           <Route exact path='/wallet/:wallet/withdraw/eth' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='ETH' address={this.state.address} />} />
 
           <li>
-            Balance: {this.state.balanceToken} VIEW
+            Balance: {wallet.balanceView} VIEW
             {wallet.decrypted && <Link to={`/wallet/${this.state.address}/withdraw/view`}>(withdraw)</Link>}
           </li>
           <Route exact path='/wallet/:wallet/withdraw/view' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='VIEW' address={this.state.address} />} />
