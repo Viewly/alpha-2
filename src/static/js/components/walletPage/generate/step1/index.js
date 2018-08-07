@@ -1,15 +1,7 @@
 import React, { Component} from "react";
 import { Wallet } from 'ethers';
-import { connect } from "react-redux";
-import { saveWallet } from '../../../../actions';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    saveWallet: wallet => dispatch(saveWallet(wallet))
-  };
-};
-
-class GeneratorStep1 extends Component {
+export default class GeneratorStep1 extends Component {
 
   state = {
     generated: false,
@@ -23,10 +15,9 @@ class GeneratorStep1 extends Component {
   }
 
   saveWallet = () => {
-    const { saveWallet, changeStep } = this.props;
+    const { changeStep } = this.props;
 
-    saveWallet(this.state.wallet);
-    changeStep(2);
+    changeStep(2, this.state.wallet);
   }
 
   render() {
@@ -45,10 +36,9 @@ class GeneratorStep1 extends Component {
         )}
 
         <button onClick={this.generateNew}>Generate</button>
+        <br />
         {this.state.generated && <button onClick={this.saveWallet}>Next</button>}
       </div>
     )
   }
 }
-
-export default connect(null, mapDispatchToProps)(GeneratorStep1);

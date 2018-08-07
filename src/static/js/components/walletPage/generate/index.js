@@ -7,27 +7,28 @@ import GeneratorStep4 from './step4';
 export default class WalletGenerator extends Component {
 
   state = {
-    step: 1
+    step: 1,
+    wallet: {}
   }
 
-  changeStep = (nextStepNumber) => {
+  changeStep = (nextStepNumber, wallet = {}) => {
     const { history } = this.props;
 
     if (nextStepNumber === 0) {
       this.setState({ step: 1 });
-      history.push('/wallet');
+      history.push(`/wallet/${this.state.wallet.address.toLowerCase()}`);
     } else {
-      this.setState({ step: nextStepNumber });
+      this.setState({ step: nextStepNumber, wallet });
     }
   }
 
   render() {
     console.log('propz', this.props);
     switch (this.state.step) {
-      case 1: return <GeneratorStep1 changeStep={this.changeStep} />;
-      case 2: return <GeneratorStep2 changeStep={this.changeStep} />;
-      case 3: return <GeneratorStep3 changeStep={this.changeStep} />;
-      case 4: return <GeneratorStep4 changeStep={this.changeStep} />;
+      case 1: return <GeneratorStep1 changeStep={this.changeStep} wallet={this.state.wallet} />;
+      case 2: return <GeneratorStep2 changeStep={this.changeStep} wallet={this.state.wallet} />;
+      case 3: return <GeneratorStep3 changeStep={this.changeStep} wallet={this.state.wallet} />;
+      case 4: return <GeneratorStep4 changeStep={this.changeStep} wallet={this.state.wallet} />;
     }
   }
 }

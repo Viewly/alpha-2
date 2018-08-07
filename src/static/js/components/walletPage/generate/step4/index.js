@@ -1,36 +1,38 @@
 import React, { Component} from "react";
 import { Wallet } from 'ethers';
 import { connect } from "react-redux";
-import { saveEncryptedWallet, walletSave } from '../../../../actions';
+import { walletSave } from '../../../../actions';
 import { updateWallets } from '../../../../utils';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    saveEncryptedWallet: wallet => dispatch(saveEncryptedWallet(wallet)),
-    walletSave: wallet => dispatch(walletSave(wallet))
-  };
-};
-
-const mapStateToProps = state => {
-  return { wallet: state.wallet, encryptedWallet: state.encryptedWallet };
-};
-
-class GeneratorStep4 extends Component {
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     saveEncryptedWallet: wallet => dispatch(saveEncryptedWallet(wallet)),
+//     walletSave: wallet => dispatch(walletSave(wallet))
+//   };
+// };
+//
+// const mapStateToProps = state => {
+//   return { wallet: state.wallet, encryptedWallet: state.encryptedWallet };
+// };
+@connect(null, (dispatch) => ({
+  walletSave: wallet => dispatch(walletSave(wallet))
+}))
+export default class GeneratorStep4 extends Component {
   state = {
     showPrivate: false
   }
 
   finishGeneration = async () => {
-    const { wallet, changeStep, walletSave, encryptedWallet } = this.props;
+    const { wallet, changeStep, walletSave } = this.props;
     const storage = { address: wallet.address, privateKey: wallet.privateKey };
 
     updateWallets(storage);
-    await walletSave({ data: encryptedWallet });
+    await walletSave({ data: wallet.encrypted });
     changeStep(0);
   }
 
   render() {
-    const { wallet, encryptedWallet } = this.props;
+    const { wallet } = this.props;
 
     return (
       <div>
@@ -49,7 +51,7 @@ class GeneratorStep4 extends Component {
 
         Data that will be saved on our server (encrypted):
         <br />
-        <textarea rows={8} cols={120} value={encryptedWallet} readOnly />
+        <textarea rows={8} cols={120} value={wallet.encrypted} readOnly />
         <br /><br />
 
         <button onClick={this.finishGeneration}>Finish</button>
@@ -58,4 +60,4 @@ class GeneratorStep4 extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GeneratorStep4);
+// export default connect(mapStateToProps, mapDispatchToProps)(GeneratorStep4);

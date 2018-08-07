@@ -1,19 +1,7 @@
 import React, { Component} from "react";
 import { Wallet } from 'ethers';
-import { connect } from "react-redux";
-import { saveEncryptedWallet } from '../../../../actions';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    saveEncryptedWallet: wallet => dispatch(saveEncryptedWallet(wallet))
-  };
-};
-
-const mapStateToProps = state => {
-  return { wallet: state.wallet };
-};
-
-class GeneratorStep3 extends Component {
+export default class GeneratorStep3 extends Component {
   state = {
     password: '',
     progress: 0,
@@ -21,7 +9,7 @@ class GeneratorStep3 extends Component {
   }
 
   encryptWallet = () => {
-    const { wallet, saveEncryptedWallet, changeStep } = this.props;
+    const { wallet, changeStep } = this.props;
 
     this.setState({ encrypting: true });
 
@@ -30,8 +18,7 @@ class GeneratorStep3 extends Component {
     });
 
     encryptPromise.then((json) => {
-      saveEncryptedWallet(json);
-      changeStep(4);
+      changeStep(4, { ...wallet, encrypted: json });
     });
   }
 
@@ -54,5 +41,3 @@ class GeneratorStep3 extends Component {
     )
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(GeneratorStep3);

@@ -1,12 +1,7 @@
 import React, { Component} from "react";
 import { Wallet } from 'ethers';
-import { connect } from "react-redux";
 
-const mapStateToProps = state => {
-  return { wallet: state.wallet };
-};
-
-class GeneratorStep2 extends Component {
+export default class GeneratorStep2 extends Component {
   render() {
     const { wallet, changeStep } = this.props;
 
@@ -16,10 +11,8 @@ class GeneratorStep2 extends Component {
         <br />
         Mnemonic: <strong>{wallet.mnemonic}</strong>
         <br />
-        <button onClick={() => changeStep(3)}>Next</button>
+        <button onClick={() => changeStep(3, wallet)}>Next</button>
       </div>
     )
   }
 }
-
-export default connect(mapStateToProps, null)(GeneratorStep2);

@@ -4,24 +4,17 @@ import { STATUS_TYPE } from '../constants';
 
 const initialState = {
   config: { apiUrl: '' },
-  wallet: {},
-  encryptedWallet: {},
   authToken: '',
   wallets: {},
   votes: getVotes(),
 };
 
 const rootReducer = (state = initialState, action) => {
-  let wallet = {};
   let wallets = {};
 
   switch (action.type) {
     case actions.SET_CONFIG:
       return { ...state, config: action.payload };
-    case actions.ADD_WALLET:
-      return { ...state, wallet: action.payload };
-    case actions.ADD_ENCRYPTED_WALLET:
-      return { ...state, encryptedWallet: action.payload };
 
     case actions.VIDEO_VOTE_START:
       return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.LOADING }};

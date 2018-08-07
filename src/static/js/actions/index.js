@@ -32,5 +32,3 @@ export const SET_CONFIG = 'SYSTEM/SET_CONFIG'
 export const ADD_WALLET = 'USER/ADD_WALLET';
 export const ADD_ENCRYPTED_WALLET = 'USER/ADD_ENCRYPTED_WALLET';
 export const saveConfig = config => ({ type: SET_CONFIG, payload: config });
-export const saveWallet = wallet => ({ type: ADD_WALLET, payload: wallet });
-export const saveEncryptedWallet = wallet => ({ type: ADD_ENCRYPTED_WALLET, payload: wallet });
