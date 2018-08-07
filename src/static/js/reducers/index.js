@@ -1,6 +1,8 @@
 import * as actions from '../actions';
 import { getWallets, getVotes } from '../utils';
 import { STATUS_TYPE } from '../constants';
+import { cacheSet, cacheGet } from '../utils';
+import { CACHE_KEYS } from '../cache';
 
 const initialState = {
   config: { apiUrl: '' },
@@ -50,9 +52,12 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, wallet };
 
     case actions.WALLET_FETCH_BALANCE_START:
-      return { ...state, wallet: { ...state.wallet, balanceEth: STATUS_TYPE.LOADING, balanceView: STATUS_TYPE.LOADING }};
+      let cachedBalance = JSON.parse(cacheGet(CACHE_KEYS.WALLET_BALANCES) || null) || { balanceEth: STATUS_TYPE.LOADING, balanceView: STATUS_TYPE.LOADING };
+
+      return { ...state, wallet: { ...state.wallet, ...cachedBalance }};
     case actions.WALLET_FETCH_BALANCE_SUCCESS:
       const { balanceEth, balanceView } = action.data;
+      cacheSet(CACHE_KEYS.WALLET_BALANCES, JSON.stringify({ balanceEth, balanceView }), 1800);
 
       return { ...state, wallet: { ...state.wallet, balanceEth, balanceView }};
 
