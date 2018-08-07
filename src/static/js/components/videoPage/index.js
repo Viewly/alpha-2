@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { STATUS_TYPE } from '../../constants';
@@ -64,9 +64,7 @@ export default class VideoPage extends Component {
   render() {
     return (
       <Portal container='react-vote'>
-        <Fragment>
-          {this.showVoteButton()}
-        </Fragment>
+        {this.showVoteButton()}
       </Portal>
     )
   }
