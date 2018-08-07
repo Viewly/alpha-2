@@ -49,3 +49,14 @@ export function isVoted(videoId) {
 
   return !!votes[videoId];
 }
+
+export function getFirstWallet(wallets) {
+  const keys = Object.keys(wallets);
+  if (keys.length === 0) {
+    return false;
+  }
+
+  const address = keys[0];
+
+  return { ...wallets[address], address };
+}

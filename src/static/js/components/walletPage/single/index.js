@@ -123,7 +123,6 @@ export default class WalletSingle extends Component {
 
     return (
       <div>
-        <Link to='/wallet'>Back</Link>
         <h2>Address: {this.state.address}</h2>
 
         {!wallet.decrypted && <span style={{color:'red'}}>WALLET LOCKED</span>}

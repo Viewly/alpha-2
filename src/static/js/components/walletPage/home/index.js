@@ -2,30 +2,28 @@ import React, { Component} from "react";
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 
-import { getWallets } from '../../../utils';
+import { getWallets, getFirstWallet } from '../../../utils';
 
 @connect((state) => ({
   wallets: state.wallets,
 }))
 export default class WalletHome extends Component {
-  renderAddress = (address, wallet) => {
-    const isLocked = !wallet.decrypted;
+  getSnapshotBeforeUpdate(prevProps) {
+    const { wallets, history } = this.props;
+    const firstWallet = getFirstWallet(wallets);
 
-    // console.log('add', wallet);
+    if (wallets !== prevProps.wallet) {
+      history.replace(`/wallet/${firstWallet.address}`);
+    }
 
-    return <li key={`address-${address}`}><Link to={`/wallet/${address}`}>{address} {isLocked && "(LOCKED)"}</Link></li>;
+    return null;
   }
 
   render() {
     const { history, wallets } = this.props;
-    // const wallets = getWallets();
 
     return (
       <div>
-        <ul>
-          {Object.keys(wallets).map(address => this.renderAddress(address, wallets[address]))}
-        </ul>
-
         {Object.keys(wallets).length === 0 && <button onClick={() => history.push('/wallet/generate')}>Generate new wallet</button>}
       </div>
     )
