@@ -290,6 +290,14 @@ def stats():
             .count()
     )
 
+    votes = Vote.query.count()
+    created_this_month = """
+    created_at > (now() - interval '30 days')
+    """
+    votes_this_month = (
+        Vote.query.filter(created_this_month).count()
+    )
+
     return render_template(
         'stats.html',
         videos=videos,
@@ -302,6 +310,8 @@ def stats():
         channels=channels,
         channels_w_videos=channels_w_videos,
         channels_w_published_videos=channels_w_published_videos,
+        votes=votes,
+        votes_this_month=votes_this_month,
     )
 
 
@@ -402,8 +412,10 @@ def utility_processor():
         video_publisher_abi=lambda: json.dumps(app.config['VIDEO_PUBLISHER_ABI']),
         view_token_address=lambda: app.config['VIEW_TOKEN_ADDRESS'],
         video_publisher_address=lambda: app.config['VIDEO_PUBLISHER_ADDRESS'],
-        voting_power_delegator_address=lambda: app.config['VOTING_POWER_DELEGATOR_ADDRESS'],
-        voting_power_delegator_abi=lambda: json.dumps(app.config['VOTING_POWER_DELEGATOR_ABI']),
+        voting_power_delegator_address=lambda: app.config[
+            'VOTING_POWER_DELEGATOR_ADDRESS'],
+        voting_power_delegator_abi=lambda: json.dumps(
+            app.config['VOTING_POWER_DELEGATOR_ABI']),
         get_auth_token_cached=get_auth_token_cached,
         can_vote=can_vote,
         nsfw_cover_img='https://i.imgur.com/kXBgFBy.png',
