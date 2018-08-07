@@ -1,17 +1,28 @@
 import { get } from './request';
+import { cacheSet, cacheGet } from '../utils';
+import { CACHE_KEYS } from '../cache';
 
 export async function fetchExchangeRate () {
-  // TODO - move this to configuration
-  const baseUrl = 'https://api.coinmarketcap.com/v2/ticker';
-  const viewId = 2963;
-  const etherId = 1027;
+  const cachedPrices = cacheGet(CACHE_KEYS.CMC_PRICES);
 
-  const [ view, ether ] = await Promise.all([
-    fetchEuro(baseUrl, viewId),
-    fetchEuro(baseUrl, etherId)
-  ]);
+  if (cachedPrices) {
+    return JSON.parse(cachedPrices);
+  } else {
+    // TODO - move this to configuration
+    const baseUrl = 'https://api.coinmarketcap.com/v2/ticker';
+    const viewId = 2963;
+    const etherId = 1027;
 
-  return { view: view.price, eth: ether.price };
+    const [ view, ether ] = await Promise.all([
+      fetchEuro(baseUrl, viewId),
+      fetchEuro(baseUrl, etherId)
+    ]);
+
+    const prices = { view: view.price, eth: ether.price };
+    cacheSet(CACHE_KEYS.CMC_PRICES, JSON.stringify(prices), 1800); // 1800 seconds = 30 mins
+
+    return prices;
+  }
 }
 
 async function fetchEuro (baseUrl, currencyId) {
