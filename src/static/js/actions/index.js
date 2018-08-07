@@ -2,11 +2,17 @@ import { makeApiCall, makeAuthCall } from '../api/request';
 import * as authApi from '../api/auth_token';
 import * as walletApi from '../api/wallet';
 import * as videoApi from '../api/video';
+import * as cmcApi from '../api/cmc';
 
 export const AUTH_TOKEN_FETCH_START = 'AUTH/AUTH_TOKEN_FETCH_START';
 export const AUTH_TOKEN_FETCH_SUCCESS = 'AUTH/AUTH_TOKEN_FETCH_SUCCESS';
 export const AUTH_TOKEN_FETCH_ERROR = 'AUTH/AUTH_TOKEN_FETCH_ERROR';
 export const fetchAuthToken = makeAuthCall(authApi.fetchAuthToken, AUTH_TOKEN_FETCH_START, AUTH_TOKEN_FETCH_SUCCESS, AUTH_TOKEN_FETCH_ERROR);
+
+export const CMC_FETCH_START = 'CMC/CMC_FETCH_START';
+export const CMC_FETCH_SUCCESS = 'CMC/CMC_FETCH_SUCCESS';
+export const CMC_FETCH_ERROR = 'CMC/CMC_FETCH_ERROR';
+export const fetchExchangeRate = makeApiCall(cmcApi.fetchExchangeRate, CMC_FETCH_START, CMC_FETCH_SUCCESS, CMC_FETCH_ERROR);
 
 export const WALLET_FETCH_START = 'WALLET/WALLET_FETCH_START';
 export const WALLET_FETCH_SUCCESS = 'WALLET/WALLET_FETCH_SUCCESS';

@@ -7,10 +7,11 @@ import { providers, utils, Contract, Wallet } from 'ethers';
 import WalletWithdraw from './withdraw';
 import abi from '../../../abi.json';
 import { unlockWallet, lockWallet, fetchBalance, sendEthereum, sendView } from '../../../actions';
-import { getWalletByAddress, updateWallets } from '../../../utils';
+import { getWalletByAddress, updateWallets, roundTwoDecimals } from '../../../utils';
 
 @connect((state, props) => ({
-  wallet: state.wallet.address === props.match.params.wallet && state.wallet
+  wallet: state.wallet.address === props.match.params.wallet && state.wallet,
+  prices: state.prices
 }), (dispatch) => ({
   unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey)),
   lockWallet: (address) => dispatch(lockWallet(address)),
@@ -85,7 +86,7 @@ export default class WalletSingle extends Component {
   }
 
   render() {
-    const { wallet } = this.props;
+    const { wallet, prices } = this.props;
 
     if (!wallet) {
       return null;
@@ -102,12 +103,16 @@ export default class WalletSingle extends Component {
           <li>
             Balance: {wallet.balanceEth} ETH
             {wallet.decrypted && <Link to={`/wallet/${this.state.address}/withdraw/eth`}>(withdraw)</Link>}
+            <br />
+            ({roundTwoDecimals(wallet.balanceEth * prices.eth)} &euro;)
           </li>
           <Route exact path='/wallet/:wallet/withdraw/eth' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='ETH' address={this.state.address} />} />
 
           <li>
             Balance: {wallet.balanceView} VIEW
             {wallet.decrypted && <Link to={`/wallet/${this.state.address}/withdraw/view`}>(withdraw)</Link>}
+            <br />
+            ({roundTwoDecimals(wallet.balanceView * prices.view)} &euro;)
           </li>
           <Route exact path='/wallet/:wallet/withdraw/view' render={() => <WalletWithdraw doWithdraw={this.doWithdraw} type='VIEW' address={this.state.address} />} />
         </ul>

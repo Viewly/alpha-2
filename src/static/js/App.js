@@ -3,7 +3,7 @@ import { Route, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { hot } from "react-hot-loader";
 
-import { saveConfig, fetchAuthToken, walletsFetch, walletSave } from './actions';
+import { saveConfig, fetchAuthToken, walletsFetch, walletSave, fetchExchangeRate } from './actions';
 import { walletsToStorage } from './utils';
 
 import HeaderButton from './components/headerButton';
@@ -16,14 +16,16 @@ import VideoPage from './components/videoPage';
 }), (dispatch) => ({
   saveConfig: wallet => dispatch(saveConfig(wallet)),
   fetchAuthToken: () => dispatch(fetchAuthToken()),
-  walletsFetch: () => dispatch(walletsFetch())
+  walletsFetch: () => dispatch(walletsFetch()),
+  fetchExchangeRate: () => dispatch(fetchExchangeRate())
 }))
 class App extends Component {
   // Load all initial data
   async componentDidMount() {
-    const { saveConfig, fetchAuthToken, config, walletsFetch } = this.props;
+    const { saveConfig, fetchAuthToken, config, walletsFetch, fetchExchangeRate } = this.props;
 
     saveConfig(config);
+    fetchExchangeRate();
     await fetchAuthToken();
     walletsFetch();
   }

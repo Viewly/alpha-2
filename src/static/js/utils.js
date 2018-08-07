@@ -60,3 +60,7 @@ export function getFirstWallet(wallets) {
 
   return { ...wallets[address], address };
 }
+
+export function roundTwoDecimals(number) {
+  return Math.round(number * 100)/100;
+}

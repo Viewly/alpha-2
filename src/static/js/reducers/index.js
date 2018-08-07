@@ -7,6 +7,10 @@ const initialState = {
   authToken: '',
   wallet: {},
   votes: getVotes(),
+  prices: {
+    view: 0,
+    eth: 0
+  }
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -51,6 +55,9 @@ const rootReducer = (state = initialState, action) => {
       const { balanceEth, balanceView } = action.data;
 
       return { ...state, wallet: { ...state.wallet, balanceEth, balanceView }};
+
+    case actions.CMC_FETCH_SUCCESS:
+      return { ...state, prices: action.data};
     default:
       return state;
   }
