@@ -247,8 +247,8 @@ def edit_profile():
 def about():
     return render_template('about.html')
 
-@app.route('/wallet')
 @app.route('/wallet/generate')
+@app.route('/wallet')
 @app.route('/wallet/<string:address>')
 @app.route('/wallet/<string:address>/withdraw/<string:withdrawType>')
 def wallet(address = '', withdrawType = ''):
