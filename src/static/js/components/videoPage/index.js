@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { STATUS_TYPE } from '../../constants';
-import { videoVote } from '../../actions';
+import { videoVote, unlockModalOpen } from '../../actions';
 import Portal from '../portal';
 import { saveVoteCache } from '../../utils';
 
@@ -10,22 +10,27 @@ import { saveVoteCache } from '../../utils';
   wallet: state.wallet,
   vote: state.votes[props.match.params.videoId]
 }), (dispatch) => ({
-  videoVote: (videoId) => dispatch(videoVote(videoId))
+  videoVote: (videoId) => dispatch(videoVote(videoId)),
+  unlockModalOpen: () => dispatch(unlockModalOpen()),
 }))
 export default class VideoPage extends Component {
   voteClick = async () => {
-    const { wallet, videoVote, match: { params: { videoId } } } = this.props;
+    const { wallet, unlockModalOpen, videoVote, match: { params: { videoId } } } = this.props;
     const { address, privateKey } = wallet;
 
-    const response = await videoVote({ videoId, address, privateKey });
+    if (!wallet.decrypted) {
+      unlockModalOpen();
+    } else {
+      const response = await videoVote({ videoId, address, privateKey });
 
-    if (response) {
-      saveVoteCache(videoId);
-      // window && window.refreshVotingStats && window.refreshVotingStats();
-      // dirty hack to increment number of votes
-      document
-        && document.querySelector('.statistic .value')
-        && document.querySelector('.statistic .value').innerHTML++;
+      if (response) {
+        saveVoteCache(videoId);
+        // window && window.refreshVotingStats && window.refreshVotingStats();
+        // dirty hack to increment number of votes
+        document
+          && document.querySelector('.statistic .value')
+          && document.querySelector('.statistic .value').innerHTML++;
+      }
     }
   }
 

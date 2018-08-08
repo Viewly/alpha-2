@@ -6,14 +6,13 @@ import { providers, utils, Contract, Wallet } from 'ethers';
 
 import WalletWithdraw from './withdraw';
 import abi from '../../../abi.json';
-import { unlockWallet, lockWallet, fetchBalance, sendEthereum, sendView, unlockModalOpen } from '../../../actions';
+import { lockWallet, fetchBalance, sendEthereum, sendView, unlockModalOpen } from '../../../actions';
 import { getWalletByAddress, updateWallets, roundTwoDecimals } from '../../../utils';
 
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet,
   prices: state.prices
 }), (dispatch) => ({
-  unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey)),
   lockWallet: (address) => dispatch(lockWallet(address)),
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
@@ -29,10 +28,6 @@ export default class WalletSingle extends Component {
 
     this.state = {
       address: address,
-      unlockingPercent: 0,
-      unlockingProgress: false,
-      balance: 'Loading ...',
-      balanceToken: 'Loading ...',
       notification: '',
     }
   }
@@ -54,29 +49,6 @@ export default class WalletSingle extends Component {
 
     this.setState({ notification: `Transaction successful! Hash: ${hash}`});
     history.push(`/wallet/${this.state.address}`);
-  }
-
-  unlockWallet = async () => {
-    const { wallet, unlockWallet } = this.props;
-    const password = prompt("Please enter password to unlock");
-    if (!password) {
-      return;
-    }
-
-    this.setState({ unlockingProgress: true });
-
-    try {
-      const decrypted = await Wallet.fromEncryptedWallet(JSON.stringify(wallet.encryptedWallet), password, (percent) => {
-        this.setState({ unlockingPercent: Math.round(percent * 100) });
-      });
-
-      updateWallets(decrypted);
-      this.setState({ unlockingProgress: false });
-      unlockWallet(this.state.address, decrypted.privateKey);
-    } catch (e) {
-      this.setState({ unlockingProgress: false });
-      alert('Invalid wallet password');
-    }
   }
 
   lockWallet = () => {
@@ -119,15 +91,10 @@ export default class WalletSingle extends Component {
         </ul>
 
         {!wallet.decrypted && (
-          <div>
-            {this.state.unlockingProgress && <button>Unlocking {this.state.unlockingPercent}%</button>}
-            {!this.state.unlockingProgress && <button onClick={unlockModalOpen}>CLICK TO UNLOCK WALLET</button>}
-          </div>
+          <button onClick={unlockModalOpen}>CLICK TO UNLOCK WALLET</button>
         )}
         {wallet.decrypted && (
-          <div>
-            {<button onClick={this.lockWallet}>LOCK WALLET</button>}
-          </div>
+          <button onClick={this.lockWallet}>LOCK WALLET</button>
         )}
 
       </div>
