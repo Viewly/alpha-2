@@ -111,7 +111,7 @@ export default class UnlockModal extends Component {
           {!this.state.unlockingProgress && (
             <div className="actions">
               <div className="ui button" onClick={() => this.modal.modal('hide')}>Cancel</div>
-              <div className="ui green button" onClick={this.unlockWalletClick}>Unlock</div>
+              <div className="ui primary button" onClick={this.unlockWalletClick}>Unlock</div>
             </div>
           )}
         </div>
