@@ -6,7 +6,7 @@ import { providers, utils, Contract, Wallet } from 'ethers';
 
 import WalletWithdraw from './withdraw';
 import abi from '../../../abi.json';
-import { unlockWallet, lockWallet, fetchBalance, sendEthereum, sendView } from '../../../actions';
+import { unlockWallet, lockWallet, fetchBalance, sendEthereum, sendView, unlockModalOpen } from '../../../actions';
 import { getWalletByAddress, updateWallets, roundTwoDecimals } from '../../../utils';
 
 @connect((state, props) => ({
@@ -15,6 +15,7 @@ import { getWalletByAddress, updateWallets, roundTwoDecimals } from '../../../ut
 }), (dispatch) => ({
   unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey)),
   lockWallet: (address) => dispatch(lockWallet(address)),
+  unlockModalOpen: () => dispatch(unlockModalOpen()),
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
   sendEthereum: ({ amount, address, privateKey }) => dispatch(sendEthereum({ amount, address, privateKey })),
   sendView: ({ amount, address, privateKey }) => dispatch(sendView({ amount, address, privateKey }))
@@ -86,7 +87,7 @@ export default class WalletSingle extends Component {
   }
 
   render() {
-    const { wallet, prices } = this.props;
+    const { wallet, prices, unlockModalOpen } = this.props;
 
     if (!wallet) {
       return null;
@@ -120,7 +121,7 @@ export default class WalletSingle extends Component {
         {!wallet.decrypted && (
           <div>
             {this.state.unlockingProgress && <button>Unlocking {this.state.unlockingPercent}%</button>}
-            {!this.state.unlockingProgress && <button onClick={this.unlockWallet}>CLICK TO UNLOCK WALLET</button>}
+            {!this.state.unlockingProgress && <button onClick={unlockModalOpen}>CLICK TO UNLOCK WALLET</button>}
           </div>
         )}
         {wallet.decrypted && (

@@ -12,7 +12,8 @@ const initialState = {
   prices: {
     view: 0,
     eth: 0
-  }
+  },
+  walletUnlockModal: false
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -63,6 +64,12 @@ const rootReducer = (state = initialState, action) => {
 
     case actions.CMC_FETCH_SUCCESS:
       return { ...state, prices: action.data};
+
+    case actions.UNLOCK_MODAL_OPEN:
+      return { ...state, walletUnlockModal: true };
+    case actions.UNLOCK_MODAL_CLOSE:
+      return { ...state, walletUnlockModal: false };
+
     default:
       return state;
   }

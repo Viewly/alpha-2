@@ -7,6 +7,7 @@ import { saveConfig, fetchAuthToken, walletsFetch, walletSave, fetchExchangeRate
 import { walletsToStorage } from './utils';
 
 import HeaderButton from './components/headerButton';
+import UnlockModal from './components/unlockModal';
 import WalletPage from './components/walletPage';
 import VideoPage from './components/videoPage';
 
@@ -40,6 +41,7 @@ class App extends Component {
     return(
       <React.Fragment>
         <Route path='/' component={HeaderButton} />
+        <Route path='/' component={UnlockModal} />
         <Route path='/wallet' component={WalletPage} />
         <Route path='/v/:videoId' component={VideoPage} />
       </React.Fragment>

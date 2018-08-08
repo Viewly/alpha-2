@@ -52,4 +52,8 @@ export const videoVote = makeApiCall(videoApi.videoVote, VIDEO_VOTE_START, VIDEO
 export const SET_CONFIG = 'SYSTEM/SET_CONFIG'
 export const ADD_WALLET = 'USER/ADD_WALLET';
 export const ADD_ENCRYPTED_WALLET = 'USER/ADD_ENCRYPTED_WALLET';
+export const UNLOCK_MODAL_OPEN = 'MODAL/UNLOCK_MODAL_OPEN';
+export const UNLOCK_MODAL_CLOSE = 'MODAL/UNLOCK_MODAL_CLOSE';
+export const unlockModalOpen = () => ({ type: UNLOCK_MODAL_OPEN });
+export const unlockModalClose = () => ({ type: UNLOCK_MODAL_CLOSE });
 export const saveConfig = config => ({ type: SET_CONFIG, payload: config });
