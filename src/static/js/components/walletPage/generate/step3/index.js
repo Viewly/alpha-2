@@ -44,7 +44,7 @@ export default class GeneratorStep3 extends Component {
               </div>
             </div>
 
-            <button className='ui button right labeled icon primary' onClick={this.encryptWallet}><i class="right lock icon"></i> Encrypt</button>
+            <button className='ui button right labeled icon primary' onClick={this.encryptWallet}><i className="right lock icon"></i> Encrypt</button>
           </div>
         )}
 

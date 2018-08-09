@@ -32,8 +32,8 @@ export default class GeneratorStep1 extends Component {
           <div><br /></div>
         </div>
 
-        <button className={`ui button right labeled icon ${!this.state.generated && 'primary' || 'primary basic'}`} onClick={this.generateNew}><i class="right sync icon"></i> Generate new</button>
-        <button className={`ui button right labeled icon ${!this.state.generated && 'disabled' || 'primary'}`} onClick={this.saveWallet}><i class="right arrow icon"></i> Next</button>
+        <button className={`ui button right labeled icon ${!this.state.generated && 'primary' || 'primary basic'}`} onClick={this.generateNew}><i className="right sync icon"></i> Generate new</button>
+        <button className={`ui button right labeled icon ${!this.state.generated && 'disabled' || 'primary'}`} onClick={this.saveWallet}><i className="right arrow icon"></i> Next</button>
       </div>
     )
   }
