@@ -1,7 +1,7 @@
 import { makeApiCall, makeAuthCall } from '../api/request';
 import * as authApi from '../api/auth_token';
 import * as walletApi from '../api/wallet';
-import * as videoApi from '../api/video';
+import * as voteApi from '../api/vote';
 import * as cmcApi from '../api/cmc';
 
 export const AUTH_TOKEN_FETCH_START = 'AUTH/AUTH_TOKEN_FETCH_START';
@@ -44,10 +44,10 @@ export const WALLET_UNLOCK = 'WALLET/WALLET_UNLOCK';
 export const lockWallet = (address) => ({ type: WALLET_LOCK, data: { address } });
 export const unlockWallet = (address, privateKey) => ({ type: WALLET_UNLOCK, data: { address, privateKey } });
 
-export const VIDEO_VOTE_START = 'VIDEO/VIDEO_VOTE_START';
-export const VIDEO_VOTE_SUCCESS = 'VIDEO/VIDEO_VOTE_SUCCESS';
-export const VIDEO_VOTE_ERROR = 'VIDEO/VIDEO_VOTE_ERROR';
-export const videoVote = makeApiCall(videoApi.videoVote, VIDEO_VOTE_START, VIDEO_VOTE_SUCCESS, VIDEO_VOTE_ERROR);
+export const VOTE_VIDEO_START = 'VOTE/VOTE_VIDEO_START';
+export const VOTE_VIDEO_SUCCESS = 'VOTE/VOTE_VIDEO_SUCCESS';
+export const VOTE_VIDEO_ERROR = 'VOTE/VOTE_VIDEO_ERROR';
+export const videoVote = makeApiCall(voteApi.videoVote, VOTE_VIDEO_START, VOTE_VIDEO_SUCCESS, VOTE_VIDEO_ERROR);
 
 export const SET_CONFIG = 'SYSTEM/SET_CONFIG'
 export const ADD_WALLET = 'USER/ADD_WALLET';
