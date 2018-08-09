@@ -11,6 +11,12 @@ export default class GeneratorStep3 extends Component {
   encryptWallet = () => {
     const { wallet, changeStep } = this.props;
 
+    if (!this.state.password) {
+      this.passwordInput.focus();
+      this.passwordInput.parentElement.classList.add('error');
+      return false;
+    }
+
     this.setState({ encrypting: true });
 
     var encryptPromise = wallet.encrypt(this.state.password, (progress) => {
@@ -32,7 +38,7 @@ export default class GeneratorStep3 extends Component {
           <div className="ui form">
             <div className="twelve wide field">
               <label>Encryption password</label>
-              <input type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} />
+              <input ref={(ref) => this.passwordInput = ref} type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} autoComplete="new-password" />
               <div className="ui pointing label">
                 If you forget this password, only way to recover is using mnemonic words
               </div>
