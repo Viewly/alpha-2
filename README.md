@@ -93,6 +93,12 @@ Run the Flask server:
 flask run --port 5000
 ```
 
+Run the React app server:
+```
+cd src/static
+npm start
+```
+
 ## Database Management
 In development, you can initialize your PostgreSQL database with:
 ```

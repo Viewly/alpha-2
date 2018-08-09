@@ -247,12 +247,16 @@ def edit_profile():
 def about():
     return render_template('about.html')
 
+
 @app.route('/wallet/generate')
 @app.route('/wallet')
 @app.route('/wallet/<string:address>')
 @app.route('/wallet/<string:address>/withdraw/<string:withdrawType>')
-def wallet(address = '', withdrawType = ''):
+@login_required
+def wallet(address='', withdraw_type=''):
+    _, _ = address, withdraw_type  # make linter happy
     return render_template('wallet.html')
+
 
 @app.route('/token')
 def token_page():
@@ -409,6 +413,7 @@ def utility_processor():
         guess_thumbnail_cdn_url=guess_thumbnail_cdn_url,
         guess_avatar_cdn_url=guess_avatar_cdn_url,
         guess_timeline_cdn_url=guess_timeline_cdn_url,
+        is_production=lambda: app.config['IS_PRODUCTION'],
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
         player_url=lambda: app.config['PLAYER_URL'],
