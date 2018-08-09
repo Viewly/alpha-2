@@ -1,0 +1,11 @@
+<script type="application/javascript">
+  $(function () {
+    window.walletConfig = {
+      videoPublisherAddress: "{{ video_publisher_address() }}",
+      videoPublisherAbi: {{ video_publisher_abi() | safe }},
+      viewTokenAddress: "{{ view_token_address() }}",
+      viewTokenAbi: {{ view_token_abi() | safe }},
+      ethChainId: {% if eth_chain() == "kovan" %}42{% else %}1{% endif %},
+    };
+  });
+</script>
