@@ -38,6 +38,8 @@ const rootReducer = (state = initialState, action) => {
     case actions.WALLET_UNLOCK:
       return { ...state, wallet: { ...state.wallet, decrypted: true, privateKey: action.data.privateKey } };
 
+    case actions.WALLET_FETCH_START:
+      return { ...state, wallet: { ...state.wallet, _status: STATUS_TYPE.LOADING } };
     case actions.WALLET_FETCH_SUCCESS:
     case actions.WALLET_SAVE_SUCCESS:
       const localWallets = getWallets();
@@ -45,12 +47,14 @@ const rootReducer = (state = initialState, action) => {
       address = `0x${action.data.address}`;
 
       if (localWallets[address] && localWallets[address].decrypted) {
-        wallet = { ...state.wallet, address, decrypted: true, encryptedWallet: action.data, privateKey: localWallets[address].privateKey };
+        wallet = { ...state.wallet, _status: STATUS_TYPE.LOADED, address, decrypted: true, encryptedWallet: action.data, privateKey: localWallets[address].privateKey };
       } else {
-        wallet = { ...state.wallet, address, decrypted: false, encryptedWallet: action.data };
+        wallet = { ...state.wallet, _status: STATUS_TYPE.LOADED, address, decrypted: false, encryptedWallet: action.data };
       }
 
       return { ...state, wallet };
+    case actions.WALLET_FETCH_ERROR:
+      return { ...state, wallet: { ...state.wallet, _status: STATUS_TYPE.ERROR } };
 
     case actions.WALLET_FETCH_BALANCE_START:
       let cachedBalance = JSON.parse(cacheGet(CACHE_KEYS.WALLET_BALANCES) || null) || { balanceEth: STATUS_TYPE.LOADING, balanceView: STATUS_TYPE.LOADING };
