@@ -34,23 +34,13 @@ export default class VideoPage extends Component {
     }
   }
 
-  getFirstWallet = () => {
-    const { wallet } = this.props;
-    const keys = Object.keys(wallet);
-    if (keys.length === 0) {
-      return false;
-    }
-
-    const address = keys[0];
-    const { privateKey } = wallet[address];
-
-    return { address, privateKey };
-  }
-
   showVoteButton = () => {
     const { vote, wallet } = this.props;
-    if (!wallet.address) {
+
+    if (wallet._status === STATUS_TYPE.LOADING) {
       return <a href='javascript:;' className="ui button c-btn--secondary">Loading wallet</a>;
+    } else if (!wallet.address) {
+      return <a href='/wallet' className="ui button c-btn--secondary">Vote (new)</a>; // fake vote button - takes you to /wallet page
     }
 
     switch (vote) {
