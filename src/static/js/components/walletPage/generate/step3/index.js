@@ -26,17 +26,23 @@ export default class GeneratorStep3 extends Component {
     const { wallet } = this.props;
 
     return (
-      <div>
-        Lets encrypt your wallet so its 100% secure
-        <br />
-        Type new password -
-        <input type="password" name="password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} />
-        <strong>(if you forget this password, we can't recover it. Only way to recover your wallet is using mnemonic from last step)</strong>
-        <br />
+      <div className='ui padded segment'>
 
-        {!this.state.encrypting && <button onClick={this.encryptWallet}>Encrypt</button>}
+        {!this.state.encrypting && (
+          <div className="ui form">
+            <div className="twelve wide field">
+              <label>Encryption password</label>
+              <input type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} />
+              <div className="ui pointing label">
+                If you forget this password, only way to recover is using mnemonic words
+              </div>
+            </div>
 
-        {this.state.encrypting && <div>Progress: {Math.round(this.state.progress * 100)}%</div>}
+            <button className='ui button primary' onClick={this.encryptWallet}>Encrypt</button>
+          </div>
+        )}
+
+        {this.state.encrypting && <h3 className='ui header'>Encrypting wallet: {Math.round(this.state.progress * 100)}%</h3>}
       </div>
     )
   }

@@ -22,22 +22,19 @@ export default class GeneratorStep1 extends Component {
 
   render() {
     return (
-      <div>
-        Lets generate a new wallet.
-        <br />
+      <div className='ui padded segment'>
         {this.state.generated && (
           <div>
-            {/* Your mnemonic: <b>{this.state.wallet.mnemonic}</b> */}
-            <br />
-            Your address: <b>{this.state.wallet.address}</b>
-            <br />
-            {/* Your private key: <b>{this.state.wallet.privateKey}</b> */}
+            <div className="ui label">
+              <i className="ethereum icon"></i> {this.state.wallet.address}
+            </div>
+            <div><br /></div>
           </div>
         )}
 
-        <button onClick={this.generateNew}>Generate</button>
-        <br />
-        {this.state.generated && <button onClick={this.saveWallet}>Next</button>}
+
+        <button className={`ui button ${!this.state.generated && 'primary' || 'grey basic'}`} onClick={this.generateNew}>Generate new</button>
+        <button className={`ui button ${!this.state.generated && 'disabled' || 'primary'}`} onClick={this.saveWallet}>Next</button>
       </div>
     )
   }
