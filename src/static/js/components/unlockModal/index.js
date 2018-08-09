@@ -104,7 +104,7 @@ export default class UnlockModal extends Component {
               <div className='ui form'>
                 <div className="field">
                   <label>Wallet password</label>
-                  <input ref={(ref) => this.passwordInput = ref} type='text' value={this.state.password} onKeyDown={this.onKeyDown} onChange={(e) => this.setState({ password: e.target.value })}/>
+                  <input ref={(ref) => this.passwordInput = ref} type='password' value={this.state.password} onKeyDown={this.onKeyDown} onChange={(e) => this.setState({ password: e.target.value })}/>
                 </div>
               </div>
             )}
