@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% set active_menu = "admin" %}
+{% from "_formhelpers.html" import render_field %}
+{% block title %}Distribution Settings{% endblock %}
+
+{% block content %}
+  <br>
+  <div class="ui text container text-center">
+    {% if error %}
+      <p class="ui red message close">{{ error }}</p>
+      <br>
+    {% endif %}
+  </div>
+  <div class="ui text container">
+    <h3 class="ui dividing header">Update distribution settings</h3>
+    <form method="post" class="ui form">
+      {{ form.csrf_token }}
+      {{ render_field(form.creator_rewards_pool) }}
+      {{ render_field(form.voter_rewards_pool) }}
+      {{ render_field(form.votes_per_user) }}
+      {{ render_field(form.min_reward) }}
+      <button class="ui button blue">Set</button>
+      <br>
+    </form>
+
+    <br>
+
+    <h2>Historic settings</h2>
+    <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Creator pool</th>
+        <th>Voter pool</th>
+        <th>Votes</th>
+        <th>Min reward</th>
+        <th>Created at</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for entry in entries %}
+        <tr>
+          <td>{{ entry.creator_rewards_pool }} VIEW</td>
+          <td>{{ entry.voter_rewards_pool }} VIEW</td>
+          <td>{{ entry.votes_per_user }}</td>
+          <td>{{ entry.min_reward }} VIEW</td>
+          <td>{{ entry.created_at | humanDate }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+
+{% endblock %}

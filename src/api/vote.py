@@ -79,12 +79,13 @@ class VoteApi(Resource):
             assert 0 <= timestamp_delta < 3600, 'Vote is older than 1 hour'
             assert is_typed_signature_valid(
                 message, vote.ecc_signature, vote.eth_address)
+
+            db.session.add(vote)
+            db.session.commit()
         except AssertionError as e:
             return dict(message=str(e)), 400
         except Exception as e:
             # todo, log exception to sentry
             return dict(message=str(e)), 500
 
-        db.session.add(vote)
-        db.session.commit()
         return vote_schema.dump(vote).data

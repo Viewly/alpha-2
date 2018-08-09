@@ -87,19 +87,19 @@
       <div class="o-grid o-grid--middle o-grid--between">
         <div class="c-footer__bottom-bar__cell o-grid__cell">
           <div class="c-footer__bottom-bar__url-list">
-            <span>VIEW Token on:</span>
+            <span><a href="{{ url_for('token_page') }}">VIEW Token</a> on:</span>
             <ul>
               <li>
                 <a href="https://etherscan.io/token/0xF03f8D65BaFA598611C3495124093c56e8F638f0" target="_blank">Etherscan</a>
-              </li>
-              <li>
-                <a href="https://bloxy.info/token_stat/0xf03f8d65bafa598611c3495124093c56e8f638f0" target="_blank">Bloxy</a>
               </li>
               <li>
                 <a href="https://coinlib.io/coin/VIEW/Viewly" target="_blank">Coinlib</a>
               </li>
               <li>
                 <a href="https://idex.market/eth/view" target="_blank">IDEX</a>
+              </li>
+              <li>
+                <a href="{{ url_for('token_page') }}">More</a>
               </li>
             </ul>
           </div>

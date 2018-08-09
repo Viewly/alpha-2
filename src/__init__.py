@@ -43,6 +43,7 @@ user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
 security = Security(app, user_datastore)
 
 # Register Blueprints
+from .b_admin import admin as admin_blueprint
 from .b_channel import channel as channel_blueprint
 from .b_game import game as game_blueprint
 from .b_upload import upload as upload_blueprint
@@ -50,6 +51,7 @@ from .api import blueprint as api_blueprint
 
 app.register_blueprint(upload_blueprint, url_prefix='/upload')
 app.register_blueprint(channel_blueprint, url_prefix='/channel')
+app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(game_blueprint, url_prefix='/game')
 app.register_blueprint(api_blueprint, url_prefix='/api')
 

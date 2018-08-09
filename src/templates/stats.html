@@ -87,6 +87,26 @@
       </tbody>
     </table>
 
+      <h2>Votes</h2>
+      <table class="ui single line compact celled table">
+      <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Count</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Total votes</td>
+        <td>{{ votes | readableNumber }}</td>
+      </tr>
+      <tr>
+        <td>In last 30 days</td>
+        <td>{{ votes_this_month | readableNumber }}</td>
+      </tr>
+      </tbody>
+    </table>
+
   </div>
   <br>
 {% endblock %}
