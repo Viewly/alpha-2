@@ -23,7 +23,7 @@ export default class GeneratorStep2 extends Component {
           {words.map((word, idx) => <li key={`word-${word}-${idx}`}><strong>{word}</strong></li>)}
         </ol>
 
-        <button className='ui button primary' onClick={() => changeStep(3, wallet)}>Next</button>
+        <button className='ui right labeled icon button primary' onClick={() => changeStep(3, wallet)}><i class="right arrow icon"></i> Next</button>
       </div>
     )
   }

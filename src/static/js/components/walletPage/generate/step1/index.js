@@ -23,18 +23,17 @@ export default class GeneratorStep1 extends Component {
   render() {
     return (
       <div className='ui padded segment'>
-        {this.state.generated && (
-          <div>
-            <div className="ui label">
-              <i className="ethereum icon"></i> {this.state.wallet.address}
-            </div>
-            <div><br /></div>
+
+        <div>
+          <div className="ui label">
+            <i className="ethereum icon"></i>
+            {this.state.generated ? this.state.wallet.address : 'Click on a button below to generate a new wallet' }
           </div>
-        )}
+          <div><br /></div>
+        </div>
 
-
-        <button className={`ui button ${!this.state.generated && 'primary' || 'grey basic'}`} onClick={this.generateNew}>Generate new</button>
-        <button className={`ui button ${!this.state.generated && 'disabled' || 'primary'}`} onClick={this.saveWallet}>Next</button>
+        <button className={`ui button right labeled icon ${!this.state.generated && 'primary' || 'primary basic'}`} onClick={this.generateNew}><i class="right sync icon"></i> Generate new</button>
+        <button className={`ui button right labeled icon ${!this.state.generated && 'disabled' || 'primary'}`} onClick={this.saveWallet}><i class="right arrow icon"></i> Next</button>
       </div>
     )
   }

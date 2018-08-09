@@ -61,7 +61,7 @@ export default class GeneratorStep4 extends Component {
             </div>
           </div>
 
-          <button className='ui button primary' onClick={this.finishGeneration}>Finish</button>
+          <button className='ui button right labeled icon primary' onClick={this.finishGeneration}><i class="right save outline icon"></i> Finish</button>
         </div>
 
       </div>

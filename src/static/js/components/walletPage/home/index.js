@@ -9,7 +9,7 @@ import { STATUS_TYPE } from '../../../constants';
 export default class WalletHome extends Component {
 
   renderWalletHome = () => {
-    const { history, wallet } = this.props;
+    const { wallet } = this.props;
     const isLoaded = wallet._status !== STATUS_TYPE.LOADING;
 
     if (isLoaded) {
@@ -22,11 +22,12 @@ export default class WalletHome extends Component {
               <div className="header">
                 view.ly wallet
               </div>
+
               <div className="ui list">
-                <div className='item'>If you don't own a wallet, we can generate new one.</div>
+                <div className='item'>If you don't own a wallet, we can generate a new one.</div>
               </div>
-              <br />
-              <button className='ui button primary' onClick={() => history.push('/wallet/generate')}>Generate new wallet</button>
+
+              <Link to='/wallet/generate' className='ui button primary'>Generate new wallet</Link>
             </div>
           </div>
         );
