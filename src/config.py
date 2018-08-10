@@ -25,6 +25,7 @@ def load_json_config(name):
 IS_PRODUCTION = bool(getenv('PRODUCTION', False))
 if not IS_PRODUCTION:
     load_dotenv(find_dotenv())
+FLASK_ENV = environ['FLASK_ENV'].lower()
 
 # base config
 SECRET_KEY = getenv('SECRET_KEY', 'not_a_good_secret')

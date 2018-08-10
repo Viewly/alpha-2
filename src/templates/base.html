@@ -45,12 +45,12 @@
 
 <div id="react-modal"></div>
 
-{% if is_production() %}
-  <script src="{{ url_for('static', filename='dist/vendor.js') }}"></script>
-  <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
-{% else %}
+{% if flask_env() == 'development' %}
   <script src="http://localhost:3000/dist/vendor.js"></script>
   <script src="http://localhost:3000/dist/main.js"></script>
+{% else %}
+  <script src="{{ url_for('static', filename='dist/vendor.js') }}"></script>
+  <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
 {% endif %}
 {% include 'partials/wallet_config.html' %}
 
@@ -99,16 +99,18 @@
 {% if is_production() %}
   <!-- Fathom - simple website analytics - https://github.com/usefathom/fathom -->
   <script>
-  (function(f, a, t, h, o, m){
-    a[h]=a[h]||function(){
-      (a[h].q=a[h].q||[]).push(arguments)
-    };
-    o=f.createElement('script');
-    m=f.getElementsByTagName('script')[0];
-    o.async=1; o.src=t; o.id='fathom-script';
-    m.parentNode.insertBefore(o,m)
-  })(document, window, '//fathom.view.ly/tracker.js', 'fathom');
-  fathom('trackPageview');
+    (function (f, a, t, h, o, m) {
+      a[h] = a[h] || function () {
+        (a[h].q = a[h].q || []).push(arguments)
+      };
+      o = f.createElement('script');
+      m = f.getElementsByTagName('script')[0];
+      o.async = 1;
+      o.src = t;
+      o.id = 'fathom-script';
+      m.parentNode.insertBefore(o, m)
+    })(document, window, '//fathom.view.ly/tracker.js', 'fathom');
+    fathom('trackPageview');
   </script>
   <!-- / Fathom -->
 {% endif %}

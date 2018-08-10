@@ -414,6 +414,7 @@ def utility_processor():
         guess_avatar_cdn_url=guess_avatar_cdn_url,
         guess_timeline_cdn_url=guess_timeline_cdn_url,
         is_production=lambda: app.config['IS_PRODUCTION'],
+        flask_env=lambda: app.config['FLASK_ENV'],
         virtual_host=lambda: app.config['VIRTUAL_HOST'].rstrip('/'),
         cdn_url=lambda: app.config['CDN_URL'],
         player_url=lambda: app.config['PLAYER_URL'],
