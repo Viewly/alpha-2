@@ -251,7 +251,7 @@ def about():
 @app.route('/wallet/generate')
 @app.route('/wallet')
 @app.route('/wallet/<string:address>')
-@app.route('/wallet/<string:address>/withdraw/<string:withdrawType>')
+@app.route('/wallet/<string:address>/withdraw/<string:withdraw_type>')
 @login_required
 def wallet(address='', withdraw_type=''):
     _, _ = address, withdraw_type  # make linter happy
