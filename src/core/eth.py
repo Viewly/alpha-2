@@ -45,7 +45,7 @@ def get_web3(http_url: str) -> web3.Web3:
 
 def get_infura_web3() -> web3.Web3:
     assert ETH_CHAIN, 'Ethereum chain not provided'
-    infura_url = f'https://{ETH_CHAIN}.infura.io/{INFURA_KEY}'
+    infura_url = f'https://{ETH_CHAIN}.infura.io/v3/{INFURA_KEY}'
     return get_web3(infura_url)
 
 
