@@ -19,7 +19,7 @@ export default class WalletGenerator extends Component {
 
     if (nextStepNumber === 0) {
       this.setState({ step: 1 });
-      history.push(`/wallet/${this.state.wallet.address.toLowerCase()}`);
+      history.push(`/wallet/${this.state.wallet.address}`);
     } else {
       if (this.state.maxStep < nextStepNumber) {
         this.setState({ maxStep: nextStepNumber });
