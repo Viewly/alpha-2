@@ -27,9 +27,9 @@ beautifulsoup4
 moviepy
 python-dotenv
 pytest
-web3==4.4.1
+web3==4.5.0
 eth-abi==1.1.1
-eth-account==0.2.3
+eth-account==0.3.0
 eth-hash==0.1.4
 eth-keyfile==0.5.1
 eth-keys==0.2.0b3
