@@ -1,14 +1,14 @@
-FROM python:3.6-jessie
+FROM python:3.7-stretch
 MAINTAINER furion <_@furion.me>
 
 # add our code
 COPY . /alpha-2
 
 # install node.js
-RUN apt-get update && \
-    apt-get install -y nodejs npm &&\
-    rm -rf /var/lib/apt/lists/*
-RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN apt-get update -yq \
+    && apt-get install curl gnupg -yq \
+    && curl -sL https://deb.nodesource.com/setup_8.x | bash \
+    && apt-get install nodejs -yq
 
 # compile the dependencies
 WORKDIR /alpha-2/src/static
