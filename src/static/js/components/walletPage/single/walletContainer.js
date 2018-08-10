@@ -7,7 +7,8 @@ import { getWalletByAddress } from '../../../utils';
 
 @withRouter
 @connect((state, props) => ({
-  wallet: state.wallet.address === props.match.params.wallet && state.wallet
+  wallet: state.wallet.address === props.match.params.wallet && state.wallet,
+  config: state.config
 }), (dispatch) => ({
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
 }))
@@ -29,6 +30,16 @@ export default class WalletContainer extends Component {
     fetchBalance(this.state.address);
   }
 
+  generateEtherscanUrl = () => {
+    const { wallet, config: { ethChain, ethChainId } } = this.props;
+
+    if (ethChainId > 1) {
+      return `https://${ethChain}.etherscan.io/address/${wallet.address}`;
+    }
+
+    return `https://etherscan.io/address/${wallet.address}`;
+  }
+
   render() {
     const { wallet, children } = this.props;
 
@@ -42,7 +53,9 @@ export default class WalletContainer extends Component {
           {wallet.decrypted && <i className="circular lock open icon"></i>}
           {!wallet.decrypted && <i className="circular lock icon"></i>}
           Wallet
-          <div className="sub header">{wallet.address}</div>
+          <div className="sub header">
+            <a target="_blank" href={this.generateEtherscanUrl()}>{wallet.address}</a>
+          </div>
         </h2>
 
         {children}
