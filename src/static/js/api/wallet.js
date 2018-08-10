@@ -2,7 +2,6 @@ import { utils, Wallet } from 'ethers';
 
 import { get, put } from './request';
 import provider, { CONTRACT_ADDRESS, contract, contractSigned } from '../ethereum';
-import abi from '../abi.json';
 
 export async function walletsFetch (baseUrl) {
   const url = `${baseUrl}/wallet`;

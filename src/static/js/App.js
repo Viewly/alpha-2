@@ -23,9 +23,9 @@ import VideoPage from './components/videoPage';
 class App extends Component {
   // Load all initial data
   async componentDidMount() {
-    const { saveConfig, fetchAuthToken, config, walletsFetch, fetchExchangeRate } = this.props;
+    const { saveConfig, fetchAuthToken, walletsFetch, fetchExchangeRate } = this.props;
 
-    saveConfig(config);
+    saveConfig(window.walletConfig);
     fetchExchangeRate();
     await fetchAuthToken();
     walletsFetch();

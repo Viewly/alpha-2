@@ -45,6 +45,7 @@
 
 <div id="react-modal"></div>
 
+{% include 'partials/wallet_config.html' %}
 {% if is_production() %}
   <script src="{{ url_for('static', filename='dist/vendor.js') }}"></script>
   <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
@@ -52,7 +53,6 @@
   <script src="http://localhost:3000/dist/vendor.js"></script>
   <script src="http://localhost:3000/dist/main.js"></script>
 {% endif %}
-{% include 'partials/wallet_config.html' %}
 
 <script type="application/javascript">
   // SEMANTIC.UI
