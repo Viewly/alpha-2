@@ -33,9 +33,8 @@ def test_historic_view_token_balance():
     assert ETH_CHAIN == 'kovan', 'This test was designed for Kovan chain.'
 
     address = '0xaAF3FFEE9d4C976aA8d0CB1bb84c3C90ee6E9118'
-    assert view_token_balance(address, block_num=5876634) == 0
-    assert view_token_balance(address, block_num=5876635) == to_wei(1000, 'ether')
-    assert view_token_balance(address, block_num=6855595) == to_wei(740, 'ether')
+    assert view_token_balance(address, block_num=7763177) == 0
+    assert view_token_balance(address, block_num=8319319) == to_wei(99_979.99, 'ether')
 
 
 def test_find_block_from_timestamp():
