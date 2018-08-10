@@ -1,7 +1,7 @@
 import * as actions from '../actions';
 import { getWallets, getVotes } from '../utils';
 import { STATUS_TYPE } from '../constants';
-import { cacheSet, cacheGet } from '../utils';
+import { cacheSet, cacheGet, checksumAddress } from '../utils';
 import { CACHE_KEYS } from '../cache';
 
 const initialState = {
@@ -44,7 +44,7 @@ const rootReducer = (state = initialState, action) => {
     case actions.WALLET_SAVE_SUCCESS:
       const localWallets = getWallets();
 
-      address = `0x${action.data.address}`;
+      address = checksumAddress(`0x${action.data.address}`);
 
       if (localWallets[address] && localWallets[address].decrypted) {
         wallet = { ...state.wallet, _status: STATUS_TYPE.LOADED, address, decrypted: true, encryptedWallet: action.data, privateKey: localWallets[address].privateKey };

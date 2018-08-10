@@ -1,15 +1,16 @@
 const LOCALSTORAGE_WALLETS = 'viewly-wallets';
 
 import storageCache, { CACHE_KEYS } from './cache';
+import { utils } from 'ethers';
 
 export function updateWallets(wallet) {
   // const wallets = getWallets();  // uncomment this to support multiple wallets
   const wallets = {};
 
   if (wallet.privateKey) {
-    wallets[wallet.address.toLowerCase()] = { privateKey: wallet.privateKey, decrypted: true };
+    wallets[wallet.address] = { privateKey: wallet.privateKey, decrypted: true };
   } else {
-    wallets[wallet.address.toLowerCase()] = { decrypted: false };
+    wallets[wallet.address] = { decrypted: false };
   }
 
   localStorage.setItem(LOCALSTORAGE_WALLETS, JSON.stringify(wallets));
@@ -63,4 +64,8 @@ export function getFirstWallet(wallets) {
 
 export function roundTwoDecimals(number) {
   return Math.round(number * 100)/100;
+}
+
+export function checksumAddress(address) {
+  return utils.getAddress(address);
 }
