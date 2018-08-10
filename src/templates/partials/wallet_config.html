@@ -6,7 +6,7 @@
     viewTokenAbi: {{ view_token_abi() | safe }},
     ethChainId: {% if eth_chain() == "kovan" %}42{% else %}1{% endif %},
     ethChain: "{{ eth_chain() }}",
-    infuraKey: "{{ infura_key() }}",
+    infuraKey: "{{ infura_key_fe() }}",
     authUrl: "/auth_token", {# TODO - load this from env ?? #}
     apiUrl: "/api",
   };

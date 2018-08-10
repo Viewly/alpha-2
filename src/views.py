@@ -419,7 +419,7 @@ def utility_processor():
         cdn_url=lambda: app.config['CDN_URL'],
         player_url=lambda: app.config['PLAYER_URL'],
         eth_chain=lambda: app.config['ETH_CHAIN'],
-        infura_key=lambda: app.config['INFURA_KEY'],
+        infura_key_fe=lambda: app.config['INFURA_KEY_FE'],
         gas_price=gas_price,
         view_token_abi=lambda: json.dumps(app.config['VIEW_TOKEN_ABI']),
         video_publisher_abi=lambda: json.dumps(app.config['VIDEO_PUBLISHER_ABI']),

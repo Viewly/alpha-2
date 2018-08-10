@@ -97,6 +97,7 @@ DISQUS_SECRET_KEY = getenv('DISQUS_SECRET_KEY')
 # Ethereum chain
 ETH_CHAIN = environ['ETH_CHAIN']
 INFURA_KEY = environ['INFURA_KEY']
+INFURA_KEY_FE = environ['INFURA_KEY_FE']
 
 # Ethereum Contracts
 VIEW_TOKEN_ADDRESS = environ['VIEW_TOKEN_ADDRESS']
