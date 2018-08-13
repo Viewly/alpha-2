@@ -1,4 +1,4 @@
 {
   "presets": ["env", "es2015", "stage-0", "react"],
-  "plugins": ["transform-decorators-legacy", "babel-plugin-transform-class-properties"]
+  "plugins": ["transform-decorators-legacy", "transform-class-properties"]
 }

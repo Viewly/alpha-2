@@ -1,7 +1,7 @@
 import { utils, Wallet } from 'ethers';
 
 import { get, put } from './request';
-import provider, { CONTRACT_ADDRESS, contract, contractSigned } from '../ethereum';
+import provider, { CONTRACT_ADDRESS, CONTRACT_VIDEO_PUBLISHER, contract, contractSigned } from '../ethereum';
 
 export async function walletsFetch (baseUrl) {
   const url = `${baseUrl}/wallet`;
@@ -20,10 +20,12 @@ export async function walletSave (baseUrl, data) {
 export async function fetchBalance(baseUrl, { address }) {
   const etherBN = await provider.getBalance(address);
   const viewBN = await contract.balanceOf(address);
+  const allowance = await contract.allowance(address, CONTRACT_VIDEO_PUBLISHER);
 
   return {
     balanceEth: utils.formatEther(etherBN),
-    balanceView: utils.formatEther(viewBN)
+    balanceView: utils.formatEther(viewBN),
+    allowance: utils.formatEther(allowance)
   };
 }
 
