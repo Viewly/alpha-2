@@ -18,6 +18,7 @@ from flask_security import (
 from sqlalchemy import desc, func
 
 from . import app, db
+from .core.eth import gas_price
 from .core.html import html2text, markdown2html
 from .disqus import (
     get_disqus_sso,
@@ -331,6 +332,12 @@ def auth_token():
     return jsonify({'auth_token': current_user.get_auth_token()})
 
 
+@app.route('/gas_price', methods=['GET'])
+def get_gas_price():
+    price = gas_price()
+    return jsonify({'normal': price-4, 'fast': price})
+
+
 @app.errorhandler(404)
 def page_not_found(_):
     return render_template('404.html'), 404
@@ -378,8 +385,6 @@ def get_auth_token_cached(current_user):
 # ----------------
 @app.context_processor
 def utility_processor():
-    from .core.eth import gas_price
-
     def block_num():
         return 0
 
