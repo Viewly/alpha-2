@@ -13,7 +13,14 @@ const initialState = {
     view: 0,
     eth: 0
   },
-  walletUnlockModal: false
+  walletUnlockModal: false,
+  videoPublisher: {
+    priceEth: -1,
+    priceEthBn: -1,
+    priceView: -1,
+    priceViewBn: -1,
+    isPublished: false
+  }
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -32,6 +39,13 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, votes: { ...state.votes, [action.data.videoId]: true }};
     case actions.VOTE_VIDEO_ERROR:
       return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.ERROR }};
+
+    case actions.PUBLISHER_FETCH_DATA_START:
+      return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.LOADING }};
+    case actions.PUBLISHER_FETCH_DATA_SUCCESS:
+      return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.LOADED, ...action.data }};
+    case actions.PUBLISHER_FETCH_DATA_ERROR:
+      return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.ERROR }};
 
     case actions.WALLET_LOCK:
       return { ...state, wallet: { ...state.wallet, decrypted: false, privateKey: null } };
@@ -57,14 +71,14 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, wallet: { ...state.wallet, _status: STATUS_TYPE.ERROR } };
 
     case actions.WALLET_FETCH_BALANCE_START:
-      let cachedBalance = JSON.parse(cacheGet(CACHE_KEYS.WALLET_BALANCES) || null) || { balanceEth: STATUS_TYPE.LOADING, balanceView: STATUS_TYPE.LOADING };
+      let cachedBalance = JSON.parse(cacheGet(CACHE_KEYS.WALLET_BALANCES) || null) || { balanceEth: STATUS_TYPE.LOADING, balanceView: STATUS_TYPE.LOADING, allowance: STATUS_TYPE.LOADING };
 
       return { ...state, wallet: { ...state.wallet, ...cachedBalance }};
     case actions.WALLET_FETCH_BALANCE_SUCCESS:
-      const { balanceEth, balanceView } = action.data;
-      cacheSet(CACHE_KEYS.WALLET_BALANCES, JSON.stringify({ balanceEth, balanceView }), 1800);
+      const { balanceEth, balanceView, allowance } = action.data;
+      cacheSet(CACHE_KEYS.WALLET_BALANCES, JSON.stringify({ balanceEth, balanceView, allowance }), 1800);
 
-      return { ...state, wallet: { ...state.wallet, balanceEth, balanceView }};
+      return { ...state, wallet: { ...state.wallet, balanceEth, balanceView, allowance }};
 
     case actions.CMC_FETCH_SUCCESS:
       return { ...state, prices: action.data};
