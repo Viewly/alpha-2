@@ -40,11 +40,11 @@ const rootReducer = (state = initialState, action) => {
     case actions.VOTE_VIDEO_ERROR:
       return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.ERROR }};
 
-    case actions.VIDEO_PUBLISHER_DATA_START:
+    case actions.PUBLISHER_FETCH_DATA_START:
       return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.LOADING }};
-    case actions.VIDEO_PUBLISHER_DATA_SUCCESS:
+    case actions.PUBLISHER_FETCH_DATA_SUCCESS:
       return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.LOADED, ...action.data }};
-    case actions.VIDEO_PUBLISHER_DATA_ERROR:
+    case actions.PUBLISHER_FETCH_DATA_ERROR:
       return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.ERROR }};
 
     case actions.WALLET_LOCK:
