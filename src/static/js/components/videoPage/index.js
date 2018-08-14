@@ -49,7 +49,7 @@ export default class VideoPage extends Component {
       case STATUS_TYPE.ERROR:
         return <a href='javascript:;' onClick={this.voteClick} className="ui button c-btn--secondary">Try again</a>;
       case true:
-        return <a href='javascript:;' className="ui button c-btn--secondary">Voted</a>;
+        return <a href='javascript:;' className="ui button c-btn--secondary disabled"><i className='check icon' />Voted</a>;
       default:
         return <a href='javascript:;' onClick={this.voteClick} className="ui button c-btn--secondary">Vote (new)</a>;
     }
