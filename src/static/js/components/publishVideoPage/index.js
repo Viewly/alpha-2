@@ -1,29 +1,34 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { unlockModalOpen, fetchBalance } from '../../actions';
+import {
+  unlockModalOpen,
+  fetchBalance,
+  fetchVideoPublisherData,
+  authorizeAllowance,
+  publishVideo
+} from '../../actions';
 import Portal from '../portal';
 
-import provider, { CONTRACT_VIDEO_PUBLISHER, contract, videoContract, contractSigned, videoContractSigned } from '../../ethereum'; // TODO - move to api
-import { utils, Wallet } from 'ethers'; // TODO - move to api
+import provider from '../../ethereum'; // TODO - move to api
 import { roundTwoDecimals } from '../../utils';
 
 @connect((state, props) => ({
   wallet: state.wallet,
-  prices: state.prices
+  prices: state.prices,
+  videoPublisher: state.videoPublisher
 }), (dispatch) => ({
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
+  fetchVideoPublisherData: ({ videoHex }) => dispatch(fetchVideoPublisherData({ videoHex })),
+  authorizeAllowance: ({ address, privateKey, amount }) => dispatch(authorizeAllowance({ address, privateKey, amount })),
+  publishVideo: ({ address, privateKey, videoHex, value }) => dispatch(publishVideo({ address, privateKey, videoHex, value })),
 }))
 export default class PublishVideoPage extends Component {
   state = {
-    priceEth: -1,
-    priceEthBn: -1,
-    priceView: -1,
-    priceViewBn: -1,
-    isPublished: false,
     txnPending: false,
-    txnId: ''
+    txnId: '',
+    errorText: ''
   }
 
   componentDidMount() {
@@ -43,83 +48,70 @@ export default class PublishVideoPage extends Component {
 
   loadVideoContractData = async () => {
     const { videoHex } = this.ref.container.dataset;
+    const { fetchVideoPublisherData } = this.props;
 
-    const priceView = await videoContract.priceView();
-    const priceEth = await videoContract.priceEth();
-    const isPublished = await videoContract.videos(videoHex) !== '0x0000000000000000000000000000000000000000';
-
-    this.setState({
-      priceView: utils.formatEther(priceView),
-      priceViewBn: priceView,
-      priceEth: utils.formatEther(priceEth),
-      priceEthBn: priceEth,
-      isPublished
-    })
+    await fetchVideoPublisherData({ videoHex });
   }
 
-  reloadTxn = async (txn_id) => {
+  waitForTxn = async (txn_id) => {
     const { wallet, fetchBalance } = this.props;
 
-    let txn;
-    let refreshInterval = setInterval(async () => {
-      txn = await provider.getTransaction(txn_id);
+    const wait = await new Promise(resolve => {
+      const refreshInterval = setInterval(async () => {
+        const txn = await provider.getTransaction(txn_id);
 
-      if (txn && txn.blockHash) {
-        clearInterval(refreshInterval);
-        fetchBalance(wallet.address);
-        this.loadVideoContractData();
+        if (txn && txn.blockHash) {
+          clearInterval(refreshInterval);
+          resolve();
+        }
+      }, 1000);
+    });
 
-        setTimeout(() => {
-          // fake the loader, leave it one more second to fetch balances
-          this.setState({ txnPending: false, txnId: '' });
-        }, 1000);
-      }
-    }, 1000);
+    await Promise.all([
+      fetchBalance(wallet.address),
+      this.loadVideoContractData()
+    ]);
+
+    this.setState({ txnPending: false, txnId: '' });
   }
 
   publishClick = (type) => async () => {
-    const { wallet, unlockModalOpen } = this.props;
+    const { wallet, unlockModalOpen, videoPublisher, authorizeAllowance, publishVideo } = this.props;
+    const { address, privateKey } = wallet;
     const { videoHex } = this.ref.container.dataset;
 
     if (!wallet.decrypted) {
       unlockModalOpen();
     } else {
-      const tmpWallet = new Wallet(wallet.privateKey, provider);
+      let hash;
 
-      let transaction;
+      this.setState({ txnPending: true, errorText: '' });
 
-      this.setState({ txnPending: true });
       try {
         if (type === 'authorize') {
-          const authorizedContract = contractSigned(tmpWallet);
-          const multiplied = this.state.priceViewBn.mul(100); // multiply price by 100
-
-          transaction = await authorizedContract.approve(CONTRACT_VIDEO_PUBLISHER, multiplied);
-        } else if (type === 'publish') {
-          const authorizedVideoContract = videoContractSigned(tmpWallet);
-
-          transaction = await authorizedVideoContract.publish(videoHex, { value: 0 });
-        } else if (type === 'publish_eth') {
-          const authorizedVideoContract = videoContractSigned(tmpWallet);
-
-          transaction = await authorizedVideoContract.publish(videoHex, { value: this.state.priceEthBn });
+          const amount = videoPublisher.priceViewBn.mul(100); // multiply price by 100
+          hash = await authorizeAllowance({ amount, address, privateKey });
+        } else if ((type === 'publish') || (type === 'publish_eth')) {
+          hash = await publishVideo({ videoHex, address, privateKey, value: type === 'publish' ? 0 : videoPublisher.priceEthBn });
+        } else {
+          throw new Error('Invalid type: ' + type);
         }
 
-        this.setState({ txnId: transaction.hash, txnPending: true });
-        this.reloadTxn(transaction.hash);
+        this.setState({ txnId: hash, txnPending: true });
+        this.waitForTxn(hash);
       } catch (e) {
-        this.setState({ txnId: '', txnPending: false });
+        this.setState({ txnId: '', txnPending: false, errorText: e.message });
       }
     }
   }
 
   renderPublisher = () => {
-    const { wallet, prices } = this.props;
-    const { isPublished } = this.state;
+    const { wallet, prices, videoPublisher } = this.props;
+    const { isPublished } = videoPublisher;
 
     const publishText = 'Publish the video';
 
-    if ((wallet._status === 'LOADING') || (this.state.priceView === -1)) {
+    if ((wallet._status === 'LOADING') || (videoPublisher.priceView === -1)) {
       return <button className='ui button large primary disabled'>Loading ...</button>;
     }
 
@@ -136,8 +128,8 @@ export default class PublishVideoPage extends Component {
       );
     }
 
-    if (wallet.balanceView >= this.state.priceView) {
-      if (wallet.allowance < this.state.priceView) {
+    if (wallet.balanceView >= videoPublisher.priceView) {
+      if (wallet.allowance < videoPublisher.priceView) {
         return (
           <button
             data-tooltip="Authorize VideoPublisher's allowance for 100 videos at current price"
@@ -152,7 +144,7 @@ export default class PublishVideoPage extends Component {
 
       return (
         <button
-          data-tooltip={`${this.state.priceView} VIEW ~ ${roundTwoDecimals(this.state.priceView * prices.view)}€`}
+          data-tooltip={`${videoPublisher.priceView} VIEW ~ ${roundTwoDecimals(videoPublisher.priceView * prices.view)}€`}
           data-position='right center'
           onClick={this.publishClick('publish')}
           className='ui button large primary'
@@ -164,7 +156,7 @@ export default class PublishVideoPage extends Component {
 
     return (
       <button
-        data-tooltip={`${this.state.priceEth} ETH ~ ${roundTwoDecimals(this.state.priceEth * prices.eth)}€`}
+        data-tooltip={`${videoPublisher.priceEth} ETH ~ ${roundTwoDecimals(videoPublisher.priceEth * prices.eth)}€`}
         data-position='right center'
         onClick={this.publishClick('publish_eth')}
         className='ui button large primary'
@@ -175,10 +167,13 @@ export default class PublishVideoPage extends Component {
   }
 
   render() {
-    console.log('render state', this.state);
-
     return (
       <Portal ref={(ref) => this.ref = ref} container='react-publish'>
+        {this.state.errorText && (
+          <div className='ui negative message'>
+            <div className='header'>{this.state.errorText}</div>
+          </div>
+        )}
         {this.renderPublisher()}
       </Portal>
     )

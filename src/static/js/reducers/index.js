@@ -13,7 +13,14 @@ const initialState = {
     view: 0,
     eth: 0
   },
-  walletUnlockModal: false
+  walletUnlockModal: false,
+  videoPublisher: {
+    priceEth: -1,
+    priceEthBn: -1,
+    priceView: -1,
+    priceViewBn: -1,
+    isPublished: false
+  }
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -32,6 +39,13 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, votes: { ...state.votes, [action.data.videoId]: true }};
     case actions.VOTE_VIDEO_ERROR:
       return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.ERROR }};
+
+    case actions.VIDEO_PUBLISHER_DATA_START:
+      return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.LOADING }};
+    case actions.VIDEO_PUBLISHER_DATA_SUCCESS:
+      return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.LOADED, ...action.data }};
+    case actions.VIDEO_PUBLISHER_DATA_ERROR:
+      return { ...state, videoPublisher: { ...state.videoPublisher, _status: STATUS_TYPE.ERROR }};
 
     case actions.WALLET_LOCK:
       return { ...state, wallet: { ...state.wallet, decrypted: false, privateKey: null } };

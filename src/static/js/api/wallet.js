@@ -47,3 +47,12 @@ export async function sendView(baseUrl, { amount, address, privateKey }) {
 
   return hash;
 }
+
+export async function authorizeAllowance(baseUrl, { amount = 0, address, privateKey }) {
+  const wallet = new Wallet(privateKey, provider);
+  const authorizedContract = contractSigned(wallet);
+
+  const { hash } = await authorizedContract.approve(CONTRACT_VIDEO_PUBLISHER, amount);
+
+  return hash;
+}
