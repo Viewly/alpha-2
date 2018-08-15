@@ -79,7 +79,7 @@
     {% endif %}
   </div>
 
-  <div class="ui mini modal">
+  <div class="ui mini modal publish-modal">
     <div class="header">Channel needed</div>
     <div class="content">
       <p>Please <b>select a channel</b> to publish your video to.</p>
@@ -111,7 +111,7 @@
           channel_id = channel_id[4];
         }
         if (!channel_id) {
-          $('.mini.modal').modal('show');
+          $('.publish-modal').modal('show');
           return;
         }
         $.post(
