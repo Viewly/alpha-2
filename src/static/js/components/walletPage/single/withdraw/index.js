@@ -40,10 +40,10 @@ export default class WalletSingleWithdraw extends Component {
     const { match, wallet } = this.props;
     const { address, amount } = this.state;
     const type = match.params.type.toLowerCase();
-    const balance = (type === 'eth') ? wallet.balanceEth : wallet.balanceView;
+    const balance = this.getCurrentBalance();
     const isAddressValid = checkAddressValidity(address) !== 'error';
 
-    if (amount > balance) {
+    if (parseFloat(amount, 10) > parseFloat(balance, 10)) {
       this.setState({ error: 'Trying to send more than you have.' });
     } else if (!isAddressValid) {
       this.setState({ error: 'Please double check the address' });
