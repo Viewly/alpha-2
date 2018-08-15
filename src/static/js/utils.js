@@ -71,6 +71,10 @@ export function checksumAddress(address) {
 }
 
 export function checkAddressValidity(address) {
+  if (address.length !== 42) {
+    return 'error';
+  }
+
   try {
     const add = utils.getAddress(address);
     return 'valid';
