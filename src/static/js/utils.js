@@ -69,3 +69,23 @@ export function roundTwoDecimals(number) {
 export function checksumAddress(address) {
   return utils.getAddress(address);
 }
+
+export function checkAddressValidity(address) {
+  if (address.length !== 42) {
+    return 'error';
+  }
+
+  try {
+    const add = utils.getAddress(address);
+    return 'valid';
+  } catch (e) {
+    if (e.message === 'invalid address checksum') {
+      if (address === address.toLowerCase()) {
+        return 'warning';
+      } else {
+        return 'error';
+      }
+    }
+    return 'error';
+  }
+}

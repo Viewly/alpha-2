@@ -20,6 +20,13 @@ const initialState = {
     priceView: -1,
     priceViewBn: -1,
     isPublished: false
+  },
+  transaction: {
+    _status: STATUS_TYPE.LOADED,
+    error: '',
+    txn_id: '',
+    txn: {},
+    receipt: {}
   }
 };
 
@@ -32,6 +39,13 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, config: action.payload };
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
+
+    case actions.TRANSACTION_WAIT_START:
+      return { ...state, transaction: { ...state.transaction, _status: STATUS_TYPE.LOADING, error: '' }};
+    case actions.TRANSACTION_WAIT_SUCCESS:
+      return { ...state, transaction: { ...state.transaction, _status: STATUS_TYPE.LOADED, txn_id: action.txn_id, ...action.data }};
+    case actions.TRANSACTION_WAIT_ERROR:
+      return { ...state, transaction: { ...state.transaction, _status: STATUS_TYPE.ERROR, error: action.error.message }};
 
     case actions.VOTE_VIDEO_START:
       return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.LOADING }};
