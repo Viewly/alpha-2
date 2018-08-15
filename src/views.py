@@ -15,7 +15,7 @@ from flask_security import (
     current_user,
     login_required,
 )
-from sqlalchemy import desc, func
+from sqlalchemy import desc, func, distinct
 
 from . import app, db
 from .core.eth import gas_price
@@ -231,7 +231,7 @@ def edit_profile():
     channels = \
         (db.session.query(
             Channel,
-            func.count(Video.id).label('video_count'),
+            func.count(distinct(Video.id)).label('video_count'),
             func.sum(Reward.creator_reward).label('creator_rewards'))
          .outerjoin(Video)
          .outerjoin(Reward)
