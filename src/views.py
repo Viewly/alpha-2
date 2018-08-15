@@ -170,7 +170,7 @@ def trending(page_num=0, items_per_page=18):
             Vote.video_id,
             func.sum((Vote.token_amount + Vote.delegated_amount) * Vote.weight)
                 .label('weight'))
-         .filter("created_at > (now() - interval '7 days')")
+         .filter("created_at > (now() - interval '5 days')")
          .group_by(Vote.video_id)
          .subquery())
 
@@ -181,7 +181,7 @@ def trending(page_num=0, items_per_page=18):
                  Video.analyzed_at.isnot(None),
                  Video.is_nsfw.is_(False),
                  'weight > 0')
-         .order_by(desc('weight'))
+         .order_by('((1.0 / ((now()::date - published_at::date) + 1)) * weight) DESC')
          .limit(limit)
          .offset(limit * page_num)
          .all())
