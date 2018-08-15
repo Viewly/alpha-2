@@ -80,7 +80,11 @@ export function checkAddressValidity(address) {
     return 'valid';
   } catch (e) {
     if (e.message === 'invalid address checksum') {
-      return 'warning';
+      if (address === address.toLowerCase()) {
+        return 'warning';
+      } else {
+        return 'error';
+      }
     }
     return 'error';
   }
