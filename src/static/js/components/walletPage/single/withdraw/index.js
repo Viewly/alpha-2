@@ -6,8 +6,6 @@ import { roundTwoDecimals, checkAddressValidity } from '../../../../utils';
 import { sendEthereum, sendView, transactionWait, fetchBalance } from '../../../../actions';
 import { STATUS_TYPE } from '../../../../constants';
 
-import { utils } from 'ethers'; // TODO move to utils.js
-
 @withRouter
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet,
