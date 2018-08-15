@@ -4,6 +4,7 @@ import * as walletApi from '../api/wallet';
 import * as voteApi from '../api/vote';
 import * as cmcApi from '../api/cmc';
 import * as videoPublisherApi from '../api/video_publisher';
+import * as transactionApi from '../api/transaction';
 
 export const AUTH_TOKEN_FETCH_START = 'AUTH/AUTH_TOKEN_FETCH_START';
 export const AUTH_TOKEN_FETCH_SUCCESS = 'AUTH/AUTH_TOKEN_FETCH_SUCCESS';
@@ -64,6 +65,11 @@ export const PUBLISHER_VIDEO_PUBLISH_START = 'VOTE/PUBLISHER_VIDEO_PUBLISH_START
 export const PUBLISHER_VIDEO_PUBLISH_SUCCESS = 'VOTE/PUBLISHER_VIDEO_PUBLISH_SUCCESS';
 export const PUBLISHER_VIDEO_PUBLISH_ERROR = 'VOTE/PUBLISHER_VIDEO_PUBLISH_ERROR';
 export const publishVideo = makeApiCall(videoPublisherApi.publishVideo, PUBLISHER_VIDEO_PUBLISH_START, PUBLISHER_VIDEO_PUBLISH_SUCCESS, PUBLISHER_VIDEO_PUBLISH_ERROR);
+
+export const TRANSACTION_WAIT_START = 'VOTE/TRANSACTION_WAIT_START';
+export const TRANSACTION_WAIT_SUCCESS = 'VOTE/TRANSACTION_WAIT_SUCCESS';
+export const TRANSACTION_WAIT_ERROR = 'VOTE/TRANSACTION_WAIT_ERROR';
+export const transactionWait = makeApiCall(transactionApi.transactionWait, TRANSACTION_WAIT_START, TRANSACTION_WAIT_SUCCESS, TRANSACTION_WAIT_ERROR);
 
 export const SET_CONFIG = 'SYSTEM/SET_CONFIG'
 export const ADD_WALLET = 'USER/ADD_WALLET';
