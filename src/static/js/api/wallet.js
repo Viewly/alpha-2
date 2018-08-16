@@ -54,7 +54,7 @@ export async function sendView(baseUrl, { amount, address, privateKey, gasPrice 
   const viewAmount = utils.parseEther(amount);
 
   const { hash } = gasPrice
-    ? await authorizedContract.transfer(address, viewAmount, { gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
+    ? await authorizedContract.transfer(address, viewAmount, { gasLimit: 40000, gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
     : await authorizedContract.transfer(address, viewAmount);
 
   return hash;
