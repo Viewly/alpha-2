@@ -76,7 +76,8 @@ class VoteApi(Resource):
             timestamp_delta = \
                 (dt.datetime.utcnow() -
                  dt.datetime.utcfromtimestamp(message[2]['value'])).seconds
-            assert 0 <= timestamp_delta < 3600, 'Vote is older than 1 hour'
+            assert abs(timestamp_delta) < 600, \
+                'Timestamp is more than 10 minutes out of sync with UTC'
             assert is_typed_signature_valid(
                 message, vote.ecc_signature, vote.eth_address)
 
