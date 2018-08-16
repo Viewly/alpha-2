@@ -31,6 +31,7 @@ export default class WalletSingleWithdraw extends Component {
   componentDidMount () {
     const { gasPrice } = this.props;
     this.setState({ gasPrice: gasPrice.normal });
+    window.jQuery(this.selectRef).dropdown();
   }
 
   componentDidUpdate(prevProps) {
@@ -184,7 +185,7 @@ export default class WalletSingleWithdraw extends Component {
               <div className='five wide field'>
                 <label>Gas price</label>
 
-                <select className="ui fluid dropdown" value={this.state.gasPrice} onChange={this.toggleGasPrice}>
+                <select ref={ref => this.selectRef = ref} className="ui fluid dropdown" value={this.state.gasPrice} onChange={this.toggleGasPrice}>
                   <option value={gasPrice.normal}>Regular ({gasPrice.normal} gwei)</option>
                   <option value={gasPrice.fast}>Fast ({gasPrice.fast} gwei)</option>
                   <option value="custom">Custom</option>
