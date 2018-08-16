@@ -332,12 +332,6 @@ def auth_token():
     return jsonify({'auth_token': current_user.get_auth_token()})
 
 
-@app.route('/gas_price', methods=['GET'])
-def get_gas_price():
-    price = gas_price()
-    return jsonify({'normal': price-4, 'fast': price})
-
-
 @app.errorhandler(404)
 def page_not_found(_):
     return render_template('404.html'), 404
