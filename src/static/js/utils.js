@@ -111,3 +111,7 @@ export function checkAddressValidity(address) {
     return 'error';
   }
 }
+
+export function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}

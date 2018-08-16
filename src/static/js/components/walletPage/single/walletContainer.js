@@ -2,7 +2,7 @@ import React, { Component} from "react";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import { fetchBalance } from '../../../actions';
+import { fetchBalance, fetchGasPrice } from '../../../actions';
 import { getWalletByAddress } from '../../../utils';
 
 @withRouter
@@ -11,6 +11,7 @@ import { getWalletByAddress } from '../../../utils';
   config: state.config
 }), (dispatch) => ({
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
+  fetchGasPrice: () => dispatch(fetchGasPrice()),
 }))
 export default class WalletContainer extends Component {
   constructor (props) {
@@ -25,9 +26,10 @@ export default class WalletContainer extends Component {
   }
 
   async componentDidMount() {
-    const { fetchBalance } = this.props;
+    const { fetchBalance, fetchGasPrice } = this.props;
 
     fetchBalance(this.state.address);
+    fetchGasPrice();
   }
 
   generateEtherscanUrl = () => {
