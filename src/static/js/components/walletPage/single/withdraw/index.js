@@ -138,12 +138,12 @@ export default class WalletSingleWithdraw extends Component {
 
           <div className={`field ${!balanceValidity ? 'error' : ''}`}>
             <label>Amount</label>
-            <input type="text" name="first-name" placeholder="0" value={this.state.amount} onChange={(e) => this.setState({ amount: e.target.value })} />
+            <input type="text" name="first-name" placeholder="0" value={this.state.amount} onChange={(e) => this.setState({ amount: e.target.value })} maxLength={100} />
           </div>
 
           <div className={`field ${addressValidity === 'error' ? 'error' : ''}`}>
             <label>Send to</label>
-            <input type="text" name="last-name" placeholder="0x123abc..." value={this.state.address} onChange={(e) => this.setState({ address: e.target.value })} />
+            <input type="text" name="last-name" placeholder="0x123abc..." value={this.state.address} onChange={(e) => this.setState({ address: e.target.value })} maxLength={100} />
 
             <div className="ui warning message">
               <div className="header">Double check the address!</div>
