@@ -7,7 +7,6 @@ from eth_account import Account
 from eth_utils import (
     decode_hex,
     keccak,
-    is_0x_prefixed,
     to_checksum_address,
     from_wei,
     is_address,
@@ -263,13 +262,16 @@ def pack(*args) -> bytes:
         else:
             return decode_hex('{:x}'.format((1 << size) + value))
 
+    def is_valid_hex(value: str):
+        return all(x in 'x0123456789abcdefABCDEF' for x in value)
+
     msg = b''
     for arg in args:
         assert arg is not None
         if isinstance(arg, bytes):
             msg += arg
         elif isinstance(arg, str):
-            if is_0x_prefixed(arg):
+            if is_valid_hex(arg):
                 msg += decode_hex(arg)
             else:
                 msg += arg.encode()
