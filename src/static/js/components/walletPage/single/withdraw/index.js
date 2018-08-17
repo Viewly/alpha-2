@@ -34,7 +34,6 @@ export default class WalletSingleWithdraw extends Component {
     const type = match.params.type.toLowerCase();
 
     this.setState({ gasPrice: gasPrice.normal, gasLimit: type === 'eth' ? 21000 : 60000 });
-    window.jQuery(this.selectRef).dropdown();
   }
 
   componentDidUpdate(prevProps) {
@@ -108,7 +107,6 @@ export default class WalletSingleWithdraw extends Component {
     if (isNumeric(val)) {
       this.setState({ gasPrice: e.target.value, customGasPrice: false });
     } else {
-      window.jQuery(this.selectRef).remove();
       this.setState({ customGasPrice: true })
     }
   }
