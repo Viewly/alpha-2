@@ -37,24 +37,24 @@ export async function fetchBalance(baseUrl, { address }) {
   };
 }
 
-export async function sendEthereum(baseUrl, { amount, address, privateKey, gasPrice = false }) {
+export async function sendEthereum(baseUrl, { amount, address, privateKey, gasPrice = false, gasLimit = 21000 }) {
   const wallet = new Wallet(privateKey, provider);
   const etherAmount = utils.parseEther(amount);
 
   const { hash } = gasPrice
-    ? await wallet.send(address, etherAmount, { gasLimit: 21000, gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
+    ? await wallet.send(address, etherAmount, { gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
     : await wallet.send(address, etherAmount)
 
   return hash;
 }
 
-export async function sendView(baseUrl, { amount, address, privateKey, gasPrice = false }) {
+export async function sendView(baseUrl, { amount, address, privateKey, gasPrice = false, gasLimit = 60000 }) {
   const wallet = new Wallet(privateKey, provider);
   const authorizedContract = contractSigned(wallet);
   const viewAmount = utils.parseEther(amount);
 
   const { hash } = gasPrice
-    ? await authorizedContract.transfer(address, viewAmount, { gasLimit: 40000, gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
+    ? await authorizedContract.transfer(address, viewAmount, { gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
     : await authorizedContract.transfer(address, viewAmount);
 
   return hash;

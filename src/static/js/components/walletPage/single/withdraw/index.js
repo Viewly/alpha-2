@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from 'react-router-dom';
 import Item from '../home/item';
@@ -13,8 +13,8 @@ import { STATUS_TYPE } from '../../../../constants';
   gasPrice: state.gasPrice,
   transaction: state.transaction,
 }), (dispatch) => ({
-  sendEthereum: ({ amount, address, privateKey, gasPrice }) => dispatch(sendEthereum({ amount, address, privateKey, gasPrice })),
-  sendView: ({ amount, address, privateKey, gasPrice }) => dispatch(sendView({ amount, address, privateKey, gasPrice })),
+  sendEthereum: ({ amount, address, privateKey, gasPrice, gasLimit }) => dispatch(sendEthereum({ amount, address, privateKey, gasPrice, gasLimit })),
+  sendView: ({ amount, address, privateKey, gasPrice, gasLimit }) => dispatch(sendView({ amount, address, privateKey, gasPrice, gasLimit })),
   transactionWait: (txn_id) => dispatch(transactionWait({ txn_id })),
   fetchBalance: (address) => dispatch(fetchBalance({ address }))
 }))
@@ -23,14 +23,17 @@ export default class WalletSingleWithdraw extends Component {
     address: '',
     amount: '0',
     gasPrice: '',
+    gasLimit: 0,
     customGasPrice: false,
     loading: false,
     error: ''
   }
 
   componentDidMount () {
-    const { gasPrice } = this.props;
-    this.setState({ gasPrice: gasPrice.normal });
+    const { gasPrice, match } = this.props;
+    const type = match.params.type.toLowerCase();
+
+    this.setState({ gasPrice: gasPrice.normal, gasLimit: type === 'eth' ? 21000 : 60000 });
     window.jQuery(this.selectRef).dropdown();
   }
 
@@ -67,13 +70,15 @@ export default class WalletSingleWithdraw extends Component {
   }
 
   doWithdraw = async ({ type, address, amount }) => {
-    const { sendEthereum, sendView, history, wallet, transactionWait, fetchBalance } = this.props;
-    let hash;
+    const { sendEthereum, sendView, history, wallet: { privateKey, address: myAddress }, transactionWait, fetchBalance } = this.props;
+    const { gasPrice, gasLimit } = this.state;
+    const sendData = { address, amount, privateKey, gasPrice, gasLimit };
 
+    let hash;
     try {
       switch (type.toUpperCase()) {
-        case 'ETH': hash = await sendEthereum({ address, amount, privateKey: wallet.privateKey, gasPrice: this.state.gasPrice }); break;
-        case 'VIEW': hash = await sendView({ address, amount, privateKey: wallet.privateKey, gasPrice: this.state.gasPrice }); break;
+        case 'ETH': hash = await sendEthereum(sendData); break;
+        case 'VIEW': hash = await sendView(sendData); break;
       }
     } catch (e) {
       this.setState({ loading: false, error: e.message });
@@ -84,16 +89,16 @@ export default class WalletSingleWithdraw extends Component {
     if (this.props.transaction.receipt && this.props.transaction.receipt.status === 0) {
       this.setState({ loading: false });
     } else {
-      await fetchBalance(wallet.address);
-      history.push(`/wallet/${wallet.address}`);
+      await fetchBalance(myAddress);
+      history.push(`/wallet/${myAddress}`);
     }
 
   }
 
   getCurrentBalance = () => {
     const { match, wallet } = this.props;
-
     const type = match.params.type.toLowerCase();
+
     return (type === 'eth') ? wallet.balanceEth : wallet.balanceView;
   }
 
@@ -103,6 +108,7 @@ export default class WalletSingleWithdraw extends Component {
     if (isNumeric(val)) {
       this.setState({ gasPrice: e.target.value, customGasPrice: false });
     } else {
+      window.jQuery(this.selectRef).remove();
       this.setState({ customGasPrice: true })
     }
   }
@@ -180,27 +186,37 @@ export default class WalletSingleWithdraw extends Component {
             </div>
           </div>
 
-          <div className='fields'>
             {!this.state.customGasPrice && (
-              <div className='five wide field'>
-                <label>Gas price</label>
+              <div className='fields'>
+                <div className='five wide field'>
+                  <label>Gas price</label>
 
-                <select ref={ref => this.selectRef = ref} className="ui fluid dropdown" value={this.state.gasPrice} onChange={this.toggleGasPrice}>
-                  <option value={gasPrice.normal}>Regular ({gasPrice.normal} gwei)</option>
-                  <option value={gasPrice.fast}>Fast ({gasPrice.fast} gwei)</option>
-                  <option value="custom">Custom</option>
-                </select>
+                  <select ref={ref => this.selectRef = ref} className="ui fluid dropdown" value={this.state.gasPrice} onChange={this.toggleGasPrice}>
+                    <option value={gasPrice.normal}>Regular ({gasPrice.normal} gwei)</option>
+                    <option value={gasPrice.fast}>Fast ({gasPrice.fast} gwei)</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
               </div>
             )}
 
             {this.state.customGasPrice && (
-              <div className='five wide field'>
-                <label>Custom gas price (gwei)</label>
-                <input type="number" value={this.state.gasPrice} onChange={(e) => this.setState({ gasPrice: e.target.value })} maxLength={100} />
-              </div>
+              <Fragment>
+                <div className='fields'>
+                  <div className='five wide field'>
+                    <label>Custom gas price (gwei)</label>
+                    <input type="number" value={this.state.gasPrice} onChange={(e) => this.setState({ gasPrice: e.target.value })} maxLength={100} />
+                  </div>
+                </div>
+                <div className='fields'>
+                  <div className='five wide field'>
+                    <label>Gas Limit</label>
+                    <input type="number" value={this.state.gasLimit} onChange={(e) => this.setState({ gasLimit: e.target.value })} maxLength={100} />
+                  </div>
+                </div>
+              </Fragment>
             )}
 
-          </div>
 
           <button className={`ui button primary ${!canSend ? 'disabled' : ''}`} onClick={this.sendConfirm}>Submit</button>
           <Link to={`/wallet/${wallet.address}`} className="ui button">Cancel</Link>
