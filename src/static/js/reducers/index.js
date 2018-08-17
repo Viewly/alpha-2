@@ -13,6 +13,10 @@ const initialState = {
     view: 0,
     eth: 0
   },
+  gasPrice: {
+    normal: 10,
+    fast: 16
+  },
   walletUnlockModal: false,
   videoPublisher: {
     priceEth: -1,
@@ -39,6 +43,9 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, config: action.payload };
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
+
+    case actions.GAS_PRICE_FETCH_SUCCESS:
+      return { ...state, gasPrice: { ...action.data }};
 
     case actions.TRANSACTION_WAIT_START:
       return { ...state, transaction: { ...state.transaction, _status: STATUS_TYPE.LOADING, error: '' }};

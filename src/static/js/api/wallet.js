@@ -17,6 +17,14 @@ export async function walletSave (baseUrl, data) {
   return body.data;
 }
 
+export async function fetchGasPrice(baseUrl) {
+  const url = `${baseUrl}/gas_price`;
+  const { body } = await get(url);
+
+  return body;
+}
+
+
 export async function fetchBalance(baseUrl, { address }) {
   const etherBN = await provider.getBalance(address);
   const viewBN = await contract.balanceOf(address);
@@ -29,21 +37,25 @@ export async function fetchBalance(baseUrl, { address }) {
   };
 }
 
-export async function sendEthereum(baseUrl, { amount, address, privateKey }) {
+export async function sendEthereum(baseUrl, { amount, address, privateKey, gasPrice = false, gasLimit = 21000 }) {
   const wallet = new Wallet(privateKey, provider);
   const etherAmount = utils.parseEther(amount);
 
-  const { hash } = await wallet.send(address, etherAmount);
+  const { hash } = gasPrice
+    ? await wallet.send(address, etherAmount, { gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
+    : await wallet.send(address, etherAmount)
 
   return hash;
 }
 
-export async function sendView(baseUrl, { amount, address, privateKey }) {
+export async function sendView(baseUrl, { amount, address, privateKey, gasPrice = false, gasLimit = 60000 }) {
   const wallet = new Wallet(privateKey, provider);
   const authorizedContract = contractSigned(wallet);
   const viewAmount = utils.parseEther(amount);
 
-  const { hash } = await authorizedContract.transfer(address, viewAmount);
+  const { hash } = gasPrice
+    ? await authorizedContract.transfer(address, viewAmount, { gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
+    : await authorizedContract.transfer(address, viewAmount);
 
   return hash;
 }
