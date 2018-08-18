@@ -4,6 +4,7 @@ funcy
 toolz
 flask
 Flask-Security
+Flask-Recaptcha
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Misaka

@@ -1,15 +1,20 @@
 from os import getenv
 
 import delegator
-from flask import (
-    Flask,
-)
+from flask import Flask
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_misaka import Misaka
+from flask_recaptcha import ReCaptcha
 from flask_security import (
     Security,
     SQLAlchemyUserDatastore,
+)
+from flask_security.forms import (
+    RegisterForm,
+    LoginForm,
+    ForgotPasswordForm,
+    SendConfirmationForm,
 )
 from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
@@ -39,8 +44,50 @@ Misaka(app, **md_features)
 from . import models
 
 # Setup Flask-Security
+recaptcha = ReCaptcha(app=app)
+
+
+class ExtendedLoginForm(LoginForm):
+    def validate(self):
+        if not recaptcha.verify():
+            self.password.errors = self.password.errors + (
+                "Error completing ReCaptcha below",)
+            return False
+        return super(ExtendedLoginForm, self).validate()
+
+
+class ExtendedRegisterForm(RegisterForm):
+    def validate(self):
+        if not recaptcha.verify():
+            self.password.errors = self.password.errors + (
+                "Error completing ReCaptcha below",)
+            return False
+        return super(ExtendedRegisterForm, self).validate()
+
+
+class ExtendedForgotPasswordForm(ForgotPasswordForm):
+    def validate(self):
+        if not recaptcha.verify():
+            return False
+        return super(ExtendedForgotPasswordForm, self).validate()
+
+
+class ExtendedSendConfirmationForm(SendConfirmationForm):
+    def validate(self):
+        if not recaptcha.verify():
+            return False
+        return super(ExtendedSendConfirmationForm, self).validate()
+
+
 user_datastore = SQLAlchemyUserDatastore(db, models.User, models.Role)
-security = Security(app, user_datastore)
+security = Security(
+    app,
+    user_datastore,
+    login_form=ExtendedLoginForm,
+    register_form=ExtendedRegisterForm,
+    forgot_password_form=ExtendedForgotPasswordForm,
+    send_confirmation_form=ExtendedSendConfirmationForm,
+)
 
 # Register Blueprints
 from .b_admin import admin as admin_blueprint
