@@ -38,6 +38,9 @@ export async function fetchBalance(baseUrl, { address }) {
 }
 
 export async function sendEthereum(baseUrl, { amount, address, privateKey, gasPrice = false, gasLimit = 21000 }) {
+  if (!privateKey) {
+    throw new Error('No private key is supplied. Is wallet locked?');
+  }
   const wallet = new Wallet(privateKey, provider);
   const etherAmount = utils.parseEther(amount);
 
@@ -49,6 +52,9 @@ export async function sendEthereum(baseUrl, { amount, address, privateKey, gasPr
 }
 
 export async function sendView(baseUrl, { amount, address, privateKey, gasPrice = false, gasLimit = 60000 }) {
+  if (!privateKey) {
+    throw new Error('No private key is supplied. Is wallet locked?');
+  }
   const wallet = new Wallet(privateKey, provider);
   const authorizedContract = contractSigned(wallet);
   const viewAmount = utils.parseEther(amount);
@@ -61,6 +67,9 @@ export async function sendView(baseUrl, { amount, address, privateKey, gasPrice 
 }
 
 export async function authorizeAllowance(baseUrl, { amount = 0, address, privateKey }) {
+  if (!privateKey) {
+    throw new Error('No private key is supplied. Is wallet locked?');
+  }
   const wallet = new Wallet(privateKey, provider);
   const authorizedContract = contractSigned(wallet);
 
