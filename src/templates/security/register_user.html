@@ -26,6 +26,7 @@
         {{ render_field_with_errors(register_user_form.password_confirm) }}
       {% endif %}
 
+      {{ recaptcha }}
       <button class="c-btn--primary ui blue button large u-margin-top">Register</button>
     </form>
     <br>
