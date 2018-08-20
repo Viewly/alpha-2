@@ -30,24 +30,31 @@ export default class Strength extends Component {
   }
 
   componentDidMount () {
+    const { password } = this.props;
+
     this.progress = window.jQuery(this.ref);
+    this.handlePassword(password);
   }
 
   componentDidUpdate (prevProps) {
     const { password } = this.props;
 
     if (prevProps.password !== password) {
-      if (password.length === 0) {
-        this.progress.progress({ percent: 0 });
-        this.setState({ currentStatusText: 'Very weak' });
-      } else {
-        const strengthTester = new taiPasswordStrength.PasswordStrength();
-        const results = strengthTester.check(password);
-        const current = this.statuses[results.strengthCode];
+      this.handlePassword(password);
+    }
+  }
 
-        this.progress.progress({ percent: current.percentage });
-        this.setState({ currentStatusText: this.statuses[results.strengthCode].label });
-      }
+  handlePassword = (password) => {
+    if (password.length === 0) {
+      this.progress.progress({ percent: 0 });
+      this.setState({ currentStatusText: 'Very weak' });
+    } else {
+      const strengthTester = new taiPasswordStrength.PasswordStrength();
+      const results = strengthTester.check(password);
+      const current = this.statuses[results.strengthCode];
+
+      this.progress.progress({ percent: current.percentage });
+      this.setState({ currentStatusText: this.statuses[results.strengthCode].label });
     }
   }
 
