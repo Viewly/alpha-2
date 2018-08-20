@@ -1,0 +1,4 @@
+.ui.button.viewly-icon {
+    background: url(../../../img/logo.svg) no-repeat calc(100% - 6px) center;
+    background-size: 27px;
+}
