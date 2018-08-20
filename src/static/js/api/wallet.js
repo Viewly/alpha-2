@@ -24,7 +24,6 @@ export async function fetchGasPrice(baseUrl) {
   return body;
 }
 
-
 export async function fetchBalance(baseUrl, { address }) {
   const etherBN = await provider.getBalance(address);
   const viewBN = await contract.balanceOf(address);
@@ -37,15 +36,23 @@ export async function fetchBalance(baseUrl, { address }) {
   };
 }
 
+async function isAddressContract (address) {
+  const code = await provider.getCode(address);
+
+  return code !== '0x';
+}
+
 export async function sendEthereum(baseUrl, { amount, address, privateKey, gasPrice = false, gasLimit = 21000 }) {
   if (!privateKey) {
     throw new Error('No private key is supplied. Is wallet locked?');
   }
   const wallet = new Wallet(privateKey, provider);
   const etherAmount = utils.parseEther(amount);
+  const isContract = await isAddressContract(address);
+  const txnGasLimit = (gasLimit === 21000 && isContract) ? 300000 : gasLimit;
 
   const { hash } = gasPrice
-    ? await wallet.send(address, etherAmount, { gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
+    ? await wallet.send(address, etherAmount, { gasLimit: parseInt(txnGasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') })
     : await wallet.send(address, etherAmount)
 
   return hash;
