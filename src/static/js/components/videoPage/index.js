@@ -5,6 +5,7 @@ import { STATUS_TYPE } from '../../constants';
 import { videoVote, unlockModalOpen } from '../../actions';
 import Portal from '../portal';
 import { saveVoteCache } from '../../utils';
+require('./index.css');
 
 @connect((state, props) => ({
   wallet: state.wallet,
@@ -38,20 +39,20 @@ export default class VideoPage extends Component {
     const { vote, wallet } = this.props;
 
     if (wallet._status === STATUS_TYPE.LOADING) {
-      return <a href='javascript:;' className="ui button c-btn--secondary">Loading wallet</a>;
+      return <a href='javascript:;' className="ui button c-btn--secondary right labeled icon viewly-icon">Loading wallet</a>;
     } else if (!wallet.address) {
-      return <a href='/wallet' className="ui button c-btn--secondary">Vote (new)</a>; // fake vote button - takes you to /wallet page
+      return <a href='/wallet' className="ui button c-btn--secondary right labeled icon viewly-icon">Vote</a>; // fake vote button - takes you to /wallet page
     }
 
     switch (vote) {
       case STATUS_TYPE.LOADING:
-        return <a href='javascript:;' className="ui button c-btn--secondary">Voting ...</a>;
+        return <a href='javascript:;' className="ui button c-btn--secondary right labeled icon viewly-icon">Voting ...</a>;
       case STATUS_TYPE.ERROR:
-        return <a href='javascript:;' onClick={this.voteClick} className="ui button c-btn--secondary">Try again</a>;
+        return <a href='javascript:;' onClick={this.voteClick} className="ui button c-btn--secondary right labeled icon viewly-icon">Try again</a>;
       case true:
-        return <a href='javascript:;' className="ui button c-btn--secondary disabled"><i className='check icon' />Voted</a>;
+        return <a href='javascript:;' className="ui button c-btn--secondary disabled right labeled icon viewly-icon"><i className='check icon' />Voted</a>;
       default:
-        return <a href='javascript:;' onClick={this.voteClick} className="ui button c-btn--secondary">Vote (new)</a>;
+        return <a href='javascript:;' onClick={this.voteClick} className="ui button c-btn--secondary right labeled icon viewly-icon">Vote</a>;
     }
   }
 
