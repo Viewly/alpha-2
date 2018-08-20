@@ -1,5 +1,6 @@
 import React, { Component} from "react";
 import { Wallet } from 'ethers';
+import Strength from './strength';
 
 export default class GeneratorStep3 extends Component {
   state = {
@@ -36,15 +37,27 @@ export default class GeneratorStep3 extends Component {
 
         {!this.state.encrypting && (
           <div className="ui form">
-            <div className="twelve wide field">
-              <label>Encryption password</label>
-              <input ref={(ref) => this.passwordInput = ref} type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} autoComplete="new-password" />
-              <div className="ui pointing label">
-                If you forget this password, only way to recover is using mnemonic words
+            <div className="ui grid middle aligned">
+
+              <div className="eight wide column">
+                <div className="field">
+                  <label>Encryption password</label>
+                  <input ref={(ref) => this.passwordInput = ref} type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} autoComplete="new-password" />
+                  <div className="ui pointing label">
+                    If you forget this password, only way to recover is using mnemonic words
+                  </div>
+                </div>
+              </div>
+
+              <div className="eight wide column">
+                {this.state.password && <Strength password={this.state.password} />}
+              </div>
+
+              <div className="eight wide column">
+                <button className='ui button right labeled icon primary' onClick={this.encryptWallet}><i className="right lock icon"></i> Encrypt</button>
               </div>
             </div>
 
-            <button className='ui button right labeled icon primary' onClick={this.encryptWallet}><i className="right lock icon"></i> Encrypt</button>
           </div>
         )}
 
