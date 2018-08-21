@@ -74,9 +74,11 @@ class VoteApi(Resource):
             assert vote.video_id == message[0]['value']
             assert vote.weight == message[1]['value']
             assert 0 < vote.weight <= 100, f'Invalid Voting Weight of {vote.weight}'
-            timestamp_delta = \
-                (dt.datetime.utcnow() -
-                 dt.datetime.utcfromtimestamp(message[2]['value'])).seconds
+            t1, t2 = sorted([
+                dt.datetime.utcnow(),
+                dt.datetime.utcfromtimestamp(message[2]['value']),
+            ])
+            timestamp_delta = (t2 - t1).seconds
             assert abs(timestamp_delta) < 600, \
                 'Timestamp is more than 10 minutes out of sync with UTC'
             assert is_typed_signature_valid(
