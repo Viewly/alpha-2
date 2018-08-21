@@ -115,6 +115,10 @@ export default class PublishVideoPage extends Component {
       return <button className='ui button large primary disabled'>Loading ...</button>;
     }
 
+    if (!wallet.address) {
+      return <a href='/wallet' className="ui button primary">{publishText}</a>;
+    }
+
     if (isPublished) {
       return <div>Video has been published, and will be live in a few minutes. <i className="checkmark icon green"></i></div>
     }
