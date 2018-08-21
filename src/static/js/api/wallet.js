@@ -30,9 +30,9 @@ export async function fetchBalance(baseUrl, { address }) {
   const allowance = await contract.allowance(address, CONTRACT_VIDEO_PUBLISHER);
 
   return {
-    balanceEth: utils.formatEther(etherBN),
-    balanceView: utils.formatEther(viewBN),
-    allowance: utils.formatEther(allowance)
+    balanceEth: +utils.formatEther(etherBN),
+    balanceView: +utils.formatEther(viewBN),
+    allowance: +utils.formatEther(allowance)
   };
 }
 

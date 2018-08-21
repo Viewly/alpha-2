@@ -11,9 +11,9 @@ export async function fetchVideoPublisherData(baseUrl, { videoHex = false }) {
     : false;
 
   return {
-    priceView: utils.formatEther(priceView),
+    priceView: +utils.formatEther(priceView),
     priceViewBn: priceView,
-    priceEth: utils.formatEther(priceEth),
+    priceEth: +utils.formatEther(priceEth),
     priceEthBn: priceEth,
     isPublished
   };
