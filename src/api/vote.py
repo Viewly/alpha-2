@@ -15,6 +15,7 @@ from ..core.eth import (
     is_typed_signature_valid,
     is_same_address,
 )
+from ..core.utils import log_exception
 from ..models import Vote, Video
 
 
@@ -84,9 +85,10 @@ class VoteApi(Resource):
             db.session.add(vote)
             db.session.commit()
         except AssertionError as e:
+            log_exception()
             return dict(message=str(e)), 400
         except Exception as e:
-            # todo, log exception to sentry
+            log_exception()
             return dict(message=str(e)), 500
 
         return vote_schema.dump(vote).data
