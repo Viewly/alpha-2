@@ -44,7 +44,9 @@ from .models import (
 # ------
 @app.route('/')
 def index():
-    return redirect(url_for('new'))
+    if current_user and current_user.is_authenticated:
+        return redirect(url_for('new'))
+    return redirect(url_for('trending'))
 
 
 @app.route('/v/<string:video_id>', methods=['GET'])
