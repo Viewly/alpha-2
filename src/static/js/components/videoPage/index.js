@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { STATUS_TYPE } from '../../constants';
-import { videoVote, unlockModalOpen } from '../../actions';
+import { videoVote, unlockModalOpen, fetchBalance } from '../../actions';
 import Portal from '../portal';
 import { saveVoteCache } from '../../utils';
 require('./index.css');
+
+const VOTE_TOKENS_NEEDED = 100;
 
 @connect((state, props) => ({
   wallet: state.wallet,
@@ -13,14 +15,42 @@ require('./index.css');
 }), (dispatch) => ({
   videoVote: (videoId) => dispatch(videoVote(videoId)),
   unlockModalOpen: () => dispatch(unlockModalOpen()),
+  fetchBalance: (address) => dispatch(fetchBalance({ address })),
 }))
 export default class VideoPage extends Component {
+  componentDidMount () {
+    const { fetchBalance, wallet } = this.props;
+
+    wallet.status === 'loaded' && fetchBalance(wallet.address);
+
+    this.modal = window.jQuery(this.ref).modal();
+    this.modal.modal({ inverted: true });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { fetchBalance, wallet } = this.props;
+
+    if (wallet.address !== prevProps.wallet.address) {
+      fetchBalance(wallet.address);
+    }
+  }
+
+  modalOpen = () => {
+    this.modal.modal('show');
+  }
+
+  modalClose = () => {
+    this.modal.modal('hide');
+  }
+
   voteClick = async () => {
     const { wallet, unlockModalOpen, videoVote, match: { params: { videoId } } } = this.props;
     const { address, privateKey } = wallet;
 
     if (!wallet.decrypted) {
       unlockModalOpen();
+    } else if (wallet.balanceView < VOTE_TOKENS_NEEDED) {
+      this.modalOpen();
     } else {
       const response = await videoVote({ videoId, address, privateKey });
 
@@ -60,6 +90,19 @@ export default class VideoPage extends Component {
     return (
       <Portal container='react-vote'>
         {this.showVoteButton()}
+
+        <div ref={(ref) => this.ref = ref} className='ui mini modal'>
+          <div className='header'>Insufficient VIEW Tokens</div>
+          <div className='content'>
+            <p>Voting is free, however it does require at least {VOTE_TOKENS_NEEDED} VIEW Tokens in your
+            Ethereum wallet <i>(for a minimum of 7 days)</i>.</p>
+          </div>
+
+          <div className="actions">
+            <div className="ui button" onClick={() => this.modalClose()}>Cancel</div>
+          </div>
+        </div>
+
       </Portal>
     )
   }
