@@ -23,7 +23,7 @@ export async function publishVideo(baseUrl, { videoHex, address, privateKey, val
   const wallet = new Wallet(privateKey, provider);
   const authorizedContract = videoContractSigned(wallet);
 
-  const { hash } = await authorizedContract.publish(videoHex, { value }, { gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') });
+  const { hash } = await authorizedContract.publish(videoHex, { value, gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') });
 
   return hash;
 }
