@@ -19,11 +19,11 @@ export async function fetchVideoPublisherData(baseUrl, { videoHex = false }) {
   };
 }
 
-export async function publishVideo(baseUrl, { videoHex, address, privateKey, value = 0 }) {
+export async function publishVideo(baseUrl, { videoHex, address, privateKey, value = 0, gasPrice = false, gasLimit = 60000 }) {
   const wallet = new Wallet(privateKey, provider);
   const authorizedContract = videoContractSigned(wallet);
 
-  const { hash } = await authorizedContract.publish(videoHex, { value });
+  const { hash } = await authorizedContract.publish(videoHex, { value, gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') });
 
   return hash;
 }

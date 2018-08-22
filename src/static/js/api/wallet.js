@@ -73,14 +73,14 @@ export async function sendView(baseUrl, { amount, address, privateKey, gasPrice 
   return hash;
 }
 
-export async function authorizeAllowance(baseUrl, { amount = 0, address, privateKey }) {
+export async function authorizeAllowance(baseUrl, { amount = 0, address, privateKey, gasPrice, gasLimit = 100000 }) {
   if (!privateKey) {
     throw new Error('No private key is supplied. Is wallet locked?');
   }
   const wallet = new Wallet(privateKey, provider);
   const authorizedContract = contractSigned(wallet);
 
-  const { hash } = await authorizedContract.approve(CONTRACT_VIDEO_PUBLISHER, amount);
+  const { hash } = await authorizedContract.approve(CONTRACT_VIDEO_PUBLISHER, amount, { gasLimit: parseInt(gasLimit, 10), gasPrice: utils.parseUnits(gasPrice.toString(), 'gwei') });
 
   return hash;
 }

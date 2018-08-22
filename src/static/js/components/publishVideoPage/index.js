@@ -6,7 +6,8 @@ import {
   fetchBalance,
   fetchVideoPublisherData,
   authorizeAllowance,
-  publishVideo
+  publishVideo,
+  transactionWait
 } from '../../actions';
 import Portal from '../portal';
 
@@ -16,33 +17,44 @@ import { roundTwoDecimals } from '../../utils';
 @connect((state, props) => ({
   wallet: state.wallet,
   prices: state.prices,
-  videoPublisher: state.videoPublisher
+  gasPrice: state.gasPrice,
+  videoPublisher: state.videoPublisher,
+  transaction: state.transaction
 }), (dispatch) => ({
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
   fetchVideoPublisherData: ({ videoHex }) => dispatch(fetchVideoPublisherData({ videoHex })),
-  authorizeAllowance: ({ address, privateKey, amount }) => dispatch(authorizeAllowance({ address, privateKey, amount })),
-  publishVideo: ({ address, privateKey, videoHex, value }) => dispatch(publishVideo({ address, privateKey, videoHex, value })),
+  transactionWait: (txn_id) => dispatch(transactionWait({ txn_id })),
+  authorizeAllowance: ({ address, privateKey, amount, gasPrice, gasLimit }) => dispatch(authorizeAllowance({ address, privateKey, amount, gasPrice, gasLimit })),
+  publishVideo: ({ address, privateKey, videoHex, value, gasPrice, gasLimit }) => dispatch(publishVideo({ address, privateKey, videoHex, value, gasPrice, gasLimit })),
 }))
 export default class PublishVideoPage extends Component {
   state = {
     txnPending: false,
     txnId: '',
-    errorText: ''
+    errorText: '',
+    gasPrice: '',
+    gasLimit: 0,
+    customGasPrice: false
   }
 
   componentDidMount() {
-    const { fetchBalance, wallet } = this.props;
+    const { fetchBalance, wallet, gasPrice } = this.props;
 
     this.loadVideoContractData();
+    this.setState({ gasPrice: gasPrice.normal, gasLimit: 100000 });
     wallet.status === 'loaded' && fetchBalance(wallet.address);
   }
 
   componentDidUpdate(prevProps) {
-    const { fetchBalance, wallet } = this.props;
+    const { fetchBalance, wallet, gasPrice } = this.props;
 
     if (wallet.address !== prevProps.wallet.address) {
       fetchBalance(wallet.address);
+    }
+
+    if (gasPrice.normal !== prevProps.gasPrice.normal) {
+      this.setState({ gasPrice: gasPrice.normal });
     }
   }
 
@@ -53,32 +65,11 @@ export default class PublishVideoPage extends Component {
     await fetchVideoPublisherData({ videoHex });
   }
 
-  waitForTxn = async (txn_id) => {
-    const { wallet, fetchBalance } = this.props;
-
-    const wait = await new Promise(resolve => {
-      const refreshInterval = setInterval(async () => {
-        const txn = await provider.getTransaction(txn_id);
-
-        if (txn && txn.blockHash) {
-          clearInterval(refreshInterval);
-          resolve();
-        }
-      }, 1000);
-    });
-
-    await Promise.all([
-      fetchBalance(wallet.address),
-      this.loadVideoContractData()
-    ]);
-
-    this.setState({ txnPending: false, txnId: '' });
-  }
-
   publishClick = (type) => async () => {
-    const { wallet, unlockModalOpen, videoPublisher, authorizeAllowance, publishVideo } = this.props;
+    const { wallet, unlockModalOpen, videoPublisher, authorizeAllowance, publishVideo, transactionWait, fetchBalance } = this.props;
     const { address, privateKey } = wallet;
     const { videoHex } = this.ref.container.dataset;
+    const { gasPrice, gasLimit } = this.state;
 
     if (!wallet.decrypted) {
       unlockModalOpen();
@@ -90,15 +81,26 @@ export default class PublishVideoPage extends Component {
       try {
         if (type === 'authorize') {
           const amount = videoPublisher.priceViewBn.mul(100); // multiply price by 100
-          hash = await authorizeAllowance({ amount, address, privateKey });
+          hash = await authorizeAllowance({ amount, address, privateKey, gasPrice, gasLimit });
         } else if ((type === 'publish') || (type === 'publish_eth')) {
-          hash = await publishVideo({ videoHex, address, privateKey, value: type === 'publish' ? 0 : videoPublisher.priceEthBn });
+          hash = await publishVideo({ videoHex, address, privateKey, value: type === 'publish' ? 0 : videoPublisher.priceEthBn, gasPrice, gasLimit });
         } else {
           throw new Error('Invalid type: ' + type);
         }
 
         this.setState({ txnId: hash, txnPending: true });
-        this.waitForTxn(hash);
+        const txn = await transactionWait(hash);
+
+        if (this.props.transaction.receipt && this.props.transaction.receipt.status === 0) {
+          this.setState({ txnPending: false, errorText: 'Transaction wasnt successful' });
+        } else {
+          await Promise.all([
+            fetchBalance(wallet.address),
+            this.loadVideoContractData()
+          ]);
+
+          this.setState({ txnPending: false, txnId: '' });
+        }
       } catch (e) {
         this.setState({ txnId: '', txnPending: false, errorText: e.message });
       }
@@ -125,9 +127,14 @@ export default class PublishVideoPage extends Component {
 
     if (this.state.txnPending) {
       return (
-        <div>
-          <div className="ui active inline loader"></div>
-          {this.state.txnId ? `Waiting for transaction to confirm - ${this.state.txnId}` : 'Sending transaction to blockchain'}
+        <div className="ui icon message">
+          <i className="notched circle loading icon"></i>
+          <div className="content">
+            <div className="header">
+              {this.state.txnId ? `Waiting for transaction to confirm` : 'Sending transaction to blockchain'}
+            </div>
+            {this.state.txnId && <p>{this.state.txnId}</p>}
+          </div>
         </div>
       );
     }
@@ -171,6 +178,9 @@ export default class PublishVideoPage extends Component {
   }
 
   render() {
+    const { videoPublisher } = this.props;
+    const { isPublished } = videoPublisher;
+
     return (
       <Portal ref={(ref) => this.ref = ref} container='react-publish'>
         {this.state.errorText && (
@@ -178,7 +188,31 @@ export default class PublishVideoPage extends Component {
             <div className='header'>{this.state.errorText}</div>
           </div>
         )}
-        {this.renderPublisher()}
+
+        {!this.state.customGasPrice && this.renderPublisher()}
+
+        {!this.state.txnPending && !isPublished && (
+          <div className="ui message">
+            {!this.state.customGasPrice && <p>Gas price for transaction will be {this.state.gasPrice} gwei, if want to customize it <a href='#' onClick={() => this.setState({ customGasPrice: true })}>click here</a></p>}
+            {this.state.customGasPrice && (
+              <div className='ui form'>
+                <div className='fields'>
+                  <div className='five wide field'>
+                    <label>Gas price (gwei)</label>
+                    <input type="number" value={this.state.gasPrice} onChange={(e) => this.setState({ gasPrice: e.target.value })} maxLength={100} />
+                  </div>
+                </div>
+                <div className='fields'>
+                  <div className='five wide field'>
+                    <label>Gas Limit</label>
+                    <input type="number" value={this.state.gasLimit} onChange={(e) => this.setState({ gasLimit: e.target.value })} maxLength={100} />
+                  </div>
+                </div>
+                <button className='ui button primary' onClick={() => this.setState({ customGasPrice: false })}>Save</button>
+              </div>
+            )}
+          </div>
+        )}
       </Portal>
     )
   }
