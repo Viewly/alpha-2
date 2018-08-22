@@ -16,33 +16,42 @@ import { roundTwoDecimals } from '../../utils';
 @connect((state, props) => ({
   wallet: state.wallet,
   prices: state.prices,
+  gasPrice: state.gasPrice,
   videoPublisher: state.videoPublisher
 }), (dispatch) => ({
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
   fetchVideoPublisherData: ({ videoHex }) => dispatch(fetchVideoPublisherData({ videoHex })),
-  authorizeAllowance: ({ address, privateKey, amount }) => dispatch(authorizeAllowance({ address, privateKey, amount })),
-  publishVideo: ({ address, privateKey, videoHex, value }) => dispatch(publishVideo({ address, privateKey, videoHex, value })),
+  authorizeAllowance: ({ address, privateKey, amount, gasPrice, gasLimit }) => dispatch(authorizeAllowance({ address, privateKey, amount, gasPrice, gasLimit })),
+  publishVideo: ({ address, privateKey, videoHex, value, gasPrice, gasLimit }) => dispatch(publishVideo({ address, privateKey, videoHex, value, gasPrice, gasLimit })),
 }))
 export default class PublishVideoPage extends Component {
   state = {
     txnPending: false,
     txnId: '',
-    errorText: ''
+    errorText: '',
+    gasPrice: '',
+    gasLimit: 0,
+    customGasPrice: false
   }
 
   componentDidMount() {
-    const { fetchBalance, wallet } = this.props;
+    const { fetchBalance, wallet, gasPrice } = this.props;
 
     this.loadVideoContractData();
+    this.setState({ gasPrice: gasPrice.normal, gasLimit: 100000 });
     wallet.status === 'loaded' && fetchBalance(wallet.address);
   }
 
   componentDidUpdate(prevProps) {
-    const { fetchBalance, wallet } = this.props;
+    const { fetchBalance, wallet, gasPrice } = this.props;
 
     if (wallet.address !== prevProps.wallet.address) {
       fetchBalance(wallet.address);
+    }
+
+    if (gasPrice.normal !== prevProps.gasPrice.normal) {
+      this.setState({ gasPrice: gasPrice.normal });
     }
   }
 
@@ -79,6 +88,7 @@ export default class PublishVideoPage extends Component {
     const { wallet, unlockModalOpen, videoPublisher, authorizeAllowance, publishVideo } = this.props;
     const { address, privateKey } = wallet;
     const { videoHex } = this.ref.container.dataset;
+    const { gasPrice, gasLimit } = this.state;
 
     if (!wallet.decrypted) {
       unlockModalOpen();
@@ -90,9 +100,9 @@ export default class PublishVideoPage extends Component {
       try {
         if (type === 'authorize') {
           const amount = videoPublisher.priceViewBn.mul(100); // multiply price by 100
-          hash = await authorizeAllowance({ amount, address, privateKey });
+          hash = await authorizeAllowance({ amount, address, privateKey, gasPrice, gasLimit });
         } else if ((type === 'publish') || (type === 'publish_eth')) {
-          hash = await publishVideo({ videoHex, address, privateKey, value: type === 'publish' ? 0 : videoPublisher.priceEthBn });
+          hash = await publishVideo({ videoHex, address, privateKey, value: type === 'publish' ? 0 : videoPublisher.priceEthBn, gasPrice, gasLimit });
         } else {
           throw new Error('Invalid type: ' + type);
         }
@@ -178,7 +188,31 @@ export default class PublishVideoPage extends Component {
             <div className='header'>{this.state.errorText}</div>
           </div>
         )}
-        {this.renderPublisher()}
+
+        {!this.state.customGasPrice && this.renderPublisher()}
+
+        {!this.state.txnPending && (
+          <div className="ui message">
+            {!this.state.customGasPrice && <p>Gas price for transaction will be {this.state.gasPrice} gwei, if want to customize it <a href='#' onClick={() => this.setState({ customGasPrice: true })}>click here</a></p>}
+            {this.state.customGasPrice && (
+              <div className='ui form'>
+                <div className='fields'>
+                  <div className='five wide field'>
+                    <label>Gas price (gwei)</label>
+                    <input type="number" value={this.state.gasPrice} onChange={(e) => this.setState({ gasPrice: e.target.value })} maxLength={100} />
+                  </div>
+                </div>
+                <div className='fields'>
+                  <div className='five wide field'>
+                    <label>Gas Limit</label>
+                    <input type="number" value={this.state.gasLimit} onChange={(e) => this.setState({ gasLimit: e.target.value })} maxLength={100} />
+                  </div>
+                </div>
+                <button className='ui button primary' onClick={() => this.setState({ customGasPrice: false })}>Save</button>
+              </div>
+            )}
+          </div>
+        )}
       </Portal>
     )
   }
