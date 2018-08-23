@@ -12,7 +12,7 @@ export default class GeneratorStep3 extends Component {
   encryptWallet = () => {
     const { wallet, changeStep } = this.props;
 
-    if (!this.state.password) {
+    if ((!this.state.password) || (this.state.password.length > 64)) {
       this.passwordInput.focus();
       this.passwordInput.parentElement.classList.add('error');
       return false;
@@ -42,7 +42,7 @@ export default class GeneratorStep3 extends Component {
               <div className="eight wide column">
                 <div className="field">
                   <label>Encryption password</label>
-                  <input ref={(ref) => this.passwordInput = ref} type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} autoComplete="new-password" />
+                  <input ref={(ref) => this.passwordInput = ref} type="password" placeholder="Password" value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} autoComplete="new-password" maxLength={64} />
                   <div className="ui pointing label">
                     If you forget this password, only way to recover is using mnemonic words
                   </div>
