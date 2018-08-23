@@ -16,7 +16,7 @@ export async function transactionWait(baseUrl, { txn_id }) {
 
   const receipt = await provider.getTransactionReceipt(txn_id);
 
-  if (receipt.status === 0) {
+  if (receipt && receipt.status === 0) {
     throw new Error('Transaction execution has failed.');
   }
 
