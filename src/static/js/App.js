@@ -6,7 +6,7 @@ import { hot } from "react-hot-loader";
 import { saveConfig, fetchAuthToken, walletsFetch, walletSave, fetchExchangeRate } from './actions';
 import { walletsToStorage } from './utils';
 
-import HeaderButton from './components/headerButton';
+import HeaderContainer from './components/headerContainer';
 import UnlockModal from './components/unlockModal';
 import WalletPage from './components/walletPage';
 import VideoPage from './components/videoPage';
@@ -41,7 +41,7 @@ class App extends Component {
 
     return(
       <React.Fragment>
-        <Route path='/' component={HeaderButton} />
+        <Route path='/' component={HeaderContainer} />
         <Route path='/' component={UnlockModal} />
         <Route path='/wallet' component={WalletPage} />
         <Route path='/v/:videoId' component={VideoPage} />

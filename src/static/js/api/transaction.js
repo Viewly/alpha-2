@@ -1,4 +1,5 @@
 import provider from '../ethereum';
+import { addPendingTransaction, removePendingTransaction } from '../utils';
 
 export async function transactionWait(baseUrl, { txn_id }) {
   let txn;
@@ -21,4 +22,27 @@ export async function transactionWait(baseUrl, { txn_id }) {
   }
 
   return { txn, receipt };
+}
+
+export async function getTransaction(txn_id) {
+  const txn = await provider.getTransaction(txn_id);
+
+  return txn;
+}
+
+export async function transactionPendingAdd(baseUrl, { txn_id, type, value }) {
+  const transaction = {
+    txn_id,
+    context: { type, value }
+  };
+
+  addPendingTransaction(transaction);
+
+  return transaction;
+}
+
+export async function transactionPendingRemove(baseUrl, { txn_id }) {
+  removePendingTransaction(txn_id);
+
+  return txn_id;
 }

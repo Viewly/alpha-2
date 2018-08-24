@@ -45,6 +45,24 @@ export function saveVoteCache(videoId) {
   cacheSet(CACHE_KEYS.VIDEO_VOTES, JSON.stringify(votes));
 }
 
+export function getPendingTransactions() {
+  return JSON.parse(cacheGet(CACHE_KEYS.PENDING_TRANSACTIONS) || null) || [];
+}
+
+export function addPendingTransaction(transaction) {
+  const transactions = getPendingTransactions();
+
+  transactions.push(transaction);
+  cacheSet(CACHE_KEYS.PENDING_TRANSACTIONS, JSON.stringify(transactions));
+}
+
+export function removePendingTransaction(txn_id) {
+  const transactions = getPendingTransactions();
+  const newTransactions = transactions.filter(item => item.txn_id !== txn_id)
+
+  cacheSet(CACHE_KEYS.PENDING_TRANSACTIONS, JSON.stringify(newTransactions));
+}
+
 export function isVoted(videoId) {
   let votes = getVotes();
 
