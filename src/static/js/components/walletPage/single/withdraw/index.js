@@ -12,9 +12,11 @@ import { STATUS_TYPE } from '../../../../constants';
   prices: state.prices,
   gasPrice: state.gasPrice,
   transaction: state.transaction,
-  isWithdrawLocked: state.pendingTransactions.filter(item =>
-    item.context && item.context.type === 'withdraw' && item.context.value === props.match.params.type.toUpperCase()
-  ).length > 0
+  // TODO - quick workaround to lock withdraws if at least one transaction is pending
+  isWithdrawLocked: state.pendingTransactions.length > 0,
+  // isWithdrawLocked: state.pendingTransactions.filter(item =>
+  //   item.context && item.context.type === 'withdraw' && item.context.value === props.match.params.type.toUpperCase()
+  // ).length > 0
 }), (dispatch) => ({
   sendEthereum: ({ amount, address, privateKey, gasPrice, gasLimit }) => dispatch(sendEthereum({ amount, address, privateKey, gasPrice, gasLimit })),
   sendView: ({ amount, address, privateKey, gasPrice, gasLimit }) => dispatch(sendView({ amount, address, privateKey, gasPrice, gasLimit })),
