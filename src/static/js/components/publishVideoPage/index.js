@@ -7,7 +7,8 @@ import {
   fetchVideoPublisherData,
   authorizeAllowance,
   publishVideo,
-  transactionWait
+  transactionWait,
+  transactionPendingAdd
 } from '../../actions';
 import Portal from '../portal';
 
@@ -19,7 +20,8 @@ import { roundTwoDecimals } from '../../utils';
   prices: state.prices,
   gasPrice: state.gasPrice,
   videoPublisher: state.videoPublisher,
-  transaction: state.transaction
+  transaction: state.transaction,
+  hasPendingTransaction: state.pendingTransactions.length > 0,
 }), (dispatch) => ({
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
@@ -27,6 +29,7 @@ import { roundTwoDecimals } from '../../utils';
   transactionWait: (txn_id) => dispatch(transactionWait({ txn_id })),
   authorizeAllowance: ({ address, privateKey, amount, gasPrice, gasLimit }) => dispatch(authorizeAllowance({ address, privateKey, amount, gasPrice, gasLimit })),
   publishVideo: ({ address, privateKey, videoHex, value, gasPrice, gasLimit }) => dispatch(publishVideo({ address, privateKey, videoHex, value, gasPrice, gasLimit })),
+  transactionPendingAdd: (txn_id, context) => dispatch(transactionPendingAdd({ txn_id, type: context.type, value: context.value }))
 }))
 export default class PublishVideoPage extends Component {
   state = {
@@ -66,7 +69,7 @@ export default class PublishVideoPage extends Component {
   }
 
   publishClick = (type) => async () => {
-    const { wallet, unlockModalOpen, videoPublisher, authorizeAllowance, publishVideo, transactionWait, fetchBalance } = this.props;
+    const { wallet, unlockModalOpen, videoPublisher, authorizeAllowance, publishVideo, transactionWait, fetchBalance, transactionPendingAdd } = this.props;
     const { address, privateKey } = wallet;
     const { videoHex } = this.ref.container.dataset;
     const { gasPrice, gasLimit } = this.state;
@@ -88,6 +91,8 @@ export default class PublishVideoPage extends Component {
           throw new Error('Invalid type: ' + type);
         }
 
+        transactionPendingAdd(hash, { type: 'publish', value: videoHex });
+
         this.setState({ txnId: hash, txnPending: true });
         const txn = await transactionWait(hash);
 
@@ -108,7 +113,7 @@ export default class PublishVideoPage extends Component {
   }
 
   renderPublisher = () => {
-    const { wallet, prices, videoPublisher } = this.props;
+    const { wallet, prices, videoPublisher, hasPendingTransaction } = this.props;
     const { isPublished } = videoPublisher;
 
     const publishText = 'Publish the video';
@@ -134,6 +139,18 @@ export default class PublishVideoPage extends Component {
               {this.state.txnId ? `Waiting for transaction to confirm` : 'Sending transaction to blockchain'}
             </div>
             {this.state.txnId && <p>{this.state.txnId}</p>}
+          </div>
+        </div>
+      );
+    }
+
+    if (hasPendingTransaction) {
+      return (
+        <div className="ui icon message">
+          <i className="notched circle loading icon"></i>
+          <div className="content">
+            <div className="header">Transaction in progress</div>
+            <p>Waiting for previous transaction to finish.</p>
           </div>
         </div>
       );
@@ -178,7 +195,7 @@ export default class PublishVideoPage extends Component {
   }
 
   render() {
-    const { videoPublisher } = this.props;
+    const { videoPublisher, hasPendingTransaction } = this.props;
     const { isPublished } = videoPublisher;
 
     return (
@@ -191,7 +208,7 @@ export default class PublishVideoPage extends Component {
 
         {!this.state.customGasPrice && this.renderPublisher()}
 
-        {!this.state.txnPending && !isPublished && (
+        {!this.state.txnPending && !isPublished && !hasPendingTransaction && (
           <div className="ui message">
             {!this.state.customGasPrice && <p>Gas price for transaction will be {this.state.gasPrice} gwei, if want to customize it <a href='#' onClick={() => this.setState({ customGasPrice: true })}>click here</a></p>}
             {this.state.customGasPrice && (
