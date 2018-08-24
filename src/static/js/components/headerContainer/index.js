@@ -45,7 +45,7 @@ export default class HeaderContainer extends Component {
     }
 
     return (
-      <div data-tooltip="Click here to see pending transactions" data-position="bottom center">
+      <div data-tooltip="At least one transaction is pending" data-position="bottom center">
         <div className="ui active inline loader">
           <div className="ui small text loader">Loading</div>
         </div>
