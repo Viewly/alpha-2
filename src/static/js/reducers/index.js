@@ -1,7 +1,7 @@
 import * as actions from '../actions';
 import { getWallets, getVotes } from '../utils';
 import { STATUS_TYPE } from '../constants';
-import { cacheSet, cacheGet, checksumAddress } from '../utils';
+import { cacheSet, cacheGet, checksumAddress, getPendingTransactions } from '../utils';
 import { CACHE_KEYS } from '../cache';
 
 const initialState = {
@@ -31,7 +31,8 @@ const initialState = {
     txn_id: '',
     txn: {},
     receipt: {}
-  }
+  },
+  pendingTransactions: getPendingTransactions()
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -46,6 +47,11 @@ const rootReducer = (state = initialState, action) => {
 
     case actions.GAS_PRICE_FETCH_SUCCESS:
       return { ...state, gasPrice: { ...action.data }};
+
+    case actions.TRANSACTION_PENDING_ADD_SUCCESS:
+      return { ...state, pendingTransactions: [ ...state.pendingTransactions, action.data ]};
+    case actions.TRANSACTION_PENDING_REMOVE_SUCCESS:
+      return { ...state, pendingTransactions: state.pendingTransactions.filter(item => item.txn_id !== action.data) };
 
     case actions.TRANSACTION_WAIT_START:
       return { ...state, transaction: { ...state.transaction, _status: STATUS_TYPE.LOADING, error: '' }};

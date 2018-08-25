@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link, withRouter } from 'react-router-dom';
 import Item from '../home/item';
 import { roundTwoDecimals, checkAddressValidity, isNumeric } from '../../../../utils';
-import { sendEthereum, sendView, transactionWait, fetchBalance } from '../../../../actions';
+import { sendEthereum, sendView, transactionWait, fetchBalance, transactionPendingAdd } from '../../../../actions';
 import { STATUS_TYPE } from '../../../../constants';
 
 @withRouter
@@ -12,11 +12,17 @@ import { STATUS_TYPE } from '../../../../constants';
   prices: state.prices,
   gasPrice: state.gasPrice,
   transaction: state.transaction,
+  // TODO - quick workaround to lock withdraws if at least one transaction is pending
+  isWithdrawLocked: state.pendingTransactions.length > 0,
+  // isWithdrawLocked: state.pendingTransactions.filter(item =>
+  //   item.context && item.context.type === 'withdraw' && item.context.value === props.match.params.type.toUpperCase()
+  // ).length > 0
 }), (dispatch) => ({
   sendEthereum: ({ amount, address, privateKey, gasPrice, gasLimit }) => dispatch(sendEthereum({ amount, address, privateKey, gasPrice, gasLimit })),
   sendView: ({ amount, address, privateKey, gasPrice, gasLimit }) => dispatch(sendView({ amount, address, privateKey, gasPrice, gasLimit })),
   transactionWait: (txn_id) => dispatch(transactionWait({ txn_id })),
-  fetchBalance: (address) => dispatch(fetchBalance({ address }))
+  fetchBalance: (address) => dispatch(fetchBalance({ address })),
+  transactionPendingAdd: (txn_id, context) => dispatch(transactionPendingAdd({ txn_id, type: context.type, value: context.value }))
 }))
 export default class WalletSingleWithdraw extends Component {
   state = {
@@ -69,7 +75,7 @@ export default class WalletSingleWithdraw extends Component {
   }
 
   doWithdraw = async ({ type, address, amount }) => {
-    const { sendEthereum, sendView, history, wallet: { privateKey, address: myAddress }, transactionWait, fetchBalance } = this.props;
+    const { sendEthereum, sendView, history, wallet: { privateKey, address: myAddress }, transactionWait, fetchBalance, transactionPendingAdd } = this.props;
     const { gasPrice, gasLimit } = this.state;
     const sendData = { address, amount, privateKey, gasPrice, gasLimit };
 
@@ -83,6 +89,8 @@ export default class WalletSingleWithdraw extends Component {
       this.setState({ loading: false, error: e.message });
       return false;
     }
+
+    transactionPendingAdd(hash, { type: 'withdraw', value: type.toUpperCase() });
 
     const txn = await transactionWait(hash);
     if (this.props.transaction.receipt && this.props.transaction.receipt.status === 0) {
@@ -134,7 +142,7 @@ export default class WalletSingleWithdraw extends Component {
   }
 
   render() {
-    const { wallet, prices, transaction, gasPrice } = this.props;
+    const { wallet, prices, transaction, gasPrice, isWithdrawLocked } = this.props;
     const { loading, error } = this.state;
     const balance = parseFloat(this.getCurrentBalance(), 10);
     const amount = parseFloat(this.state.amount, 10);
@@ -159,9 +167,14 @@ export default class WalletSingleWithdraw extends Component {
         )}
 
         <div className={`ui form ${addressValidity === 'warning' ? 'warning' : ''}`}>
-          {loading && (
+          {(loading || isWithdrawLocked) && (
             <div className="ui active dimmer">
-              <div className="ui indeterminate text loader">Waiting for transaction confirmation</div>
+              <div className="ui indeterminate text loader">
+                Waiting for transaction confirmation
+                <br />
+                <br />
+                <Link to={`/wallet/${wallet.address}`} className='ui button tiny'>Back to wallet</Link>
+              </div>
             </div>
           )}
 
