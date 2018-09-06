@@ -9,6 +9,7 @@ from .rewards import RewardsApi
 from .vote import VoteApi
 from .votes import VotesApi
 from .wallet import WalletApi
+from .find_channel import FindChannel
 
 blueprint = Blueprint('api', __name__)
 api = Api(blueprint)
@@ -19,3 +20,4 @@ api.add_resource(FollowApi, '/follow')
 api.add_resource(RewardsApi, '/rewards')
 api.add_resource(WalletApi, '/wallet')
 api.add_resource(GasPriceApi, '/gas_price')
+api.add_resource(FindChannel, '/find/channel')
