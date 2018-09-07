@@ -5,6 +5,7 @@ import * as voteApi from '../api/vote';
 import * as cmcApi from '../api/cmc';
 import * as videoPublisherApi from '../api/video_publisher';
 import * as transactionApi from '../api/transaction';
+import * as searchApi from '../api/search';
 
 export const AUTH_TOKEN_FETCH_START = 'AUTH/AUTH_TOKEN_FETCH_START';
 export const AUTH_TOKEN_FETCH_SUCCESS = 'AUTH/AUTH_TOKEN_FETCH_SUCCESS';
@@ -85,6 +86,11 @@ export const TRANSACTION_PENDING_REMOVE_START = 'VOTE/TRANSACTION_PENDING_REMOVE
 export const TRANSACTION_PENDING_REMOVE_SUCCESS = 'VOTE/TRANSACTION_PENDING_REMOVE_SUCCESS';
 export const TRANSACTION_PENDING_REMOVE_ERROR = 'VOTE/TRANSACTION_PENDING_REMOVE_ERROR';
 export const transactionPendingRemove = makeApiCall(transactionApi.transactionPendingRemove, TRANSACTION_PENDING_REMOVE_START, TRANSACTION_PENDING_REMOVE_SUCCESS, TRANSACTION_PENDING_REMOVE_ERROR);
+
+export const SEARCH_VIDEOS_START = 'SEARCH/SEARCH_VIDEOS_START';
+export const SEARCH_VIDEOS_SUCCESS = 'SEARCH/SEARCH_VIDEOS_SUCCESS';
+export const SEARCH_VIDEOS_ERROR = 'SEARCH/SEARCH_VIDEOS_ERROR';
+export const doSearch = makeApiCall(searchApi.doSearch, SEARCH_VIDEOS_START, SEARCH_VIDEOS_SUCCESS, SEARCH_VIDEOS_ERROR);
 
 export const getTransaction = transactionApi.getTransaction;
 

@@ -11,6 +11,7 @@ import UnlockModal from './components/unlockModal';
 import WalletPage from './components/walletPage';
 import VideoPage from './components/videoPage';
 import PublishVideoPage from './components/publishVideoPage';
+import SearchInput from './components/searchInput';
 
 @withRouter
 @connect((state) => ({
@@ -43,6 +44,7 @@ class App extends Component {
       <React.Fragment>
         <Route path='/' component={HeaderContainer} />
         <Route path='/' component={UnlockModal} />
+        <Route path='/' component={SearchInput} />
         <Route path='/wallet' component={WalletPage} />
         <Route path='/v/:videoId' component={VideoPage} />
         <Route path='/upload/publish/to_ethereum/:videoId' component={PublishVideoPage} />
