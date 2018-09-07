@@ -11,17 +11,20 @@ from ..methods import guess_avatar_cdn_url
 
 parser = reqparse.RequestParser()
 parser.add_argument('q', type=str, required=True)
+parser.add_argument('limit', type=int)
 
-class FindChannel(Resource):
+class FindChannelApi(Resource):
     def get(self):
         try:
             args = parser.parse_args()
             q = args['q'].replace('"', '').replace("'", '')
-            assert len(q) >= 3, 'Query too short'
+            assert len(q) >= 3, 'Search query too short'
+            limit = args['limit'] or 10
+            assert 0 < limit <= 25, 'Results limit should be between 1 and 25 inclusive.'
             channels = \
                 (db.session.query(Channel)
                 .filter(Channel.display_name.ilike(f"%{q}%"))
-                .limit(10)
+                .limit(limit)
                 .all())
             return [{
                 'channel_id': x.id,
