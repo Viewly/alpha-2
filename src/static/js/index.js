@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import store from "./store/index";
 import App from "./App.js";
 
-const $appContainer = document.getElementById("wallet_app_container");
+const $appContainer = document.getElementById("react_app_container");
 
 $appContainer && ReactDOM.render((
   <Provider store={store}>
