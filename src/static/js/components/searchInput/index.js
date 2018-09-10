@@ -28,8 +28,12 @@ export default class SearchInput extends Component {
     const { doSearch } = this.props;
 
     if (prevState.searchText !== this.state.searchText) {
-      this.setState({ selected: -1, dropdownOpen: this.state.searchText.length >= MIN_SEARCH_CHARACTERS });
-      doSearch(this.state.searchText);
+      this.setState({
+        selected: -1,
+        dropdownOpen: this.state.searchText.length >= MIN_SEARCH_CHARACTERS
+      });
+
+      this.state.searchText.length >= MIN_SEARCH_CHARACTERS && doSearch(this.state.searchText);
     }
   }
 
