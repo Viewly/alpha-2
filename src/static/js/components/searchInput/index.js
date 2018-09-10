@@ -38,10 +38,7 @@ export default class SearchInput extends Component {
 
     switch (e.key) {
       case 'Enter':
-        this.setState({ dropdownOpen: false });
-        window.location = (this.state.selected === -1)
-          ? "/search?q=" + this.state.searchText
-          : data[this.state.selected].channel_url;
+        this.onSearch();
         break;
 
       case 'Escape':
@@ -56,6 +53,15 @@ export default class SearchInput extends Component {
         this.setState({ selected: (this.state.selected >= data.length - 1) ? -1 : this.state.selected + 1});
         break;
     }
+  }
+
+  onSearch = () => {
+    const { search: { data } } = this.props;
+
+    this.setState({ dropdownOpen: false });
+    window.location = (this.state.selected === -1)
+      ? "/search?q=" + this.state.searchText
+      : data[this.state.selected].channel_url;
   }
 
   onBlur = () => {
@@ -74,8 +80,8 @@ export default class SearchInput extends Component {
     return (
       <Portal container='react-search'>
 
-        <div className="ui action icon input js-search-box">
-          <button className="ui button js-search-button">
+        <div className="ui action icon input">
+          <button className="ui button" onClick={this.onSearch}>
             <svg className="o-icon o-icon--small" width="24" height="24" viewBox="0 0 24 24">
               <g fill="none" fillRule="evenodd" stroke="currentColor" strokeWidth="2">
                 <circle cx="10.5" cy="10.5" r="9.5" />
