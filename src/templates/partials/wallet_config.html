@@ -9,5 +9,6 @@
     infuraKey: "{{ infura_key_fe() }}",
     authUrl: "/auth_token", {# TODO - load this from env ?? #}
     apiUrl: "/api",
+    isAuthenticated: "{{ current_user.is_active }}" === "True",
   };
 </script>

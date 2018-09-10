@@ -28,9 +28,10 @@
           {% include 'atoms/icon-search.html' %}
         </a>
       </div>
-      {% if current_user.is_active %}
-        <div id="wallet_app_container" data-auth-url="/auth_token" data-api-url="/api"></div>
 
+      <div id="wallet_app_container"></div>
+
+      {% if current_user.is_active %}
         <div class="c-dropdown ui item">
           {% include 'atoms/icon-plus.html' %}
           <div class="c-dropdown__menu">
