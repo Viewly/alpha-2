@@ -11,6 +11,7 @@ import UnlockModal from './components/unlockModal';
 import WalletPage from './components/walletPage';
 import VideoPage from './components/videoPage';
 import PublishVideoPage from './components/publishVideoPage';
+import SearchInput from './components/searchInput';
 
 @withRouter
 @connect((state) => ({
@@ -27,25 +28,25 @@ class App extends Component {
     const { saveConfig, fetchAuthToken, walletsFetch, fetchExchangeRate } = this.props;
 
     saveConfig(window.walletConfig);
-    fetchExchangeRate();
-    await fetchAuthToken();
-    walletsFetch();
+
+    if (window.walletConfig.isAuthenticated) {
+      fetchExchangeRate();
+      await fetchAuthToken();
+      walletsFetch();
+    }
   }
 
   render() {
     const { authToken } = this.props;
 
-    if (!authToken) {
-      return null;
-    }
-
     return(
       <React.Fragment>
         <Route path='/' component={HeaderContainer} />
         <Route path='/' component={UnlockModal} />
-        <Route path='/wallet' component={WalletPage} />
-        <Route path='/v/:videoId' component={VideoPage} />
-        <Route path='/upload/publish/to_ethereum/:videoId' component={PublishVideoPage} />
+        <Route path='/' component={SearchInput} />
+        {authToken && <Route path='/wallet' component={WalletPage} />}
+        {authToken && <Route path='/v/:videoId' component={VideoPage} />}
+        {authToken && <Route path='/upload/publish/to_ethereum/:videoId' component={PublishVideoPage} />}
       </React.Fragment>
     );
   }

@@ -32,6 +32,10 @@ const initialState = {
     txn: {},
     receipt: {}
   },
+  search: {
+    _status: STATUS_TYPE.LOADED,
+    data: []
+  },
   pendingTransactions: getPendingTransactions()
 };
 
@@ -52,6 +56,13 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, pendingTransactions: [ ...state.pendingTransactions, action.data ]};
     case actions.TRANSACTION_PENDING_REMOVE_SUCCESS:
       return { ...state, pendingTransactions: state.pendingTransactions.filter(item => item.txn_id !== action.data) };
+
+    case actions.SEARCH_VIDEOS_START:
+      return { ...state, search: { ...state.search, _status: STATUS_TYPE.LOADING, data: [] }};
+    case actions.SEARCH_VIDEOS_SUCCESS:
+      return { ...state, search: { ...state.search, _status: STATUS_TYPE.LOADED, data: action.data }};
+    case actions.SEARCH_VIDEOS_ERROR:
+      return { ...state, search: { ...state.search, _status: STATUS_TYPE.ERROR }};
 
     case actions.TRANSACTION_WAIT_START:
       return { ...state, transaction: { ...state.transaction, _status: STATUS_TYPE.LOADING, error: '' }};
