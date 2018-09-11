@@ -40,7 +40,7 @@ class VoteApi(Resource):
         args = parser.parse_args()
         vote = db.session.query(Vote) \
             .filter(Vote.video_id == args['video_id'],
-                    Vote.eth_address == args['eth_address']) \
+                    Vote.eth_address == normalize_address(args['eth_address'])) \
             .first()
         return vote_schema.dump(vote).data or ({}, 404)
 
