@@ -88,6 +88,35 @@ class Wallet(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='wallets')
 
+class ContentFlag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    video_id = db.Column(db.String(LEN['video_id']),
+                         db.ForeignKey('video.id'), nullable=False)
+
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False)
+
+    # flag type
+    # 1. xxx (porn)
+    # 2. violence, harrasment, hatred
+    # 3. scam
+    # 4. plagiarism
+    # 5. spam
+    flag_type = db.Column(db.String(100), nullable=False)
+
+    # optional
+    # message = db.Column(db.String(255))
+
+    @declared_attr
+    def __table_args__(self):
+        return (
+            db.UniqueConstraint(
+                'video_id',
+                'user_id',
+                name='uniq_flag_id',
+            ),
+        )
+
 
 class Channel(db.Model):
     id = db.Column(db.String(LEN['channel_id']),
