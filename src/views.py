@@ -254,6 +254,7 @@ def about():
 @app.route('/wallet/generate')
 @app.route('/wallet')
 @app.route('/wallet/<string:address>')
+@app.route('/wallet/<string:address>/recover')
 @app.route('/wallet/<string:address>/withdraw/<string:withdraw_type>')
 @login_required
 def wallet(address='', withdraw_type=''):

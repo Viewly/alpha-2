@@ -1,4 +1,5 @@
 import React, { Component} from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { providers, utils, Contract, Wallet } from 'ethers';
 
@@ -85,7 +86,7 @@ export default class UnlockModal extends Component {
   }
 
   render() {
-    const { unlockModalClose } = this.props;
+    const { wallet, unlockModalClose } = this.props;
 
     return (
       <Portal container='react-modal'>
@@ -106,6 +107,7 @@ export default class UnlockModal extends Component {
                   <label>Wallet password</label>
                   <input ref={(ref) => this.passwordInput = ref} type='password' value={this.state.password} onKeyDown={this.onKeyDown} onChange={(e) => this.setState({ password: e.target.value })} maxLength={64} />
                 </div>
+                <Link to={`/wallet/${wallet.address}/recover`} onClick={() => unlockModalClose()}>Forgot password?</Link>
               </div>
             )}
 
