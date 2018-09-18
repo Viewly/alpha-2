@@ -50,8 +50,9 @@
   <script src="http://localhost:3000/dist/vendor.js"></script>
   <script src="http://localhost:3000/dist/main.js"></script>
 {% else %}
-  <script src="{{ url_for('static', filename='dist/vendor.js') }}"></script>
-  <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
+  {% for js_file in list_javascripts() %}
+    <script src="{{ url_for('static', filename=js_file) }}"></script>
+  {% endfor %}
 {% endif %}
 
 <script type="application/javascript">

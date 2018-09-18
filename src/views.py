@@ -1,4 +1,5 @@
 import datetime as dt
+import glob
 import json
 from typing import Union
 
@@ -15,6 +16,7 @@ from flask_security import (
     current_user,
     login_required,
 )
+from funcy import cache, last
 from sqlalchemy import desc, func, distinct
 
 from . import app, db
@@ -385,6 +387,11 @@ def utility_processor():
     def block_num():
         return 0
 
+    @cache(10 ** 8)
+    def list_javascripts():
+        return [last(x.split('src/static/'))
+                for x in glob.glob(f'src/static/dist/*.js')]
+
     def get_transcoding_status(video_id: str):
         job = TranscoderJob.query.filter_by(
             video_id=video_id,
@@ -433,6 +440,7 @@ def utility_processor():
             app.config['VOTING_POWER_DELEGATOR_ABI']),
         get_auth_token_cached=get_auth_token_cached,
         can_vote=can_vote,
+        list_javascripts=list_javascripts,
         nsfw_cover_img='https://i.imgur.com/kXBgFBy.png',
         avatar_fallback='https://i.imgur.com/32AwiVw.jpg',
         cover_fallback='https://i.imgur.com/04kFE8B.png',
