@@ -10,6 +10,11 @@ export async function put(url, data) {
   return { body: response.data };
 }
 
+export async function patch(url, data) {
+  const response = await axios.patch(url, data);
+  return { body: response.data };
+}
+
 export function makeApiCall (_apiCall, startActionType, successActionType, errorActionType) {
   return function (params) {
     return async (dispatch, getState) => {

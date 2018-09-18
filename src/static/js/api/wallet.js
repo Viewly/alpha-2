@@ -1,6 +1,6 @@
 import { utils, Wallet } from 'ethers';
 
-import { get, put } from './request';
+import { get, put, patch } from './request';
 import provider, { CONTRACT_ADDRESS, CONTRACT_VIDEO_PUBLISHER, contract, contractSigned } from '../ethereum';
 
 export async function walletsFetch (baseUrl) {
@@ -13,6 +13,13 @@ export async function walletsFetch (baseUrl) {
 export async function walletSave (baseUrl, data) {
   const url = `${baseUrl}/wallet`;
   const { body } = await put(url, data);
+
+  return body.data;
+}
+
+export async function walletUpdate (baseUrl, data) {
+  const url = `${baseUrl}/wallet`;
+  const { body } = await patch(url, data);
 
   return body.data;
 }

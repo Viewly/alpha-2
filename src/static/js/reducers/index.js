@@ -94,6 +94,7 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, wallet: { ...state.wallet, _status: STATUS_TYPE.LOADING } };
     case actions.WALLET_FETCH_SUCCESS:
     case actions.WALLET_SAVE_SUCCESS:
+    case actions.WALLET_UPDATE_SUCCESS:
       const localWallets = getWallets();
 
       address = checksumAddress(`0x${action.data.address}`);
