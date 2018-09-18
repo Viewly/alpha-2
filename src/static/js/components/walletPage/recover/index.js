@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import { Wallet } from 'ethers';
 
 import Strength from '../generate/step3/strength';
-import { unlockWallet } from '../../../actions';
+import { unlockWallet, walletUpdate } from '../../../actions';
 import { updateWallets } from '../../../utils';
 
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet,
 }), (dispatch) => ({
-  unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey))
+  unlockWallet: (address, privateKey) => dispatch(unlockWallet(address, privateKey)),
+  walletUpdate: (wallet) => dispatch(walletUpdate(wallet)),
 }))
 export default class WalletRecover extends Component {
   state = {
@@ -56,7 +57,7 @@ export default class WalletRecover extends Component {
   }
 
   encryptAndSave = () => {
-    const { wallet } = this.props;
+    const { wallet, walletUpdate, history } = this.props;
 
     const tmpWallet = new Wallet(wallet.privateKey);
 
@@ -72,13 +73,14 @@ export default class WalletRecover extends Component {
       this.setState({ progress });
     });
 
-    encryptPromise.then((json) => {
+    encryptPromise.then(async (json) => {
       const payload = {
         data: json,
         signature: this.signMessage()
       };
 
-      console.log('save payload', payload);
+      await walletUpdate(payload);
+      history.push(`/wallet/${wallet.address}`);
     });
   }
 
