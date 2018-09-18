@@ -241,6 +241,14 @@ def find_block_from_timestamp(
     )
 
 
+# Old signature validation
+def sign_recover(message: str, signature: str) -> str:
+    from eth_account.messages import defunct_hash_message
+    w3 = get_infura_web3()
+    message = defunct_hash_message(text=message)
+    return w3.eth.account.recoverHash(message, signature=signature)
+
+
 # Metamask Signature Validation
 # -----------------------------
 def pack(*args) -> bytes:
