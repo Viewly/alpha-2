@@ -66,6 +66,8 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, web3: { ...state.web3, network: { network_id: parseInt(action.data, 10), _status: STATUS_TYPE.LOADED } }};
     case actions.WEB3_FETCH_ACCOUNTS_SUCCESS:
       return { ...state, web3: { ...state.web3, metamask: { accounts: action.data, _status: STATUS_TYPE.LOADED } }};
+    case actions.WEB3_FETCH_ACCOUNTS_ERROR:
+      return { ...state, web3: { ...state.web3, metamask: { accounts: [], _status: STATUS_TYPE.ERROR } }};
 
     case actions.TRANSACTION_PENDING_ADD_SUCCESS:
       return { ...state, pendingTransactions: [ ...state.pendingTransactions, action.data ]};

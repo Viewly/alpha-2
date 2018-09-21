@@ -37,7 +37,7 @@ export default class Web3Provider extends Component {
    */
   initPoll() {
     if (!this.interval) {
-      this.interval = setInterval(this.props.fetchAccounts, ONE_MINUTE);
+      this.interval = setInterval(this.props.fetchAccounts, ONE_SECOND);
     }
   }
 

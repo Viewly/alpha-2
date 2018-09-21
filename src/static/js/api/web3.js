@@ -11,14 +11,18 @@ function getAccounts() {
 }
 
 export async function fetchAccounts (baseUrl) {
-  const { web3 } = window;
-  const ethAccounts = getAccounts();
-
   return new Promise((resolve, reject) => {
+    const { web3 } = window;
+    const ethAccounts = getAccounts();
+
     if (isEmpty(ethAccounts)) {
-      web3 && web3.eth && web3.eth.getAccounts((err, accounts) => {
-        err ? reject(err) : resolve(accounts);
-      });
+      try {
+        web3.eth.getAccounts((err, accounts) => {
+          err ? reject(err) : resolve(accounts);
+        });
+      } catch (e) {
+        reject('No metamask');
+      }
     } else {
       resolve(ethAccounts);
     }
