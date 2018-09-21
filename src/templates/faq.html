@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Viewly Alpha{% endblock %}
+{% block title %}FAQ{% endblock %}
 {% set showFooter = true %}
 
 {% block content %}
   <div class="ui text container">
-    <h2>What is Viewly Alpha?</h2>
+    <h2>Frequently Asked Questions</h2>
+    <h3 class="ui sub header">What is Viewly Alpha?</h3>
     Viewly Alpha is a <i>tokenized video platform</i>, aiming to provide a more fair and
     efficient means of content delivery and monetization.
     Alpha is built with cool tech like Ethereum and IPFS. Alpha is in an experimental
@@ -23,6 +24,46 @@
     feedback will be rewarded with <a
     href="https://etherscan.io/token/0xf03f8d65bafa598611c3495124093c56e8f638f0">VIEW
     Tokens</a>.
+
+    <h3 class="ui sub header">What is a VIEW token?</h3>
+    The VIEW token is a utility token that functions as a medium of exchange between users activity and publishers who participate in the Viewly ecosystem. It's used by token owners, people who hold VIEW tokens, in the Viewly ecosystem to reward content creators for their hard work by voting on their videos and by content creators, which are also token owners, to publish their videos. VIEW token is an ERC-20 compliant token on the Ethereum blockchain.
+
+    <h3 class="ui sub header">What is Ethereum (ETH)?</h3>
+    Ethereum, the blockchain, is an open software platform based on blockchain technology that enables developers to build and deploy decentralized applications. On Ethereum every transaction uses ETH in the form of Gas and Gwei. For more information, please refer to the following <a href="https://masterthecrypto.com/ethereum-what-is-gas-gas-limit-gas-price/">article</a>.
+
+    <h3 class="ui sub header">How are the videos being hosted and delivered?</h3>
+    We use a combination of <a href="https://ipfs.io/"> IPFS </a> + S3 for hosting and Amazon CDN for streaming.
+
+    <h3 class="ui sub header">How do the rewards work?</h3>
+    The stake based game (Viewly Creator Rewards) is a content subsidy program, in which creators who publish high quality content compete for votes from token owners. The videos are rewarded with freshly minted VIEW Tokens in proportion to the cumulative stake of votes relative to all videos within a distribution period.
+
+    <h3 class="ui sub header">Why are you doing this?</h3>
+    We're looking to build a community of creators who pride themselves on high-value content, and we're looking to help them earn!
+
+    <h3 class="ui sub header">What is a period and how does it relate to my videos?</h3>
+    A reward period is a 24 hour window which binds the videos published within said window to its respective rewards pool. During the first 7 days, all of the videos from that period compete to receive rewards from the daily pool. You can always check how rewards are distributed by accessing the following <a href="https://view.ly/game/rewards">link</a>.
+
+    <h3 class="ui sub header">What happens after the 7 days?</h3>
+    After the 7 days are up, the rewards for your video will be calculated and sent in the next distribution period. Your video stops earning VIEW tokens. You will be able to monetize your video even further as we release other monetization options ( for example tipping, subscriptions, etc.).
+
+    <h3 class="ui sub header">How is the daily rewards pool being calculated?</h3>
+    The rewards pool is based on a combination of how many videos are published and how many votes are casted during a time frame.
+
+    <h3 class="ui sub header">Are the rewards manually processed, automatically or a combination of both?</h3>
+    The rewards pool is based on a combination of how many videos are published and how many votes are casted during a time frame.
+
+    <h3 class="ui sub header">What is the maximum rewards one video can make?</h3>
+    Since every video is tied to a period, the maximum reward one video can receive is the total number of tokens allocated to that period (day) but only if that video is the only published video in the period, from all the videos published in that period, to receive votes.
+
+    <h3 class="ui sub header">Will I be receiving an email when I get my rewards?</h3>
+    Yes, an email is automatically sent as soon as the rewards are distributed. We aim to distribute all rewards once a week, although sometimes it might take longer, but no more than 2 weeks.
+
+    <h3 class="ui sub header">How can I turn my VIEW tokens into ETH?</h3>
+    You can use an exchange. A list of exchanges can be found <a href="https://coinmarketcap.com/currencies/view/#markets">here</a>.
+
+    <h3 class="ui sub header">How do I upload and publish my videos?</h3>
+    Uploading is very easy and it’s done only in a few steps, you’ll need to create a channel, then go to your uploading page and select your video/s. Publishing is done via a simple interaction with the Ethereum network.
+    This interaction can be completed using the <a href="https://view.ly/v/FsORA3mLuCTn"> Viewly Wallet </a> (recommended for optimal user experience), <a href="https://view.ly/v/n4UFefdq1tIR">Trust Wallet</a> or <a href="https://view.ly/v/XYQahcpDHSAo">Metamask</a>.
 
     <h3>Community - made short video about Viewly</h3>
     <iframe
