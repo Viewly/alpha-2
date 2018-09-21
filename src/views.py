@@ -248,9 +248,9 @@ def edit_profile():
     )
 
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
 
 
 @app.route('/wallet/generate')
