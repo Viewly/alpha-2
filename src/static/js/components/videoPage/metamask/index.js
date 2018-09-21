@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { STATUS_TYPE } from '../../../constants';
 import { videoVoteMetamask, videoVote } from '../../../actions';
+import { fetchBalance } from '../../../api/wallet';
 import { saveVoteCache } from '../../../utils';
 require('../index.css');
 
@@ -25,14 +26,23 @@ export default class VoteMetamask extends Component {
     this.modal.modal({ inverted: true });
   }
 
+  checkViewBalance = async (address) => {
+    const resp = await fetchBalance(null, { address });
+
+    return resp.balanceView;
+  }
+
   voteClick = async () => {
     const { config, web3, web3: { metamask } } = this.props;
     const address = metamask.accounts[0];
+    const balance = await this.checkViewBalance(address);
 
     if (config.ethChainId !== web3.network.network_id) {
       this.modalOpen('network');
     } else if (!address) {
       this.modalOpen('locked');
+    } else if (balance < 100) {
+      this.modalOpen('balance');
     } else {
       const { videoVoteMetamask, videoVote, videoId } = this.props;
 
@@ -133,6 +143,16 @@ export default class VoteMetamask extends Component {
                   </svg>
                   Get MetaMask
                 </a>
+              </div>
+            )}
+
+            {this.state.errorType === 'balance' && (
+              <div className="u-text-center">
+                <h3 className="c-modal__title">Insufficient VIEW Tokens</h3>
+                <p>
+                  Voting is free, however it does require at least 100 VIEW Tokens in your
+                  Ethereum wallet <i>(for a minimum of 7 days)</i>.
+                </p>
               </div>
             )}
 
