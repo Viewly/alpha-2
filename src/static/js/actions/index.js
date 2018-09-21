@@ -6,6 +6,7 @@ import * as cmcApi from '../api/cmc';
 import * as videoPublisherApi from '../api/video_publisher';
 import * as transactionApi from '../api/transaction';
 import * as searchApi from '../api/search';
+import * as web3Api from '../api/web3';
 
 export const AUTH_TOKEN_FETCH_START = 'AUTH/AUTH_TOKEN_FETCH_START';
 export const AUTH_TOKEN_FETCH_SUCCESS = 'AUTH/AUTH_TOKEN_FETCH_SUCCESS';
@@ -96,6 +97,21 @@ export const SEARCH_VIDEOS_START = 'SEARCH/SEARCH_VIDEOS_START';
 export const SEARCH_VIDEOS_SUCCESS = 'SEARCH/SEARCH_VIDEOS_SUCCESS';
 export const SEARCH_VIDEOS_ERROR = 'SEARCH/SEARCH_VIDEOS_ERROR';
 export const doSearch = makeApiCall(searchApi.doSearch, SEARCH_VIDEOS_START, SEARCH_VIDEOS_SUCCESS, SEARCH_VIDEOS_ERROR);
+
+export const WEB3_FETCH_ACCOUNTS_START = 'SEARCH/WEB3_FETCH_ACCOUNTS_START';
+export const WEB3_FETCH_ACCOUNTS_SUCCESS = 'SEARCH/WEB3_FETCH_ACCOUNTS_SUCCESS';
+export const WEB3_FETCH_ACCOUNTS_ERROR = 'SEARCH/WEB3_FETCH_ACCOUNTS_ERROR';
+export const fetchAccounts = makeApiCall(web3Api.fetchAccounts, WEB3_FETCH_ACCOUNTS_START, WEB3_FETCH_ACCOUNTS_SUCCESS, WEB3_FETCH_ACCOUNTS_ERROR);
+
+export const WEB3_FETCH_NETWORK_START = 'SEARCH/WEB3_FETCH_NETWORK_START';
+export const WEB3_FETCH_NETWORK_SUCCESS = 'SEARCH/WEB3_FETCH_NETWORK_SUCCESS';
+export const WEB3_FETCH_NETWORK_ERROR = 'SEARCH/WEB3_FETCH_NETWORK_ERROR';
+export const fetchNetwork = makeApiCall(web3Api.fetchNetwork, WEB3_FETCH_NETWORK_START, WEB3_FETCH_NETWORK_SUCCESS, WEB3_FETCH_NETWORK_ERROR);
+
+export const WEB3_VIDEO_VOTE_START = 'SEARCH/WEB3_VIDEO_VOTE_START';
+export const WEB3_VIDEO_VOTE_SUCCESS = 'SEARCH/WEB3_VIDEO_VOTE_SUCCESS';
+export const WEB3_VIDEO_VOTE_ERROR = 'SEARCH/WEB3_VIDEO_VOTE_ERROR';
+export const videoVoteMetamask = makeApiCall(web3Api.videoVoteMetamask, WEB3_VIDEO_VOTE_START, WEB3_VIDEO_VOTE_SUCCESS, WEB3_VIDEO_VOTE_ERROR);
 
 export const getTransaction = transactionApi.getTransaction;
 

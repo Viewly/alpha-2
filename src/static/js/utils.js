@@ -2,6 +2,8 @@ const LOCALSTORAGE_WALLETS = 'viewly-wallets';
 
 import storageCache, { CACHE_KEYS } from './cache';
 import { utils } from 'ethers';
+import sigUtil from 'eth-sig-util';
+import ethUtil from 'ethereumjs-util';
 
 export function updateWallets(wallet) {
   // const wallets = getWallets();  // uncomment this to support multiple wallets
@@ -132,4 +134,22 @@ export function checkAddressValidity(address) {
 
 export function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+export function signVoteHash (videoId, address, privateKey, weight = 100) {
+  const privateBuffer = ethUtil.toBuffer(privateKey);
+  const time = Math.round(+new Date()/1000);
+  const params = [
+    {"type": "string", "name": "Video ID", "value": videoId},
+    {"type": "uint8", "name": "Vote Weight (%)", "value": weight},
+    {"type": "uint32", "name": "Timestamp", "value": time}
+  ];
+
+  const msgParams = { data: params };
+  const signedHash = sigUtil.signTypedData(privateBuffer, msgParams);
+
+  return {
+    ecc_message: JSON.stringify([ params, address ]),
+    ecc_signature: signedHash
+  }
 }

@@ -4,7 +4,15 @@ import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk';
 
 const logger = createLogger({
-  collapsed: true
+  collapsed: true,
+  predicate: (getState, action) => {
+    // don't log actions that starts with SEARCH/WEB3_
+    if (action.type.startsWith('SEARCH/WEB3_')) {
+      return false;
+    }
+
+    return true;
+  }
 });
 
 const store = createStore(
