@@ -3,16 +3,18 @@ import { connect } from "react-redux";
 
 import { STATUS_TYPE } from '../../../constants';
 import { videoVote, unlockModalOpen } from '../../../actions';
-import { saveVoteCache } from '../../../utils';
+import { saveVoteCache, signVoteHash } from '../../../utils';
 require('../index.css');
 
 const VOTE_TOKENS_NEEDED = 100;
+const VOTE_WEIGHT = 100;
 
 @connect(null, (dispatch) => ({
-  videoVote: (videoId) => dispatch(videoVote(videoId)),
+  videoVote: (videoId, address, weight, ecc_message, ecc_signature) => dispatch(videoVote({ videoId, address, weight, ecc_message, ecc_signature })),
   unlockModalOpen: () => dispatch(unlockModalOpen()),
 }))
 export default class VoteViewly extends Component {
+
   voteClick = async () => {
     const { wallet, unlockModalOpen, videoVote, videoId } = this.props;
     const { address, privateKey } = wallet;
@@ -22,15 +24,10 @@ export default class VoteViewly extends Component {
     } else if (wallet.balanceView < VOTE_TOKENS_NEEDED) {
       this.props.onError();
     } else {
-      const response = await videoVote({ videoId, address, privateKey });
+      const voteSigned = signVoteHash(videoId, address, privateKey, VOTE_WEIGHT);
+      const response = await videoVote(videoId, address, VOTE_WEIGHT, voteSigned.ecc_message, voteSigned.ecc_signature);
 
-      if (response) {
-        saveVoteCache(videoId);
-        // dirty hack to increment number of votes
-        document
-          && document.querySelector('.statistic .value')
-          && document.querySelector('.statistic .value').innerHTML++;
-      }
+      response && saveVoteCache(videoId);
     }
   }
 

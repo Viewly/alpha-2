@@ -38,7 +38,7 @@ const initialState = {
   },
   pendingTransactions: getPendingTransactions(),
   web3: {
-    accounts: {
+    metamask: {
       accounts: null,
       _status: STATUS_TYPE.PENDING
     },
@@ -65,7 +65,7 @@ const rootReducer = (state = initialState, action) => {
     case actions.WEB3_FETCH_NETWORK_SUCCESS:
       return { ...state, web3: { ...state.web3, network: { network_id: parseInt(action.data, 10), _status: STATUS_TYPE.LOADED } }};
     case actions.WEB3_FETCH_ACCOUNTS_SUCCESS:
-      return { ...state, web3: { ...state.web3, accounts: { accounts: action.data, _status: STATUS_TYPE.LOADED } }};
+      return { ...state, web3: { ...state.web3, metamask: { accounts: action.data, _status: STATUS_TYPE.LOADED } }};
 
     case actions.TRANSACTION_PENDING_ADD_SUCCESS:
       return { ...state, pendingTransactions: [ ...state.pendingTransactions, action.data ]};

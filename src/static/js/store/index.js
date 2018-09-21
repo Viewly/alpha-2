@@ -5,14 +5,14 @@ import thunk from 'redux-thunk';
 
 const logger = createLogger({
   collapsed: true,
-  // predicate: (getState, action) => {
-  //   // don't log actions that starts with SEARCH/WEB3_
-  //   if (action.type.startsWith('SEARCH/WEB3_')) {
-  //     return false;
-  //   }
-  //
-  //   return true;
-  // }
+  predicate: (getState, action) => {
+    // don't log actions that starts with SEARCH/WEB3_
+    if (action.type.startsWith('SEARCH/WEB3_')) {
+      return false;
+    }
+
+    return true;
+  }
 });
 
 const store = createStore(
