@@ -331,6 +331,14 @@ def stats():
     )
 
 
+@app.route('/_/metrics')
+@login_required
+def metrics():
+    return render_template(
+        'metrics.html',
+    )
+
+
 @app.route('/auth_token', methods=['GET'])
 @login_required
 def auth_token():
