@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import Web3 from '../web3';
+import Web3 from '../../web3';
 import VoteMetamask from './metamask';
 import VoteViewly from './viewly';
 
-import { videoVote, fetchBalance } from '../../actions';
-import Portal from '../portal';
+import { videoVote, fetchBalance } from '../../../actions';
+import Portal from '../../portal';
 
 const VOTE_TOKENS_NEEDED = 100;
 

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { STATUS_TYPE } from '../../../constants';
-import { videoVote, unlockModalOpen } from '../../../actions';
-import { saveVoteCache, signVoteHash } from '../../../utils';
+import { STATUS_TYPE } from '../../../../constants';
+import { videoVote, unlockModalOpen } from '../../../../actions';
+import { saveVoteCache, signVoteHash } from '../../../../utils';
 require('../index.css');
 
 const VOTE_TOKENS_NEEDED = 100;
