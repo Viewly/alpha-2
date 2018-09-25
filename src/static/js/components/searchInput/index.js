@@ -97,6 +97,7 @@ export default class SearchInput extends Component {
           <input
             className="c-header__search__input"
             placeholder={this.state.selected === -1 ? 'Search' : search.data[this.state.selected].display_name}
+            name="search_input"
             value={this.state.selected === -1 ? this.state.searchText : ''}
             onChange={(e) => this.setState({ searchText: e.target.value })}
             onBlur={this.onBlur}
