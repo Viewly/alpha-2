@@ -97,10 +97,12 @@ def refresh_transcoder_jobs():
 @cron.task(ignore_result=True)
 def refresh_unpublished_videos():
     session = db_session()
+    a_month_ago = dt.datetime.utcnow() - dt.timedelta(days=30)
     unpublished_videos = \
         session.query(Video).filter(
             Video.channel_id.isnot(None),
-            Video.published_at.is_(None)
+            Video.published_at.is_(None),
+            Video.uploaded_at > a_month_ago,
         )
 
     trusted_block_num = confirmed_block_num(5)
