@@ -1,5 +1,6 @@
 <script type="application/javascript">
   window.walletConfig = {
+    playerUrl: "{{ player_url() }}",
     videoPublisherAddress: "{{ video_publisher_address() }}",
     videoPublisherAbi: {{ video_publisher_abi() | safe }},
     viewTokenAddress: "{{ view_token_address() }}",

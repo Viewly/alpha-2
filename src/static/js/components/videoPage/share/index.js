@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import copy from 'copy-to-clipboard';
 import {
   FacebookShareButton,
@@ -12,13 +13,19 @@ import {
   EmailShareButton,
   EmailIcon,
 } from 'react-share';
+
 import Portal from '../../portal';
 require('./index.css');
 
+@connect((state, props) => ({
+  config: state.config
+}))
 export default class VideoShare extends Component {
   state = {
-    shareUrl: 'https://www.view.ly',
-    shareTitle: 'Found this video on @OfficialViewly'
+    shareUrl: '',
+    shareTitle: '',
+    twitterTitle: 'Found this video on @OfficialViewly',
+    embedCode: ''
   }
 
   componentDidMount() {
@@ -27,6 +34,18 @@ export default class VideoShare extends Component {
 
     this.embedModal = window.jQuery(this.embedRef).modal();
     this.embedModal.modal({ inverted: false });
+
+    this.setState({
+      shareUrl: window.location.href,
+      shareTitle: `View.ly - ${document.title}`,
+      embedCode: this.getEmbedCode()
+    })
+  }
+
+  getEmbedCode = () => {
+    const { config: { playerUrl }, match: { params: { videoId } } } = this.props;
+
+    return `<iframe src="${playerUrl}/?videoId=${videoId}&amp;autoPlay=true" frameborder="0" scrolling="0" allowfullscreen="" allow="autoplay"></iframe>`;
   }
 
   modalOpen = () => {
@@ -74,7 +93,7 @@ export default class VideoShare extends Component {
               <span>Facebook</span>
             </FacebookShareButton>
 
-            <TwitterShareButton url={this.state.shareUrl} title={this.state.shareTitle} className='social__share__item'>
+            <TwitterShareButton url={this.state.shareUrl} title={this.state.twitterTitle} className='social__share__item'>
               <TwitterIcon
                 size={64}
                 round />
@@ -105,9 +124,10 @@ export default class VideoShare extends Component {
 
           <div className="content">
             <div className="ui fluid action input">
-              <input type="text" value={window.location.href} />
+              <input type="text" value={this.state.shareUrl} />
               <button className="ui primary right labeled icon button" onClick={() => {
-                copy(window.location.href);
+                copy(this.state.shareUrl);
+                this.modalClose();
               }}>
                 <i className="copy icon" />
                 Copy
@@ -127,13 +147,16 @@ export default class VideoShare extends Component {
           <div className="content">
             <div className="ui form">
               <div className="field">
-                <textarea rows="4" readOnly>url</textarea>
+                <textarea rows="4" readOnly value={this.state.embedCode} />
               </div>
             </div>
           </div>
 
           <div className="actions">
-            <div className="ui primary button" onClick={() => {}}>Copy to clipboard</div>
+            <div className="ui primary button" onClick={() => {
+              copy(this.state.embedCode);
+              this.embedClose();
+            }}>Copy to clipboard</div>
             <div className="ui button" onClick={() => this.embedClose()}>Cancel</div>
           </div>
 
