@@ -1,8 +1,0 @@
-.ui.button.viewly-icon {
-    background: url(../../../img/logo.svg) no-repeat calc(100% - 6px) center;
-    background-size: 27px;
-}
-.ui.button.metamask-icon {
-    background: url(../../../img/metamask.svg) no-repeat calc(100% - 6px) center;
-    background-size: 27px;
-}

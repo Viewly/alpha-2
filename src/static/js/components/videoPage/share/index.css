@@ -1,0 +1,32 @@
+.social__share {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.social__share__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    outline: none;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.social__share__item:hover {
+    background-color: lightgray;
+}
+.social__share__item--embed {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: gray;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.social__share__item--embed i {
+    font-size: 32px;
+    line-height: 32px;
+    color: white;
+}
