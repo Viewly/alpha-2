@@ -45,8 +45,8 @@ class App extends Component {
         <Route path='/' component={HeaderContainer} />
         <Route path='/' component={UnlockModal} />
         <Route path='/' component={SearchInput} />
+        <Route path='/v/:videoId' component={VideoShare} />
         {authToken && <Route path='/wallet' component={WalletPage} />}
-        {authToken && <Route path='/v/:videoId' component={VideoShare} />}
         {authToken && <Route path='/v/:videoId' component={VideoVote} />}
         {authToken && <Route path='/upload/publish/to_ethereum/:videoId' component={PublishVideoPage} />}
       </React.Fragment>
