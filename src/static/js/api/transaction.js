@@ -24,6 +24,23 @@ export async function transactionWait(baseUrl, { txn_id }) {
   return { txn, receipt };
 }
 
+export async function transactionBlockWait(baseUrl, { blockNumber, offset }) {
+  let latestBlock;
+
+  const wait = await new Promise(resolve => {
+    const refreshInterval = setInterval(async () => {
+      latestBlock = await provider.getBlockNumber();
+      
+      if (blockNumber + offset <= latestBlock) {
+        clearInterval(refreshInterval);
+        resolve();
+      }
+    }, 1000);
+  });
+
+  return latestBlock;
+}
+
 export async function getTransaction(txn_id) {
   const txn = await provider.getTransaction(txn_id);
 

@@ -8,12 +8,13 @@ import {
   authorizeAllowance,
   publishVideo,
   transactionWait,
+  transactionBlockWait,
   transactionPendingAdd
 } from '../../actions';
 import Portal from '../portal';
-
-import provider from '../../ethereum'; // TODO - move to api
 import { roundTwoDecimals } from '../../utils';
+
+const BLOCKS_TO_WAIT = 2;
 
 @connect((state, props) => ({
   wallet: state.wallet,
@@ -27,6 +28,7 @@ import { roundTwoDecimals } from '../../utils';
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
   fetchVideoPublisherData: ({ videoHex }) => dispatch(fetchVideoPublisherData({ videoHex })),
   transactionWait: (txn_id) => dispatch(transactionWait({ txn_id })),
+  transactionBlockWait: (blockNumber, offset) => dispatch(transactionBlockWait({ blockNumber, offset })),
   authorizeAllowance: ({ address, privateKey, amount, gasPrice, gasLimit }) => dispatch(authorizeAllowance({ address, privateKey, amount, gasPrice, gasLimit })),
   publishVideo: ({ address, privateKey, videoHex, value, gasPrice, gasLimit }) => dispatch(publishVideo({ address, privateKey, videoHex, value, gasPrice, gasLimit })),
   transactionPendingAdd: (txn_id, context) => dispatch(transactionPendingAdd({ txn_id, type: context.type, value: context.value }))
@@ -69,7 +71,16 @@ export default class PublishVideoPage extends Component {
   }
 
   publishClick = (type) => async () => {
-    const { wallet, unlockModalOpen, videoPublisher, authorizeAllowance, publishVideo, transactionWait, fetchBalance, transactionPendingAdd } = this.props;
+    const { wallet, 
+      unlockModalOpen, 
+      videoPublisher, 
+      authorizeAllowance, 
+      publishVideo,
+      transactionWait,
+      transactionBlockWait,
+      fetchBalance, 
+      transactionPendingAdd 
+    } = this.props;
     const { address, privateKey } = wallet;
     const { videoHex } = this.ref.container.dataset;
     const { gasPrice, gasLimit } = this.state;
@@ -94,7 +105,12 @@ export default class PublishVideoPage extends Component {
         transactionPendingAdd(hash, { type: 'publish', value: videoHex });
 
         this.setState({ txnId: hash, txnPending: true });
-        const txn = await transactionWait(hash);
+        const { txn: { blockNumber } } = await transactionWait(hash);
+
+        // TODO - leave this as debug for now in case someone has any issue
+        console.log('transaction block number', blockNumber, 'waiting for', (blockNumber + BLOCKS_TO_WAIT), 'block to be mined');
+        const latestBlock = await transactionBlockWait(blockNumber, BLOCKS_TO_WAIT);
+        console.log('blockchain latest block', latestBlock);
 
         if (this.props.transaction.receipt && this.props.transaction.receipt.status === 0) {
           this.setState({ txnPending: false, errorText: 'Transaction wasnt successful' });
