@@ -19,9 +19,9 @@ export async function videoVote (baseUrl, { videoId, address, weight = 100, ecc_
   }
 }
 
-async function isVoted (baseUrl, { videoId, address }) {
+export async function isVoted (baseUrl, { videoId, address }) {
   const url = `${baseUrl}/vote?video_id=${videoId}&eth_address=${address}`;
 
-  const { body } = await get(url);
-  return body;
+  await get(url);
+  return { videoId };
 }
