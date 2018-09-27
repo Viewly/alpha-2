@@ -91,6 +91,7 @@ const rootReducer = (state = initialState, action) => {
     case actions.VOTE_VIDEO_START:
       return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.LOADING }};
     case actions.VOTE_VIDEO_SUCCESS:
+    case actions.VOTE_FETCH_SUCCESS:
       return { ...state, votes: { ...state.votes, [action.data.videoId]: true }};
     case actions.VOTE_VIDEO_ERROR:
       return { ...state, votes: { ...state.votes, [action.videoId]: STATUS_TYPE.ERROR }};

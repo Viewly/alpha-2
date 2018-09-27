@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { STATUS_TYPE } from '../../../../constants';
-import { videoVote, unlockModalOpen } from '../../../../actions';
+import { videoVote, unlockModalOpen, isVoted } from '../../../../actions';
 import { saveVoteCache, signVoteHash } from '../../../../utils';
+
 require('../index.css');
 
 const VOTE_TOKENS_NEEDED = 100;
@@ -12,8 +13,14 @@ const VOTE_WEIGHT = 100;
 @connect(null, (dispatch) => ({
   videoVote: (videoId, address, weight, ecc_message, ecc_signature) => dispatch(videoVote({ videoId, address, weight, ecc_message, ecc_signature })),
   unlockModalOpen: () => dispatch(unlockModalOpen()),
+  isVoted: (videoId, address) => dispatch(isVoted({ videoId, address })),
 }))
 export default class VoteViewly extends Component {
+  componentDidMount () {
+    const { isVoted, videoId, wallet } = this.props;
+
+    isVoted(videoId, wallet.address);
+  }
 
   voteClick = async () => {
     const { wallet, unlockModalOpen, videoVote, videoId } = this.props;

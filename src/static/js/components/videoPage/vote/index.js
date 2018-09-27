@@ -50,7 +50,7 @@ export default class VideoPage extends Component {
       <Portal container='react-vote'>
         <Web3 />
 
-        <VoteMetamask wallet={wallet} vote={vote} videoId={videoId} onError={this.modalOpen} />
+        <VoteMetamask vote={vote} videoId={videoId} onError={this.modalOpen} />
         <VoteViewly wallet={wallet} vote={vote} videoId={videoId} onError={this.modalOpen} />
 
         {/* {this.showVoteButton()} */}
