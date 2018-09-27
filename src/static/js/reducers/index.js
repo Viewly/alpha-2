@@ -55,7 +55,7 @@ const rootReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case actions.SET_CONFIG:
-      return { ...state, config: action.payload };
+      return { ...state, config: { ...action.payload, _status: STATUS_TYPE.LOADED } };
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
 

@@ -5,6 +5,7 @@ import { hot } from "react-hot-loader";
 
 import { saveConfig, fetchAuthToken, walletsFetch, walletSave, fetchExchangeRate } from './actions';
 import { walletsToStorage } from './utils';
+import { STATUS_TYPE } from './constants';
 
 import HeaderContainer from './components/headerContainer';
 import UnlockModal from './components/unlockModal';
@@ -17,6 +18,7 @@ import SearchInput from './components/searchInput';
 @withRouter
 @connect((state) => ({
   authToken: state.authToken,
+  config: state.config,
 }), (dispatch) => ({
   saveConfig: wallet => dispatch(saveConfig(wallet)),
   fetchAuthToken: () => dispatch(fetchAuthToken()),
@@ -38,7 +40,11 @@ class App extends Component {
   }
 
   render() {
-    const { authToken } = this.props;
+    const { authToken, config } = this.props;
+
+    if (config._status !== STATUS_TYPE.LOADED) {
+      return false;
+    }
 
     return(
       <React.Fragment>
