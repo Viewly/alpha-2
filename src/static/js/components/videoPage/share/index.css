@@ -2,12 +2,13 @@
     display: flex !important;
     flex-direction: row;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 .social__share__item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px;
+    width: 80px;
     outline: none;
     padding: 5px 0;
     cursor: pointer;
