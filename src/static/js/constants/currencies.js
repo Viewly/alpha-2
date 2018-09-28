@@ -1,4 +1,4 @@
-export const CURRENCIES = {
+export const CURRENCY = {
   EUR: {
     name: 'Euro',
     sign: '€'

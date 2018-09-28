@@ -13,12 +13,14 @@ import {
 } from '../../actions';
 import Portal from '../portal';
 import { roundTwoDecimals } from '../../utils';
+import { CURRENCY } from '../../constants/currencies';
 
 const BLOCKS_TO_WAIT = 2;
 
 @connect((state, props) => ({
   wallet: state.wallet,
   prices: state.prices[state.currency],
+  currency: state.currency,
   gasPrice: state.gasPrice,
   videoPublisher: state.videoPublisher,
   transaction: state.transaction,
@@ -129,10 +131,11 @@ export default class PublishVideoPage extends Component {
   }
 
   renderPublisher = () => {
-    const { wallet, prices, videoPublisher, hasPendingTransaction } = this.props;
+    const { wallet, prices, videoPublisher, hasPendingTransaction, currency } = this.props;
     const { isPublished } = videoPublisher;
 
     const publishText = 'Publish the video';
+    const sign = CURRENCY[currency].sign;
 
     if ((wallet._status === 'LOADING') || (videoPublisher.priceView === -1)) {
       return <button className='ui button large primary disabled'>Loading ...</button>;
@@ -188,7 +191,7 @@ export default class PublishVideoPage extends Component {
 
       return (
         <button
-          data-tooltip={`${videoPublisher.priceView} VIEW ~ ${roundTwoDecimals(videoPublisher.priceView * prices.view)}€`}
+          data-tooltip={`${videoPublisher.priceView} VIEW ~ ${roundTwoDecimals(videoPublisher.priceView * prices.view)}${sign}`}
           data-position='right center'
           onClick={this.publishClick('publish')}
           className='ui button large primary'
@@ -200,7 +203,7 @@ export default class PublishVideoPage extends Component {
 
     return (
       <button
-        data-tooltip={`${videoPublisher.priceEth} ETH ~ ${roundTwoDecimals(videoPublisher.priceEth * prices.eth)}€`}
+        data-tooltip={`${videoPublisher.priceEth} ETH ~ ${roundTwoDecimals(videoPublisher.priceEth * prices.eth)}${sign}`}
         data-position='right center'
         onClick={this.publishClick('publish_eth')}
         className='ui button large primary'

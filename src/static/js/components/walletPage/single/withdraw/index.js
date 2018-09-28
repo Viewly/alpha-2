@@ -5,11 +5,13 @@ import Item from '../home/item';
 import { roundTwoDecimals, checkAddressValidity, isNumeric } from '../../../../utils';
 import { sendEthereum, sendView, transactionWait, fetchBalance, transactionPendingAdd } from '../../../../actions';
 import { STATUS_TYPE } from '../../../../constants';
+import { CURRENCY } from '../../../../constants/currencies';
 
 @withRouter
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet,
   prices: state.prices[state.currency],
+  currency: state.currency,
   gasPrice: state.gasPrice,
   transaction: state.transaction,
   // TODO - quick workaround to lock withdraws if at least one transaction is pending
@@ -120,7 +122,7 @@ export default class WalletSingleWithdraw extends Component {
   }
 
   displayCurrentItem = () => {
-    const { match, wallet, prices } = this.props;
+    const { match, wallet, prices, currency } = this.props;
 
     const type = match.params.type.toLowerCase();
     const balance = this.getCurrentBalance();
@@ -134,7 +136,8 @@ export default class WalletSingleWithdraw extends Component {
         address={wallet.address}
         balance={balance}
         decrypted={wallet.decrypted}
-        euro={roundTwoDecimals(euro)}
+        fiat={roundTwoDecimals(euro)}
+        fiatSign={CURRENCY[currency].sign}
         image={image}
         name={type.toUpperCase()}
       />

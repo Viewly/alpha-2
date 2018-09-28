@@ -6,11 +6,13 @@ import { unlockModalOpen, lockWallet } from '../../../../actions';
 import Item from './item';
 
 import { roundTwoDecimals, updateWallets } from '../../../../utils';
+import { CURRENCY } from '../../../../constants/currencies';
 
 @withRouter
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet,
-  prices: state.prices[state.currency]
+  prices: state.prices[state.currency],
+  currency: state.currency
 }), (dispatch) => ({
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   lockWallet: (address) => dispatch(lockWallet(address)),
@@ -34,7 +36,7 @@ export default class WalletSingleHome extends Component {
   }
 
   render() {
-    const { wallet, prices, unlockModalOpen } = this.props;
+    const { wallet, prices, unlockModalOpen, currency } = this.props;
 
     return (
       <div>
@@ -60,7 +62,8 @@ export default class WalletSingleHome extends Component {
             address={wallet.address}
             balance={wallet.balanceEth}
             decrypted={wallet.decrypted}
-            euro={roundTwoDecimals(wallet.balanceEth * prices.eth)}
+            fiat={roundTwoDecimals(wallet.balanceEth * prices.eth)}
+            fiatSign={CURRENCY[currency].sign}
             image='https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png'
             sendCallback={this.sendClick}
             name='ETH'
@@ -70,7 +73,8 @@ export default class WalletSingleHome extends Component {
             address={wallet.address}
             balance={wallet.balanceView}
             decrypted={wallet.decrypted}
-            euro={roundTwoDecimals(wallet.balanceView * prices.view)}
+            fiat={roundTwoDecimals(wallet.balanceView * prices.view)}
+            fiatSign={CURRENCY[currency].sign}
             image='https://s2.coinmarketcap.com/static/img/coins/128x128/2963.png'
             sendCallback={this.sendClick}
             name='VIEW'
