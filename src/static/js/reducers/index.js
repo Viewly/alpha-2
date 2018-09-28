@@ -19,7 +19,7 @@ const initialState = {
       eth: 0,
     }
   },
-  currency: 'EUR',
+  currency: cacheGet(CACHE_KEYS.SELECTED_CURRENCY) || 'EUR',
   gasPrice: {
     normal: 10,
     fast: 16
@@ -66,7 +66,9 @@ const rootReducer = (state = initialState, action) => {
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
     case actions.TOGGLE_CURRENCY:
-      return { ...state, currency: state.currency === 'EUR' ? 'USD' : 'EUR' };
+      const newCurrency = state.currency === 'EUR' ? 'USD' : 'EUR';
+      cacheSet(CACHE_KEYS.SELECTED_CURRENCY, newCurrency);
+      return { ...state, currency: newCurrency };
 
     case actions.GAS_PRICE_FETCH_SUCCESS:
       return { ...state, gasPrice: { ...action.data }};
