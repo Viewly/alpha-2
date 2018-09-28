@@ -9,7 +9,7 @@ import { STATUS_TYPE } from '../../../../constants';
 @withRouter
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet,
-  prices: state.prices,
+  prices: state.prices[state.currency],
   gasPrice: state.gasPrice,
   transaction: state.transaction,
   // TODO - quick workaround to lock withdraws if at least one transaction is pending

@@ -1,7 +1,7 @@
 import React, { Component} from "react";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
-// import { Route } from 'react-router-dom';
+
 import { unlockModalOpen, lockWallet } from '../../../../actions';
 import Item from './item';
 
@@ -10,7 +10,7 @@ import { roundTwoDecimals, updateWallets } from '../../../../utils';
 @withRouter
 @connect((state, props) => ({
   wallet: state.wallet.address === props.match.params.wallet && state.wallet,
-  prices: state.prices
+  prices: state.prices[state.currency]
 }), (dispatch) => ({
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   lockWallet: (address) => dispatch(lockWallet(address)),

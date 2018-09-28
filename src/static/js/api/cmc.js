@@ -14,7 +14,16 @@ export async function fetchExchangeRate () {
       fetchEuro(CMC_API, ETHEREUM_ID)
     ]);
 
-    const prices = { view: view.price, eth: ether.price };
+    const prices = { 
+      EUR: {
+        view: view.EUR.price,
+        eth: ether.EUR.price
+      },
+      USD: {
+        view: view.USD.price,
+        eth: ether.USD.price
+      }
+    };
     cacheSet(CACHE_KEYS.CMC_PRICES, JSON.stringify(prices), 1800); // 1800 seconds = 30 mins
 
     return prices;
@@ -23,7 +32,7 @@ export async function fetchExchangeRate () {
 
 async function fetchEuro (baseUrl, currencyId) {
   const url = `${baseUrl}/${currencyId}/?convert=EUR`;
-  const { body: { data: { quotes: { EUR } } } } = await get(url);
+  const { body: { data: { quotes: { EUR, USD } } } } = await get(url);
 
-  return EUR;
+  return { EUR, USD };
 }

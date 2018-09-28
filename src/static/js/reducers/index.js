@@ -11,8 +11,11 @@ const initialState = {
   votes: getVotes(),
   prices: {
     view: 0,
-    eth: 0
+    eth: 0,
+    viewUsd: 0,
+    ethUsd: 0,
   },
+  currency: 'EUR',
   gasPrice: {
     normal: 10,
     fast: 16

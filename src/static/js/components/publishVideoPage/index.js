@@ -18,7 +18,7 @@ const BLOCKS_TO_WAIT = 2;
 
 @connect((state, props) => ({
   wallet: state.wallet,
-  prices: state.prices,
+  prices: state.prices[state.currency],
   gasPrice: state.gasPrice,
   videoPublisher: state.videoPublisher,
   transaction: state.transaction,
