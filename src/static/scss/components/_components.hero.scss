@@ -1,0 +1,63 @@
+/*------------------------------------*\
+    #HERO
+\*------------------------------------*/
+
+/**
+ * Hero
+ */
+.c-hero {
+    background-color: #e8e8f0;
+    font-size: 16px;
+    margin-bottom: $spacing-unit;
+    padding-top: $spacing-unit-large;
+    padding-bottom: $spacing-unit-large;
+    position: relative;
+
+    @include mq(large) {
+        margin-bottom: $spacing-unit-large;
+    }
+
+    @include mq(extralarge) {
+        margin-bottom: $spacing-unit-huge;
+        padding-top: 150px;
+        padding-bottom: 150px;
+    }
+
+    &::before,
+    &::after {
+        background-color: inherit;
+        content: '';
+        width: 50vw;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
+
+    &::before {
+        right: 100%;
+    }
+
+    &::after {
+        left: 100%;
+    }
+}
+
+    /**
+     * Hero title
+     */
+    .c-hero__title {
+        font-size: 32px;
+        font-weight: 700;
+
+        @include mq(medium) {
+            font-size: 44px;
+        }
+
+        @include mq(large) {
+            font-size: 46px;
+        }
+
+        @include mq(extralarge) {
+            font-size: 48px;
+        }
+    }
