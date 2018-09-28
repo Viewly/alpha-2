@@ -14,6 +14,7 @@ import VideoVote from './components/videoPage/vote';
 import VideoShare from './components/videoPage/share';
 import PublishVideoPage from './components/publishVideoPage';
 import SearchInput from './components/searchInput';
+import MainMenu from './components/mainmenu';
 
 @withRouter
 @connect((state) => ({
@@ -51,6 +52,7 @@ class App extends Component {
         <Route path='/' component={HeaderContainer} />
         <Route path='/' component={UnlockModal} />
         <Route path='/' component={SearchInput} />
+        <Route path='/' component={MainMenu} />
         <Route path='/v/:videoId' component={VideoShare} />
         {authToken && <Route path='/wallet' component={WalletPage} />}
         {authToken && <Route path='/v/:videoId' component={VideoVote} />}
