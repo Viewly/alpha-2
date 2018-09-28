@@ -2,23 +2,39 @@
     #HERO
 \*------------------------------------*/
 
+$tweakpoint-hero:           520px;
+
+
+
+
+
 /**
  * Hero
  */
 .c-hero {
-    background-color: #e8e8f0;
-
+    background-color: #fff;
+    background-image: url('../../img/hero-illustration-mobile.svg');
+    background-position: top 5% left 50%;
     background-repeat: no-repeat;
+    background-size: 90% auto;
     font-size: 16px;
     line-height: 1.4;
     margin-bottom: $spacing-unit;
-    padding-top: $spacing-unit-large;
     padding-bottom: $spacing-unit-large;
+    padding-top: $spacing-unit-large;
+    text-align: center;
     position: relative;
 
+    @include mq($tweakpoint-hero) {
+        background-color: #e8e8f0;
+        background-image: url('../../img/hero-illustration.svg');
+        background-position: bottom -400% right -10%;
+        background-size: auto 90%;
+        text-align: left;
+    }
+
     @include mq(medium) {
-        background-image: url(../../img/hero-illustration.svg);
-        background-position: top 50% right 0;
+        background-position: top 50% right -5%;
         background-size: auto 76%;
         margin-bottom: $spacing-unit-large;
         padding-top: $spacing-unit-huge;
@@ -57,7 +73,17 @@
     }
 
     p {
-        margin-bottom: 34px;
+        margin-bottom: $spacing-unit;
+
+        @include mq($until: $tweakpoint-hero) {
+            br {
+                display: none;
+            }
+        }
+
+        @include mq($tweakpoint-hero) {
+            margin-bottom: 34px;
+        }
     }
 }
 
@@ -78,5 +104,38 @@
 
         @include mq(extralarge) {
             font-size: 48px;
+        }
+    }
+
+    /**
+     * Secondary cta
+     */
+    .c-hero__secondary-cta {
+        color: #868a9a;
+        display: block;
+
+        @include mq($until: $tweakpoint-hero) {
+            font-size: 14px;
+        }
+    }
+
+    /**
+     * Hero buttons
+     */
+    .c-hero__layout-buttons {
+        > .o-grid__cell[class] {
+            width: 100%;
+
+            @include mq($tweakpoint-hero) {
+                width: auto;
+            }
+
+            &:not(:first-child) {
+                margin-top: $spacing-unit-small;
+
+                @include mq($tweakpoint-hero) {
+                    margin-top: 0;
+                }
+            }
         }
     }
