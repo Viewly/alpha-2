@@ -19,8 +19,17 @@ export default class VoteViewly extends Component {
   componentDidMount () {
     const { isVoted, videoId, wallet } = this.props;
 
-    isVoted(videoId, wallet.address);
+    wallet.address && isVoted(videoId, wallet.address);
   }
+
+  componentDidUpdate(prevProps) {
+    const { isVoted, videoId, wallet } = this.props;
+
+    if (wallet.address !== prevProps.wallet.address) {
+      wallet.address && isVoted(videoId, wallet.address);
+    }
+  }
+
 
   voteClick = async () => {
     const { wallet, unlockModalOpen, videoVote, videoId } = this.props;
