@@ -8,6 +8,7 @@
 .c-hero {
     background-color: #e8e8f0;
     font-size: 16px;
+    line-height: 1.4;
     margin-bottom: $spacing-unit;
     padding-top: $spacing-unit-large;
     padding-bottom: $spacing-unit-large;
@@ -39,6 +40,10 @@
 
     &::after {
         left: 100%;
+    }
+
+    p {
+        margin-bottom: 34px;
     }
 }
 
