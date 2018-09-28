@@ -1,4 +1,5 @@
 import React, { Component} from "react";
+import NumberFormat from 'react-number-format';
 
 export default class Item extends Component {
   render() {
@@ -13,7 +14,9 @@ export default class Item extends Component {
           <div className="header">{name}</div>
 
           <div className="meta">
-            <span className="price">{balance} {name}</span>
+            <span className="price">
+              <NumberFormat value={balance} displayType={'text'} thousandSeparator={true} suffix={` ${name}`} decimalScale={3} />
+            </span>
             <span className="stay">~ {fiat}{fiatSign}</span>
           </div>
 
