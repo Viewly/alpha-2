@@ -10,10 +10,14 @@ const initialState = {
   wallet: {},
   votes: getVotes(),
   prices: {
-    view: 0,
-    eth: 0,
-    viewUsd: 0,
-    ethUsd: 0,
+    EUR: {
+      view: 0,
+      eth: 0,
+    },
+    USD: {
+      view: 0,
+      eth: 0,
+    }
   },
   currency: 'EUR',
   gasPrice: {
