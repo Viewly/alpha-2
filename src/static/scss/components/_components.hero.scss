@@ -112,11 +112,8 @@ $tweakpoint-hero:           520px;
      */
     .c-hero__secondary-cta {
         color: #868a9a;
-        display: block;
-
-        @include mq($until: $tweakpoint-hero) {
-            font-size: 14px;
-        }
+        display: inline-block;
+        vertical-align: top;
     }
 
     /**
