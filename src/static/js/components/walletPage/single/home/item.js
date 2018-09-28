@@ -2,7 +2,7 @@ import React, { Component} from "react";
 
 export default class Item extends Component {
   render() {
-    const { name, address, image, balance, euro, labels, sendCallback, decrypted } = this.props;
+    const { name, image, balance, fiat, fiatSign, labels, sendCallback, decrypted } = this.props;
 
     return (
       <div className='item'>
@@ -14,7 +14,7 @@ export default class Item extends Component {
 
           <div className="meta">
             <span className="price">{balance} {name}</span>
-            <span className="stay">~ {euro}&euro;</span>
+            <span className="stay">~ {fiat}{fiatSign}</span>
           </div>
 
           <div className="extra">
