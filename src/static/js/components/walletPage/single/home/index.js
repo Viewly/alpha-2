@@ -2,7 +2,7 @@ import React, { Component} from "react";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
-import { unlockModalOpen, lockWallet } from '../../../../actions';
+import { unlockModalOpen, lockWallet, toggleCurrency } from '../../../../actions';
 import Item from './item';
 
 import { roundTwoDecimals, updateWallets } from '../../../../utils';
@@ -16,8 +16,22 @@ import { CURRENCY } from '../../../../constants/currencies';
 }), (dispatch) => ({
   unlockModalOpen: () => dispatch(unlockModalOpen()),
   lockWallet: (address) => dispatch(lockWallet(address)),
+  toggleCurrency: () => dispatch(toggleCurrency()),
 }))
 export default class WalletSingleHome extends Component {
+  state = {
+    currencies: {
+      EUR: {
+        icon: 'euro sign',
+        label: 'EUR'
+      },
+      USD: {
+        icon: 'dollar sign',
+        label: 'USD'
+      }
+    }
+  }
+
   sendClick = (name) => {
     const { wallet, history, unlockModalOpen } = this.props;
 
@@ -36,7 +50,7 @@ export default class WalletSingleHome extends Component {
   }
 
   render() {
-    const { wallet, prices, unlockModalOpen, currency } = this.props;
+    const { wallet, prices, unlockModalOpen, currency, toggleCurrency } = this.props;
 
     return (
       <div>
@@ -54,6 +68,11 @@ export default class WalletSingleHome extends Component {
               Unlock wallet
             </button>
           )}
+
+          <button onClick={toggleCurrency} className="ui right labeled icon button">
+            <i className={`right ${this.state.currencies[currency].icon} icon`}></i>
+            Currency
+          </button>
         </div>
 
         <div className='ui divided items'>
