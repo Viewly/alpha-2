@@ -2,14 +2,20 @@
     #SHAME
 \*------------------------------------*/
 
+/**
+ * 1. Since header is fixed position, we need to set its bottom margin in a
+ *    different way (via faux margin).
+ * 2. Remove the faux bottom margin for pages where we don't need the gap
+ *    between header and the content.
+ */
 body {
     background-color: $global-background-color;
     color: $global-text-color;
     overflow-x: hidden;
-    padding-top: $header-height + $spacing-unit-large;
+    padding-top: $header-height + $spacing-unit-large; /* [1] */
 
-    &.c-page-view {
-        padding-top: $header-height;
+    &.has-header-without-bottom-margin {
+        padding-top: $header-height; /* [2] */
     }
 
     &.c-page-auth {
