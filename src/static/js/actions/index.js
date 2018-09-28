@@ -126,6 +126,7 @@ export const videoVoteMetamask = makeApiCall(web3Api.videoVoteMetamask, WEB3_VID
 export const getTransaction = transactionApi.getTransaction;
 
 export const SET_CONFIG = 'SYSTEM/SET_CONFIG'
+export const TOGGLE_CURRENCY = 'SYSTEM/TOGGLE_CURRENCY'
 export const ADD_WALLET = 'USER/ADD_WALLET';
 export const ADD_ENCRYPTED_WALLET = 'USER/ADD_ENCRYPTED_WALLET';
 export const UNLOCK_MODAL_OPEN = 'MODAL/UNLOCK_MODAL_OPEN';
@@ -133,3 +134,4 @@ export const UNLOCK_MODAL_CLOSE = 'MODAL/UNLOCK_MODAL_CLOSE';
 export const unlockModalOpen = () => ({ type: UNLOCK_MODAL_OPEN });
 export const unlockModalClose = () => ({ type: UNLOCK_MODAL_CLOSE });
 export const saveConfig = config => ({ type: SET_CONFIG, payload: config });
+export const toggleCurrency = config => ({ type: TOGGLE_CURRENCY });

@@ -7,5 +7,6 @@ export const CACHE_KEYS = {
   CMC_PRICES: 'cmc_prices',
   WALLET_BALANCES: 'wallet_balances',
   VIDEO_VOTES: 'video_votes',
-  PENDING_TRANSACTIONS: 'pending_transactions'
+  PENDING_TRANSACTIONS: 'pending_transactions',
+  SELECTED_CURRENCY: 'selected_currency'
 }

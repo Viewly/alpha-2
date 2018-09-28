@@ -3,7 +3,7 @@ import NumberFormat from 'react-number-format';
 
 export default class Item extends Component {
   render() {
-    const { name, address, image, balance, euro, labels, sendCallback, decrypted } = this.props;
+    const { name, image, balance, fiat, fiatSign, labels, sendCallback, decrypted } = this.props;
 
     return (
       <div className='item'>
@@ -17,7 +17,7 @@ export default class Item extends Component {
             <span className="price">
               <NumberFormat value={balance} displayType={'text'} thousandSeparator={true} suffix={` ${name}`} decimalScale={3} />
             </span>
-            <span className="stay">~ {euro}&euro;</span>
+            <span className="stay">~ {fiat}{fiatSign}</span>
           </div>
 
           <div className="extra">

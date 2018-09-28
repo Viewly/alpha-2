@@ -10,9 +10,16 @@ const initialState = {
   wallet: {},
   votes: getVotes(),
   prices: {
-    view: 0,
-    eth: 0
+    EUR: {
+      view: 0,
+      eth: 0,
+    },
+    USD: {
+      view: 0,
+      eth: 0,
+    }
   },
+  currency: cacheGet(CACHE_KEYS.SELECTED_CURRENCY) || 'EUR',
   gasPrice: {
     normal: 10,
     fast: 16
@@ -58,6 +65,10 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, config: { ...action.payload, _status: STATUS_TYPE.LOADED } };
     case actions.AUTH_TOKEN_FETCH_SUCCESS:
       return { ...state, authToken: action.data };
+    case actions.TOGGLE_CURRENCY:
+      const newCurrency = state.currency === 'EUR' ? 'USD' : 'EUR';
+      cacheSet(CACHE_KEYS.SELECTED_CURRENCY, newCurrency);
+      return { ...state, currency: newCurrency };
 
     case actions.GAS_PRICE_FETCH_SUCCESS:
       return { ...state, gasPrice: { ...action.data }};

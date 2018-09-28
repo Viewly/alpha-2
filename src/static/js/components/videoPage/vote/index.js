@@ -5,7 +5,7 @@ import Web3 from '../../web3';
 import VoteMetamask from './metamask';
 import VoteViewly from './viewly';
 
-import { videoVote, fetchBalance } from '../../../actions';
+import { fetchBalance } from '../../../actions';
 import Portal from '../../portal';
 
 const VOTE_TOKENS_NEEDED = 100;
@@ -14,7 +14,6 @@ const VOTE_TOKENS_NEEDED = 100;
   wallet: state.wallet,
   vote: state.votes[props.match.params.videoId]
 }), (dispatch) => ({
-  // videoVote: (videoId) => dispatch(videoVote(videoId)),
   fetchBalance: (address) => dispatch(fetchBalance({ address })),
 }))
 export default class VideoPage extends Component {
@@ -52,8 +51,6 @@ export default class VideoPage extends Component {
 
         <VoteMetamask vote={vote} videoId={videoId} onError={this.modalOpen} />
         <VoteViewly wallet={wallet} vote={vote} videoId={videoId} onError={this.modalOpen} />
-
-        {/* {this.showVoteButton()} */}
 
         <div ref={(ref) => this.ref = ref} className='ui mini modal'>
           <div className='header'>Insufficient VIEW Tokens</div>
