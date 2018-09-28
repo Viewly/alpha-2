@@ -10,6 +10,17 @@ $tweakpoint-hero:           520px;
 
 /**
  * Hero
+ *
+ * 1. Since hero is in a `.o-wrapper` but we need it to look like it's as wide
+ *    as the viewport, here we're using pseudo elements to make the hero look
+ *    that way. We've…
+ * 2. …made the background of pseudo elements the same as hero's, and…
+ * 3. …made pseudo elements wide enough to make sure the visual hack will always
+ *    work. Then we…
+ * 4. …position pseudo elements absolutely and make them the same height as the
+ *    hero. Afterwards, we…
+ * 5. …push each pseudo element outside of the hero so that it seems like hero's
+ *    background is one unbroken whole.
  */
 .c-hero {
     background-color: #fff;
@@ -55,21 +66,21 @@ $tweakpoint-hero:           520px;
     }
 
     &::before,
-    &::after {
-        background-color: inherit;
+    &::after { /* [1] */
+        background-color: inherit; /* [2] */
         content: '';
-        width: 50vw;
-        position: absolute;
-        top: 0;
-        bottom: 0;
+        width: 50vw; /* [3] */
+        position: absolute; /* [4] */
+        top: 0; /* [4] */
+        bottom: 0; /* [4] */
     }
 
     &::before {
-        right: 100%;
+        right: 100%; /* [5] */
     }
 
     &::after {
-        left: 100%;
+        left: 100%; /* [5] */
     }
 
     p {
@@ -118,9 +129,12 @@ $tweakpoint-hero:           520px;
 
     /**
      * Hero buttons
+     *
+     * 1. Bump up the specificity a bit to override the style from
+     *   `.o-grid--auto`.
      */
     .c-hero__layout-buttons {
-        > .o-grid__cell[class] {
+        > .o-grid__cell[class] { /* [1] */
             width: 100%;
 
             @include mq($tweakpoint-hero) {
