@@ -5,6 +5,10 @@
 {% set showFooter = true %}
 
 {% block content %}
+  {% if not current_user.is_authenticated %}
+    {% include 'partials/hero.html' %}
+  {% endif %}
+
   {% if videos %}
     <h3>{{ section_title }}</h3>
 
