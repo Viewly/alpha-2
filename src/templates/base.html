@@ -4,6 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
   <title>{% block title %}Viewly{% endblock %}</title>
+
+  <!-- Preconnect for supporting browsers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" pr="1.0">
+  <link rel="preconnect" href="https://themes.googleusercontent.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin pr="1.0">
+  <link rel="preconnect" href="https://heapanalytics.com" pr="1.0">
+  <link rel="preconnect" href="https://cdn.heapanalytics.com" pr="1.0">
+
+  <!-- DNS prefetch for browsers that don't support preconnect -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" pr="1.0">
+  <link rel="dns-prefetch" href="https://themes.googleusercontent.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com/" crossorigin pr="1.0">
+  <link rel="dns-prefetch" href="https://heapanalytics.com" pr="1.0">
+  <link rel="dns-prefetch" href="https://cdn.heapanalytics.com" pr="1.0">
+
   <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
