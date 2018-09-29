@@ -109,6 +109,7 @@ export default class SearchInput extends Component {
         {this.state.dropdownOpen && (
           <div className="c-search-dropdown">
 
+            <h3 class="c-search-dropdown__heading">Channels</h3>
             <ul className="c-search-dropdown__list">
 
               {search.data.length === 0 && !isLoading && (

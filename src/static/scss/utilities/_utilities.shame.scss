@@ -473,6 +473,15 @@ body {
     left: 0;
 }
 
+    .c-search-dropdown__heading[class] {
+        color: #9a9da1 !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        margin-bottom: 0 !important;
+        padding: $spacing-unit-small $spacing-unit-small 0 $spacing-unit-small !important;
+        text-transform: uppercase !important;
+    }
+
     .c-search-dropdown__list {
         margin: 0 !important;
         padding: $spacing-unit-tiny 0 !important;
