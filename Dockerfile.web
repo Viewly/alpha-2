@@ -18,8 +18,5 @@ RUN npm run build
 WORKDIR /alpha-2
 RUN pip install -r requirements.txt
 
-## compile sass/scss
-RUN python setup.py build_sass
-
 EXPOSE 5000
 CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "src.views:app"]

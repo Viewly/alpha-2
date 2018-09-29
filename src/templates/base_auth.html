@@ -10,7 +10,11 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
-  <link href="{{ url_for('static', filename='css/compiled/base.scss.css') }}" rel="stylesheet" type="text/css">
+  {% if flask_env() == 'development' %}
+    <link href="http://localhost:3000/dist/base.scss.css" rel="stylesheet" type="text/css">
+  {% else %}
+    <link href="{{ url_for('static', filename=find_css('base')) }}" rel="stylesheet" type="text/css">
+  {% endif %}
 
 </head>
 <body class="c-page-auth">

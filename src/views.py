@@ -16,7 +16,7 @@ from flask_security import (
     current_user,
     login_required,
 )
-from funcy import cache, last
+from funcy import cache, last, first
 from sqlalchemy import desc, func, distinct
 
 from . import app, db
@@ -400,6 +400,16 @@ def utility_processor():
         return [last(x.split('src/static/'))
                 for x in glob.glob(f'src/static/dist/*.js')]
 
+    @cache(10 ** 8)
+    def list_css():
+        return [last(x.split('src/static/'))
+                for x in glob.glob(f'src/static/dist/*.scss.css')]
+
+    @cache(10 ** 8)
+    def find_css(file_name):
+        return first([last(x.split('src/static/'))
+                for x in glob.glob(f'src/static/dist/{file_name}*.scss.css')]) or ''
+
     def get_transcoding_status(video_id: str):
         job = TranscoderJob.query.filter_by(
             video_id=video_id,
@@ -449,6 +459,8 @@ def utility_processor():
         get_auth_token_cached=get_auth_token_cached,
         can_vote=can_vote,
         list_javascripts=list_javascripts,
+        list_css=list_css,
+        find_css=find_css,
         nsfw_cover_img='https://i.imgur.com/kXBgFBy.png',
         avatar_fallback='https://i.imgur.com/32AwiVw.jpg',
         cover_fallback='https://i.imgur.com/04kFE8B.png',

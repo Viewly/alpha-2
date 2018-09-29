@@ -18,7 +18,6 @@ from flask_security.forms import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
-from sassutils.wsgi import SassMiddleware
 
 from .config import IS_PRODUCTION
 
@@ -130,10 +129,3 @@ def reset_db():
     delegator.run(f'createdb {db_name}')
     db.create_all()
     print(f'Database "{db_name}" has been reset.')
-
-
-# Initialize scss compilation in development
-if not IS_PRODUCTION:
-    app.wsgi_app = SassMiddleware(app.wsgi_app, {
-        'src': ('static/scss', 'static/css/compiled', '/static/css/compiled')
-    })
