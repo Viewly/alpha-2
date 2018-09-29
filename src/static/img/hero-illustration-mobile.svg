@@ -1,0 +1,14 @@
+<svg width="329px" height="242px" viewBox="0 0 329 242" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="join-revolution-background" transform="translate(2.000000, 2.000000)">
+            <path d="M86.983,237.395 C38.519,247.227 -4.338,229.774 6.773,175.712 C17.147,135.544 19.326,105.47 39.581,75.765 C54.779,52.703 81.691,30.521 112.606,24.043 C136.933,19.191 158.502,13.043 179.544,14.125 C199.6,14.792 222.049,22.679 231.394,38.139 C240.6,52.466 256.298,68.631 259.192,91.439 C263.606,117.599 250.139,156.571 213.77,176.936 C175.684,197.837 134.112,228.75 86.983,237.395 Z" id="Shape" fill="#F8F9FB" fill-rule="nonzero"></path>
+            <g id="a-link" opacity="0.1" transform="translate(247.897801, 132.059996) rotate(15.000000) translate(-247.897801, -132.059996) translate(182.897801, 68.059996)" fill-rule="nonzero" fill="#EEB523">
+                <polygon id="a" points="0.380919237 0.244509207 129.231735 0.244509207 129.231735 127.944041 0.380919237 127.944041"></polygon>
+            </g>
+            <rect id="Rectangle-path" fill="#6BA9B4" fill-rule="nonzero" opacity="0.15" transform="translate(60.585317, 52.585817) rotate(-30.000000) translate(-60.585317, -52.585817) " x="33.070817" y="25.071317" width="55.029" height="55.029" rx="4"></rect>
+            <rect id="Rectangle-path" stroke="#EEB523" stroke-width="4" opacity="0.5" stroke-linecap="round" stroke-linejoin="round" x="0" y="163" width="19" height="19" rx="9.5"></rect>
+            <path d="M258.948,1.948 L268.284,1.948 L268.284,1.948 C270.493139,1.948 272.284,3.738861 272.284,5.948 L272.284,15.284 L272.284,15.284 C272.284,17.493139 270.493139,19.284 268.284,19.284 L258.948,19.284 L258.948,19.284 C256.738861,19.284 254.948,17.493139 254.948,15.284 L254.948,8.78949607 L254.948,5.948 L254.948,5.948 C254.948,3.738861 256.738861,1.948 258.948,1.948 Z" id="Rectangle-path" stroke="#FD957E" stroke-width="4" opacity="0.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(263.616000, 10.616000) rotate(15.000000) translate(-263.616000, -10.616000) "></path>
+        </g>
+    </g>
+</svg>

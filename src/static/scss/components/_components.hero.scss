@@ -1,0 +1,152 @@
+/*------------------------------------*\
+    #HERO
+\*------------------------------------*/
+
+$tweakpoint-hero:           520px;
+
+
+
+
+
+/**
+ * Hero
+ *
+ * 1. Since hero is in a `.o-wrapper` but we need it to look like it's as wide
+ *    as the viewport, here we're using pseudo elements to make the hero look
+ *    that way. We've…
+ * 2. …made the background of pseudo elements the same as hero's, and…
+ * 3. …made pseudo elements wide enough to make sure the visual hack will always
+ *    work. Then we…
+ * 4. …position pseudo elements absolutely and make them the same height as the
+ *    hero. Afterwards, we…
+ * 5. …push each pseudo element outside of the hero so that it seems like hero's
+ *    background is one unbroken whole.
+ */
+.c-hero {
+    background-color: #fff;
+    background-image: url('../../img/hero-illustration-mobile.svg');
+    background-position: top 30% left 50%;
+    background-repeat: no-repeat;
+    background-size: 90% auto;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: $spacing-unit;
+    padding-bottom: $spacing-unit-large;
+    padding-top: $spacing-unit-large;
+    text-align: center;
+    position: relative;
+
+    @include mq($tweakpoint-hero) {
+        background-color: #e8e8f0;
+        background-image: url('../../img/hero-illustration.svg');
+        background-position: bottom -400% right -10%;
+        background-size: auto 90%;
+        text-align: left;
+    }
+
+    @include mq(medium) {
+        background-position: top 50% right -5%;
+        background-size: auto 76%;
+        margin-bottom: $spacing-unit-large;
+        padding-top: $spacing-unit-huge;
+        padding-bottom: $spacing-unit-huge;
+    }
+
+    @include mq(large) {
+        background-position: top -20% right 0;
+        background-size: auto;
+    }
+
+    @include mq(extralarge) {
+        background-position: top 50% right 10%;
+        background-size: auto 88%;
+        margin-bottom: $spacing-unit-huge;
+        padding-top: 150px;
+        padding-bottom: 150px;
+    }
+
+    &::before,
+    &::after { /* [1] */
+        background-color: inherit; /* [2] */
+        content: '';
+        width: 50vw; /* [3] */
+        position: absolute; /* [4] */
+        top: 0; /* [4] */
+        bottom: 0; /* [4] */
+    }
+
+    &::before {
+        right: 100%; /* [5] */
+    }
+
+    &::after {
+        left: 100%; /* [5] */
+    }
+
+    p {
+        margin-bottom: $spacing-unit;
+
+        @include mq($until: $tweakpoint-hero) {
+            br {
+                display: none;
+            }
+        }
+
+        @include mq($tweakpoint-hero) {
+            margin-bottom: 34px;
+        }
+    }
+}
+
+    /**
+     * Hero title
+     */
+    .c-hero__title {
+        font-size: 32px;
+        font-weight: 700;
+
+        @include mq(medium) {
+            font-size: 44px;
+        }
+
+        @include mq(large) {
+            font-size: 46px;
+        }
+
+        @include mq(extralarge) {
+            font-size: 48px;
+        }
+    }
+
+    /**
+     * Secondary cta
+     */
+    .c-hero__secondary-cta {
+        color: #868a9a;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    /**
+     * Hero buttons
+     *
+     * 1. Bump up the specificity a bit to override the style from
+     *   `.o-grid--auto`.
+     */
+    .c-hero__layout-buttons {
+        > .o-grid__cell[class] { /* [1] */
+            width: 100%;
+
+            @include mq($tweakpoint-hero) {
+                width: auto;
+            }
+
+            &:not(:first-child) {
+                margin-top: $spacing-unit-small;
+
+                @include mq($tweakpoint-hero) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
