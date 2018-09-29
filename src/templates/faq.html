@@ -4,154 +4,155 @@
 {% set showFooter = true %}
 
 {% block content %}
-<div class="ui text container">
-  <h2>Frequently Asked Questions</h2>
+  <div class="c-faq">
+    <h2 class="c-faq__title">Frequently Asked Questions</h2>
+    <div class="c-faq__questions">
+      <h3 class="c-faq__question">What is Viewly Alpha?</h3>
+      <p>Viewly Alpha is a <i>tokenized video platform</i>, aiming to provide a more fair and efficient means of content delivery and monetization. Alpha is built with cool tech like Ethereum and IPFS. Alpha is in an experimental phase, and as such is not for the faint of heart.</p>
 
-  <h3>What is Viewly Alpha?</h3>
-  <p>Viewly Alpha is a <i>tokenized video platform</i>, aiming to provide a more fair and efficient means of content delivery and monetization. Alpha is built with cool tech like Ethereum and IPFS. Alpha is in an experimental phase, and as such is not for the faint of heart.</p>
+      <h3 class="c-faq__question">Source Code</h3>
+      <p>You can find the source of the underlying Ethereum contracts <a href="https://github.com/Viewly/platform-contracts">here</a>. The IPFS infrastructure and other tools will be open-sourced and published on our <a href="https://github.com/Viewly">GitHub</a> later this year.</p>
 
-  <h3>Source Code</h3>
-  <p>You can find the source of the underlying Ethereum contracts <a href="https://github.com/Viewly/platform-contracts">here</a>. The IPFS infrastructure and other tools will be open-sourced and published on our <a href="https://github.com/Viewly">GitHub</a> later this year.</p>
+      <h3 class="c-faq__question">Feedback</h3>
+      <p>If you have a product idea, feature request, or constructive criticism - we would <a href="https://viewly.typeform.com/to/bCD1Ty">love to hear it</a>. Constructive feedback will be rewarded with <a href="https://etherscan.io/token/0xf03f8d65bafa598611c3495124093c56e8f638f0">VIEW Tokens</a>.</p>
 
-  <h3>Feedback</h3>
-  <p>If you have a product idea, feature request, or constructive criticism - we would <a href="https://viewly.typeform.com/to/bCD1Ty">love to hear it</a>. Constructive feedback will be rewarded with <a href="https://etherscan.io/token/0xf03f8d65bafa598611c3495124093c56e8f638f0">VIEW Tokens</a>.</p>
+      <h3 class="c-faq__question">What is a VIEW token?</h3>
+      <p>The VIEW token is a utility token that functions as a medium of exchange between users activity and publishers who participate in the Viewly ecosystem. It's used by token owners, people who hold VIEW tokens, in the Viewly ecosystem to reward content creators for their hard work by voting on their videos and by content creators, which are also token owners, to publish their videos. VIEW token is an ERC-20 compliant token on the Ethereum blockchain.</p>
 
-  <h3>What is a VIEW token?</h3>
-  <p>The VIEW token is a utility token that functions as a medium of exchange between users activity and publishers who participate in the Viewly ecosystem. It's used by token owners, people who hold VIEW tokens, in the Viewly ecosystem to reward content creators for their hard work by voting on their videos and by content creators, which are also token owners, to publish their videos. VIEW token is an ERC-20 compliant token on the Ethereum blockchain.</p>
+      <h3 class="c-faq__question">What is Ethereum (ETH)?</h3>
+      <p>Ethereum, the blockchain, is an open software platform based on blockchain technology that enables developers to build and deploy decentralized applications. On Ethereum every transaction uses ETH in the form of Gas and Gwei. For more information, please refer to the following <a href="https://masterthecrypto.com/ethereum-what-is-gas-gas-limit-gas-price/">article</a>.</p>
 
-  <h3>What is Ethereum (ETH)?</h3>
-  <p>Ethereum, the blockchain, is an open software platform based on blockchain technology that enables developers to build and deploy decentralized applications. On Ethereum every transaction uses ETH in the form of Gas and Gwei. For more information, please refer to the following <a href="https://masterthecrypto.com/ethereum-what-is-gas-gas-limit-gas-price/">article</a>.</p>
+      <h3 class="c-faq__question">How are the videos being hosted and delivered?</h3>
+      <p>We use a combination of <a href="https://ipfs.io/"> IPFS </a> + <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html">S3</a> for hosting and Amazon for streaming. We'll most likely be switching to a <a href="https://www.webopedia.com/TERM/C/CDN.html">CDN</a> + <a href="https://webtorrent.io/"> WebTorrent</a> hybrid in the future.</p>
 
-  <h3>How are the videos being hosted and delivered?</h3>
-  <p>We use a combination of <a href="https://ipfs.io/"> IPFS </a> + <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html">S3</a> for hosting and Amazon for streaming. We'll most likely be switching to a <a href="https://www.webopedia.com/TERM/C/CDN.html">CDN</a> + <a href="https://webtorrent.io/"> WebTorrent</a> hybrid in the future.</p>
+      <h3 class="c-faq__question">How do the rewards work?</h3>
+      <p>The stake based game (Viewly Creator Rewards) is a content subsidy program, in which creators who publish high quality content compete for votes from token owners. The videos are rewarded with freshly minted VIEW Tokens in proportion to the cumulative stake of votes relative to all videos within a distribution period.</p>
 
-  <h3>How do the rewards work?</h3>
-  <p>The stake based game (Viewly Creator Rewards) is a content subsidy program, in which creators who publish high quality content compete for votes from token owners. The videos are rewarded with freshly minted VIEW Tokens in proportion to the cumulative stake of votes relative to all videos within a distribution period.</p>
+      <h3 class="c-faq__question">Why are you doing this?</h3>
+      <p>We're looking to build a community of creators who pride themselves on high-value content, and we're looking to help them earn!</p>
 
-  <h3>Why are you doing this?</h3>
-  <p>We're looking to build a community of creators who pride themselves on high-value content, and we're looking to help them earn!</p>
+      <h3 class="c-faq__question">What is a period and how does it relate to my videos?</h3>
+      <p>A reward period is a 24 hour window which binds the videos published within said window to its respective rewards pool. During the first 7 days, all of the videos from that period compete to receive rewards from the daily pool. You can always check how rewards are distributed by accessing the following <a href="https://view.ly/game/rewards">link</a>.</p>
 
-  <h3>What is a period and how does it relate to my videos?</h3>
-  <p>A reward period is a 24 hour window which binds the videos published within said window to its respective rewards pool. During the first 7 days, all of the videos from that period compete to receive rewards from the daily pool. You can always check how rewards are distributed by accessing the following <a href="https://view.ly/game/rewards">link</a>.</p>
+      <h3 class="c-faq__question">What happens after the 7 days?</h3>
+      <p>After the 7 days are up, the rewards for your video will be calculated and sent in the next distribution period. Your video stops earning VIEW tokens. You will be able to monetize your video even further as we release other monetization options ( for example tipping, subscriptions, etc.).</p>
 
-  <h3>What happens after the 7 days?</h3>
-  <p>After the 7 days are up, the rewards for your video will be calculated and sent in the next distribution period. Your video stops earning VIEW tokens. You will be able to monetize your video even further as we release other monetization options ( for example tipping, subscriptions, etc.).</p>
+      <h3 class="c-faq__question">How is the daily rewards pool being calculated?</h3>
+      <p>The rewards pool is based on a combination of how many videos are published and how many votes are casted during a distribution period.</p>
 
-  <h3>How is the daily rewards pool being calculated?</h3>
-  <p>The rewards pool is based on a combination of how many videos are published and how many votes are casted during a distribution period.</p>
-
-  <h3>Are the rewards manually processed, automatically or a combination of both?</h3>
-  <p>The rewards pool is based on a combination of how many videos are published and how many votes are casted during a time frame.</p>
-
-
-  <h3>What is the maximum rewards one video can make?</h3>
-  <p>The maximum rewards one video can accumulate is equal to the token pool tied to the period in which the video is published.</p>
+      <h3 class="c-faq__question">Are the rewards manually processed, automatically or a combination of both?</h3>
+      <p>The rewards pool is based on a combination of how many videos are published and how many votes are casted during a time frame.</p>
 
 
-  <h3>Will I be receiving an email when I get my rewards?</h3>
-  <p>Yes, an email is automatically sent as soon as the rewards are distributed. After the 7 day voting accumulation period has passed ( 7 days after your video has been published), we aim to distribute all rewards once a week, although sometimes it might take longer, but no more than 2 weeks.</p>
+      <h3 class="c-faq__question">What is the maximum rewards one video can make?</h3>
+      <p>The maximum rewards one video can accumulate is equal to the token pool tied to the period in which the video is published.</p>
 
-  <h3>How can I turn my VIEW tokens into ETH?</h3>
-  <p>You can use an exchange. A list of exchanges can be found <a href="https://coinmarketcap.com/currencies/view/#markets">here</a>.</p>
 
-  <h3>Do I still own the video or does it become your property?</h3>
-  <p> Viewly does not claim rights to the videos uploaded by our creators.</p>
+      <h3 class="c-faq__question">Will I be receiving an email when I get my rewards?</h3>
+      <p>Yes, an email is automatically sent as soon as the rewards are distributed. After the 7 day voting accumulation period has passed ( 7 days after your video has been published), we aim to distribute all rewards once a week, although sometimes it might take longer, but no more than 2 weeks.</p>
 
-  <h3>How do I upload and publish my videos?</h3>
-  <p>Uploading is very easy and it's done only in a few steps, you'll need to create a channel, then go to your uploading page and select your video/s. Publishing is done via a simple interaction with the Ethereum network. This interaction can be completed using the <a href="https://view.ly/v/FsORA3mLuCTn"> Viewly Wallet </a> (recommended for optimal user experience), <a href="https://view.ly/v/n4UFefdq1tIR">Trust Wallet</a> or <a href="https://view.ly/v/XYQahcpDHSAo">Metamask</a>. You can also check our <a href="https://medium.com/view-ly/how-to-upload-on-viewly-447e9328605e">Medium blog post</a>.</p>
+      <h3 class="c-faq__question">How can I turn my VIEW tokens into ETH?</h3>
+      <p>You can use an exchange. A list of exchanges can be found <a href="https://coinmarketcap.com/currencies/view/#markets">here</a>.</p>
 
-  <h3>Do you have access to my funds in the Viewly wallet?</h3>
-  <p>You own the private key and seed words (mnemonic key), they are generated client side. We don't have access to your Viewly wallet, you are the only one in control of your wallet. Write down on a piece of paper the seed words and keep them safe. If you lose them or your private key, you won't be able to access your wallet. We also recommend locking your wallet before logging out of the platform.</p>
+      <h3 class="c-faq__question">Do I still own the video or does it become your property?</h3>
+      <p> Viewly does not claim rights to the videos uploaded by our creators.</p>
 
-  <h3>Why do I need to pay to publish?</h3>
-  <p>One upload requires 20 VIEW tokens or 0.01 ETH (in case your wallet is missing VIEW tokens) and gas fees (it's execution fee for every operation made on the Ethereum blockchain, it's how transactions are processed).</p>
+      <h3 class="c-faq__question">How do I upload and publish my videos?</h3>
+      <p>Uploading is very easy and it's done only in a few steps, you'll need to create a channel, then go to your uploading page and select your video/s. Publishing is done via a simple interaction with the Ethereum network. This interaction can be completed using the <a href="https://view.ly/v/FsORA3mLuCTn"> Viewly Wallet </a> (recommended for optimal user experience), <a href="https://view.ly/v/n4UFefdq1tIR">Trust Wallet</a> or <a href="https://view.ly/v/XYQahcpDHSAo">Metamask</a>. You can also check our <a href="https://medium.com/view-ly/how-to-upload-on-viewly-447e9328605e">Medium blog post</a>.</p>
 
-  <p>This small fee is in place in order to try and prevent spam on the platform and also it gives you access to:</p>
-  <ul>
-    <li>Backup, storage and retrieval of original video files on
-      <div class="tooltip">IPFS network<span class="tooltiptext">InterPlanetary File System is a protocol and network designed to create a content-addressable, peer-to-peer method of storing and sharing hypermedia in a distributed file system.</span>
-      </div>
-    </li>
-    <li>Future re-transcoding for higher visual fidelity (VP9, AV1)</li>
-    <li>Unlimited streaming from Viewly's
-      <div class="tooltip">CDN<span class="tooltiptext">Content Delivery Network.</span>
-      </div>
-    </li>
-    <li>Participation in the <a  href="https://view.ly/game/">Viewly Creator Rewards</a></li>
-  </ul>
-  <p>For all approved content creators <b>we will cover the cost of your first few uploads</b> until you have enough in your wallet so that you don't have to worry about cost.</p>
+      <h3 class="c-faq__question">Do you have access to my funds in the Viewly wallet?</h3>
+      <p>You own the private key and seed words (mnemonic key), they are generated client side. We don't have access to your Viewly wallet, you are the only one in control of your wallet. Write down on a piece of paper the seed words and keep them safe. If you lose them or your private key, you won't be able to access your wallet. We also recommend locking your wallet before logging out of the platform.</p>
 
-  <h3>I would like to join, what is the next step?</h3>
-  <p>We would love to help you get started on Viewly, please fill out the <a href="https://viewly.typeform.com/to/mIJqR1">Creators Form</a> and we'll get back to you ASAP.</p>
+      <h3 class="c-faq__question">Why do I need to pay to publish?</h3>
+      <p>One upload requires 20 VIEW tokens or 0.01 ETH (in case your wallet is missing VIEW tokens) and gas fees (it's execution fee for every operation made on the Ethereum blockchain, it's how transactions are processed).</p>
 
-  <h3>Does the video listing fee in VIEW tokens adapt to a steady stable coin's price?</h3>
-  <p>It certainly can.</p>
+      <p>This small fee is in place in order to try and prevent spam on the platform and also it gives you access to:</p>
+      <ul>
+        <li>Backup, storage and retrieval of original video files on
+          <div class="tooltip">IPFS network<span class="tooltiptext">InterPlanetary File System is a protocol and network designed to create a content-addressable, peer-to-peer method of storing and sharing hypermedia in a distributed file system.</span>
+          </div>
+        </li>
+        <li>Future re-transcoding for higher visual fidelity (VP9, AV1)</li>
+        <li>Unlimited streaming from Viewly's
+          <div class="tooltip">CDN<span class="tooltiptext">Content Delivery Network.</span>
+          </div>
+        </li>
+        <li>Participation in the <a  href="https://view.ly/game/">Viewly Creator Rewards</a></li>
+      </ul>
+      <p>For all approved content creators <b>we will cover the cost of your first few uploads</b> until you have enough in your wallet so that you don't have to worry about cost.</p>
 
-  <h3>Am I allowed to upload my video on other platforms besides Viewly?</h3>
-  <p>Yes, there is no exclusivity.</p>
+      <h3 class="c-faq__question">I would like to join, what is the next step?</h3>
+      <p>We would love to help you get started on Viewly, please fill out the <a href="https://viewly.typeform.com/to/mIJqR1">Creators Form</a> and we'll get back to you ASAP.</p>
 
-  <h3>How does voting work?</h3>
-  <p>As a token owner, you can participate in the Viewly ecosystem by voting on videos you like and help creators earn. Voting does not spend your tokens, you only need to show you are in possession of VIEW tokens, as such, voting is FREE.</p>
+      <h3 class="c-faq__question">Does the video listing fee in VIEW tokens adapt to a steady stable coin's price?</h3>
+      <p>It certainly can.</p>
 
-  <p>You can find a Metamask guide on how to vote  <a href="https://medium.com/view-ly/how-to-vote-on-viewly-bf989b29a1e7">here</a> and voting with our own integrated <a href="https://view.ly/v/FsORA3mLuCTn"> Viewly wallet </a> is also possible and easy to use 1-click option.</p>
+      <h3 class="c-faq__question">Am I allowed to upload my video on other platforms besides Viewly?</h3>
+      <p>Yes, there is no exclusivity.</p>
 
-  <p>
-    Also, if you have your tokens on a hardware wallet and don't wish to risk them, you can now delegate your tokens to a <div class="tooltip">hot wallet <span class="tooltiptext">With a hot wallet cryptocurrency can be spent at any time. A cold/hardware wallet has to be 'connected' to the internet first.</span>
+      <h3 class="c-faq__question">How does voting work?</h3>
+      <p>As a token owner, you can participate in the Viewly ecosystem by voting on videos you like and help creators earn. Voting does not spend your tokens, you only need to show you are in possession of VIEW tokens, as such, voting is FREE.</p>
+
+      <p>You can find a Metamask guide on how to vote  <a href="https://medium.com/view-ly/how-to-vote-on-viewly-bf989b29a1e7">here</a> and voting with our own integrated <a href="https://view.ly/v/FsORA3mLuCTn"> Viewly wallet </a> is also possible and easy to use 1-click option.</p>
+
+      <p>
+        Also, if you have your tokens on a hardware wallet and don't wish to risk them, you can now delegate your tokens to a <div class="tooltip">hot wallet <span class="tooltiptext">With a hot wallet cryptocurrency can be spent at any time. A cold/hardware wallet has to be 'connected' to the internet first.</span>
+        </div>
+      </p>
+
+      <p>Delegating does not move your tokens, you will need 100 VIEW tokens into your hot wallet, more information on our <a href="https://medium.com/view-ly/how-to-delegate-your-viewly-tokens-without-putting-them-at-risk-e84d0269f403?source=collection_home---2------1----------------">Medium blog post</a>.</p>
+
+      <h3 class="c-faq__question">Am I spending my VIEW tokens when I vote?</h3>
+      <p>No, voting is free, your tokens are not spent, you will only need to show you own VIEW tokens. At the time of writing a minimum of 100 VIEW tokens are needed in order to cast votes.</p>
+
+      <h3 class="c-faq__question">Can I delete my video before being published? What about after?</h3>
+      <p>Yes, you can delete your videos before being published but not after. If a valid <div class="tooltip">DMCA<span class="tooltiptext">The Digital Millennium Copyright Act.</span></div> claim has been made, at that point the video in question will no longer be shown on the platform.</p>
+
+      <p>You will however be able to retrieve the video from IPFS if non-Viewly nodes host it.</p>
+
+      <h3 class="c-faq__question">Where can I see how much a token is worth?</h3>
+      <p>Yes, although we can't control market conditions, VIEW tokens are being traded on secondary markets, more information on <a href="https://coinmarketcap.com/currencies/view/">CoinMarketCap</a>.</p>
+
+      <h3 class="c-faq__question">I'm a copyright owner, how can I contact you regarding a video?</h3>
+      <p>For copyright owners we have a simple <a href="https://viewly.typeform.com/to/cqwcMb">DMCA</a> form in place.</p>
+
+      <h3 class="c-faq__question">Is it possible to rename videos as well as to create and change unique custom urls for videos?</h3>
+      <p>At this point, it's not possible to change <div class="tooltip">video ID<span class="tooltiptext">The text after the last slash: view.ly/v/qRh37nSTNEfP</span></div>'s.</p>
+
+      <h3 class="c-faq__question">Are you planning to add an option to upload subtitles to support multilingual content!</h3>
+      <p>Yes, it's in our to-do list.</p>
+
+      <h3 class="c-faq__question">Is your platform decentralized?</h3>
+      <p>It's distributed, not decentralized. Here's a <a href="https://medium.com/delta-exchange/centralized-vs-decentralized-vs-distributed-41d92d463868">great article </a> showing the difference between centralised, decentralized and distributed systems.</p>
+
+      <h3 class="c-faq__question">Are you looking forward to implement a caching solution such as Theta network is going to achieve in order to be decentralized?</h3>
+      <p>If it works, yes absolutely.</p>
+
+      <h3 class="c-faq__question">Is there a link to a site that lists fees and rewards including the reward algo/scheme, for example token amount thresholds for receiving higher rewards?</h3>
+      <p>Yes, please check our <a href="https://view.ly/game/">distribution game page</a>.</p>
+
+      <h3 class="c-faq__question">What is "When rewards" and where can I see more information on the tokens and votes I received?</h3>
+      <p>When over 7 days since publishing your video have passed you will see instead of number of votes how many tokens you have received.</p>
+
+      <p>"When rewards" might also represent that the weight of the votes that your video received was too low compared to the total weight of votes in that period.</p>
+
+      <p>As a rule of thumb if "when rewards" is seen on the page, in order to see more information, you will have to click on either "when rewards" or the number of tokens (in case they are shown).</p>
+
+      <p>Alternatively, you can also find more information by searching for your <div class="tooltip">video ID<span class="tooltiptext">The text after the last slash: view.ly/v/qRh37nSTNEfP</span></div> on the following <a href="https://view.ly/game/rewards">page</a>.</p>
+
+      <p>We would like to thank all of creators that helped and are helping in the creation and expansion of this F.A.Q., we're looking forward to more questions to come our way. This F.A.Q. is a work in progres.
+
+      <p>Haven't found an answer to your question? Please fill out <a href="https://viewly.typeform.com/to/bCD1Ty"> this form </a>, we'd love to hear it!</p>
     </div>
-  </p>
+    <h3 class="c-faq__question">Community - made short video about Viewly</h3>
+    <iframe
+      width="100%" height="405"
+      src="/embed/9L2gB6hSMQP7?autoPlay=0"
+      frameborder="0" allowfullscreen>
+    </iframe>
+  </div>
 
-  <p>Delegating does not move your tokens, you will need 100 VIEW tokens into your hot wallet, more information on our <a href="https://medium.com/view-ly/how-to-delegate-your-viewly-tokens-without-putting-them-at-risk-e84d0269f403?source=collection_home---2------1----------------">Medium blog post</a>.</p>
 
-  <h3>Am I spending my VIEW tokens when I vote?</h3>
-  <p>No, voting is free, your tokens are not spent, you will only need to show you own VIEW tokens. At the time of writing a minimum of 100 VIEW tokens are needed in order to cast votes.</p>
-
-  <h3>Can I delete my video before being published? What about after?</h3>
-  <p>Yes, you can delete your videos before being published but not after. If a valid <div class="tooltip">DMCA<span class="tooltiptext">The Digital Millennium Copyright Act.</span></div> claim has been made, at that point the video in question will no longer be shown on the platform.</p>
-
-  <p>You will however be able to retrieve the video from IPFS if non-Viewly nodes host it.</p>
-
-  <h3>Where can I see how much a token is worth?</h3>
-  <p>Yes, although we can't control market conditions, VIEW tokens are being traded on secondary markets, more information on <a href="https://coinmarketcap.com/currencies/view/">CoinMarketCap</a>.</p>
-
-  <h3>I'm a copyright owner, how can I contact you regarding a video?</h3>
-  <p>For copyright owners we have a simple <a href="https://viewly.typeform.com/to/cqwcMb">DMCA</a> form in place.</p>
-
-  <h3>Is it possible to rename videos as well as to create and change unique custom urls for videos?</h3>
-  <p>At this point, it's not possible to change <div class="tooltip">video ID<span class="tooltiptext">The text after the last slash: view.ly/v/qRh37nSTNEfP</span></div>'s.</p>
-
-  <h3>Are you planning to add an option to upload subtitles to support multilingual content!</h3>
-  <p>Yes, it's in our to-do list.</p>
-
-  <h3>Is your platform decentralized?</h3>
-  <p>It's distributed, not decentralized. Here's a <a href="https://medium.com/delta-exchange/centralized-vs-decentralized-vs-distributed-41d92d463868">great article </a> showing the difference between centralised, decentralized and distributed systems.</p>
-
-  <h3>Are you looking forward to implement a caching solution such as Theta network is going to achieve in order to be decentralized?</h3>
-  <p>If it works, yes absolutely.</p>
-
-  <h3>Is there a link to a site that lists fees and rewards including the reward algo/scheme, for example token amount thresholds for receiving higher rewards?</h3>
-  <p>Yes, please check our <a href="https://view.ly/game/">distribution game page</a>.</p>
-
-  <h3>What is "When rewards" and where can I see more information on the tokens and votes I received?</h3>
-  <p>When over 7 days since publishing your video have passed you will see instead of number of votes how many tokens you have received.</p>
-
-  <p>"When rewards" might also represent that the weight of the votes that your video received was too low compared to the total weight of votes in that period.</p>
-
-  <p>As a rule of thumb if "when rewards" is seen on the page, in order to see more information, you will have to click on either "when rewards" or the number of tokens (in case they are shown).</p>
-
-  <p>Alternatively, you can also find more information by searching for your <div class="tooltip">video ID<span class="tooltiptext">The text after the last slash: view.ly/v/qRh37nSTNEfP</span></div> on the following <a href="https://view.ly/game/rewards">page</a>.</p>
-
-  <p>We would like to thank all of creators that helped and are helping in the creation and expansion of this F.A.Q., we're looking forward to more questions to come our way. This F.A.Q. is a work in progres.
-
-  <p>Haven't found an answer to your question? Please fill out <a href="https://viewly.typeform.com/to/bCD1Ty"> this form </a>, we'd love to hear it!</p>
-
-  <h3>Community - made short video about Viewly</h3>
-  <iframe
-    width="100%" height="405"
-    src="/embed/9L2gB6hSMQP7?autoPlay=0"
-    frameborder="0" allowfullscreen>
-  </iframe>
-
-</div>
 {% endblock %}
 
 {% block scripts %}
