@@ -1,0 +1,166 @@
+/*------------------------------------*\
+    #HERO
+\*------------------------------------*/
+
+$tweakpoint-hero:           520px;
+
+
+
+
+
+/**
+ * Hero
+ *
+ * 1. Since hero is in a `.o-wrapper` but we need it to look like it's as wide
+ *    as the viewport, here we're using pseudo elements to make the hero look
+ *    that way. We've…
+ * 2. …made the background of pseudo elements the same as hero's, and…
+ * 3. …made pseudo elements wide enough to make sure the visual hack will always
+ *    work. Then we…
+ * 4. …position pseudo elements absolutely and make them the same height as the
+ *    hero. Afterwards, we…
+ * 5. …push each pseudo element outside of the hero so that it seems like hero's
+ *    background is one unbroken whole.
+ */
+.c-hero {
+    background-repeat: no-repeat;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: $spacing-unit;
+    padding-bottom: $spacing-unit-large;
+    padding-top: $spacing-unit-large;
+    position: relative;
+
+    &::before,
+    &::after { /* [1] */
+        background-color: inherit; /* [2] */
+        content: '';
+        width: 50vw; /* [3] */
+        position: absolute; /* [4] */
+        top: 0; /* [4] */
+        bottom: 0; /* [4] */
+    }
+
+    &::before {
+        right: 100%; /* [5] */
+    }
+
+    &::after {
+        left: 100%; /* [5] */
+    }
+}
+
+/**
+ * About viewly section
+ */
+.c-hero--faq {
+    @include font-smoothing();
+    background-color: #282a48;
+    background-image: url('../../img/about-viewly-shape.png');
+    background-position: bottom $spacing-unit-huge right 10%;
+    background-size: auto 283px;
+    color: #fff;
+    font-size: 15px;
+    margin-bottom: $spacing-unit-large;
+    padding-bottom: $spacing-unit-large;
+    padding-top: $spacing-unit-large;
+
+    @include mq(large) {
+        margin-bottom: $spacing-unit-huge;
+        padding-bottom: $spacing-unit-huge;
+        padding-top: $spacing-unit-huge;
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: inherit;
+    }
+
+    ul {
+        padding: 0;
+    }
+
+    li {
+        background-image: url('../../img/plus-sign.svg');
+        background-position: top $spacing-unit-tiny left 0;
+        background-repeat: no-repeat;
+        list-style-type: none;
+        padding-left: $spacing-unit;
+
+        &:not(:last-child) {
+            margin-bottom: $spacing-unit-tiny;
+        }
+    }
+
+    p {
+        margin-bottom: $spacing-unit;
+    }
+
+    a {
+        color: #e8a013;
+    }
+}
+
+    .c-hero--faq__title {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.1;
+        text-align: center;
+
+        @include mq(medium) {
+            font-size: 38px;
+        }
+
+        @include mq(large) {
+            font-size: 46px;
+        }
+
+        &:not(:only-child) {
+            margin-bottom: $spacing-unit-large;
+
+            @include mq(large) {
+                margin-bottom: $spacing-unit-huge;
+            }
+        }
+    }
+
+    .c-hero--faq__text {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 40em;
+    }
+
+    .c-hero--faq__graphic {
+        position: relative;
+
+        > * {
+            position: relative;
+            z-index: 200;
+        }
+
+        &::before {
+            background-image: url('../../img/about-viewly-graphic.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 80%;
+            content: '';
+            height: 223px;
+            transform: translate(-50%, -50%) translateX(-20px);
+            width: 270px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 100;
+
+            @include mq(extralarge) {
+                background-size: 100%;
+            }
+        }
+    }
+
+    .c-hero--faq__heading {
+        font-weight: 700;
+    }
