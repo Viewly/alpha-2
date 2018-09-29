@@ -514,17 +514,3 @@ body {
             }
         }
     }
-
-    .c-search-dropdown__no-results[class] {
-        padding: $spacing-unit-tiny !important;
-        text-align: center;
-
-        p {
-            margin-bottom: 0;
-        }
-    }
-
-    .c-search-dropdown__no-results__img {
-        margin-bottom: $spacing-unit-small;
-        width: 80px;
-    }

@@ -106,18 +106,11 @@ export default class SearchInput extends Component {
           />
         </div>
 
-        {this.state.dropdownOpen && (
+        {this.state.dropdownOpen && search.data.length !== 0 && (
           <div className="c-search-dropdown">
 
             <h3 class="c-search-dropdown__heading">Channels</h3>
             <ul className="c-search-dropdown__list">
-
-              {search.data.length === 0 && !isLoading && (
-                <li className="c-search-dropdown__no-results">
-                  <img className="c-search-dropdown__no-results__img" src="/static/img/no-results.svg" alt="" />
-                  <p>No channels found</p>
-                </li>
-              )}
 
               {search.data.map((item, idx) => (
                 <li>
