@@ -239,6 +239,28 @@ body {
             margin-bottom: $spacing-unit-small;
         }
 
+.c-accordion {
+    border-bottom: 1px solid #e2e2e2;
+}
+
+    .c-accordion__trigger {
+        display: block;
+        padding-top: $spacing-unit;
+        padding-bottom: $spacing-unit;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .c-accordion__content {
+        display: none;
+        padding-bottom: $spacing-unit;
+
+        .c-accordion.is-active & {
+            display: block;
+        }
+    }
 
 /**
  * 1. For short screens the footer gets in the viewport and makes the page seem
