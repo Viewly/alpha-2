@@ -109,25 +109,30 @@ export default class SearchInput extends Component {
         {this.state.dropdownOpen && (
           <div className="c-search-dropdown">
 
-            <div className="ui middle aligned selection list">
+            <ul className="c-search-dropdown__list">
 
               {search.data.length === 0 && !isLoading && (
-                <div className="item">
-                  <div className="content">
-                    <div className="header">No results found</div>
-                  </div>
-                </div>
+                <li className="c-search-dropdown__no-results">
+                  <img className="c-search-dropdown__no-results__img" src="/static/img/no-results.svg" alt="" />
+                  <p>No channels found</p>
+                </li>
               )}
 
               {search.data.map((item, idx) => (
-                <a href={item.channel_url} className={`item ${this.state.selected === idx ? 'active' : ''}`} key={`channel-${item.channel_id}`}>
-                  <img className="ui avatar image" src={item.avatar_url} onError={(e) => e.target.src = 'https://i.imgur.com/32AwiVw.jpg' } />
-                  <div className="content">
-                    <div className="header">{item.display_name}</div>
-                  </div>
-                </a>
+                <li>
+                  <a href={item.channel_url} className={`${this.state.selected === idx ? 'is-active' : ''}`} key={`channel-${item.channel_id}`}>
+                    <div class="o-flag o-flag--tiny">
+                      <div class="o-flag__img">
+                        <img className="o-avatar o-avatar--small" src={item.avatar_url} onError={(e) => e.target.src = 'https://i.imgur.com/32AwiVw.jpg' } />
+                      </div>
+                      <div class="o-flag__body">
+                        {item.display_name}
+                      </div>
+                    </div>
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
 
           </div>
         )}
