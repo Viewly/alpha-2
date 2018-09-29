@@ -107,7 +107,7 @@ export default class SearchInput extends Component {
         </div>
 
         {this.state.dropdownOpen && (
-          <div className="c-header-dropdown">
+          <div className="c-search-dropdown">
 
             <div className="ui middle aligned selection list">
 
