@@ -207,6 +207,88 @@ body {
 }
 
 
+.c-faq {
+    color: #5b5e6d;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 40em;
+}
+
+    .c-faq__title {
+        color: #333;
+        font-weight: 700;
+        margin-bottom: $spacing-unit-tiny;
+        text-align: center;
+    }
+
+    .c-faq__intro {
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: $spacing-unit-huge;
+    }
+
+    .c-faq__questions {
+        font-size: 15px;
+        margin-bottom: $spacing-unit-huge;
+    }
+
+        .c-faq__question {
+            color: #333;
+            font-weight: 700;
+            margin-bottom: $spacing-unit-small;
+
+            .c-accordion__trigger & {
+                margin-bottom: 0;
+            }
+        }
+
+$accordion-padding-horizontal: $spacing-unit-small;
+
+.c-accordion {
+    border-bottom: 1px solid #e2e2e2;
+    transition: all .35s ease;
+
+    &.is-active {
+        background-color: rgba(#000, .05);
+    }
+}
+
+    .c-accordion__trigger {
+        align-items: flex-start;
+        display: flex;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        padding-top: $spacing-unit;
+        padding-bottom: $spacing-unit;
+        padding-left: $accordion-padding-horizontal;
+        padding-right: $accordion-padding-horizontal;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+        .c-accordion__icon-chevron {
+            color: #b0b2b8;
+            margin-left: $spacing-unit;
+            transition: $global-transition;
+
+            .c-accordion.is-active & {
+                transform: rotate(180deg);
+            }
+        }
+
+    .c-accordion__content {
+        display: none;
+        padding-left: $accordion-padding-horizontal;
+        padding-right: $accordion-padding-horizontal;
+        padding-bottom: $spacing-unit;
+
+        .c-accordion.is-active & {
+            display: block;
+        }
+    }
+
 /**
  * 1. For short screens the footer gets in the viewport and makes the page seem
  *    busy. With this we're pushing it away enough that it's hidden.
