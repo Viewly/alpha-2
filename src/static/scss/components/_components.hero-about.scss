@@ -2,6 +2,9 @@
     #ABOUT HERO
 \*------------------------------------*/
 
+/**
+ * 1. Give enough room for hero graphics to be show at all viewports.
+ */
 .c-hero--about {
     @include font-smoothing();
     background-color: #282a48;
@@ -13,12 +16,11 @@
     font-size: 15px;
     margin-bottom: $spacing-unit-large;
     padding-bottom: $spacing-unit-large;
-    padding-top: $spacing-unit-large;
+    padding-top: $spacing-unit-huge; /* [1] */
 
     @include mq(large) {
         margin-bottom: $spacing-unit-huge;
         padding-bottom: $spacing-unit-huge;
-        padding-top: $spacing-unit-huge;
     }
 
     ul {

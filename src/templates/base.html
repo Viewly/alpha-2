@@ -54,6 +54,10 @@
   </div>
 </div>
 
+{% if not hideAboutHeroAboveFooter %}
+  {% include 'partials/hero-about.html' %}
+{% endif %}
+
 {% if showFooter %}
   {% include 'partials/footer.html' %}
 {% endif %}
