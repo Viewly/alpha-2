@@ -2,6 +2,7 @@
 
 {% block title %}FAQ{% endblock %}
 {% set showFooter = true %}
+{% set showAboutViewlyFooter = false %}
 {% set pageClass = "has-header-without-bottom-margin" %}
 
 {% block scripts %}
@@ -19,7 +20,7 @@
 {% endblock %}
 
 {% block content %}
-  {% include 'partials/hero-faq.html' %}
+  {% include 'partials/hero-about.html' %}
 
   <div class="c-faq">
     <h2 class="c-faq__title">Frequently Asked Questions</h2>

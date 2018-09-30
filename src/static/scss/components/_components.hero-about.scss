@@ -1,8 +1,11 @@
 /*------------------------------------*\
-    #FAQ HERO
+    #ABOUT HERO
 \*------------------------------------*/
 
-.c-hero--faq {
+/**
+ * 1. Give enough room for hero graphics to be show at all viewports.
+ */
+.c-hero--about {
     @include font-smoothing();
     background-color: #282a48;
     background-image: url('../../img/about-viewly-shape.png');
@@ -13,12 +16,11 @@
     font-size: 15px;
     margin-bottom: $spacing-unit-large;
     padding-bottom: $spacing-unit-large;
-    padding-top: $spacing-unit-large;
+    padding-top: $spacing-unit-huge; /* [1] */
 
     @include mq(large) {
         margin-bottom: $spacing-unit-huge;
         padding-bottom: $spacing-unit-huge;
-        padding-top: $spacing-unit-huge;
     }
 
     ul {
@@ -42,7 +44,7 @@
     }
 }
 
-    .c-hero--faq__title {
+    .c-hero--about__title {
         color: inherit;
         font-size: 32px;
         font-weight: 700;
@@ -66,13 +68,13 @@
         }
     }
 
-    .c-hero--faq__text {
+    .c-hero--about__text {
         margin-left: auto;
         margin-right: auto;
         max-width: 40em;
     }
 
-    .c-hero--faq__graphic {
+    .c-hero--about__graphic {
         position: relative;
 
         > * {
@@ -100,7 +102,7 @@
         }
     }
 
-    .c-hero--faq__heading {
+    .c-hero--about__heading {
         color: inherit;
         font-weight: 700;
     }
