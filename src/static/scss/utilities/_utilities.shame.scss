@@ -232,8 +232,16 @@ body {
         margin-bottom: $spacing-unit-huge;
     }
 
-        .c-faq__question {
+        .c-faq__section-title {
             color: #333;
+            font-weight: 700;
+            margin-bottom: $spacing-unit;
+            margin-top: $spacing-unit-huge;
+            text-transform: uppercase;
+        }
+
+        .c-faq__question {
+            color: #5b5e6d;
             font-weight: 700;
             margin-bottom: $spacing-unit-small;
 

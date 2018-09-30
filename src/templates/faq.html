@@ -19,7 +19,8 @@
 {% endblock %}
 
 {% block content %}
-{% include 'partials/hero-faq.html' %}
+  {% include 'partials/hero-faq.html' %}
+
   <div class="c-faq">
     <h2 class="c-faq__title">Frequently Asked Questions</h2>
     <div class="c-faq__intro">
@@ -31,7 +32,7 @@
 
 
     <div class="c-faq__questions">
-      <h3>Viewly</h3>
+      <h3 class="c-faq__section-title">Viewly</h3>
       <div class="c-accordion js-accordion-target">
         <a href="#0" class="c-accordion__trigger js-accordion-trigger">
           <h3 class="c-faq__question">What is Viewly Alpha?</h3>
@@ -84,7 +85,7 @@
         </div>
       </div>
 
-      <h3>Blockchain</h3>
+      <h3 class="c-faq__section-title">Blockchain</h3>
       <div class="c-accordion js-accordion-target">
         <a href="#0" class="c-accordion__trigger js-accordion-trigger">
           <h3 class="c-faq__question">What is Ethereum?</h3>
@@ -126,18 +127,16 @@
 
       <div class="c-accordion js-accordion-target">
         <a href="#0" class="c-accordion__trigger js-accordion-trigger">
-          <h3 class="c-faq__question">Do you have access the funds in my wallet?</h3>
+          <h3 class="c-faq__question">Do you have access to the funds in my wallet?</h3>
           {% include 'atoms/icon-chevron-down.html' %}
         </a>
         <div class="c-accordion__content">
-          <p>The seed words and the private keys are generated client side. We store an
-            encrypted backup only. If you forget your encryption password or the
-            seed mnemonic, your funds will be unrecoverable. </p>
+          <p>The seed words and the private keys are generated on the client side. We store an encrypted backup only. If you forget your encryption password or the seed mnemonic, your funds will be <b>unrecoverable</b>. </p>
         </div>
       </div>
 
 
-      <h3>Creators</h3>
+      <h3 class="c-faq__section-title">Creators</h3>
 
       <div class="c-accordion js-accordion-target">
         <a href="#0" class="c-accordion__trigger js-accordion-trigger">
@@ -167,7 +166,7 @@
         </div>
       </div>
 
-      <h3>Rewards</h3>
+      <h3 class="c-faq__section-title">Rewards</h3>
 
       <div class="c-accordion js-accordion-target">
         <a href="#0" class="c-accordion__trigger js-accordion-trigger">
@@ -279,7 +278,7 @@
         </div>
       </div>
 
-      <h3>Content</h3>
+      <h3 class="c-faq__section-title">Content</h3>
       {#      <div class="c-accordion js-accordion-target">#}
       {#        <a href="#0" class="c-accordion__trigger js-accordion-trigger">#}
       {#          <h3 class="c-faq__question">How are the videos being hosted and delivered?</h3>#}
