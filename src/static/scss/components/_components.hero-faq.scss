@@ -1,63 +1,13 @@
 /*------------------------------------*\
-    #HERO
+    #FAQ HERO
 \*------------------------------------*/
 
-$tweakpoint-hero:           520px;
-
-
-
-
-
-/**
- * Hero
- *
- * 1. Since hero is in a `.o-wrapper` but we need it to look like it's as wide
- *    as the viewport, here we're using pseudo elements to make the hero look
- *    that way. We've…
- * 2. …made the background of pseudo elements the same as hero's, and…
- * 3. …made pseudo elements wide enough to make sure the visual hack will always
- *    work. Then we…
- * 4. …position pseudo elements absolutely and make them the same height as the
- *    hero. Afterwards, we…
- * 5. …push each pseudo element outside of the hero so that it seems like hero's
- *    background is one unbroken whole.
- */
-.c-hero {
-    background-repeat: no-repeat;
-    font-size: 16px;
-    line-height: 1.4;
-    margin-bottom: $spacing-unit;
-    padding-bottom: $spacing-unit-large;
-    padding-top: $spacing-unit-large;
-    position: relative;
-
-    &::before,
-    &::after { /* [1] */
-        background-color: inherit; /* [2] */
-        content: '';
-        width: 50vw; /* [3] */
-        position: absolute; /* [4] */
-        top: 0; /* [4] */
-        bottom: 0; /* [4] */
-    }
-
-    &::before {
-        right: 100%; /* [5] */
-    }
-
-    &::after {
-        left: 100%; /* [5] */
-    }
-}
-
-/**
- * About viewly section
- */
 .c-hero--faq {
     @include font-smoothing();
     background-color: #282a48;
     background-image: url('../../img/about-viewly-shape.png');
     background-position: bottom $spacing-unit-huge right 10%;
+    background-repeat: no-repeat;
     background-size: auto 283px;
     color: #fff;
     font-size: 15px;
@@ -69,14 +19,6 @@ $tweakpoint-hero:           520px;
         margin-bottom: $spacing-unit-huge;
         padding-bottom: $spacing-unit-huge;
         padding-top: $spacing-unit-huge;
-    }
-
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        color: inherit;
     }
 
     ul {
@@ -101,6 +43,7 @@ $tweakpoint-hero:           520px;
 }
 
     .c-hero--faq__title {
+        color: inherit;
         font-size: 32px;
         font-weight: 700;
         line-height: 1.1;
@@ -158,5 +101,6 @@ $tweakpoint-hero:           520px;
     }
 
     .c-hero--faq__heading {
+        color: inherit;
         font-weight: 700;
     }
