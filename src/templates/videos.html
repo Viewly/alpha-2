@@ -3,6 +3,7 @@
 {% block title %}{% if section_title %}{{ section_title }}{% else %}Viewly{% endif %}{% endblock %}
 {% block meta_title %}New Videos on Viewly{% endblock %}
 {% set showFooter = true %}
+{% set showAboutViewlyFooter = true %}
 {% if not current_user.is_authenticated %}
   {% set pageClass = "has-header-without-bottom-margin" %}
 {% endif %}
@@ -75,12 +76,6 @@
     </div>
   {% endif %}
 
-{% endblock %}
-
-{% block aboutSection %}
-  {% if not not current_user.is_authenticated %}
-    {% include 'partials/hero-about.html' %}
-  {% endif %}
 {% endblock %}
 
 {% block scripts %}
