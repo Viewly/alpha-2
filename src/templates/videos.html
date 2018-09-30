@@ -9,7 +9,7 @@
 
 {% block content %}
   {% if not current_user.is_authenticated %}
-    {% include 'partials/hero.html' %}
+    {% include 'partials/hero-home.html' %}
   {% endif %}
 
   {% if videos %}
