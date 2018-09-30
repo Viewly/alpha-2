@@ -21,7 +21,9 @@ export default class SearchInput extends Component {
 
   componentDidMount() {
     const elem = document.getElementById('search-box');
+    const reactSearchContainer = document.getElementById('react-search');
     elem && elem.parentNode.removeChild(elem);
+    reactSearchContainer.classList.add('u-1/1');
   }
 
   componentDidUpdate(prevProps, prevState) {
