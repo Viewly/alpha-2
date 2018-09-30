@@ -1,0 +1,29 @@
+/*------------------------------------*\
+    #HERO LEARN MORE
+\*------------------------------------*/
+
+.c-hero--learn-more {
+    background-color: #e8e8f0;
+    color: #5b5e6d;
+    font-size: 15px;
+    margin-bottom: $spacing-unit-large;
+    padding-top: $spacing-unit-large;
+    padding-bottom: $spacing-unit-large;
+    text-align: center;
+
+    @include mq(large) {
+        margin-bottom: $spacing-unit-huge;
+    }
+
+    @include mq(medium) {
+        text-align: left;
+    }
+}
+
+    /**
+     * Learn more wrapper
+     */
+    .c-hero--learn-more__wrapper {
+        max-width: 60em;
+    }
+
