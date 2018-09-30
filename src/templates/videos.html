@@ -77,5 +77,11 @@
 
 {% endblock %}
 
+{% block aboutSection %}
+  {% if not not current_user.is_authenticated %}
+    {% include 'partials/hero-about.html' %}
+  {% endif %}
+{% endblock %}
+
 {% block scripts %}
 {% endblock %}

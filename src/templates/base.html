@@ -54,7 +54,7 @@
   </div>
 </div>
 
-{% if not hideAboutHeroAboveFooter %}
+{% if not hideAboutHeroAboveFooter and not current_user.is_authenticated %}
   {% include 'partials/hero-about.html' %}
 {% endif %}
 
