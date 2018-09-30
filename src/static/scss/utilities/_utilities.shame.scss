@@ -262,12 +262,12 @@ $accordion-padding-horizontal: $spacing-unit-small;
 }
 
     .c-accordion__trigger {
-        align-items: flex-start;
+        align-items: center;
         display: flex;
         flex: 0 0 auto;
         justify-content: space-between;
-        padding-top: $spacing-unit;
-        padding-bottom: $spacing-unit;
+        padding-top: $spacing-unit-small;
+        padding-bottom: $spacing-unit-small;
         padding-left: $accordion-padding-horizontal;
         padding-right: $accordion-padding-horizontal;
 
@@ -277,6 +277,7 @@ $accordion-padding-horizontal: $spacing-unit-small;
     }
 
         .c-accordion__icon-chevron {
+            align-self: flex-start;
             color: #b0b2b8;
             margin-left: $spacing-unit;
             transition: $global-transition;
