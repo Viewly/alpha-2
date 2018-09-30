@@ -7,23 +7,20 @@
     color: #5b5e6d;
     font-size: 15px;
     margin-bottom: $spacing-unit-large;
-    padding-top: $spacing-unit-large;
-    padding-bottom: $spacing-unit-large;
-    text-align: center;
+    padding-bottom: $spacing-unit;
 
     @include mq(large) {
         margin-bottom: $spacing-unit-huge;
     }
 
-    @include mq(medium) {
-        text-align: left;
+    a {
+        align-content: middle;
+        color: inherit;
+        display: flex;
+        margin-top: $spacing-unit;
+
+        svg {
+            margin-right: $spacing-unit-small;
+        }
     }
 }
-
-    /**
-     * Learn more wrapper
-     */
-    .c-hero--learn-more__wrapper {
-        max-width: 60em;
-    }
-
