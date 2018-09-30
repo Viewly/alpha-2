@@ -108,6 +108,7 @@ export default class SearchInput extends Component {
 
         {this.state.dropdownOpen && search.data.length !== 0 && (
           <div className="c-search-dropdown">
+            <p class="c-search-dropdown__info-message">To search for videos press enter on your keyboard.</p>
 
             <h3 class="c-search-dropdown__heading">Channels</h3>
             <ul className="c-search-dropdown__list">

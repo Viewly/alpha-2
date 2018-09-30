@@ -569,8 +569,16 @@ $accordion-padding-horizontal: $spacing-unit-small;
         font-size: 12px !important;
         font-weight: 700 !important;
         margin-bottom: 0 !important;
-        padding: $spacing-unit-small $spacing-unit-small 0 $spacing-unit-small !important;
+        margin-top: 0 !important;
+        padding: 0 $spacing-unit-small !important;
         text-transform: uppercase !important;
+    }
+
+    .c-search-dropdown__info-message {
+        color: #9a9da1;
+        font-size: 13px;
+        margin-bottom: $spacing-unit;
+        padding: $spacing-unit-small;
     }
 
     .c-search-dropdown__list {
