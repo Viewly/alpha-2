@@ -75,6 +75,7 @@ export default class SearchInput extends Component {
   }
 
   onFocus = (e) => {
+    document.body.classList.add('has-search-activated');
     this.setState({ dropdownOpen: this.state.searchText.length >= MIN_SEARCH_CHARACTERS });
     e.target.select();
   }
