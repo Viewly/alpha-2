@@ -55,7 +55,9 @@
 </div>
 
 {% if showAboutViewlyFooter and not current_user.is_authenticated %}
-  {% include 'partials/hero-about.html' %}
+  <div class="o-wrapper">
+    {% include 'partials/hero-about.html' %}
+  </div>
 {% endif %}
 
 {% if showFooter %}
