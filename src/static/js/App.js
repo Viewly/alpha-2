@@ -12,6 +12,7 @@ import UnlockModal from './components/unlockModal';
 import WalletPage from './components/walletPage';
 import VideoVote from './components/videoPage/vote';
 import VideoShare from './components/videoPage/share';
+import VideoReport from './components/videoPage/report';
 import PublishVideoPage from './components/publishVideoPage';
 import SearchInput from './components/searchInput';
 
@@ -54,6 +55,7 @@ class App extends Component {
         <Route path='/v/:videoId' component={VideoShare} />
         {authToken && <Route path='/wallet' component={WalletPage} />}
         {authToken && <Route path='/v/:videoId' component={VideoVote} />}
+        {authToken && <Route path='/v/:videoId' component={VideoReport} />}
         {authToken && <Route path='/upload/publish/to_ethereum/:videoId' component={PublishVideoPage} />}
       </React.Fragment>
     );
