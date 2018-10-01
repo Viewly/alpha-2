@@ -41,10 +41,9 @@ export default class SearchInput extends Component {
       this.state.searchText.length >= MIN_SEARCH_CHARACTERS && doSearch(this.state.searchText);
     }
 
-    if (prevState.focused === false && this.state.focused === true) {
-      document.body.classList.add('has-search-activated');
-    } else if (prevState.focused === true && this.state.focused === false) {
-      document.body.classList.remove('has-search-activated');
+    if (prevState.focused !== this.state.focused) {
+      this.state.focused && document.body.classList.add('has-search-activated');
+      !this.state.focused && document.body.classList.remove('has-search-activated');
     }
   }
 
