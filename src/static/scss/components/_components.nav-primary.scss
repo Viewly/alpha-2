@@ -26,7 +26,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 1000;
+        z-index: 100;
 
         &::after { /* [2] */
             box-shadow: 0 -6px 3px -3px rgba(#333, .1);
