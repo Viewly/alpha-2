@@ -1,9 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ReportItem from './report_item';
+import { bindActionCreators } from "redux";
+
 import Portal from '../../portal';
+
+import { reportVideo, checkVideoReport } from '../../../actions/video';
+import ReportItem from './report_item';
 import { REPORT_REASONS } from '../../../constants/report_reasons';
 
+@connect((state, props) => ({
+  videoReports: state.videoReports[props.match.params.videoId]
+}), (dispatch) => (
+  bindActionCreators({ reportVideo, checkVideoReport }, dispatch)
+))
 export default class VideoReport extends Component {
   state = {
     reason: REPORT_REASONS[0].id  // select first reason
@@ -15,6 +24,8 @@ export default class VideoReport extends Component {
   }
 
   modalOpen = () => {
+    const { checkVideoReport, match: { params: { videoId } } } = this.props;
+    checkVideoReport({ videoId })
     this.modal.modal('show');
   }
 
@@ -23,10 +34,15 @@ export default class VideoReport extends Component {
   }
 
   reportVideo = () => {
-    console.log('REPORT OMG');
+    const { reportVideo, match: { params: { videoId } } } = this.props;
+
+    reportVideo({ videoId, reason: this.state.reason });
   }
 
   render() {
+    const { videoReports } = this.props;
+    const isLoaded = videoReports && videoReports._status === 'LOADED';
+
     return (
       <Portal container='react-report'>
         <a className='c-link-neutral' onClick={() => this.modalOpen()} title="REPORT">
@@ -40,20 +56,37 @@ export default class VideoReport extends Component {
           <header className="c-modal__header">Report this video</header>
 
           <div className="content">
-            <ul className="c-report-list">
-              {REPORT_REASONS.map(item => (
-                <ReportItem
-                  {...item}
-                  key={`report-${item.id}`}
-                  reason={this.state.reason}
-                  onChange={(e) => this.setState({ reason: e.target.value })}
-                />
-              ))}
-            </ul>
+            {!isLoaded && (
+              <div className="ui">
+                <div className="ui active inverted dimmer">
+                  <div className="ui text loader">Loading</div>
+                </div>
+                <p></p>
+              </div>
+            )}
+
+            {isLoaded && !videoReports.reported && (
+              <ul className="c-report-list">
+                {REPORT_REASONS.map(item => (
+                  <ReportItem
+                    {...item}
+                    key={`report-${item.id}`}
+                    reason={this.state.reason}
+                    onChange={(e) => this.setState({ reason: e.target.value })}
+                  />
+                ))}
+              </ul>
+            )}
+
+            {isLoaded && videoReports.reported && (
+              <div>Thanks for reporting this video</div>
+            )}
 
             <div className="u-text-right u-margin-top-large">
-              <button className="ui button large u-margin-right-tiny" type="button" onClick={() => this.modalClose()}>Cancel</button>
-              <button className="ui button large c-btn--primary" type="submit" onClick={this.reportVideo}>Report video</button>
+              <button className="ui button large u-margin-right-tiny" type="button" onClick={() => this.modalClose()}>Close</button>
+              {isLoaded && !videoReports.reported && (
+                <button className="ui button large c-btn--primary" type="submit" onClick={this.reportVideo}>Report video</button>
+              )}
             </div>
           </div>
         </div>
