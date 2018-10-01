@@ -72,7 +72,9 @@ export default class VoteMetamask extends Component {
     const { vote, web3: { metamask } } = this.props;
 
     if (metamask._status === STATUS_TYPE.ERROR) {
-      return <a href='javascript:;' onClick={() => this.modalOpen('metamask')} className="ui button c-btn--secondary right labeled icon metamask-icon">Install</a>;
+      // don't show metamask button if metamask is not installed
+      // return <a href='javascript:;' onClick={() => this.modalOpen('metamask')} className="ui button c-btn--secondary right labeled icon metamask-icon">Install</a>;
+      return null;
     }
 
     switch (vote) {
