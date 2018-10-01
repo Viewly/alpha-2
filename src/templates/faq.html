@@ -21,29 +21,7 @@
 
 {% block content %}
   {% include 'partials/hero-about.html' %}
-
-  <div class="c-hero c-hero--learn-more">
-    <div class="o-grid o-grid--center o-grid--large o-grid--auto">
-      <div class="o-grid__cell">
-        <a href="https://medium.com/view-ly" target="_blank">
-          {% include 'atoms/icon-medium.html' %}
-          Get informed on our blog
-        </a>
-      </div>
-      <div class="o-grid__cell">
-        <a href="{{ url_for('game.index') }}">
-          {% include 'atoms/icon-telegram.html' %}
-          Learn about the Distribution Game
-        </a>
-      </div>
-      <div class="o-grid__cell">
-        <a href="https://discordapp.com/invite/MkTqjnG" target="_blank">
-          {% include 'atoms/icon-discord.html' %}
-          Join our Discord community
-        </a>
-      </div>
-    </div>
-  </div>
+  {% include 'partials/hero-learn-more.html' %}
 
   <div class="c-faq">
     <h2 class="c-faq__title">Frequently Asked Questions</h2>
