@@ -14,12 +14,10 @@
     background-size: auto 283px;
     color: #fff;
     font-size: 15px;
-    margin-bottom: $spacing-unit-large;
     padding-bottom: $spacing-unit-large;
     padding-top: $spacing-unit-huge; /* [1] */
 
     @include mq(large) {
-        margin-bottom: $spacing-unit-huge;
         padding-bottom: $spacing-unit-huge;
     }
 

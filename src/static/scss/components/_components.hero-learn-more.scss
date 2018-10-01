@@ -1,0 +1,26 @@
+/*------------------------------------*\
+    #HERO LEARN MORE
+\*------------------------------------*/
+
+.c-hero--learn-more {
+    background-color: #e8e8f0;
+    color: #5b5e6d;
+    font-size: 15px;
+    margin-bottom: $spacing-unit-large;
+    padding-bottom: $spacing-unit;
+
+    @include mq(large) {
+        margin-bottom: $spacing-unit-huge;
+    }
+
+    a {
+        align-content: middle;
+        color: inherit;
+        display: flex;
+        margin-top: $spacing-unit;
+
+        svg {
+            margin-right: $spacing-unit-small;
+        }
+    }
+}
