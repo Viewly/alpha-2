@@ -35,22 +35,25 @@ export default class VoteMetamask extends Component {
   voteClick = async () => {
     const { config, web3, web3: { metamask } } = this.props;
     const address = metamask.accounts[0];
-    const balance = await this.checkViewBalance(address);
 
     if (config.ethChainId !== web3.network.network_id) {
       this.modalOpen('network');
     } else if (!address) {
       this.modalOpen('locked');
-    } else if (balance < 100) {
-      this.modalOpen('balance');
     } else {
-      const { videoVoteMetamask, videoVote, videoId } = this.props;
+      const balance = await this.checkViewBalance(address);
 
-      const voteSigned = await videoVoteMetamask(videoId, address, VOTE_WEIGHT);
-
-      if (voteSigned.ecc_signature) {
-        const response = await videoVote(videoId, address, VOTE_WEIGHT, voteSigned.ecc_message, voteSigned.ecc_signature);
-        response && saveVoteCache(videoId);
+      if (balance < 100) {
+        this.modalOpen('balance');
+      } else {
+        const { videoVoteMetamask, videoVote, videoId } = this.props;
+  
+        const voteSigned = await videoVoteMetamask(videoId, address, VOTE_WEIGHT);
+  
+        if (voteSigned.ecc_signature) {
+          const response = await videoVote(videoId, address, VOTE_WEIGHT, voteSigned.ecc_message, voteSigned.ecc_signature);
+          response && saveVoteCache(videoId);
+        }
       }
     }
   }
