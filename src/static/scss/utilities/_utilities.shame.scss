@@ -240,8 +240,14 @@ body {
             text-transform: uppercase;
         }
 
+        /**
+         * 1. Make the question same size as the text for better consistency,
+         *    since Semantic UI css is applying some questionable styles which
+         *    make the font size too small on phones.
+         */
         .c-faq__question {
             color: #5b5e6d;
+            font-size: inherit; /* [1] */
             font-weight: 700;
             margin-bottom: $spacing-unit-small;
 
