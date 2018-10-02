@@ -22,7 +22,7 @@ export default class Item extends Component {
 
           <div className="extra">
             {sendCallback && (
-              <button onClick={() => sendCallback(name)} className='ui right floated primary button'>
+              <button onClick={() => sendCallback(name)} className='ui right floated button c-btn--primary'>
                 Send
                 {decrypted && <i className='right sign out icon'></i>}
                 {!decrypted && <i className='right lock icon'></i>}
