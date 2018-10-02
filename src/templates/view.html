@@ -105,9 +105,7 @@
             </div>
 
             <div class="o-grid__cell">
-              <a class="c-link-neutral js-open-report-video-modal" href="" title="Report">
-                {% include 'atoms/icon-flag.html' %}
-              </a>
+              <div id="react-report"></div>
             </div>
           </div>
         </div>
@@ -129,100 +127,6 @@
 
   {% include 'partials/disqus.html' %}
 
-  <div class="ui modal c-modal c-modal--medium" id="modal-report-video">
-    <i class="close icon small c-modal__close"></i>
-    <header class="c-modal__header">Report this video</header>
-    <form action="" class="content">
-      <ul class="c-report-list">
-        <li>
-          <div class="o-flag o-flag--top o-flag--small">
-            <div class="o-flag__img">
-              <label class="c-input-radio">
-                <input class="c-input-radio__input" type="radio" name="reportVideo" id="xxx" checked>
-                <span class="c-input-radio__faux-input"></span>
-              </label>
-            </div>
-            <div class="o-flag__body">
-              <dl>
-                <dt><label for="xxx">XXX-rated</label></dt>
-                <dd>This video contains explicit pornography, advertises a product or service of an erotic nature, or seems primarily focused on sexual stimulation.</dd>
-              </dl>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="o-flag o-flag--top o-flag--small">
-            <div class="o-flag__img">
-              <label class="c-input-radio">
-                <input class="c-input-radio__input" type="radio" name="reportVideo" id="stolenContent">
-                <span class="c-input-radio__faux-input"></span>
-              </label>
-            </div>
-            <div class="o-flag__body">
-              <dl>
-                <dt><label for="stolenContent">Uploader did not make this</label></dt>
-                <dd>The person who uploaded this video obviously didn’t make it (it’s a TV show, movie trailer, or ripped from elsewhere the web.)</dd>
-              </dl>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="o-flag o-flag--top o-flag--small">
-            <div class="o-flag__img">
-              <label class="c-input-radio">
-                <input class="c-input-radio__input" type="radio" name="reportVideo" id="notPlayingNice">
-                <span class="c-input-radio__faux-input"></span>
-              </label>
-            </div>
-            <div class="o-flag__body">
-              <dl>
-                  <dt><label for="notPlayingNice">Socially undesirable</label></dt>
-                <dd>This video contains harassment, incites hatred, or depicts extreme real-life violence.</dd>
-              </dl>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="o-flag o-flag--top o-flag--small">
-            <div class="o-flag__img">
-              <label class="c-input-radio">
-                <input class="c-input-radio__input" type="radio" name="reportVideo" id="moneymaker">
-                <span class="c-input-radio__faux-input"></span>
-              </label>
-            </div>
-            <div class="o-flag__body">
-              <dl>
-                <dt><label for="moneymaker">Scam</label></dt>
-                <dd>This video is an advertisement, commercial, or is a video that actively promotes an
-                illegitimate (fraudulent) product or service. Example: Advertisement for a ponzi
-                scheme.</dd>
-              </dl>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="o-flag o-flag--top o-flag--small">
-            <div class="o-flag__img">
-              <label class="c-input-radio">
-                <input class="c-input-radio__input" type="radio" name="reportVideo" id="spam">
-                <span class="c-input-radio__faux-input"></span>
-              </label>
-            </div>
-            <div class="o-flag__body">
-              <dl>
-                <dt><label for="spam">Spam</label></dt>
-                <dd>This video is primarily designed to drive traffic to third party sites, use Search Engine Optimization (SEO) to manipulate search rankings, or otherwise deceive or mislead the audience.</dd>
-              </dl>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="u-text-right u-margin-top-large">
-        <button class="ui button large u-margin-right-tiny js-close-report-video-modal" type="reset">Cancel</button>
-        <button class="ui button large c-btn--primary" type="submit">Report video</button>
-      </div>
-    </form>
-  </div>
 {% endblock %}
 
 {% block scripts %}
@@ -239,15 +143,6 @@
     // SEMANTIC.UI
     $(function () {
       $('.statistic').popup();
-    });
-
-    $('.js-open-report-video-modal').on('click', function(e) {
-      e.preventDefault();
-      $('#modal-report-video').modal('show');
-    });
-
-    $('.js-close-report-video-modal').on('click', function(e) {
-      $('#modal-report-video').modal('hide');
     });
   </script>
 
