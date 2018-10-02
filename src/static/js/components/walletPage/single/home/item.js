@@ -16,7 +16,6 @@ export default class Item extends Component {
           <dl className="c-wallet__currency">
             <dt className="header">
               {name}
-              {labels && labels.map(item => <div key={`label-${item}`} className="ui label u-margin-left-small">{item}</div>)}
             </dt>
             <dd className="c-wallet__currency__amount">
               <span className="price">
