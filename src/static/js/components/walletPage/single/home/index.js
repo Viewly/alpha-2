@@ -75,7 +75,7 @@ export default class WalletSingleHome extends Component {
           </a>
         </div>
 
-        <div className='ui divided items'>
+        <div className=''>
 
           <Item
             address={wallet.address}
@@ -87,6 +87,8 @@ export default class WalletSingleHome extends Component {
             sendCallback={this.sendClick}
             name='ETH'
           />
+
+          <hr className="c-hr" />
 
           <Item
             address={wallet.address}
