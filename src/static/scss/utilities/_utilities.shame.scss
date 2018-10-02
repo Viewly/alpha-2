@@ -633,3 +633,49 @@ $accordion-padding-horizontal: $spacing-unit-small;
             }
         }
     }
+
+
+.c-wallet {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: $spacing-unit-large;
+    padding-bottom: $spacing-unit-large;
+    max-width: 40em;
+
+    @include mq(large) {
+        padding-top: $spacing-unit-huge;
+        padding-bottom: $spacing-unit-huge;
+    }
+}
+
+    .c-wallet__header {
+        text-align: center;
+        margin-bottom: $spacing-unit-large;
+    }
+
+    .c-wallet__heading {
+        font-size: 20px;
+        font-weight: 700;
+        margin-top: $spacing-unit-tiny;
+    }
+
+    .c-wallet__address {
+        color: #9a9da1;
+        margin: 0;
+        padding: 0;
+
+        dt {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        dd {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            color: #414141;
+        }
+    }

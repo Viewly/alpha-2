@@ -51,14 +51,18 @@ export default class WalletContainer extends Component {
 
     return (
       <div>
-        <h2 className="ui center aligned icon dividing header">
-          {wallet.decrypted && <i className="circular lock open icon"></i>}
-          {!wallet.decrypted && <i className="circular lock icon"></i>}
-          Wallet
-          <div className="sub header">
-            <a target="_blank" href={this.generateEtherscanUrl()}>{wallet.address}</a>
-          </div>
-        </h2>
+        <header className="c-wallet__header">
+          <img src="/static/img/wallet.svg" alt="" />
+          <h2 className="c-wallet__heading">
+            My wallet
+          </h2>
+          <dl className="c-wallet__address">
+            <dt>Wallet address</dt>
+            <dd>
+              <a target="_blank" href={this.generateEtherscanUrl()}>{wallet.address}</a>
+            </dd>
+          </dl>
+        </header>
 
         {children}
       </div>
