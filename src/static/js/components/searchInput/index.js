@@ -114,6 +114,7 @@ export default class SearchInput extends Component {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onKeyDown={this.onKeyDown}
+            autocomplete="off"
           />
         </div>
 
@@ -125,11 +126,11 @@ export default class SearchInput extends Component {
             <ul className="c-search-dropdown__list">
               {search.data.map((item, idx) => (
                 <SearchItem
-                  key={`search-${item.channel_id}`} 
-                  channel_id={item.channel_id} 
-                  url={item.channel_url} 
-                  selected={this.state.selected === idx} 
-                  avatar={item.avatar_url} 
+                  key={`search-${item.channel_id}`}
+                  channel_id={item.channel_id}
+                  url={item.channel_url}
+                  selected={this.state.selected === idx}
+                  avatar={item.avatar_url}
                   name={item.display_name} />
               ))}
             </ul>
