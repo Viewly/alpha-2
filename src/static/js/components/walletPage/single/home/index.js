@@ -79,19 +79,6 @@ export default class WalletSingleHome extends Component {
 
           <Item
             address={wallet.address}
-            balance={wallet.balanceEth}
-            decrypted={wallet.decrypted}
-            fiat={roundTwoDecimals(wallet.balanceEth * prices.eth)}
-            fiatSign={CURRENCY[currency].sign}
-            image='https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png'
-            sendCallback={this.sendClick}
-            name='ETH'
-          />
-
-          <hr className="c-hr" />
-
-          <Item
-            address={wallet.address}
             balance={wallet.balanceView}
             decrypted={wallet.decrypted}
             fiat={roundTwoDecimals(wallet.balanceView * prices.view)}
@@ -100,6 +87,19 @@ export default class WalletSingleHome extends Component {
             sendCallback={this.sendClick}
             name='VIEW'
             labels={['erc20']}
+          />
+
+          <hr className="c-hr" />
+
+          <Item
+            address={wallet.address}
+            balance={wallet.balanceEth}
+            decrypted={wallet.decrypted}
+            fiat={roundTwoDecimals(wallet.balanceEth * prices.eth)}
+            fiatSign={CURRENCY[currency].sign}
+            image='https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png'
+            sendCallback={this.sendClick}
+            name='ETH'
           />
 
         </div>
