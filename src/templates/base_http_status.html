@@ -6,9 +6,9 @@
   <title>{% block title %}{% endblock %}</title>
   <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
   {% if flask_env() == 'development' %}
-    <link href="http://localhost:3000/dist/http-status.scss.css" rel="stylesheet" type="text/css">
+    <link href="http://localhost:3000/dist/style.css" rel="stylesheet" type="text/css">
   {% else %}
-    <link href="{{ url_for('static', filename=find_css('http-status')) }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename=find_css('style')) }}" rel="stylesheet" type="text/css">
   {% endif %}
 </head>
 <body>
