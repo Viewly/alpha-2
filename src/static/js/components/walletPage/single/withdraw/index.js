@@ -232,8 +232,7 @@ export default class WalletSingleWithdraw extends Component {
             )}
 
 
-          <Link to={`/wallet/${wallet.address}`} className="ui button">Cancel</Link>
-          <button className={`ui button c-btn--primary ${!canSend ? 'disabled' : ''}`} onClick={this.sendConfirm}>Submit</button>
+          <div class="u-margin-top"><Link to={`/wallet/${wallet.address}`} className="ui button">Cancel</Link><button className={`ui button c-btn--primary ${!canSend ? 'disabled' : ''}`} onClick={this.sendConfirm}>Submit</button></div>
         </div>
       </div>
     )
