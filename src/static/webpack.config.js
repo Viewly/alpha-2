@@ -1,8 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: ['babel-polyfill', './js/index.js'],
+  entry: ['babel-polyfill', './js/index.js', './scss/base.scss', './scss/http-status.scss'],
   mode: "development",
   module: {
     rules: [
@@ -22,7 +23,16 @@ module.exports = {
           loader: 'svg-url-loader',
           options: {}
         }
-      }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          // "style-loader", // creates style nodes from JS strings
+          MiniCssExtractPlugin.loader,
+          "css-loader?-url", // translates CSS into CommonJS
+          "sass-loader" // compiles Sass to CSS, using Node Sass by default
+        ]
+      },
     ]
   },
   resolve: { extensions: ['*', '.js', '.jsx'] },
@@ -67,5 +77,13 @@ module.exports = {
       }
     }
   },
-  plugins: [ new webpack.HotModuleReplacementPlugin() ]
+  plugins: [ 
+    new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "style.css",
+      chunkFilename: "[id].css"
+    })
+  ]
 };

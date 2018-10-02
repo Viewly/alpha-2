@@ -1,0 +1,118 @@
+/*------------------------------------*\
+    #HOMEPAGE HERO
+\*------------------------------------*/
+
+$tweakpoint-hero-home:            520px;
+
+
+
+
+
+.c-hero--home {
+    background-color: #fff;
+    background-image: url('../img/hero-illustration-mobile.svg');
+    background-position: top 30% left 50%;
+    background-repeat: no-repeat;
+    background-size: 90% auto;
+    font-size: 16px;
+    margin-bottom: $spacing-unit;
+    padding-bottom: $spacing-unit-large;
+    padding-top: $spacing-unit-large;
+    text-align: center;
+
+    @include mq($tweakpoint-hero-home) {
+        background-color: #e8e8f0;
+        background-image: url('../img/hero-illustration.svg');
+        background-position: bottom -400% right -10%;
+        background-size: auto 90%;
+        text-align: left;
+    }
+
+    @include mq(medium) {
+        background-position: top 50% right -5%;
+        background-size: auto 76%;
+        margin-bottom: $spacing-unit-large;
+        padding-top: $spacing-unit-huge;
+        padding-bottom: $spacing-unit-huge;
+    }
+
+    @include mq(large) {
+        background-position: top -20% right 0;
+        background-size: auto;
+    }
+
+    @include mq(extralarge) {
+        background-position: top 50% right 10%;
+        background-size: auto 88%;
+        margin-bottom: $spacing-unit-huge;
+        padding-top: 120px;
+        padding-bottom: 120px;
+    }
+
+    p {
+        margin-bottom: $spacing-unit;
+
+        @include mq($until: $tweakpoint-hero-home) {
+            br {
+                display: none;
+            }
+        }
+
+        @include mq($tweakpoint-hero-home) {
+            margin-bottom: 34px;
+        }
+    }
+}
+
+    /**
+     * Hero title
+     */
+    .c-hero--home__title {
+        font-size: 32px;
+        font-weight: 700;
+
+        @include mq(medium) {
+            font-size: 44px;
+        }
+
+        @include mq(large) {
+            font-size: 46px;
+        }
+
+        @include mq(extralarge) {
+            font-size: 48px;
+        }
+    }
+
+    /**
+     * Secondary cta
+     */
+    .c-hero--home__secondary-cta {
+        color: #868a9a;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    /**
+     * Hero buttons
+     *
+     * 1. Bump up the specificity a bit to override the style from
+     *   `.o-grid--auto`.
+     */
+    .c-hero--home__layout-buttons {
+        > .o-grid__cell[class] { /* [1] */
+            width: 100%;
+
+            @include mq($tweakpoint-hero-home) {
+                width: auto;
+            }
+
+            &:not(:first-child) {
+                margin-top: $spacing-unit-small;
+
+                @include mq($tweakpoint-hero-home) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
