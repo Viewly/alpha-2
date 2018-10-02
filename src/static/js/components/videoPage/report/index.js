@@ -79,7 +79,7 @@ export default class VideoReport extends Component {
             )}
 
             {isLoaded && videoReports.reported && (
-              <div>Thanks for reporting this video</div>
+              <div>Thank you for reporting this video. Your efforts keep this community safe and civilized, resulting in a better experience for everyone.</div>
             )}
 
             <div className="u-text-right u-margin-top-large">
