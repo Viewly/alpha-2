@@ -2,6 +2,12 @@
     #THUMBNAIL
 \*------------------------------------*/
 
+$tweakpoint-thumbnail:          large;
+
+
+
+
+
 .c-thumbnail {
     background-color: darken($global-background-color, 10%);
     border-radius: 2px;
@@ -27,29 +33,29 @@
         width: 100%;
     }
 
-    &:hover {
-        text-decoration: none;
+    @include mq($tweakpoint-thumbnail) {
+        &:hover {
+            text-decoration: none;
 
-        .c-thumbnail__img,
-        .c-thumbnail__link {
-            transform: scale(1.02);
-        }
+            .c-thumbnail__img,
+            .c-thumbnail__link {
+                transform: scale(1.02);
+            }
 
-        .c-thumbnail__link,
-        .c-thumbnail__play-icon,
-        .c-thumbnail__edit {
-            @include visible;
-        }
+            .c-thumbnail__play-icon,
+            .c-thumbnail__edit {
+                @include visible;
+            }
 
-        .c-thumbnail__duration-indicator {
-            opacity: 1;
+            .c-thumbnail__duration-indicator {
+                opacity: 1;
+            }
         }
     }
 }
 
     .c-thumbnail__link {
-        @include invisible;
-        background-color: rgba(color('brand-secondary'), .5);
+        background-color: rgba(color('brand-secondary'), 0);
         border-radius: inherit;
         content: '';
         height: 100%;
@@ -61,6 +67,10 @@
         top: 0;
         left: 0;
         z-index: 20;
+
+        .c-thumbnail:hover & {
+            background-color: rgba(color('brand-secondary'), .5);
+        }
     }
 
     .c-thumbnail__img {
@@ -85,7 +95,7 @@
         display: block;
         font-size: 12px;
         line-height: 1.2;
-        opacity: 0;
+        opacity: .8;
         padding: 2px 4px;
         pointer-events: none;
         transition: inherit;
@@ -93,6 +103,10 @@
         bottom: $spacing-unit-tiny;
         right: $spacing-unit-tiny;
         z-index: 30;
+
+        @include mq($tweakpoint-thumbnail) {
+            opacity: 0;
+        }
 
         .c-videos-list & {
             opacity: .8;
@@ -130,7 +144,6 @@
     }
 
     .c-thumbnail__edit {
-        @include invisible;
         background-color: #fff;
         border-radius: 2px;
         color: color('brand-secondary');
@@ -142,6 +155,10 @@
         top: $spacing-unit-tiny;
         right: $spacing-unit-tiny;
         z-index: 40;
+
+        @include mq($tweakpoint-thumbnail) {
+            @include invisible;
+        }
 
         &:hover {
             background-color: color('brand-secondary');

@@ -207,6 +207,103 @@ body {
 }
 
 
+.c-faq {
+    color: #5b5e6d;
+    font-size: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 40em;
+}
+
+    .c-faq__title {
+        color: #333;
+        font-weight: 700;
+        margin-bottom: $spacing-unit-tiny;
+        text-align: center;
+    }
+
+    .c-faq__intro {
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: $spacing-unit-huge;
+    }
+
+    .c-faq__questions {
+        margin-bottom: $spacing-unit-huge;
+    }
+
+        .c-faq__section-title {
+            color: #333;
+            font-weight: 700;
+            margin-bottom: $spacing-unit;
+            margin-top: $spacing-unit-huge;
+            text-transform: uppercase;
+        }
+
+        /**
+         * 1. Make the question same size as the text for better consistency,
+         *    since Semantic UI css is applying some questionable styles which
+         *    make the font size too small on phones.
+         */
+        .c-faq__question {
+            color: #5b5e6d;
+            font-size: inherit; /* [1] */
+            font-weight: 700;
+            margin-bottom: $spacing-unit-small;
+
+            .c-accordion__trigger & {
+                margin-bottom: 0;
+            }
+        }
+
+$accordion-padding-horizontal: $spacing-unit-small;
+
+.c-accordion {
+    border-bottom: 1px solid #e2e2e2;
+    transition: all .35s ease;
+
+    &.is-active {
+        background-color: rgba(#000, .05);
+    }
+}
+
+    .c-accordion__trigger {
+        align-items: center;
+        display: flex;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        padding-top: $spacing-unit-small;
+        padding-bottom: $spacing-unit-small;
+        padding-left: $accordion-padding-horizontal;
+        padding-right: $accordion-padding-horizontal;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+        .c-accordion__icon-chevron {
+            align-self: flex-start;
+            color: #b0b2b8;
+            margin-left: $spacing-unit;
+            transition: $global-transition;
+
+            .c-accordion.is-active & {
+                transform: rotate(180deg);
+            }
+        }
+
+    .c-accordion__content {
+        display: none;
+        padding-left: $accordion-padding-horizontal;
+        padding-right: $accordion-padding-horizontal;
+        padding-bottom: $spacing-unit;
+
+        .c-accordion.is-active & {
+            display: block;
+        }
+    }
+
 /**
  * 1. For short screens the footer gets in the viewport and makes the page seem
  *    busy. With this we're pushing it away enough that it's hidden.
@@ -461,16 +558,30 @@ body {
 
 /**
  * Search dropdown
+ *
+ * 1. For small screens substract header and bottom navigation height from the
+ *    viewport height, and then subsctract another "buffer" value (epressed in
+ *    `vh` units) to have enough gap between bottom navigation and search
+ *    dropdown.
+ * 2. On bigger screens substract header height and some buffer value so that
+ *    search (when it's really hight) is not "touching" the bottom part of the
+ *    viewport.
  */
 .c-search-dropdown {
     background-color: #fff;
     border-radius: $global-border-radius;
     box-shadow: 0 2px 8px 0 rgba(#000, .1);
+    max-height: calc(100vh - #{($header-height * 2)} - 10vh); /* [1] */
     min-height: 86px;
+    overflow-y: auto;
     width: 100%;
     position: absolute;
     top: 100%;
     left: 0;
+
+    @include mq($tweakpoint-header) {
+        max-height: calc(100vh - #{($header-height + $spacing-unit)}); /* [2] */
+    }
 }
 
     .c-search-dropdown__heading[class] {
@@ -478,8 +589,16 @@ body {
         font-size: 12px !important;
         font-weight: 700 !important;
         margin-bottom: 0 !important;
-        padding: $spacing-unit-small $spacing-unit-small 0 $spacing-unit-small !important;
+        margin-top: 0 !important;
+        padding: 0 $spacing-unit-small !important;
         text-transform: uppercase !important;
+    }
+
+    .c-search-dropdown__info-message {
+        color: #9a9da1;
+        font-size: 13px;
+        margin-bottom: $spacing-unit;
+        padding: $spacing-unit-small;
     }
 
     .c-search-dropdown__list {
@@ -515,16 +634,130 @@ body {
         }
     }
 
-    .c-search-dropdown__no-results[class] {
-        padding: $spacing-unit-tiny !important;
+
+.c-wallet {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: $spacing-unit-large;
+    padding-bottom: $spacing-unit-large;
+    max-width: 40em;
+
+    @include mq(large) {
+        padding-top: $spacing-unit-huge;
+        padding-bottom: $spacing-unit-huge;
+    }
+}
+
+    .c-wallet__header {
+        text-align: center;
+        margin-bottom: $spacing-unit;
+    }
+
+        .c-wallet__heading {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: $spacing-unit-tiny;
+        }
+
+        .c-wallet__address {
+            color: #9a9da1;
+            margin: 0;
+            padding: 0;
+
+            dt {
+                font-size: 11px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            dd {
+                margin: 0;
+                padding: 0;
+            }
+
+            a {
+                color: #414141;
+            }
+        }
+
+    .c-wallet__nav {
+        margin-bottom: $spacing-unit-huge;
         text-align: center;
 
-        p {
-            margin-bottom: 0;
+        a {
+            display: inline-block;
+            font-weight: 700;
+            vertical-align: middle;
+
+            &:not(:first-child) {
+                margin-left: $spacing-unit;
+            }
+
+            &:hover {
+                color: darken(color('brand-secondary'), 10%);
+                text-decoration: none;
+            }
         }
     }
 
-    .c-search-dropdown__no-results__img {
-        margin-bottom: $spacing-unit-small;
-        width: 80px;
+    .c-wallet__cryptocurrency-icon {
+        border-radius: 50%;
+        border: 1px solid #dadada;
+        display: inline-block;
+        font-size: 60px;
+        height: 1em;
+        vertical-align: middle;
+        width: 1em;
+        position: relative;
+
+        img {
+            height: auto;
+            width: 65%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
     }
+
+    .c-wallet__currency {
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+
+        dt {
+            color: #9a9da1;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        dd {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+        .c-wallet__currency__amount {
+            font-size: 18px;
+        }
+
+        .c-wallet__currency__fiat {
+            color: #18bf67;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+.c-hr {
+    background-color: #e5e5e5;
+    border: none;
+    display: block;
+    height: 1px;
+    margin-top: $spacing-unit;
+    margin-bottom: $spacing-unit;
+}
+
+.u-margin-left-auto {
+    margin-left: auto !important;
+}

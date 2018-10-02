@@ -1,4 +1,5 @@
 import * as actions from '../actions';
+import * as video from '../actions/video';
 import { getWallets, getVotes } from '../utils';
 import { STATUS_TYPE } from '../constants';
 import { cacheSet, cacheGet, checksumAddress, getPendingTransactions } from '../utils';
@@ -44,6 +45,7 @@ const initialState = {
     data: []
   },
   pendingTransactions: getPendingTransactions(),
+  videoReports: {},
   web3: {
     metamask: {
       accounts: null,
@@ -91,6 +93,15 @@ const rootReducer = (state = initialState, action) => {
       return { ...state, search: { ...state.search, _status: STATUS_TYPE.LOADED, data: action.data }};
     case actions.SEARCH_VIDEOS_ERROR:
       return { ...state, search: { ...state.search, _status: STATUS_TYPE.ERROR }};
+
+    case video.VIDEO_REPORT_CHECK_START:
+    case video.VIDEO_REPORT_START:
+      return { ...state, videoReports: { ...state.videoReports, [action.videoId]: { _status: STATUS_TYPE.LOADING } }};
+    case video.VIDEO_REPORT_CHECK_SUCCESS:
+    case video.VIDEO_REPORT_SUCCESS:
+      return { ...state, videoReports: { ...state.videoReports, [action.videoId]: { _status: STATUS_TYPE.LOADED, reported: action.data.reported } }};
+    case video.VIDEO_REPORT_CHECK_ERROR:
+      return { ...state, videoReports: { ...state.videoReports, [action.videoId]: { _status: STATUS_TYPE.ERROR } }};
 
     case actions.TRANSACTION_WAIT_START:
       return { ...state, transaction: { ...state.transaction, _status: STATUS_TYPE.LOADING, error: '' }};

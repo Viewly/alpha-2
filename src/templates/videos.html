@@ -3,13 +3,14 @@
 {% block title %}{% if section_title %}{{ section_title }}{% else %}Viewly{% endif %}{% endblock %}
 {% block meta_title %}New Videos on Viewly{% endblock %}
 {% set showFooter = true %}
+{% set showAboutViewlyFooter = true %}
 {% if not current_user.is_authenticated %}
   {% set pageClass = "has-header-without-bottom-margin" %}
 {% endif %}
 
 {% block content %}
   {% if not current_user.is_authenticated %}
-    {% include 'partials/hero.html' %}
+    {% include 'partials/hero-home.html' %}
   {% endif %}
 
   {% if videos %}

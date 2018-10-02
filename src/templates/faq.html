@@ -2,79 +2,354 @@
 
 {% block title %}FAQ{% endblock %}
 {% set showFooter = true %}
-
-{% block content %}
-  <div class="ui text container">
-    <h2>Frequently Asked Questions</h2>
-    <h3 class="ui sub header">What is Viewly Alpha?</h3>
-    Viewly Alpha is a <i>tokenized video platform</i>, aiming to provide a more fair and
-    efficient means of content delivery and monetization.
-    Alpha is built with cool tech like Ethereum and IPFS. Alpha is in an experimental
-    phase, and as such is not for the faint of heart.
-
-    <h3 class="ui sub header">Source Code</h3>
-    You can find the source of the underlying Ethereum contracts
-    <a href="https://github.com/Viewly/platform-contracts">here</a>.
-    The IPFS infrastructure and other tools will be open-sourced and published on our
-    <a href="https://github.com/Viewly">GitHub</a> later this year.
-
-    <h3 class="ui sub header">Feedback</h3>
-    If you have a product idea, feature request, or constructive criticism - we would
-    <a href="https://viewly.typeform.com/to/MXeBzl">love to hear it</a>. Constructive
-    feedback will be rewarded with <a
-    href="https://etherscan.io/token/0xf03f8d65bafa598611c3495124093c56e8f638f0">VIEW
-    Tokens</a>.
-
-    <h3 class="ui sub header">What is a VIEW token?</h3>
-    The VIEW token is a utility token that functions as a medium of exchange between users activity and publishers who participate in the Viewly ecosystem. It's used by token owners, people who hold VIEW tokens, in the Viewly ecosystem to reward content creators for their hard work by voting on their videos and by content creators, which are also token owners, to publish their videos. VIEW token is an ERC-20 compliant token on the Ethereum blockchain.
-
-    <h3 class="ui sub header">What is Ethereum (ETH)?</h3>
-    Ethereum, the blockchain, is an open software platform based on blockchain technology that enables developers to build and deploy decentralized applications. On Ethereum every transaction uses ETH in the form of Gas and Gwei. For more information, please refer to the following <a href="https://masterthecrypto.com/ethereum-what-is-gas-gas-limit-gas-price/">article</a>.
-
-    <h3 class="ui sub header">How are the videos being hosted and delivered?</h3>
-    We use a combination of <a href="https://ipfs.io/"> IPFS </a> + S3 for hosting and Amazon CDN for streaming.
-
-    <h3 class="ui sub header">How do the rewards work?</h3>
-    The stake based game (Viewly Creator Rewards) is a content subsidy program, in which creators who publish high quality content compete for votes from token owners. The videos are rewarded with freshly minted VIEW Tokens in proportion to the cumulative stake of votes relative to all videos within a distribution period.
-
-    <h3 class="ui sub header">Why are you doing this?</h3>
-    We're looking to build a community of creators who pride themselves on high-value content, and we're looking to help them earn!
-
-    <h3 class="ui sub header">What is a period and how does it relate to my videos?</h3>
-    A reward period is a 24 hour window which binds the videos published within said window to its respective rewards pool. During the first 7 days, all of the videos from that period compete to receive rewards from the daily pool. You can always check how rewards are distributed by accessing the following <a href="https://view.ly/game/rewards">link</a>.
-
-    <h3 class="ui sub header">What happens after the 7 days?</h3>
-    After the 7 days are up, the rewards for your video will be calculated and sent in the next distribution period. Your video stops earning VIEW tokens. You will be able to monetize your video even further as we release other monetization options ( for example tipping, subscriptions, etc.).
-
-    <h3 class="ui sub header">How is the daily rewards pool being calculated?</h3>
-    The rewards pool is based on a combination of how many videos are published and how many votes are casted during a time frame.
-
-    <h3 class="ui sub header">Are the rewards manually processed, automatically or a combination of both?</h3>
-    The rewards pool is based on a combination of how many videos are published and how many votes are casted during a time frame.
-
-    <h3 class="ui sub header">What is the maximum rewards one video can make?</h3>
-    Since every video is tied to a period, the maximum reward one video can receive is the total number of tokens allocated to that period (day) but only if that video is the only published video in the period, from all the videos published in that period, to receive votes.
-
-    <h3 class="ui sub header">Will I be receiving an email when I get my rewards?</h3>
-    Yes, an email is automatically sent as soon as the rewards are distributed. We aim to distribute all rewards once a week, although sometimes it might take longer, but no more than 2 weeks.
-
-    <h3 class="ui sub header">How can I turn my VIEW tokens into ETH?</h3>
-    You can use an exchange. A list of exchanges can be found <a href="https://coinmarketcap.com/currencies/view/#markets">here</a>.
-
-    <h3 class="ui sub header">How do I upload and publish my videos?</h3>
-    Uploading is very easy and it’s done only in a few steps, you’ll need to create a channel, then go to your uploading page and select your video/s. Publishing is done via a simple interaction with the Ethereum network.
-    This interaction can be completed using the <a href="https://view.ly/v/FsORA3mLuCTn"> Viewly Wallet </a> (recommended for optimal user experience), <a href="https://view.ly/v/n4UFefdq1tIR">Trust Wallet</a> or <a href="https://view.ly/v/XYQahcpDHSAo">Metamask</a>.
-
-    <h3>Community - made short video about Viewly</h3>
-    <iframe
-      width="100%" height="405"
-      src="/embed/9L2gB6hSMQP7?autoPlay=0"
-      frameborder="0" allowfullscreen>
-    </iframe>
-
-  </div>
-  <br>
-{% endblock %}
+{% set showAboutViewlyFooter = false %}
+{% set pageClass = "has-header-without-bottom-margin" %}
 
 {% block scripts %}
+  <script type="text/javascript">
+    // Accordion show/hide
+    $(function () {
+      const accordionTrigger = $('.js-accordion-trigger');
+
+      accordionTrigger.on('click', function (e) {
+        e.preventDefault();
+        $(this).parent('.js-accordion-target').toggleClass('is-active');
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+  {% include 'partials/hero-about.html' %}
+  {% include 'partials/hero-learn-more.html' %}
+
+  <div class="c-faq">
+    <h2 class="c-faq__title">Frequently Asked Questions</h2>
+    <div class="c-faq__intro">
+      <p>We'd like to thank everyone helping in expansion of this FAQ. If you don't find
+        an answer you're looking for please reach out to us
+        <a href="https://viewly.typeform.com/to/eGUK0a" target="_blank">here</a>. We are
+        looking forward answering your questions.</p>
+    </div>
+
+
+    <div class="c-faq__questions">
+      <h3 class="c-faq__section-title">Viewly</h3>
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">What is Viewly Alpha?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>Viewly Alpha is an experimental video platform, aiming to provide a more fair
+            and efficient means of content delivery and monetization. We are trying out
+            modern, decentralized technologies such as Ethereum and IPFS.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Why are you doing this?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>We would like to help niche content creators connect with their viewers and
+            receive rewards for their hard work. We also dislike ads, just as much as you
+            do.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Where can I find the source code?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>You can find the source of the underlying Ethereum contracts
+            <a href="https://github.com/Viewly/platform-contracts">here</a>. The IPFS
+            infrastructure and other tools will be open-sourced and published on our
+            <a href="https://github.com/Viewly">GitHub</a> later this year.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">I have some feedback. How can I contact you?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>If you have a product idea, feature request, or constructive criticism - we
+            would <a href="https://viewly.typeform.com/to/bCD1Ty">love to hear it</a>.
+            You can also join our
+            <a href="https://discordapp.com/invite/MkTqjnG" target="_blank">Discord</a>,
+            and share your ideas with our community.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="c-faq__section-title">Blockchain</h3>
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">What is Ethereum?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>Ethereum is an open, permissionless and decentralized financial network.
+            The VIEW Token runs on Ethereum.
+          </p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">What is a VIEW token?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>VIEW token is kind of like magic internet money that can be used on Viewly as
+            a medium of exchange
+            between users and content creators. Content creators can use the token to
+            publish videos.
+            VIEW token holders can reward content creators for their hard work by voting
+            on videos, sponsoring channels or sending rewards directly.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Where can I see how much a token is worth?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>VIEW tokens can be bought or sold on 3rd party exchanges. The price
+            fluctuates over time. You can check out the current price <a href="/token">here</a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Do you have access to the funds in my wallet?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>The seed words and the private keys are generated on the client side. We store an encrypted backup only. If you forget your encryption password or the seed mnemonic, your funds will be <b>unrecoverable</b>. </p>
+        </div>
+      </div>
+
+
+      <h3 class="c-faq__section-title">Creators</h3>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Why do I need to pay to publish?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>This small fee is in place in order prevent spam and/or low value content
+            accrual.</p>
+          <p>We will cover the cost of your first few uploads, just reach out to us in
+            chat.</p>
+        </div>
+      </div>
+
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">I would like to publish my first video, but I have
+            no tokens.</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>We would love to help you get started on Viewly, please fill out the
+            <a href="https://viewly.typeform.com/to/mIJqR1">Creators Form</a>, or reach
+            out to us in chat, and we'll
+            get back to you ASAP.</p>
+        </div>
+      </div>
+
+      <h3 class="c-faq__section-title">Rewards</h3>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">What is the distribution game?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>The distribution game is a content subsidy program,
+            in which creators who publish valuable content compete for votes from
+            token owners. The videos are rewarded with freshly minted VIEW Tokens in
+            proportion to the cumulative stake of votes relative to all videos within a
+            distribution period.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">What is the maximum reward my video can earn?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>The maximum reward is determined by the daily rewards pool.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">What is a daily rewards pool?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>A reward period is a 24 hour window which binds the videos published within
+            said window to its respective rewards pool. During the first 7 days, all of
+            the videos from that period compete to receive rewards from this daily pool.
+            You can always check how rewards are distributed by accessing the following
+            <a href="https://view.ly/game/rewards">link</a>.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">How is the daily rewards pool set?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>The rewards pool is based on a combination of how many videos are published
+            and how many votes are cast in recent days.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">For how long is my video eligible for rewards?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>The voting ends 7 days after the video has been originally published.
+            The rewards are calculated and displayed shortly after, although the actual payouts may
+            take a bit longer.
+          </p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Will I be receiving an email when I get my
+            rewards?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>Yes. An email notification is sent just after the rewards are distributed.
+              The rewards are paid out on a bi-weekly basis.
+            </p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">How can I turn my VIEW tokens into real money?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>You can use an exchange. A list of exchanges can be found
+            <a href="https://coinmarketcap.com/currencies/view/#markets">here</a>.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">What does "When rewards" mean?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>It means the rewards for the video will be paid soon. Clicking on it should
+            display outstanding credit.</p>
+          <p>"When rewards" is a meme - a spin on an infamous joke of "When moon?".</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Where can I learn more about the game?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>Please check the <a href="https://view.ly/game/">distribution game</a>.</p>
+        </div>
+      </div>
+
+      <h3 class="c-faq__section-title">Content</h3>
+      {#      <div class="c-accordion js-accordion-target">#}
+      {#        <a href="#0" class="c-accordion__trigger js-accordion-trigger">#}
+      {#          <h4 class="c-faq__question">How are the videos being hosted and delivered?</h4>#}
+      {#          {% include 'atoms/icon-chevron-down.html' %}#}
+      {#        </a>#}
+      {#        <div class="c-accordion__content">#}
+      {#          <p>We use a combination of <a href="https://ipfs.io/"> IPFS </a> +#}
+      {#            <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html">S3</a>#}
+      {#            for hosting and Amazon for streaming. We'll most likely be switching to a#}
+      {#            <a href="https://www.webopedia.com/TERM/C/CDN.html">CDN</a> +#}
+      {#            <a href="https://webtorrent.io/"> WebTorrent</a> hybrid in the future.</p>#}
+      {#        </div>#}
+      {#      </div>#}
+
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Do I still own the video once its uploaded to
+            Viewly?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>Viewly does not claim rights to the videos.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Am I allowed to upload my video on other platforms
+            besides Viewly?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>Yes, there are no exclusivity constraints.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">I'm a copyright owner, how can I contact you
+            regarding an infringement?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>For copyright owners we have a
+            <a href="https://viewly.typeform.com/to/cqwcMb">DMCA</a> form in place.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Can I delete my videos?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>You can delete your videos before being published but not after (yet). If a
+            valid <abbr title="The Digital Millennium Copyright Act.">DMCA</abbr> claim
+            has been made, the video will be removed after review.</p>
+        </div>
+      </div>
+
+      <div class="c-accordion js-accordion-target">
+        <a href="#0" class="c-accordion__trigger js-accordion-trigger">
+          <h4 class="c-faq__question">Are you going to add subtitle/captions support?</h4>
+          {% include 'atoms/icon-chevron-down.html' %}
+        </a>
+        <div class="c-accordion__content">
+          <p>Yes, it's in our to-do list.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 {% endblock %}

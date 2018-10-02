@@ -1,9 +1,11 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import Portal from '../portal';
 import { doSearch } from '../../actions';
 import { STATUS_TYPE } from '../../constants';
+
+import SearchItem from './search_item';
 
 const MIN_SEARCH_CHARACTERS = 3;
 
@@ -17,11 +19,14 @@ export default class SearchInput extends Component {
     searchText: '',
     selected: -1,
     dropdownOpen: false,
+    focused: false,
   }
 
   componentDidMount() {
     const elem = document.getElementById('search-box');
+    const reactSearchContainer = document.getElementById('react-search');
     elem && elem.parentNode.removeChild(elem);
+    reactSearchContainer.classList.add('u-1/1');
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -34,6 +39,11 @@ export default class SearchInput extends Component {
       });
 
       this.state.searchText.length >= MIN_SEARCH_CHARACTERS && doSearch(this.state.searchText);
+    }
+
+    if (prevState.focused !== this.state.focused) {
+      this.state.focused && document.body.classList.add('has-search-activated');
+      !this.state.focused && document.body.classList.remove('has-search-activated');
     }
   }
 
@@ -54,7 +64,7 @@ export default class SearchInput extends Component {
         break;
 
       case 'ArrowDown':
-        this.setState({ selected: (this.state.selected >= data.length - 1) ? -1 : this.state.selected + 1});
+        this.setState({ selected: (this.state.selected >= data.length - 1) ? -1 : this.state.selected + 1 });
         break;
     }
   }
@@ -69,17 +79,17 @@ export default class SearchInput extends Component {
   }
 
   onBlur = () => {
-    setTimeout(() => this.setState({ dropdownOpen: false, selected: -1 }), 100);
+    this.input.blur();
+    setTimeout(() => this.setState({ dropdownOpen: false, selected: -1, focused: false }), 100);
   }
 
   onFocus = (e) => {
-    this.setState({ dropdownOpen: this.state.searchText.length >= MIN_SEARCH_CHARACTERS });
+    this.setState({ focused: true, dropdownOpen: this.state.searchText.length >= MIN_SEARCH_CHARACTERS });
     e.target.select();
   }
 
   render() {
     const { search } = this.props;
-    const isLoading = search._status === STATUS_TYPE.LOADING;
 
     return (
       <Portal container='react-search'>
@@ -89,12 +99,13 @@ export default class SearchInput extends Component {
             <svg className="o-icon o-icon--small" width="24" height="24" viewBox="0 0 24 24">
               <g fill="none" fillRule="evenodd" stroke="currentColor" strokeWidth="2">
                 <circle cx="10.5" cy="10.5" r="9.5" />
-                <path d="M17.656 17.656l4.864 4.864" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M17.656 17.656l4.864 4.864" strokeLinecap="round" strokeLinejoin="round" />
               </g>
             </svg>
           </button>
 
           <input
+            ref={(ref) => this.input = ref}
             className="c-header__search__input"
             placeholder={this.state.selected === -1 ? 'Search' : search.data[this.state.selected].display_name}
             name="search_input"
@@ -103,38 +114,26 @@ export default class SearchInput extends Component {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onKeyDown={this.onKeyDown}
+            autocomplete="off"
           />
         </div>
 
-        {this.state.dropdownOpen && (
+        {this.state.dropdownOpen && search.data.length !== 0 && (
           <div className="c-search-dropdown">
+            <p className="c-search-dropdown__info-message">To search for videos press enter on your keyboard.</p>
 
-            <h3 class="c-search-dropdown__heading">Channels</h3>
+            <h3 className="c-search-dropdown__heading">Channels</h3>
             <ul className="c-search-dropdown__list">
-
-              {search.data.length === 0 && !isLoading && (
-                <li className="c-search-dropdown__no-results">
-                  <img className="c-search-dropdown__no-results__img" src="/static/img/no-results.svg" alt="" />
-                  <p>No channels found</p>
-                </li>
-              )}
-
               {search.data.map((item, idx) => (
-                <li>
-                  <a href={item.channel_url} className={`${this.state.selected === idx ? 'is-active' : ''}`} key={`channel-${item.channel_id}`}>
-                    <div class="o-flag o-flag--tiny">
-                      <div class="o-flag__img">
-                        <img className="o-avatar o-avatar--small" src={item.avatar_url} onError={(e) => e.target.src = 'https://i.imgur.com/32AwiVw.jpg' } />
-                      </div>
-                      <div class="o-flag__body">
-                        {item.display_name}
-                      </div>
-                    </div>
-                  </a>
-                </li>
+                <SearchItem
+                  key={`search-${item.channel_id}`}
+                  channel_id={item.channel_id}
+                  url={item.channel_url}
+                  selected={this.state.selected === idx}
+                  avatar={item.avatar_url}
+                  name={item.display_name} />
               ))}
             </ul>
-
           </div>
         )}
 

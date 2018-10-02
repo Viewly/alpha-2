@@ -1,20 +1,21 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import copy from 'copy-to-clipboard';
 import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterShareButton,
-  TwitterIcon,
-  RedditShareButton,
-  RedditIcon,
-  GooglePlusShareButton,
-  GooglePlusIcon,
-  EmailShareButton,
   EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  GooglePlusIcon,
+  GooglePlusShareButton,
+  RedditIcon,
+  RedditShareButton,
+  TwitterIcon,
+  TwitterShareButton,
 } from 'react-share';
 
 import Portal from '../../portal';
+
 require('./index.css');
 
 @connect((state, props) => ({
@@ -67,16 +68,15 @@ export default class VideoShare extends Component {
   render() {
     return (
       <Portal container='react-share'>
-        <div className='ui button' onClick={() => this.modalOpen()}>
+        <a className='c-link-neutral' onClick={() => this.modalOpen()} title="Share">
           <i className="share alternate icon"></i>
-          Share
-        </div>
+        </a>
 
         <div ref={(ref) => this.ref = ref} className='ui tiny modal'>
           <i className="close icon"></i>
 
           <div className='header'>
-            Share video
+            Share this video
           </div>
           <div className='content social__share'>
             <div className='social__share__item' onClick={() => this.embedOpen()}>
