@@ -54,39 +54,28 @@ export default class WalletSingleHome extends Component {
 
     return (
       <div>
-        <div className="ui center aligned container">
+        <div className="c-wallet__nav">
           {wallet.decrypted && (
-            <button onClick={this.lockWallet} className="ui right labeled icon button">
-              <i className="right lock icon"></i>
+            <a href="#0" onClick={this.lockWallet} className="">
+              <i className="lock icon"></i>
               Lock wallet
-            </button>
+            </a>
           )}
 
           {!wallet.decrypted && (
-            <button onClick={unlockModalOpen} className="ui right labeled icon button">
-              <i className="right lock open icon"></i>
+            <a href="#0" onClick={unlockModalOpen} className="">
+              <i className="lock open icon"></i>
               Unlock wallet
-            </button>
+            </a>
           )}
 
-          <button onClick={toggleCurrency} className="ui right labeled icon button">
-            <i className={`right ${this.state.currencies[currency].icon} icon`}></i>
-            Currency
-          </button>
+          <a href="#0" onClick={toggleCurrency} className="">
+            <i className={`${this.state.currencies[currency].icon} icon`}></i>
+            Switch currency
+          </a>
         </div>
 
-        <div className='ui divided items'>
-
-          <Item
-            address={wallet.address}
-            balance={wallet.balanceEth}
-            decrypted={wallet.decrypted}
-            fiat={roundTwoDecimals(wallet.balanceEth * prices.eth)}
-            fiatSign={CURRENCY[currency].sign}
-            image='https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png'
-            sendCallback={this.sendClick}
-            name='ETH'
-          />
+        <div className=''>
 
           <Item
             address={wallet.address}
@@ -98,6 +87,19 @@ export default class WalletSingleHome extends Component {
             sendCallback={this.sendClick}
             name='VIEW'
             labels={['erc20']}
+          />
+
+          <hr className="c-hr" />
+
+          <Item
+            address={wallet.address}
+            balance={wallet.balanceEth}
+            decrypted={wallet.decrypted}
+            fiat={roundTwoDecimals(wallet.balanceEth * prices.eth)}
+            fiatSign={CURRENCY[currency].sign}
+            image='https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png'
+            sendCallback={this.sendClick}
+            name='ETH'
           />
 
         </div>

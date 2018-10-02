@@ -633,3 +633,131 @@ $accordion-padding-horizontal: $spacing-unit-small;
             }
         }
     }
+
+
+.c-wallet {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: $spacing-unit-large;
+    padding-bottom: $spacing-unit-large;
+    max-width: 40em;
+
+    @include mq(large) {
+        padding-top: $spacing-unit-huge;
+        padding-bottom: $spacing-unit-huge;
+    }
+}
+
+    .c-wallet__header {
+        text-align: center;
+        margin-bottom: $spacing-unit;
+    }
+
+        .c-wallet__heading {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: $spacing-unit-tiny;
+        }
+
+        .c-wallet__address {
+            color: #9a9da1;
+            margin: 0;
+            padding: 0;
+
+            dt {
+                font-size: 11px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            dd {
+                margin: 0;
+                padding: 0;
+            }
+
+            a {
+                color: #414141;
+            }
+        }
+
+    .c-wallet__nav {
+        margin-bottom: $spacing-unit-huge;
+        text-align: center;
+
+        a {
+            display: inline-block;
+            font-weight: 700;
+            vertical-align: middle;
+
+            &:not(:first-child) {
+                margin-left: $spacing-unit;
+            }
+
+            &:hover {
+                color: darken(color('brand-secondary'), 10%);
+                text-decoration: none;
+            }
+        }
+    }
+
+    .c-wallet__cryptocurrency-icon {
+        border-radius: 50%;
+        border: 1px solid #dadada;
+        display: inline-block;
+        font-size: 60px;
+        height: 1em;
+        vertical-align: middle;
+        width: 1em;
+        position: relative;
+
+        img {
+            height: auto;
+            width: 65%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }
+
+    .c-wallet__currency {
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+
+        dt {
+            color: #9a9da1;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        dd {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+        .c-wallet__currency__amount {
+            font-size: 18px;
+        }
+
+        .c-wallet__currency__fiat {
+            color: #18bf67;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+.c-hr {
+    background-color: #e5e5e5;
+    border: none;
+    display: block;
+    height: 1px;
+    margin-top: $spacing-unit;
+    margin-bottom: $spacing-unit;
+}
+
+.u-margin-left-auto {
+    margin-left: auto !important;
+}

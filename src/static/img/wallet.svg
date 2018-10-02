@@ -1,0 +1,31 @@
+<svg width="61" height="56" viewBox="0 0 61 56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="c">
+      <stop stop-color="#5A8D00" offset="0%"/>
+      <stop stop-color="#429321" offset="100%"/>
+    </linearGradient>
+    <path d="M11 6h43a2 2 0 0 1 2 2v31a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" id="d"/>
+    <pattern id="e" width="258" height="258" x="-249" y="-252" patternUnits="userSpaceOnUse">
+      <use xlink:href="#a"/>
+    </pattern>
+    <linearGradient x1="50%" y1="97.864%" x2="50%" y2="0%" id="f">
+      <stop stop-color="#683614" offset="0%"/>
+      <stop stop-color="#83401A" offset="100%"/>
+    </linearGradient>
+    <path d="M6 12h49a6 6 0 0 1 6 6v33a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6z" id="g"/>
+    <pattern id="h" width="258" height="258" x="-258" y="-246" patternUnits="userSpaceOnUse">
+      <use xlink:href="#b"/>
+    </pattern>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <g transform="rotate(-15 28.702 23)">
+      <use fill="url(#c)" xlink:href="#d"/>
+      <path stroke="#9BE821" stroke-width="2" d="M11 7a1 1 0 0 0-1 1v31a1 1 0 0 0 1 1h43a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H11z" stroke-linejoin="square" fill-opacity=".061" fill="url(#e)"/>
+    </g>
+    <g transform="translate(0 -1)">
+      <use fill="url(#f)" xlink:href="#g"/>
+      <path stroke-opacity=".298" stroke="#934719" stroke-width="3" d="M6 13.5A4.5 4.5 0 0 0 1.5 18v33A4.5 4.5 0 0 0 6 55.5h49a4.5 4.5 0 0 0 4.5-4.5V18a4.5 4.5 0 0 0-4.5-4.5H6z" stroke-linejoin="square" fill-opacity=".063" fill="url(#h)"/>
+    </g>
+    <path d="M9 19.5h12" stroke-opacity=".292" stroke="#431E09" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
