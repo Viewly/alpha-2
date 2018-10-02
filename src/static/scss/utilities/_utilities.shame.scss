@@ -720,6 +720,34 @@ $accordion-padding-horizontal: $spacing-unit-small;
         }
     }
 
+    .c-wallet__currency {
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+
+        dt {
+            color: #9a9da1;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        dd {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+        .c-wallet__currency__amount {
+            font-size: 18px;
+        }
+
+        .c-wallet__currency__fiat {
+            color: #18bf67;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
 
 .c-hr {
     background-color: #e5e5e5;

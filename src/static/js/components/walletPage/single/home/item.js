@@ -13,18 +13,18 @@ export default class Item extends Component {
           </div>
         </div>
         <div className='o-grid__cell'>
-          <div className="header">
-            {name}
-            {labels && labels.map(item => <div key={`label-${item}`} className="ui label u-margin-left-small">{item}</div>)}
-          </div>
-
-          <div className="meta">
-            <span className="price">
-              <NumberFormat value={balance} displayType={'text'} thousandSeparator={true} suffix={` ${name}`} decimalScale={3} />
-            </span>
-            <span className="stay">~ {fiat}{fiatSign}</span>
-          </div>
-
+          <dl className="c-wallet__currency">
+            <dt className="header">
+              {name}
+              {labels && labels.map(item => <div key={`label-${item}`} className="ui label u-margin-left-small">{item}</div>)}
+            </dt>
+            <dd className="c-wallet__currency__amount">
+              <span className="price">
+                <NumberFormat value={balance} displayType={'text'} thousandSeparator={true} suffix={` ${name}`} decimalScale={3} />
+              </span>
+            </dd>
+            <dd className="c-wallet__currency__fiat"><span className="stay">~ {fiat}{fiatSign}</span></dd>
+          </dl>
         </div>
         <div className="o-grid__cell u-margin-left-auto">
           {sendCallback && (
