@@ -9,7 +9,8 @@ import {
   publishVideo,
   transactionWait,
   transactionBlockWait,
-  transactionPendingAdd
+  transactionPendingAdd,
+  fetchGasPrice
 } from '../../actions';
 import Portal from '../portal';
 import { roundTwoDecimals } from '../../utils';
@@ -33,7 +34,8 @@ const BLOCKS_TO_WAIT = 2;
   transactionBlockWait: (blockNumber, offset) => dispatch(transactionBlockWait({ blockNumber, offset })),
   authorizeAllowance: ({ address, privateKey, amount, gasPrice, gasLimit }) => dispatch(authorizeAllowance({ address, privateKey, amount, gasPrice, gasLimit })),
   publishVideo: ({ address, privateKey, videoHex, value, gasPrice, gasLimit }) => dispatch(publishVideo({ address, privateKey, videoHex, value, gasPrice, gasLimit })),
-  transactionPendingAdd: (txn_id, context) => dispatch(transactionPendingAdd({ txn_id, type: context.type, value: context.value }))
+  transactionPendingAdd: (txn_id, context) => dispatch(transactionPendingAdd({ txn_id, type: context.type, value: context.value })),
+  fetchGasPrice: () => dispatch(fetchGasPrice())
 }))
 export default class PublishVideoPage extends Component {
   state = {
@@ -46,8 +48,9 @@ export default class PublishVideoPage extends Component {
   }
 
   componentDidMount() {
-    const { fetchBalance, wallet, gasPrice } = this.props;
+    const { fetchBalance, wallet, gasPrice, fetchGasPrice } = this.props;
 
+    fetchGasPrice();
     this.loadVideoContractData();
     this.setState({ gasPrice: gasPrice.normal, gasLimit: 100000 });
     wallet.status === 'loaded' && fetchBalance(wallet.address);
