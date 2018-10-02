@@ -54,25 +54,25 @@ export default class WalletSingleHome extends Component {
 
     return (
       <div>
-        <div className="ui center aligned container">
+        <div className="c-wallet__nav">
           {wallet.decrypted && (
-            <button onClick={this.lockWallet} className="ui right labeled icon button">
-              <i className="right lock icon"></i>
+            <a href="#0" onClick={this.lockWallet} className="">
+              <i className="lock icon"></i>
               Lock wallet
-            </button>
+            </a>
           )}
 
           {!wallet.decrypted && (
-            <button onClick={unlockModalOpen} className="ui right labeled icon button">
-              <i className="right lock open icon"></i>
+            <a href="#0" onClick={unlockModalOpen} className="">
+              <i className="lock open icon"></i>
               Unlock wallet
-            </button>
+            </a>
           )}
 
-          <button onClick={toggleCurrency} className="ui right labeled icon button">
-            <i className={`right ${this.state.currencies[currency].icon} icon`}></i>
-            Currency
-          </button>
+          <a href="#0" onClick={toggleCurrency} className="">
+            <i className={`${this.state.currencies[currency].icon} icon`}></i>
+            Switch currency
+          </a>
         </div>
 
         <div className='ui divided items'>

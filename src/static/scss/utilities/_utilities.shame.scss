@@ -650,32 +650,52 @@ $accordion-padding-horizontal: $spacing-unit-small;
 
     .c-wallet__header {
         text-align: center;
-        margin-bottom: $spacing-unit-large;
+        margin-bottom: $spacing-unit;
     }
 
-    .c-wallet__heading {
-        font-size: 20px;
-        font-weight: 700;
-        margin-top: $spacing-unit-tiny;
-    }
-
-    .c-wallet__address {
-        color: #9a9da1;
-        margin: 0;
-        padding: 0;
-
-        dt {
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
+        .c-wallet__heading {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: $spacing-unit-tiny;
         }
 
-        dd {
+        .c-wallet__address {
+            color: #9a9da1;
             margin: 0;
             padding: 0;
+
+            dt {
+                font-size: 11px;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            dd {
+                margin: 0;
+                padding: 0;
+            }
+
+            a {
+                color: #414141;
+            }
         }
 
+    .c-wallet__nav {
+        margin-bottom: $spacing-unit-huge;
+        text-align: center;
+
         a {
-            color: #414141;
+            display: inline-block;
+            font-weight: 700;
+            vertical-align: middle;
+
+            &:not(:first-child) {
+                margin-left: $spacing-unit;
+            }
+
+            &:hover {
+                color: darken(color('brand-secondary'), 10%);
+                text-decoration: none;
+            }
         }
     }
