@@ -48,7 +48,7 @@ from .models import (
 def index():
     if current_user and current_user.is_authenticated:
         return redirect(url_for('new'))
-    return redirect(url_for('trending'))
+    return redirect(url_for('new')) # should be trending, but the site is dead
 
 
 @app.route('/v/<string:video_id>', methods=['GET'])
