@@ -125,7 +125,44 @@
     </div>
   </div>
 
-  {% include 'partials/disqus.html' %}
+
+    <h3>Latest from <i>{{ video.channel.display_name }}</i></h3>
+    <div class="o-grid c-videos-grid">
+      {% for video in related_videos %}
+        <div class="o-grid__cell c-videos-grid__cell">
+          <div class="c-video">
+            <div class="c-thumbnail">
+              <a class="c-thumbnail__link" href="{{ url_for('view_video', video_id=video.id) }}"></a>
+              <img class="c-thumbnail__img js-thumbnail-img" src="{{ guess_thumbnail_cdn_url(video.id, 'small') }}">
+              {% include 'atoms/icon-play.html' %}
+              <span class="c-thumbnail__duration-indicator">{{ video.video_metadata.duration | toDuration }}</span>
+            </div>
+            <div class="c-video__content">
+              <a class="c-video__title"
+                 href="{{ url_for('view_video', video_id=video.id) }}"
+                 title="{{ video.title }}">
+                {{ video.title }}
+              </a>
+              <div class="c-video__footer">
+                {% if video.channel_id %}
+                  <a href="{{ url_for('view_channel', channel_id=video.channel_id) }}">
+                    <img src="{{ guess_avatar_cdn_url(video.channel_id, 'tiny') }}"
+                         class="ui circular avatar image"
+                         onerror="if (this.src !== '{{ avatar_fallback }}') this.src = '{{ avatar_fallback }}'">
+                    {{ video.channel.display_name }}
+                  </a>
+                {% endif %}
+                <span class="c-video__date">
+                  {{ video.published_at | ageDate }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+
 
 {% endblock %}
 

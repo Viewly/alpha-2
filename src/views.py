@@ -59,7 +59,22 @@ def view_video(video_id):
 
     t = int(request.args.get('t', 0))
     timer = f"&t={t}" if t else ''
-    return render_template('view.html', video=video, timer=timer)
+
+    related_videos = (
+        Video.query
+        .filter(Video.channel_id == video.channel_id,
+                Video.published_at.isnot(None),
+                Video.id != video_id)
+        .order_by(desc(Video.published_at))
+        .limit(3)
+    )
+
+    return render_template(
+        'view.html',
+        video=video,
+        timer=timer,
+        related_videos=related_videos,
+    )
 
 
 @app.route('/embed/<string:video_id>', methods=['GET'])
