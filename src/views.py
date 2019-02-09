@@ -83,7 +83,7 @@ def view_channel(channel_id):
     return render_template(
         'channel.html',
         channel=channel,
-        videos=videos.limit(30).all(),
+        videos=videos.limit(100).all(),
         follower_count=follower_count,
         s3_bucket_name=app.config['S3_UPLOADS_BUCKET'],
         s3_bucket_region=app.config['S3_UPLOADS_REGION'],
