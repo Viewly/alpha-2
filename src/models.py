@@ -381,3 +381,12 @@ class DelegationEvent(db.Model):
 #     created_at = db.Column(db.DateTime(timezone=True), nullable=False)
 #     block_num = db.Column(db.Integer, nullable=False)
 #     is_valid = db.Column(db.Boolean, nullable=False)
+
+
+
+class HotVideos(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    video_id = db.Column(db.String(LEN['video_id']), unique=True)
+    visitors = db.Column(db.Integer, nullable=False)
+    bounce_rate = db.Column(db.DECIMAL(3, 2), nullable=False)
+    avg_duration = db.Column(db.DECIMAL(8, 2), nullable=False)
