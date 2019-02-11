@@ -39,6 +39,7 @@ from .models import (
     Vote,
     User,
     Reward,
+    HotVideos,
 )
 
 
@@ -164,6 +165,27 @@ def new(page_num=0, items_per_page=18):
         items_per_page=items_per_page,
     )
 
+
+@app.route('/hot', methods=['GET'])
+def hot(page_num=0, items_per_page=18):
+    limit = items_per_page
+    page_num = page_num or int(request.args.get('page', 0))
+
+    videos = (db.session.query(Video)
+              .filter(Video.published_at.isnot(None),
+                      Video.analyzed_at.isnot(None),
+                      Video.is_nsfw.is_(False))
+              .join(HotVideos, HotVideos.video_id == Video.id)
+              .order_by(desc(HotVideos.visitors))
+              .limit(limit).offset(limit * page_num).all())
+
+    return render_template(
+        'videos.html',
+        section_title='Hot Videos',
+        videos=videos,
+        page_num=page_num,
+        items_per_page=items_per_page,
+    )
 
 @app.route('/trending', methods=['GET'])
 def trending(page_num=0, items_per_page=18):

@@ -10,10 +10,10 @@
       </li>
     {% endif %}
     <li
-      class="c-nav-primary__item {% if request.path == '/trending' %}is-current{% endif %}">
-      <a href="{{ url_for('trending') }}" class="c-nav-primary__link">
+      class="c-nav-primary__item {% if request.path == '/hot' %}is-current{% endif %}">
+      <a href="{{ url_for('hot') }}" class="c-nav-primary__link">
         {% include 'atoms/icon-trending.html' %}
-        <span class="c-nav-primary__label">Trending</span>
+        <span class="c-nav-primary__label">Hot</span>
       </a>
     </li>
     <li class="c-nav-primary__item {% if request.path == '/new' %}is-current{% endif %}">
