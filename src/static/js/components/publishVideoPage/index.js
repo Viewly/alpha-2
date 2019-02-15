@@ -76,15 +76,15 @@ export default class PublishVideoPage extends Component {
   }
 
   publishClick = (type) => async () => {
-    const { wallet, 
-      unlockModalOpen, 
-      videoPublisher, 
-      authorizeAllowance, 
+    const { wallet,
+      unlockModalOpen,
+      videoPublisher,
+      authorizeAllowance,
       publishVideo,
       transactionWait,
       transactionBlockWait,
-      fetchBalance, 
-      transactionPendingAdd 
+      fetchBalance,
+      transactionPendingAdd
     } = this.props;
     const { address, privateKey } = wallet;
     const { videoHex } = this.ref.container.dataset;
@@ -232,7 +232,7 @@ export default class PublishVideoPage extends Component {
 
         {!this.state.txnPending && !isPublished && !hasPendingTransaction && (
           <div className="ui message">
-            {!this.state.customGasPrice && <p>Gas price for transaction will be {this.state.gasPrice} gwei, if want to customize it <a href='#' onClick={() => this.setState({ customGasPrice: true })}>click here</a></p>}
+            {!this.state.customGasPrice && <p>Gas price for transaction will be {this.state.gasPrice} gwei (<a href='#' onClick={() => this.setState({ customGasPrice: true })}>edit</a>)</p>}
             {this.state.customGasPrice && (
               <div className='ui form'>
                 <div className='fields'>
