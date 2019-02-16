@@ -26,6 +26,7 @@ from wtforms import (
 
 from .. import app, db
 from ..core.et import cancel_job
+from ..core.eth import null_address
 from ..methods import get_thumbnail_cdn_url
 from ..models import (
     Video,
@@ -379,6 +380,17 @@ def publish_to_ethereum(video_id):
     if not video:
         return redirect(url_for('.publish_list_uploads'))
     if video.published_at:
+        return redirect(f'/v/{video.id}')
+
+    # special case - if its their first video, publish it for free
+    num_videos = db.session.query(Video).filter_by(
+        user_id=current_user.id,
+    ).count()
+    if num_videos == 0:
+        video.published_at = dt.datetime.utcnow()
+        video.eth_address = null_address
+        db.session.add(video)
+        db.session.commit()
         return redirect(f'/v/{video.id}')
 
     return render_template(
