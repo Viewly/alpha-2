@@ -32,6 +32,7 @@ from ..models import (
     Video,
     FileMapper,
     Channel,
+    Wallet,
     TranscoderJob,
     VideoFrameAnalysis,
     TranscoderStatus,
@@ -386,9 +387,15 @@ def publish_to_ethereum(video_id):
     num_videos = db.session.query(Video).filter_by(
         user_id=current_user.id,
     ).count()
+    eth_address = null_address
+    with suppress(Exception):
+        wallet = db.session.query(Wallet).filter_by(
+            user_id=current_user.id,
+        ).order_by(desc(Wallet.created_at)).first()
+        eth_address = wallet.default_address
     if num_videos == 0:
         video.published_at = dt.datetime.utcnow()
-        video.eth_address = null_address
+        video.eth_address = eth_address
         db.session.add(video)
         db.session.commit()
         return redirect(f'/v/{video.id}')
