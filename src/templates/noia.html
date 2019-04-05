@@ -2,9 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>NOIA Player</title>
+  <style>body {margin:0}</style>
+
+  <script src="{{ url_for('static', filename='noia/vendors~main.bundle.js') }}"></script>
+  <script src="{{ url_for('static', filename='noia/main.bundle.js') }}"></script>
+  <script src="{{ url_for('static', filename='noia/rendermedia.bundle.js') }}"></script>
+  <script src="{{ url_for('static', filename='noia/from2.bundle.js') }}"></script>
+  <script>
+    const videoUrl = 'https://cdn.view.ly/v1/CqFkfBsOcAxz/fallback/720p.mp4';
+    const fakeBufferLength = 1000;
+    const ready = fn => {
+      if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        fn();
+      } else {
+        document.addEventListener("DOMContentLoaded", fn);
+      }
+    };
+
+    window.NOIA.init();
+
+    function _arrayBufferToBase64( buffer ) {
+      var binary = '';
+      var bytes = new Uint8Array( buffer );
+      var len = bytes.byteLength;
+      for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] );
+      }
+      return window.btoa( binary );
+    }
+    ready(() => {
+      // Execute content loader.
+      // window.NOIA.load();
+      const noiaClient = window.NOIA.clientContainer.getClient();
+
+
+      noiaClient.openStream({
+        src: videoUrl
+      }).then(noiaStream => {
+        if (!noiaStream.masterData.metadata) {
+          noiaStream.masterData.metadata = {
+            bufferLength: fakeBufferLength
+          }
+        }
+        noiaStream.bufferBytes({
+          start: 0,
+          length: noiaStream.masterData.metadata.bufferLength / 10
+        });
+
+        const file = {
+          name: "720p.mp4",
+          length: noiaStream.masterData.metadata.bufferLength,
+          createReadStream: (opts) => {
+            const start = opts.start || 0;
+            const end = opts.end || noiaStream.masterData.metadata.bufferLength - 1;
+
+            let startBytes = start;
+            return from(async (size, next) => {
+              const nextBytesPromise = noiaStream.getBytes({ start: startBytes, length: size });
+
+              const chunksToBuffer = 50;
+
+              // Buffer a few more chunks, while the current frames are shown.
+              for (let i = 0; i < chunksToBuffer; i++) {
+                noiaStream.getBytes({ start: startBytes + size * i, length: size });
+              }
+
+              const nextBytes = await nextBytesPromise;
+
+              startBytes += size;
+              next(null, nextBytes);
+
+              if (startBytes > end) {
+                next(null, null);
+              }
+            });
+          }
+        };
+
+        const video = document.createElement("video");
+        video.controls = true;
+        let container = document.body;
+        container.innerHTML = "";
+        container.append(video);
+
+        renderMedia.render(file, video, {}, () => {
+          if (err) {
+            return console.error(err.message);
+          }
+          // Rendered element with the media in it.
+          logger.Debug("Rendered element with the media in it.", elem);
+        });
+      });
+    })
+
+  </script>
 </head>
 <body>
 
+{#<span id="player-full"#}
+{#      style="border: 0px;border-radius: 0px;width: 100%;height: 100%"></span>#}
+
 </body>
 </html>
+
+
