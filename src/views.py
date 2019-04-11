@@ -87,6 +87,7 @@ def noia_video(video_id):
     return render_template(
         'noia.html',
         video_id=video.id,
+        poster=guess_thumbnail_cdn_url(video.id, 'small'),
     )
 
 
