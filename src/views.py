@@ -78,6 +78,18 @@ def view_video(video_id):
     )
 
 
+@app.route('/noia/<string:video_id>', methods=['GET'])
+def noia_video(video_id):
+    video = Video.query.filter_by(id=video_id).first_or_404()
+    if not video.published_at and not is_owner(video.user_id):
+        return abort(404)
+
+    return render_template(
+        'noia.html',
+        video_id=video.id,
+    )
+
+
 @app.route('/embed/<string:video_id>', methods=['GET'])
 def embed(video_id):
     player_cdn = app.config['PLAYER_URL']
