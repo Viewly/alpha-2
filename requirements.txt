@@ -1,3 +1,6 @@
+redis==3.2.1
+kombu==4.5.0
+celery==4.3.0
 gunicorn
 newrelic
 funcy
@@ -18,8 +21,6 @@ python-slugify
 boto3
 maya
 delegator.py
-redis==3.2.1
-celery==4.3.0
 Pillow
 psycopg2-binary
 delegator.py
