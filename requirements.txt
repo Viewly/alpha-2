@@ -18,6 +18,7 @@ python-slugify
 boto3
 maya
 delegator.py
+redis>=3.2.0
 celery[redis,auth]
 Pillow
 psycopg2-binary
