@@ -17,7 +17,7 @@ from flask_security import (
     login_required,
 )
 from funcy import cache, last
-from sqlalchemy import desc, func, distinct
+from sqlalchemy import desc, func, distinct, text
 
 from . import app, db
 from .core.eth import gas_price
@@ -235,7 +235,7 @@ def trending(page_num=0, items_per_page=18):
                  Video.analyzed_at.isnot(None),
                  Video.is_nsfw.is_(False),
                  'weight > 0')
-         .order_by('((1.0 / ((now()::date - published_at::date) + 1)) * weight) DESC')
+         .order_by(text('((1.0 / ((now()::date - published_at::date) + 1)) * weight) DESC'))
          .limit(limit)
          .offset(limit * page_num)
          .all())
@@ -291,7 +291,7 @@ def edit_profile():
          .outerjoin(Reward)
          .group_by(Channel)
          .having(Channel.user_id == current_user.id)
-         .order_by(desc('video_count')))
+         .order_by(text('video_count desc')))
     return render_template(
         'edit_profile.html',
         channels=channels,
