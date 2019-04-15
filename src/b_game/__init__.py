@@ -2,7 +2,7 @@ from flask import (
     Blueprint,
     render_template,
 )
-from sqlalchemy import desc, func, or_
+from sqlalchemy import desc, func, or_, text
 
 from .. import db
 from ..models import (
@@ -79,7 +79,7 @@ def period_rewards(period_id):
             func.sum(Reward.voter_reward))
          .filter_by(period_id=period_id)
          .group_by(Reward.video_id)
-         .order_by("creator_rewards desc")
+         .order_by(text("creator_rewards desc"))
          .all())
 
     rewards = \

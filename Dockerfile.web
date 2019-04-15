@@ -18,6 +18,9 @@ RUN npm run build
 WORKDIR /alpha-2
 RUN pip install -r requirements.txt
 
+## dirty hack todo
+RUN pip install sqlalchemy==1.2.18
+
 ## compile sass/scss
 RUN python setup.py build_sass
 
